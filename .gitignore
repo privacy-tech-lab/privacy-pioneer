@@ -3,6 +3,12 @@ __pycache__/
 *.py[cod]
 *$py.class
 
+# dependencies
+/node_modules
+
+# temp
+screenshot.png
+
 # C extensions
 *.so
 

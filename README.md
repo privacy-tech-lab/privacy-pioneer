@@ -17,3 +17,31 @@ If such a string is sent via an HTTP POST request, it can be concluded that the 
 Functionality beyond the HTTP interceptor could be probing every mobile permission (via try ... catch) and probing for integrated libraries (again, using try ... catch to call, e.g., the Google Analytic API).
 
 The privacy map could also be used to create user notices and privacy "nutrition" labels (e.g., as Apple requires in a few weeks from every app on the App Store).
+
+## Development
+
+1. Install [`node`](https://nodejs.org/en/download/), which should also include `npm`. 
+
+2. Clone the repository and change directory.
+
+```
+git clone https://github.com/privacy-tech-lab/integrated-privacy-analysis.git
+cd integrated-privacy-analysis
+```
+
+3. Install npm dependencies
+
+```
+npm install
+```
+
+4. Run locally.
+
+```
+npm run analyze
+```
+
+## Files and Directories in the Repo
+
+- `src/`: Contains the code.
+- `src/main.js`: The entry point to integrated-privacy-analysis.

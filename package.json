@@ -1,0 +1,23 @@
+{
+  "name": "integrated-privacy-analysis",
+  "version": "1.0.0",
+  "description": "Privacy analysis code for integration in web and mobile apps",
+  "main": "./src/main.js",
+  "scripts": {
+    "analyze": "node ./src/main.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/privacy-tech-lab/integrated-privacy-analysis.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/privacy-tech-lab/integrated-privacy-analysis/issues"
+  },
+  "homepage": "https://github.com/privacy-tech-lab/integrated-privacy-analysis#readme",
+  "dependencies": {
+    "puppeteer": "^5.3.1"
+  }
+}
