@@ -20,7 +20,9 @@ The privacy map could also be used to create user notices and privacy "nutrition
 
 ### Architectural Overview
 
-![](images/table architecture_overview.png?raw=true)
+<p align="center">
+  <img src="https://github.com/privacy-tech-lab/integrated-privacy-analysis/blob/master/architecture_overview.png" title="architecture overview">
+<p>
 
 ### Analysis Features and Techniques
 
