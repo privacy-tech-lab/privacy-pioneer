@@ -18,7 +18,9 @@ The developer could be lead via a tutorial to trigger various functionalities of
 
 The privacy map could also be used to create user notices and privacy "nutrition" labels (e.g., as Apple requires from every app on the App Store).
 
-Architecture: How exactly are we setting things up?
+### Architectural Overview
+
+![](images/table architecture_overview.png?raw=true)
 
 ### Analysis Features and Techniques
 
