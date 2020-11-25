@@ -54,7 +54,8 @@ getProxyInfo()
 
 # Loop for while the user is still clicking through links within website,
 # will append network logs to our json file
-# Once user is done, they can exit out the browser and will be done
+# Once user is done, they can exit out the browser and will be done. We should
+# also probably have some button they can click.
 analyzing = True
 while analyzing:
     try:
@@ -70,6 +71,8 @@ while analyzing:
 
         time.sleep(1)
 
+    # this catches when the user hard exits or closes the browser so our app
+    # does not break
     except (NoSuchWindowException, WebDriverException):
         print('You have closed the browser. Will now begin analysis..')
         analyzing = False
