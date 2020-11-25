@@ -1,0 +1,2 @@
+class ProxyServerError(Exception):
+    pass
