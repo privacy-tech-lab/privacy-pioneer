@@ -1,0 +1,45 @@
+---
+Location:
+  # per https://blog.api.rakuten.net/top-ip-geolocation-apis/
+  URLs:
+    - "https://googleapis.com/geolocation"
+    - "https://jkosgei-free-ip-geolocation"
+    - "https://geocodeapi"
+    - "https://yandexgeocoderraygorodskijv1"
+    - "https://devru-latitude-longitude-find"
+    - "https://google-maps-time-zone"
+    - "https://geo"
+    - "https://ip-geolocation-ipwhois-io"
+    - "https://telize"
+  Bodies:
+    - "longitude"
+    - "lng"
+    - "latitude"
+    - "lat"
+    - "altitude"
+    - "location"
+    - "geoloc"
+    - "geolocation"
+    - "geo_location"
+    - "delivery_zip"
+
+Fingerprint:
+  Bodies:
+    - "screenSize"
+    - "timezone"
+    - "contentLang"
+    - "en-US"
+    - "canvas"
+    - "fonts"
+    - "adblock"
+    - "deviceMemory"
+    - "pixelRatio"
+    - "colorDepth"
+    - "screenWidth"
+    - "screenHeight"
+    - "screenDepth"
+    - "webGL"
+
+Pixels:
+  URLs:
+    - "https://www.facebook.com/tr/"
