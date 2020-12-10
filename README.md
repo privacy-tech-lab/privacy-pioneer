@@ -1,12 +1,12 @@
 # integrated-privacy-analysis
 
-Privacy analysis code for integration in web and mobile apps
+Privacy analysis code for integration in web and mobile apps.
 
 ## Research Vision
 
 ### Dynamic App Analysis
 
-Going beyond PrivacyFlash Pro, the idea of this project is to create a privacy analytics suite that can be integrated into web (and possibly mobile) apps and that analyzes the behavior of those apps. Static analysis, which is used in PrivacyFlash Pro, can lead to false positives and is somewhat limited in terms of what is analyzable (e.g., a permission is used, but is data sent off of the device?). Thus, we want to use dynamic analysis as much as possible.
+Going beyond PrivacyFlash Pro, the idea of this project is to create a privacy analytics suite that can be integrated into web (and possibly mobile) apps and that analyzes the behavior of those apps. It will give the developer recommendations and possible nudge them to use privacy-preserving techniques and technologies. Static analysis, which is used in PrivacyFlash Pro, can lead to false positives and is somewhat limited in terms of what is analyzable (e.g., a permission is used, but is data sent off of the device?). Thus, we want to use dynamic analysis as much as possible.
 
 One technique to understand the privacy behavior of an app is to look at its web traffic. To that end, an HTTP(S) interceptor can be integrated (e.g., here is an [example for iOS](https://blog.codavel.com/how-to-intercept-http-requests-on-an-ios-app)). The interceptor will analyze outgoing (and incoming?) HTTP requests (POST, GET, PUT, DELETE, PATCH, ...). For example, the following URL-encoded string contains the latitude and longitude of a device:
 
