@@ -77,43 +77,25 @@ def analyze_requests(requests, keywords):
                     if b in headers:
                         print("Found a matching keyword in header: " + b + " for " + t)
 
+def setUpSelenium():
+    # set up webdriver and proxy server
+    profile  = webdriver.FirefoxProfile()
+    profile.accept_untrusted_certs = True
+    # This checks for the scripts current path, and in this same path there should
+    # be the browsermob-proxy files, which is where we then direct the script
+    # to find the server
+    curr_dir_server = getFilePath('browsermob-proxy/bin/browsermob-proxy')
+    server = Server(path=curr_dir_server)
+    server.start()
 
-# this is a placeholder for some sort of GUI when we create the app
-site = input("What's the name of the site you are visiting? ")
+    proxy = server.create_proxy()
+    profile.set_proxy(proxy.selenium_proxy())
+    driver = webdriver.Firefox(firefox_profile=profile)
 
-
-# first we're gonna make our json file of network calls to analyze and make sure
-# it is empty for testing purposes
-with open("network-logs.json", 'w'): pass
-
-# set up webdriver and proxy server
-profile  = webdriver.FirefoxProfile()
-profile.accept_untrusted_certs = True
-# This checks for the scripts current path, and in this same path there should
-# be the browsermob-proxy files, which is where we then direct the script
-# to find the server
-curr_dir_server = getFilePath('browsermob-proxy/bin/browsermob-proxy')
-server = Server(path=curr_dir_server)
-server.start()
-
-proxy = server.create_proxy()
-profile.set_proxy(proxy.selenium_proxy())
-driver = webdriver.Firefox(firefox_profile=profile)
-
-#global counter variable to label each network request differently and to
-# keep JSON object stored of all network requests to later be dumped into
-# file for analysis
-counter = 0
-requests = {}
-
-# upload network request keywords from yaml
-yaml_keywords = importYaml()
-
-# Create har for analysis, name of site will be completed by user earlier on
-proxy.new_har(site,options={'captureHeaders': True,'captureContent':True})
+    return (proxy, driver, server)
 
 # function to get the proxy info and put all POST requests into our saved file
-def getProxyInfo(c, reqs):
+def getProxyInfo(c, reqs, proxy):
     result_har = proxy.har # returns a HAR JSON blob
     for ent in result_har['log']['entries']:
         if ent['request']['method'] == 'POST':
@@ -123,45 +105,78 @@ def getProxyInfo(c, reqs):
 
     return (c, reqs)
 
-# get initial URL where user naviagtes
-current_loc = driver.current_url
-urls = [current_loc]
-# get initial web traffic info on first page
-(counter, requests) = getProxyInfo(counter, requests)
+def setUpNetworkMonitoring(proxy, driver, site, counter, requests):
+    # Create har for analysis, name of site will be completed by user earlier on
+    proxy.new_har(site,options={'captureHeaders': True,'captureContent':True})
 
-# Loop for while the user is still clicking through links within website,
-# will append network logs to our json object
-# Once user is done, they can exit out the browser and will be done. We should
-# also probably have some button they can click.
-analyzing = True
-while analyzing:
-    try:
-        ## this is just to record all of the different URLs a user goes to
-        new_loc = driver.current_url
-        if new_loc != current_loc:
-            current_loc = new_loc
-            urls.append(current_loc)
-            print("User has navigated to a new URL: " + new_loc)
-        else:
-            pass
+    # get initial URL where user naviagtes
+    current_loc = driver.current_url
+    urls = [current_loc]
+    # get initial web traffic info on first page
+    (counter, requests) = getProxyInfo(counter, requests, proxy)
 
-        time.sleep(1)
-        # every second get the new network requests
-        (counter, requests) = getProxyInfo(counter, requests)
+    # Loop for while the user is still clicking through links within website,
+    # will append network logs to our json object
+    # Once user is done, they can exit out the browser and will be done. We should
+    # also probably have some button they can click.
+    analyzing = True
+    while analyzing:
+        try:
+            ## this is just to record all of the different URLs a user goes to
+            new_loc = driver.current_url
+            if new_loc != current_loc:
+                current_loc = new_loc
+                urls.append(current_loc)
+                print("User has navigated to a new URL: " + new_loc)
+            else:
+                pass
 
-    # this catches when the user hard exits or closes the browser so our app
-    # does not break
-    except (NoSuchWindowException, WebDriverException):
-        print('You have closed the browser. Will now begin analysis..')
-        analyzing = False
+            time.sleep(1)
+            # every second get the new network requests
+            (counter, requests) = getProxyInfo(counter, requests, proxy)
 
-# saves network logs for debug
-with open('network-logs.json', 'a') as outfile:
-    json.dump(requests, outfile)
+        # this catches when the user hard exits or closes the browser so our app
+        # does not break
+        except (NoSuchWindowException, WebDriverException):
+            print('You have closed the browser. Will now begin analysis..')
+            analyzing = False
 
-# user has exited the browser so is done navigating. Now we can begin analysis.
-analyze_requests(requests, yaml_keywords)
+    return requests
 
+def main():
+"""
+This is the main function where all of the main calls are made.
+"""
+    # this is a placeholder for some sort of GUI when we create the app
+    site = input("What's the name of the site you are visiting? ")
+    # first we're gonna make our json file of network calls to analyze and make sure
+    # it is empty for testing purposes
+    with open("network-logs.json", 'w'): pass
 
-server.stop()
-driver.quit()
+    # this function sets up our browser viewing with selenium
+    (proxy, driver, server) = setUpSelenium()
+
+    #global counter variable to label each network request differently and to
+    # keep JSON object stored of all network requests to later be dumped into
+    # file for analysis
+    counter = 0
+    requests = {}
+
+    # upload network request keywords from yaml
+    yaml_keywords = importYaml()
+
+    # set up proxy and begin to monitor developer moves
+    requests = setUpNetworkMonitoring(proxy, driver, site, counter, requests)
+
+    # saves network logs for debug
+    with open('network-logs.json', 'a') as outfile:
+        json.dump(requests, outfile)
+
+    # user has exited the browser so is done navigating. Now we can begin analysis.
+    analyze_requests(requests, yaml_keywords)
+
+    server.stop()
+    driver.quit()
+
+if __name__ == "__main__":
+    main()
