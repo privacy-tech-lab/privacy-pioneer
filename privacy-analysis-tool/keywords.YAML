@@ -1,5 +1,5 @@
 ---
-Location:
+LOCATION:
   # per https://blog.api.rakuten.net/top-ip-geolocation-apis/
   URLs:
     - "https://googleapis.com/geolocation"
@@ -23,7 +23,9 @@ Location:
     - "geo_location"
     - "delivery_zip"
 
-Fingerprint:
+FINGERPRINT:
+  URLs: # placeholder
+    - https://cnn.com
   Bodies:
     - "screenSize"
     - "timezone"
@@ -40,6 +42,8 @@ Fingerprint:
     - "screenDepth"
     - "webGL"
 
-Pixels:
+PIXEL:
   URLs:
     - "https://www.facebook.com/tr/"
+  Bodies: #placeholder
+    - "abcdefghijklmnop"
