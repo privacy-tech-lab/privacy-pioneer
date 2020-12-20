@@ -2,6 +2,14 @@
 
 Privacy analysis code for integration in web and mobile apps.
 
+## To use privacy analysis tool
+1) Clone repo
+2) Run `cd privacy-analysis-tool`
+3) Download gecko driver for firefox here: (https://github.com/mozilla/geckodriver/releases)
+4) Begin analysis by running `python3 proxy_server.py`
+5) Input site you are analyzing
+6) Browser internet. Close browser when done.
+
 ## Research Vision
 
 ### Dynamic App Analysis
