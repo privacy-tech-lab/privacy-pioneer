@@ -9,6 +9,78 @@ import json
 from json.decoder import JSONDecodeError
 import os
 from urllib.parse import urlparse
+import yaml
+import sys
+
+def getFilePath(relativePath):
+    """ Get absolute path to resource, works for dev and for PyInstaller """
+    if getattr(sys, 'frozen', False):
+        application_path = sys._MEIPASS
+        return os.path.join(application_path, relativePath[3:])
+    else:
+        application_path = os.path.dirname(__file__)
+        return os.path.join(application_path, relativePath)
+
+def importYaml():
+    """
+    Imports yaml file with all keywords we are going to look for in the network
+    requests. YAML file is titled keywords.
+    """
+    kw = getFilePath('keywords.yaml')
+    with open(kw, 'r') as evidence:
+        keys_yml = yaml.safe_load(evidence)
+
+    keywords_data = {}
+
+    types = ["LOCATION", "FINGERPRINT", "PIXEL"]
+
+    for type in types:
+        data = {}
+        for aspect in ["Bodies", "URLs"]:
+            data[aspect] = keys_yml[type][aspect]
+
+
+        keywords_data[type] = data
+
+    return keywords_data
+
+def analyze_requests(requests, keywords):
+    """
+    Developer has now clicked through their website and we have logged the
+    network requests. In this function we take those requests and look for
+    keywords or URLs
+    """
+    for req in requests:
+        # first get sections for later analysis
+        url = requests[req]['request']['url']
+
+        try:
+            headers = str(requests[req]['request']['headers'])
+        except KeyError:
+            headers = ""
+        try:
+            postData = str(requests[req]['request']['postData'])
+        except KeyError:
+            postData = ""
+
+        # check URL of request to see if recognized
+        for t in keywords:
+            for u in keywords[t]['URLs']:
+                if url in u:
+                    print("Found a matching URL for " + type)
+                    print(u)
+
+        for t in keywords:
+                for b in keywords[t]['Bodies']:
+                    if b in postData:
+                        print("Found a matching keyword in post data: " + b + " for " + t)
+                    if b in headers:
+                        print("Found a matching keyword in header: " + b + " for " + t)
+
+
+# this is a placeholder for some sort of GUI when we create the app
+site = input("What's the name of the site you are visiting? ")
+
 
 # first we're gonna make our json file of network calls to analyze and make sure
 # it is empty for testing purposes
@@ -20,9 +92,7 @@ profile.accept_untrusted_certs = True
 # This checks for the scripts current path, and in this same path there should
 # be the browsermob-proxy files, which is where we then direct the script
 # to find the server
-curr_dir = os.path.dirname(os.path.realpath(__file__))
-curr_dir_server = curr_dir + "/browsermob-proxy/bin/browsermob-proxy"
-# dict={'port':8090}
+curr_dir_server = getFilePath('browsermob-proxy/bin/browsermob-proxy')
 server = Server(path=curr_dir_server)
 server.start()
 
@@ -36,8 +106,11 @@ driver = webdriver.Firefox(firefox_profile=profile)
 counter = 0
 requests = {}
 
+# upload network request keywords from yaml
+yaml_keywords = importYaml()
+
 # Create har for analysis, name of site will be completed by user earlier on
-proxy.new_har("name-of-site",options={'captureHeaders': True,'captureContent':True})
+proxy.new_har(site,options={'captureHeaders': True,'captureContent':True})
 
 # function to get the proxy info and put all POST requests into our saved file
 def getProxyInfo(c, reqs):
@@ -55,7 +128,6 @@ current_loc = driver.current_url
 urls = [current_loc]
 # get initial web traffic info on first page
 (counter, requests) = getProxyInfo(counter, requests)
-
 
 # Loop for while the user is still clicking through links within website,
 # will append network logs to our json object
@@ -83,9 +155,13 @@ while analyzing:
         print('You have closed the browser. Will now begin analysis..')
         analyzing = False
 
-# user has exited the browser so is done navigating. Now we can begin analysis.
+# saves network logs for debug
 with open('network-logs.json', 'a') as outfile:
     json.dump(requests, outfile)
+
+# user has exited the browser so is done navigating. Now we can begin analysis.
+analyze_requests(requests, yaml_keywords)
+
 
 server.stop()
 driver.quit()
