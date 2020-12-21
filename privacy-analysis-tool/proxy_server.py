@@ -78,6 +78,10 @@ def analyze_requests(requests, keywords):
                         print("Found a matching keyword in header: " + b + " for " + t)
 
 def setUpSelenium():
+    """
+    This sets up our selenium profile, our server, and our proxy for browsing
+    and analysis purposes.
+    """
     # set up webdriver and proxy server
     profile  = webdriver.FirefoxProfile()
     profile.accept_untrusted_certs = True
@@ -94,8 +98,10 @@ def setUpSelenium():
 
     return (proxy, driver, server)
 
-# function to get the proxy info and put all POST requests into our saved file
 def getProxyInfo(c, reqs, proxy):
+    """
+    function to get the proxy info and put all POST requests into our json object
+    """
     result_har = proxy.har # returns a HAR JSON blob
     for ent in result_har['log']['entries']:
         if ent['request']['method'] == 'POST':
@@ -106,6 +112,10 @@ def getProxyInfo(c, reqs, proxy):
     return (c, reqs)
 
 def setUpNetworkMonitoring(proxy, driver, site, counter, requests):
+    """
+    This function gets the proxy har to be stored in JSON format for analysis.
+    It will termiante when user closes the browser.
+    """
     # Create har for analysis, name of site will be completed by user earlier on
     proxy.new_har(site,options={'captureHeaders': True,'captureContent':True})
 
