@@ -4,6 +4,7 @@ from selenium.webdriver.common.keys import Keys
 from selenium.common.exceptions import NoSuchElementException
 from selenium.common.exceptions import NoSuchWindowException
 from selenium.common.exceptions import WebDriverException
+from pathlib import Path
 import time
 import json
 from json.decoder import JSONDecodeError
@@ -96,6 +97,10 @@ def setUpSelenium():
     profile.set_proxy(proxy.selenium_proxy())
     driver = webdriver.Firefox(firefox_profile=profile)
 
+    # attach extension to interface with user
+    extension_dir = getFilePath('extension/dist/extension.xpi')
+    driver.install_addon(str(Path(extension_dir).absolute()))
+
     return (proxy, driver, server)
 
 def getProxyInfo(c, reqs, proxy):
@@ -154,9 +159,9 @@ def setUpNetworkMonitoring(proxy, driver, site, counter, requests):
     return requests
 
 def main():
-"""
-This is the main function where all of the main calls are made.
-"""
+    """
+    This is the main function where all of the main calls are made.
+    """
     # this is a placeholder for some sort of GUI when we create the app
     site = input("What's the name of the site you are visiting? ")
     # first we're gonna make our json file of network calls to analyze and make sure
