@@ -47,13 +47,13 @@ def importAnalysisFiles():
 
     types = ["LOCATION", "FINGERPRINT", "PIXEL", "ADVERTISING", "ANALYTICS", "SOCIAL"]
 
-    for type in types:
+    for t in types:
         data = {}
         # just load body keywords from the yaml we have made
         data["Bodies"] = keys_yml[type]["Bodies"]
 
         # for urls, we can get a lot of our data from services.json file
-        if type == "ADVERTISING":
+        if t == "ADVERTISING":
             lst = keys_yml[type]["URLs"]
             for a in advertising:
                 for b in a:
@@ -61,7 +61,7 @@ def importAnalysisFiles():
                         lst.append(u)
             data["URLs"] = lst
 
-        elif type == "FINGERPRINT":
+        elif t == "FINGERPRINT":
             lst = keys_yml[type]["URLs"]
             for a in fingerprint:
                 for b in a:
@@ -74,7 +74,7 @@ def importAnalysisFiles():
 
             data["URLs"] = lst
 
-        if type == "ANALYTICS":
+        if t == "ANALYTICS":
             lst = keys_yml[type]["URLs"]
             for a in analytics:
                 for b in a:
@@ -83,7 +83,7 @@ def importAnalysisFiles():
 
             data["URLs"] = lst
 
-        if type == "SOCIAL":
+        if t == "SOCIAL":
             lst = keys_yml[type]["URLs"]
             for a in social:
                 for b in a:
@@ -110,13 +110,14 @@ def analyze_requests(requests, keywords, urls):
     with open('network-logs.json', 'a') as outfile:
         json.dump(requests, outfile)
 
-    navigation_secure = True
     # first let's check if any of the urls user has navigated to are http.
+    navigation_secure = True
     for u in urls:
         if u == "about:blank" or "https" in u:
             pass # safe
         else:
             navigation_secure = False
+
 
     if debug:
         pass
