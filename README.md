@@ -8,7 +8,7 @@ Privacy analysis code for integration in web and mobile apps.
 3) Install needed packages (will include these in a requirements file later on. This is temporary: PyYAML, requests, selenium, urllib
 4) Begin analysis by running `python3 proxy_server.py`
 5) Input site you are analyzing
-6) Browser internet. Close browser when done.
+6) Browse internet. Close browser when done.
 
 ## Research Vision
 
