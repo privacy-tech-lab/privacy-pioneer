@@ -6,10 +6,9 @@ Privacy analysis code for integration in web and mobile apps.
 1) Clone repo
 2) `cd privacy-analysis-tool`
 3) Install needed packages (will include these in a requirements file later on. This is temporary: PyYAML, requests, selenium, urllib
-3) Download gecko driver for firefox here: (https://github.com/mozilla/geckodriver/releases)
 4) Begin analysis by running `python3 proxy_server.py`
 5) Input site you are analyzing
-6) Browser internet. Close browser when done.
+6) Browse internet. Close browser when done.
 
 ## Research Vision
 
@@ -51,31 +50,3 @@ The analysis will reveal the privacy state of the app. Generally, we will have t
 2. Fix a broken feature
 These missing or broken features can be mapped to specific laws and regulations.
 
-
-## Development
-
-1. Install [`node`](https://nodejs.org/en/download/), which should also include `npm`.
-
-2. Clone the repository and change directory.
-
-```
-git clone https://github.com/privacy-tech-lab/integrated-privacy-analysis.git
-cd integrated-privacy-analysis
-```
-
-3. Install npm dependencies
-
-```
-npm install
-```
-
-4. Run locally.
-
-```
-npm run analyze
-```
-
-## Files and Directories in the Repo
-
-- `src/`: Contains the code.
-- `src/main.js`: The entry point to integrated-privacy-analysis.
