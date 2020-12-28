@@ -50,31 +50,3 @@ The analysis will reveal the privacy state of the app. Generally, we will have t
 2. Fix a broken feature
 These missing or broken features can be mapped to specific laws and regulations.
 
-
-## Development
-
-1. Install [`node`](https://nodejs.org/en/download/), which should also include `npm`.
-
-2. Clone the repository and change directory.
-
-```
-git clone https://github.com/privacy-tech-lab/integrated-privacy-analysis.git
-cd integrated-privacy-analysis
-```
-
-3. Install npm dependencies
-
-```
-npm install
-```
-
-4. Run locally.
-
-```
-npm run analyze
-```
-
-## Files and Directories in the Repo
-
-- `src/`: Contains the code.
-- `src/main.js`: The entry point to integrated-privacy-analysis.
