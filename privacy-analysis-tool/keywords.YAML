@@ -2,15 +2,15 @@
 LOCATION:
   # per https://blog.api.rakuten.net/top-ip-geolocation-apis/
   URLs:
-    - "https://googleapis.com/geolocation"
-    - "https://jkosgei-free-ip-geolocation"
-    - "https://geocodeapi"
-    - "https://yandexgeocoderraygorodskijv1"
-    - "https://devru-latitude-longitude-find"
-    - "https://google-maps-time-zone"
-    - "https://geo"
-    - "https://ip-geolocation-ipwhois-io"
-    - "https://telize"
+    - "googleapis.com/geolocation"
+    - "jkosgei-free-ip-geolocation"
+    - "geocodeapi"
+    - "yandexgeocoderraygorodskijv1"
+    - "devru-latitude-longitude-find"
+    - "google-maps-time-zone"
+    - "geo"
+    - "ip-geolocation-ipwhois-io"
+    - "telize"
   Bodies:
     - "longitude"
     - "lng"
@@ -25,7 +25,7 @@ LOCATION:
 
 FINGERPRINT:
   URLs: # placeholder
-    - https://cnn.com
+    - placeholder.com
   Bodies:
     - "screenSize"
     - "timezone"
@@ -43,8 +43,8 @@ FINGERPRINT:
 
 PIXEL:
   URLs:
-    - "facebook.com/tr/"
     # below links are all from https://jvns.ca/blog/how-tracking-pixels-work/
+    - "facebook.com/tr/"
     - "ct.pinterest.com"
     - "af.monetate.net"
     - "csm.va.us.criteo.net"
