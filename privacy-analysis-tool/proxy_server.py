@@ -45,12 +45,16 @@ def importYaml():
 
     return keywords_data
 
-def analyze_requests(requests, keywords):
+def analyze_requests(requests, keywords, urls):
     """
     Developer has now clicked through their website and we have logged the
     network requests. In this function we take those requests and look for
     keywords or URLs
     """
+    # saves network logs for debug purposes
+    with open('network-logs.json', 'a') as outfile:
+        json.dump(requests, outfile)
+
     for req in requests:
         # first get sections for later analysis
         url = requests[req]['request']['url']
@@ -95,7 +99,7 @@ def setUpSelenium():
 
     proxy = server.create_proxy()
     profile.set_proxy(proxy.selenium_proxy())
-    driver = webdriver.Firefox(firefox_profile=profile)
+    driver = webdriver.Firefox(firefox_profile=profile, executable_path=r'./geckodriver')
 
     # attach extension to interface with user
     extension_dir = getFilePath('extension/dist/extension.xpi')
@@ -116,11 +120,32 @@ def getProxyInfo(c, reqs, proxy):
 
     return (c, reqs)
 
-def setUpNetworkMonitoring(proxy, driver, site, counter, requests):
+def stopDataCollection(server, driver, requests, yaml_keywords, urls):
     """
-    This function gets the proxy har to be stored in JSON format for analysis.
-    It will termiante when user closes the browser.
+    User has closed out so this function stops our server and webdriver. Should
+    be connected to a stop button.
+    After closing server, we should begin analysis
     """
+    server.stop()
+    driver.quit()
+
+    # user has stopped browsing. Now we can begin analysis.
+    analyze_requests(requests, yaml_keywords, urls)
+
+def startDataCollection(proxy, driver, site, server, yaml_keywords):
+    """
+    This function creates the new har from the proxy server to begin data
+    collection. Will continue monitoring until user exits or clicks stop button.
+    Once that occurs, this function calls stopDataCollection() to quit
+    the driver and server, and then begin analyzing the data that has been
+    collected
+    """
+    # global counter variable to label each network request differently and to
+    # keep JSON object stored of all network requests to later be dumped into
+    # file for analysis
+    counter = 0
+    requests = {}
+
     # Create har for analysis, name of site will be completed by user earlier on
     proxy.new_har(site,options={'captureHeaders': True,'captureContent':True})
 
@@ -153,10 +178,12 @@ def setUpNetworkMonitoring(proxy, driver, site, counter, requests):
         # this catches when the user hard exits or closes the browser so our app
         # does not break
         except (NoSuchWindowException, WebDriverException):
+            stopDataCollection(server, driver, requests, yaml_keywords, urls)
             print('You have closed the browser. Will now begin analysis..')
             analyzing = False
 
-    return requests
+        # Other than them quitting out, we should also have a button somewhere
+        # for user to click, which would then call stopDataCollection
 
 def main():
     """
@@ -164,6 +191,7 @@ def main():
     """
     # this is a placeholder for some sort of GUI when we create the app
     site = input("What's the name of the site you are visiting? ")
+
     # first we're gonna make our json file of network calls to analyze and make sure
     # it is empty for testing purposes
     with open("network-logs.json", 'w'): pass
@@ -171,27 +199,10 @@ def main():
     # this function sets up our browser viewing with selenium
     (proxy, driver, server) = setUpSelenium()
 
-    #global counter variable to label each network request differently and to
-    # keep JSON object stored of all network requests to later be dumped into
-    # file for analysis
-    counter = 0
-    requests = {}
-
     # upload network request keywords from yaml
     yaml_keywords = importYaml()
 
-    # set up proxy and begin to monitor developer moves
-    requests = setUpNetworkMonitoring(proxy, driver, site, counter, requests)
-
-    # saves network logs for debug
-    with open('network-logs.json', 'a') as outfile:
-        json.dump(requests, outfile)
-
-    # user has exited the browser so is done navigating. Now we can begin analysis.
-    analyze_requests(requests, yaml_keywords)
-
-    server.stop()
-    driver.quit()
+    startDataCollection(proxy, driver, site, server, yaml_keywords)
 
 if __name__ == "__main__":
     main()
