@@ -95,7 +95,7 @@ def setUpSelenium():
 
     proxy = server.create_proxy()
     profile.set_proxy(proxy.selenium_proxy())
-    driver = webdriver.Firefox(firefox_profile=profile)
+    driver = webdriver.Firefox(firefox_profile=profile, executable_path=r'./geckodriver')
 
     # attach extension to interface with user
     extension_dir = getFilePath('extension/dist/extension.xpi')
