@@ -22,24 +22,78 @@ def getFilePath(relativePath):
         application_path = os.path.dirname(__file__)
         return os.path.join(application_path, relativePath)
 
-def importYaml():
+def importAnalysisFiles():
     """
     Imports yaml file with all keywords we are going to look for in the network
     requests. YAML file is titled keywords.
     """
+    # first we're going to load the yaml we have created
     kw = getFilePath('keywords.yaml')
     with open(kw, 'r') as evidence:
         keys_yml = yaml.safe_load(evidence)
 
+    # Now we're going to load the networks json from
+    # https://github.com/disconnectme/disconnect-tracking-protection
+    js = getFilePath('services.json')
+    with open(js) as json_file:
+        data = json.load(json_file)
+        advertising = data['categories']['Advertising']
+        analytics = data['categories']['Analytics']
+        fingerprint = data['categories']['FingerprintingInvasive']
+        fingerprint2 = data['categories']['FingerprintingGeneral']
+        social = data['categories']['Social']
+
     keywords_data = {}
 
-    types = ["LOCATION", "FINGERPRINT", "PIXEL"]
+    types = ["LOCATION", "FINGERPRINT", "PIXEL", "ADVERTISING", "ANALYTICS", "SOCIAL"]
 
     for type in types:
         data = {}
-        for aspect in ["Bodies", "URLs"]:
-            data[aspect] = keys_yml[type][aspect]
+        # just load body keywords from the yaml we have made
+        data["Bodies"] = keys_yml[type]["Bodies"]
 
+        # for urls, we can get a lot of our data from services.json file
+        if type == "ADVERTISING":
+            lst = keys_yml[type]["URLs"]
+            for a in advertising:
+                for b in a:
+                    for u in list(a[b].values())[0]:
+                        lst.append(u)
+            data["URLs"] = lst
+
+        elif type == "FINGERPRINT":
+            lst = keys_yml[type]["URLs"]
+            for a in fingerprint:
+                for b in a:
+                    for u in list(a[b].values())[0]:
+                        lst.append(u)
+            for a in fingerprint2:
+                for b in a:
+                    for u in list(a[b].values())[0]:
+                        lst.append(u)
+
+            data["URLs"] = lst
+
+        if type == "ANALYTICS":
+            lst = keys_yml[type]["URLs"]
+            for a in analytics:
+                for b in a:
+                    for u in list(a[b].values())[0]:
+                        lst.append(u)
+
+            data["URLs"] = lst
+
+        if type == "SOCIAL":
+            lst = keys_yml[type]["URLs"]
+            for a in social:
+                for b in a:
+                    for u in list(a[b].values())[0]:
+                        lst.append(u)
+
+            data["URLs"] = lst
+
+        else: # nothing to load from json
+            data["URLs"] = keys_yml[type]["URLs"]
 
         keywords_data[type] = data
 
@@ -51,36 +105,55 @@ def analyze_requests(requests, keywords, urls):
     network requests. In this function we take those requests and look for
     keywords or URLs
     """
+    debug = False
     # saves network logs for debug purposes
     with open('network-logs.json', 'a') as outfile:
         json.dump(requests, outfile)
 
-    for req in requests:
-        # first get sections for later analysis
-        url = requests[req]['request']['url']
+    navigation_secure = True
+    # first let's check if any of the urls user has navigated to are http.
+    for u in urls:
+        if u == "about:blank" or "https" in u:
+            pass # safe
+        else:
+            navigation_secure = False
 
-        try:
-            headers = str(requests[req]['request']['headers'])
-        except KeyError:
-            headers = ""
-        try:
-            postData = str(requests[req]['request']['postData'])
-        except KeyError:
-            postData = ""
+    if debug:
+        pass
+    else:
+        for req in requests:
+            # first get sections for later analysis
+            url = requests[req]['request']['url']
 
-        # check URL of request to see if recognized
-        for t in keywords:
-            for u in keywords[t]['URLs']:
-                if url in u:
-                    print("Found a matching URL for " + type)
-                    print(u)
+            try:
+                headers = str(requests[req]['request']['headers'])
+            except KeyError:
+                headers = ""
+            try:
+                postData = str(requests[req]['request']['postData'])
+            except KeyError:
+                postData = ""
 
-        for t in keywords:
-                for b in keywords[t]['Bodies']:
-                    if b in postData:
-                        print("Found a matching keyword in post data: " + b + " for " + t)
-                    if b in headers:
-                        print("Found a matching keyword in header: " + b + " for " + t)
+            # check URL of request to see if recognized
+            for t in keywords:
+                for u in keywords[t]['URLs']:
+                    if u in url:
+                        print("Found a matching URL for " + t)
+                        print(url)
+                    # make sure url is encrypted
+                    if "https" not in url:
+                        print("The request sent is unencrypted!")
+                        print(url)
+
+            for t in keywords:
+                    for b in keywords[t]['Bodies']:
+                        if b in postData:
+                            print("Found a matching keyword in post data: " + b + " for " + t)
+                        if b in headers:
+                            print("Found a matching keyword in header: " + b + " for " + t)
+
+    if not navigation_secure:
+        print("Detected navigation to non-HTTPS site")
 
 def setUpSelenium():
     """
@@ -120,7 +193,7 @@ def getProxyInfo(c, reqs, proxy):
 
     return (c, reqs)
 
-def stopDataCollection(server, driver, requests, yaml_keywords, urls):
+def stopDataCollection(server, driver, requests, keywords, urls):
     """
     User has closed out so this function stops our server and webdriver. Should
     be connected to a stop button.
@@ -130,9 +203,9 @@ def stopDataCollection(server, driver, requests, yaml_keywords, urls):
     driver.quit()
 
     # user has stopped browsing. Now we can begin analysis.
-    analyze_requests(requests, yaml_keywords, urls)
+    analyze_requests(requests, keywords, urls)
 
-def startDataCollection(proxy, driver, site, server, yaml_keywords):
+def startDataCollection(proxy, driver, site, server, keywords):
     """
     This function creates the new har from the proxy server to begin data
     collection. Will continue monitoring until user exits or clicks stop button.
@@ -178,8 +251,8 @@ def startDataCollection(proxy, driver, site, server, yaml_keywords):
         # this catches when the user hard exits or closes the browser so our app
         # does not break
         except (NoSuchWindowException, WebDriverException):
-            stopDataCollection(server, driver, requests, yaml_keywords, urls)
             print('You have closed the browser. Will now begin analysis..')
+            stopDataCollection(server, driver, requests, keywords, urls)
             analyzing = False
 
         # Other than them quitting out, we should also have a button somewhere
@@ -200,9 +273,9 @@ def main():
     (proxy, driver, server) = setUpSelenium()
 
     # upload network request keywords from yaml
-    yaml_keywords = importYaml()
+    keywords = importAnalysisFiles()
 
-    startDataCollection(proxy, driver, site, server, yaml_keywords)
+    startDataCollection(proxy, driver, site, server, keywords)
 
 if __name__ == "__main__":
     main()

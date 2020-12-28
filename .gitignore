@@ -1,3 +1,5 @@
+
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
@@ -8,6 +10,7 @@ __pycache__/
 
 # temp
 screenshot.png
+privacy-analysis-tool/network-logs.json
 
 # C extensions
 *.so

@@ -30,7 +30,6 @@ FINGERPRINT:
     - "screenSize"
     - "timezone"
     - "contentLang"
-    - "en-US"
     - "canvas"
     - "fonts"
     - "adblock"
@@ -44,6 +43,39 @@ FINGERPRINT:
 
 PIXEL:
   URLs:
-    - "https://www.facebook.com/tr/"
+    - "facebook.com/tr/"
+    # below links are all from https://jvns.ca/blog/how-tracking-pixels-work/
+    - "ct.pinterest.com"
+    - "af.monetate.net"
+    - "csm.va.us.criteo.net"
+    - "google-analytics.com"
+    - "dpm.demdex.net"
+    - "google.ca"
+    - "a.tribalfusion.com"
+    - "data.photorank.me"
+    - "stats.g.doubleclick.net"
+    - "vfcorp.dl.sc.omtrdc.net"
+    - "ib.adnxs.com"
+    - "idsync.rlcdn.com"
+    - "p.brsrvr.com"
+    - "adservice.google.com"
   Bodies: #placeholder
     - "abcdefghijklmnop"
+
+ANALYTICS:
+  URLs:
+    - "placeholder.com"
+  Bodies:
+    - "placeholder"
+
+ADVERTISING:
+  URLs:
+    - "placeholder.com"
+  Bodies:
+    - "placeholder"
+
+SOCIAL:
+  URLs:
+    - "placeholder.com"
+  Bodies:
+    - "placeholder"
