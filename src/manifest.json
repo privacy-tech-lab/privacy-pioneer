@@ -1,7 +1,7 @@
 {
   "name": "integrated-privacy-analysis",
   "version": "1.0",
-  "permissions": ["webRequest", "<all_urls>", "tabs"],
+  "permissions": ["webRequest", "<all_urls>", "webRequestBlocking"],
   "manifest_version": 2,
   "background": {
     "page": "background.html"
