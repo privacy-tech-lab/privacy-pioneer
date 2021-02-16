@@ -1,4 +1,4 @@
-/* 
+/*
 background.js
 ================================================================================
 - background.js is the entry point to all background related tasks
@@ -9,7 +9,7 @@ background.js
 import { onBeforeRequest, onBeforeSendHeaders, onHeadersReceived } from "./analyze.js"
 
 // A filter that restricts the events that will be sent to a listener.
-// You can play around with the urls and types. 
+// You can play around with the urls and types.
 // Maybe its the way I parse the data, but images and video won't load if I don't filter them out.
 // https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/API/webRequest/RequestFilter
 // https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/API/webRequest/ResourceType

@@ -1,10 +1,12 @@
-/* 
+/*
 analyze.js
 ================================================================================
 - analyze.js analyzes network requests
 */
 
 import { Request } from "./requestModel.js"
+import { keywords } from "./importJson.js"
+import { services } from "./importJson.js"
 
 // Temporary container to hold network requests while properties are being added from listener callbacks
 const buffer = {}
@@ -107,7 +109,14 @@ function resolveBuffer(id) {
 
 // Analyzes request
 function analyze(request) {
-  console.log(request) // Request ready to be analyzed
+  // Request ready to be analyzed
+  var strReq = JSON.stringify(request);
+  var splitReq = strReq.split(" ");
+
+  for (var i = 0; i < splitReq.length; i++) {
+    currWord = splitReq[i]
+    // iterate through keywords json
+  }
 }
 
 export { onBeforeRequest, onHeadersReceived, onBeforeSendHeaders }
