@@ -15,7 +15,6 @@ const buffer = {}
 const onBeforeRequest = (details) => {
   const filter = browser.webRequest.filterResponseData(details.requestId),
     decoder = new TextDecoder("utf-8"),
-    encoder = new TextEncoder(),
     data = []
   let request
 
@@ -34,18 +33,17 @@ const onBeforeRequest = (details) => {
 
   filter.onstart = (event) => {}
 
-  filter.ondata = (event) => data.push(event.data)
+  filter.ondata = (event) => {
+    const str = decoder.decode(event.data, { stream: true })
+    data.push(str)
+    filter.write(event.data)
+  }
 
   filter.onerror = (event) => (request.error = filter.error)
 
   filter.onstop = async (event) => {
-    const blob = new Blob(data, { type: "text/javascript" }),
-      str = await blob.text()
-
-    request.responseData = str
-    filter.write(encoder.encode(str))
     filter.close()
-
+    request.responseData = data.toString()
     resolveBuffer(request.id)
   }
 }
@@ -86,7 +84,7 @@ const onHeadersReceived = (details) => {
   resolveBuffer(request.id)
 }
 
-// Verfies if we have all the data for a request to be analyzed
+// Verifies if we have all the data for a request to be analyzed
 function resolveBuffer(id) {
   if (id in buffer) {
     const request = buffer[id]
