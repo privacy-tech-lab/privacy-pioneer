@@ -109,13 +109,22 @@ function resolveBuffer(id) {
 
 // Analyzes request
 function analyze(request) {
-  // Request ready to be analyzed
+  // First we can iterate through URLs
+
+  // Now we can iterate through keywords
   var strReq = JSON.stringify(request);
   var splitReq = strReq.split(" ");
-
+  var keys = Object.keys(keywords)
   for (var i = 0; i < splitReq.length; i++) {
-    currWord = splitReq[i]
-    // iterate through keywords json
+    var currWord = splitReq[i]
+    for (var j = 0; j < keys.length; j++) {
+      var bodyKeysLst = keywords[keys[j]]["Bodies"]
+      for (var k = 0; k < bodyKeysLst.length; k++) {
+        if (currWord.includes(bodyKeysLst[k])) {
+          console.log(keys[j] + " detected for snippet " + currWord)
+        }
+      }
+    }
   }
 }
 
