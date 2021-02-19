@@ -1,10 +1,12 @@
-/* 
+/*
 analyze.js
 ================================================================================
 - analyze.js analyzes network requests
 */
 
 import { Request } from "./requestModel.js"
+import { keywords } from "./importJson.js"
+import { services } from "./importJson.js"
 
 // Temporary container to hold network requests while properties are being added from listener callbacks
 const buffer = {}
@@ -105,7 +107,51 @@ function resolveBuffer(id) {
 
 // Analyzes request
 function analyze(request) {
-  console.log(request) // Request ready to be analyzed
+  // First we can iterate through URLs
+  var keys = Object.keys(services["categories"]);
+  for (var i = 0; i < keys.length; i++) {
+    var cat = keys[i]
+    var indivCats = services["categories"][cat]
+    for (var j = 0; j < indivCats.length; j++) {
+      var obj = services["categories"][cat][j]
+      var indivKey = Object.keys(obj)
+      var nextKey = Object.keys(services["categories"][cat][j][indivKey])
+      for (var k = 0; k < nextKey.length; k++) {
+        var urlLst = services["categories"][cat][j][indivKey][nextKey[k]]
+        var url = request.details["url"]
+        if (typeof urlLst === 'object') {
+          for (var u = 0; u < urlLst.length; u++) {
+            if (url.includes(urlLst[u])) {
+              console.log(cat + " URL detected for " + urlLst[u])
+            }
+          }
+        }
+        else {
+          if (url.includes(urlLst)) {
+            console.log(cat + " URL detected for " + urlLst)
+          }
+        }
+      }
+    }
+  }
+
+
+  // Now we can iterate through keywords
+  var strReq = JSON.stringify(request);
+  var splitReq = strReq.split(" ");
+  var keys = Object.keys(keywords);
+  for (var i = 0; i < splitReq.length; i++) {
+    var currWord = splitReq[i]
+    for (var j = 0; j < keys.length; j++) {
+      var bodyKeysLst = keywords[keys[j]]["Bodies"]
+      for (var k = 0; k < bodyKeysLst.length; k++) {
+        if (currWord.includes(bodyKeysLst[k])) {
+          console.log(keys[j] + " detected for snippet " + currWord)
+        }
+      }
+    }
+  }
 }
+
 
 export { onBeforeRequest, onHeadersReceived, onBeforeSendHeaders }
