@@ -6,6 +6,14 @@ The idea of this project is to create a browser extension for web users that ana
 
 If such a string is sent via an HTTP POST request, it can be concluded that a site is collecting location information. Observing such behaviors, a privacy label of a site could be created.
 
+The crucial point here is that by examining HTTP requests we are able to find out what information concretely is stored on a server. Usually, we only observe:
+
+1. the container of information (e.g., we see a cookie but do not know which information is in the cookie)
+2. know a third party but do not know which information they receive
+3. only see a permission use but do not know whether information is actually transimitted to a server
+
+None of the existing tools really answers these questions.
+
 ## Installing and Running the Extension
 
 Here are the [temporary run and install instructions](https://github.com/privacy-tech-lab/integrated-privacy-analysis/issues/12#issuecomment-776985944).
