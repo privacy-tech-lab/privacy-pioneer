@@ -6,6 +6,10 @@ The idea of this project is to create a browser extension for web users that ana
 
 If such a string is sent via an HTTP POST request, it can be concluded that a site is collecting location information. Observing such behaviors, a privacy label of a site could be created.
 
+## Installing and Running the Extension
+
+Here are the [temporary run and install instructions](https://github.com/privacy-tech-lab/integrated-privacy-analysis/issues/12#issuecomment-776985944).
+
 ## Possible Analysis Features and Techniques
 
 1. Information collection: Does a site collect personal information (i.e., is personal data sent to a server of a site)? If so, which types (e.g., location, email address, phone numbers)? Techniques for identifying such information collection may be HTTP (POST) request interception, identifying form fields in frontend code, and permission or resource use of an app.
