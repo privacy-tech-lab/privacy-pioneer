@@ -1,16 +1,10 @@
 # integrated-privacy-analysis
 
-Privacy browser extension for analyzing HTTP requests.
-
-## Research Vision
-
-The idea of this project is to create a privacy browser extension for users that analyzes and visualizes interesting privacy facts of HTTP requests and related browser interactions. We will start with a Chrome extension and possibly develop a Firefox version as well.
-
-One technique to understand the privacy behavior of a website is to look at its web traffic. For example, the following URL-encoded string contains the latitude and longitude of a device:
+The idea of this project is to create a browser extension for web users that analyzes and visualizes interesting privacy facts of HTTP requests and related website behavior. For example, the following URL-encoded string contains the latitude and longitude of a device:
 
 > https%3A%2F%2Fwww.example.com%2Flocation%3Flat%3D32.715736%26lon%3D%20-117.161087
 
-If such a string is sent via an HTTP POST request, it can be concluded that a site is collecting location information. Observing such behaviors, a privacy map of a site could be created. The privacy map can be explored by browser users via a dashboard. Users could use the privacy map to understand what a site is doing, possibly switch to other sites, opt out from tracking, etc.
+If such a string is sent via an HTTP POST request, it can be concluded that a site is collecting location information. Observing such behaviors, a privacy label of a site could be created.
 
 ## Possible Analysis Features and Techniques
 
