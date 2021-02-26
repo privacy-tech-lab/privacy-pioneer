@@ -97,12 +97,32 @@ function resolveBuffer(id) {
       request.responseData !== undefined
     ) {
       delete buffer[id]
-      analyze(request)
+      // analyze(request)
+      getLocation()
     }
   } else {
     // I don't think this will ever happen, but just in case, maybe a redirect?
     console.log(`ERROR: REQUEST WITH ID: ${id} NOT IN BUFFER`)
   }
+}
+
+function getLocation(request) {
+  if (navigator.geolocation) {
+
+    navigator.geolocation.getCurrentPosition(function(position) {
+        var lat = position.coords.latitude;
+        var lng = position.coords.longitude;
+
+        console.log(lat, lng)
+    }, function(error) {
+        console.log("error")
+    });
+} else {
+    // Fallback for no geolocation
+    console.log("location permission denied")
+}
+
+
 }
 
 // Analyzes request
