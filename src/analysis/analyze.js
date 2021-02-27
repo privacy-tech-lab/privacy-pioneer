@@ -97,13 +97,35 @@ function resolveBuffer(id) {
       request.responseData !== undefined
     ) {
       delete buffer[id]
-      analyze(request)
+      // analyze(request)
+      locationSearch(request);
     }
   } else {
     // I don't think this will ever happen, but just in case, maybe a redirect?
     console.log(`ERROR: REQUEST WITH ID: ${id} NOT IN BUFFER`)
   }
 }
+
+var absLat = 0;
+var absLng = 0;
+var lat = 0;
+var lng = 0;
+
+function getLocation(request) {
+  if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(function(position) {
+        absLat = Math.abs(position.coords.latitude);
+        absLng = Math.abs(position.coords.longitude);
+        lat = position.coords.latitude;
+        lng = position.coords.longitude;
+      }, function(error) {
+          console.log("error")
+      });
+    } else {
+      // Fallback for no geolocation
+      console.log("location permission denied")
+    }
+  } 
 
 // Analyzes request
 function analyze(request) {
@@ -136,6 +158,7 @@ function analyze(request) {
   }
 
 
+
   // Now we can iterate through keywords
   var strReq = JSON.stringify(request);
   var splitReq = strReq.split(" ");
@@ -151,6 +174,78 @@ function analyze(request) {
       }
     }
   }
+}
+
+// try to build floats out of HTTP request strings to find users location
+function locationSearch(request) {
+
+  //take request => JSON and build list of decimals
+  var strReq = JSON.stringify(request);
+  var decimalIndices = [];
+  for (var i = 1; i < strReq.length - 1; i++) {
+    if (strReq.charAt(i) === "." ) {
+      decimalIndices.push(i);
+    }
+  }
+
+  // iterate through decimals, and attempt to build float if there are numbers to either side of the decimal
+  decimalIndices.forEach(index => {
+    var potFloat = [];
+    const oneLeft = strReq.charAt(index-1);
+    const oneRight = strReq.charAt(index+1);
+
+    if ( (!isNaN(oneLeft))  && (!isNaN(oneRight)) )
+    {
+      potFloat.push(oneLeft);
+      potFloat.push(".");
+      potFloat.push(oneRight);
+
+      if (oneLeft == ' ' || oneRight == ' ') {
+        //don't run routine when we have spaces on either side of the decimal
+      }
+      else
+      {
+        const twoLeft = strReq.charAt(index-2);
+        const threeLeft = strReq.charAt(index-3);
+        if (!isNaN(twoLeft) && twoLeft != ' ') {
+          potFloat.unshift(twoLeft);
+        }
+        if (!isNaN(threeLeft) && threeLeft != ' ') {
+          potFloat.unshift(threeLeft);
+        }
+
+        var j = index + 2;
+        var ctr = 0;
+        while ( (!isNaN(strReq.charAt(j)) && (j < strReq.length) && (ctr < 14)) ) {
+          if (strReq.charAt(j) === ' ') {
+            break;
+          }
+          potFloat.push(strReq.charAt(j));
+          j = j + 1;
+          ctr = ctr + 1;
+        }
+      
+        //here's the potential float
+        const potentialMatch = potFloat.join('');
+
+        //heursitic that longer decimals are likely to be locations
+        if (potentialMatch.length > 10) {
+          if (absLat === 0 || absLng === 0){
+            getLocation();
+          }
+          else
+          {
+            const asFloat = parseFloat(potentialMatch);
+            // lazy bound of 1 for matches.
+            if ( (Math.abs(asFloat - absLat) < 1) || (Math.abs(asFloat - absLng) < 1) )
+            {
+            console.log(`Your location is (${lat} , ${lng}): We found ${potentialMatch}`)
+            }
+          }         
+        }
+      }
+    }
+  })
 }
 
 
