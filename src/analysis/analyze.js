@@ -118,6 +118,7 @@ function getLocation(request) {
         absLng = Math.abs(position.coords.longitude);
         lat = position.coords.latitude;
         lng = position.coords.longitude;
+        console.log("ngrinejw[wger[g]]")
       }, function(error) {
           console.log("error")
       });
@@ -125,7 +126,7 @@ function getLocation(request) {
       // Fallback for no geolocation
       console.log("location permission denied")
     }
-  } 
+  }
 
 // Analyzes request
 function analyze(request) {
@@ -224,7 +225,7 @@ function locationSearch(request) {
           j = j + 1;
           ctr = ctr + 1;
         }
-      
+
         //here's the potential float
         const potentialMatch = potFloat.join('');
 
@@ -241,7 +242,7 @@ function locationSearch(request) {
             {
             console.log(`Your location is (${lat} , ${lng}): We found ${potentialMatch}`)
             }
-          }         
+          }
         }
       }
     }
