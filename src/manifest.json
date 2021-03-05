@@ -1,9 +1,14 @@
 {
   "name": "integrated-privacy-analysis",
   "version": "1.0",
-  "permissions": ["webRequest", "<all_urls>", "webRequestBlocking", "geolocation"],
+  "permissions": ["webRequest", "<all_urls>", "webRequestBlocking", "geolocation", "storage"],
   "manifest_version": 2,
   "background": {
     "page": "background.html"
+  },
+  "browser_action": {
+    "default_title": "Integrated Privacy Analysis",
+    "default_popup": "popup.html",
+    "browser_style": true
   }
 }
