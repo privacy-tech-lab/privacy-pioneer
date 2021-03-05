@@ -14,7 +14,7 @@ const buffer = {}
 // OnBeforeRequest callback
 // Mozilla docs outlines several ways to parse incoming chunks of data; Feel free to experiment with others
 // https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/API/webRequest/StreamFilter/ondata
-const onBeforeRequest = (details) => {
+const onBeforeRequest = (details, locData) => {
   const filter = browser.webRequest.filterResponseData(details.requestId),
     decoder = new TextDecoder("utf-8"),
     data = []
@@ -46,12 +46,12 @@ const onBeforeRequest = (details) => {
   filter.onstop = async (event) => {
     filter.close()
     request.responseData = data.toString()
-    resolveBuffer(request.id)
+    resolveBuffer(request.id, locData)
   }
 }
 
 // OnBeforeSendHeaders callback
-const onBeforeSendHeaders = (details) => {
+const onBeforeSendHeaders = (details, locData) => {
   let request
 
   if (details.requestId in buffer) {
@@ -65,11 +65,11 @@ const onBeforeSendHeaders = (details) => {
     buffer[details.requestId] = request
   }
 
-  resolveBuffer(request.id)
+  resolveBuffer(request.id, locData)
 }
 
 // OnHeadersReceived callback
-const onHeadersReceived = (details) => {
+const onHeadersReceived = (details, locData) => {
   let request
 
   if (details.requestId in buffer) {
@@ -83,11 +83,11 @@ const onHeadersReceived = (details) => {
     buffer[details.requestId] = request
   }
 
-  resolveBuffer(request.id)
+  resolveBuffer(request.id, locData)
 }
 
 // Verifies if we have all the data for a request to be analyzed
-function resolveBuffer(id) {
+function resolveBuffer(id, locData) {
   if (id in buffer) {
     const request = buffer[id]
     if (
@@ -98,34 +98,17 @@ function resolveBuffer(id) {
     ) {
       delete buffer[id]
       // analyze(request)
-      locationSearch(request);
+      // if this value is 0 the client likely denied location permission
+      // or they could be on Null Island in the middle of the Gulf of Guinea
+      if (locData[0] != 0 && locData[1] != 0) {
+        locationSearch(request, locData);
+      }
     }
   } else {
     // I don't think this will ever happen, but just in case, maybe a redirect?
     console.log(`ERROR: REQUEST WITH ID: ${id} NOT IN BUFFER`)
   }
 }
-
-var absLat = 0;
-var absLng = 0;
-var lat = 0;
-var lng = 0;
-
-function getLocation(request) {
-  if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(function(position) {
-        absLat = Math.abs(position.coords.latitude);
-        absLng = Math.abs(position.coords.longitude);
-        lat = position.coords.latitude;
-        lng = position.coords.longitude;
-      }, function(error) {
-          console.log("error")
-      });
-    } else {
-      // Fallback for no geolocation
-      console.log("location permission denied")
-    }
-  } 
 
 // Analyzes request
 function analyze(request) {
@@ -158,7 +141,6 @@ function analyze(request) {
   }
 
 
-
   // Now we can iterate through keywords
   var strReq = JSON.stringify(request);
   var splitReq = strReq.split(" ");
@@ -177,7 +159,13 @@ function analyze(request) {
 }
 
 // try to build floats out of HTTP request strings to find users location
-function locationSearch(request) {
+function locationSearch(request, locData) {
+  var lat = locData[0]
+  var lng = locData[1]
+  var absLat = Math.abs(lat)
+  var absLng = Math.abs(lng)
+
+  console.log(lat,lng)
 
   //take request => JSON and build list of decimals
   var strReq = JSON.stringify(request);
@@ -224,24 +212,18 @@ function locationSearch(request) {
           j = j + 1;
           ctr = ctr + 1;
         }
-      
+
         //here's the potential float
         const potentialMatch = potFloat.join('');
 
         //heursitic that longer decimals are likely to be locations
         if (potentialMatch.length > 10) {
-          if (absLat === 0 || absLng === 0){
-            getLocation();
-          }
-          else
+          const asFloat = parseFloat(potentialMatch);
+          // lazy bound of 1 for matches.
+          if ( (Math.abs(asFloat - absLat) < 1) || (Math.abs(asFloat - absLng) < 1) )
           {
-            const asFloat = parseFloat(potentialMatch);
-            // lazy bound of 1 for matches.
-            if ( (Math.abs(asFloat - absLat) < 1) || (Math.abs(asFloat - absLng) < 1) )
-            {
-            console.log(`Your location is (${lat} , ${lng}): We found ${potentialMatch}`)
-            }
-          }         
+          console.log(`Your location is (${lat} , ${lng}): We found ${potentialMatch}`)
+          }
         }
       }
     }
