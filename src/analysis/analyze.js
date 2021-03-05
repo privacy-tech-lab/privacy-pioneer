@@ -101,7 +101,8 @@ function resolveBuffer(id, locData) {
       // if this value is 0 the client likely denied location permission
       // or they could be on Null Island in the middle of the Gulf of Guinea
       if (locData[0] != 0 && locData[1] != 0) {
-        locationSearch(request, locData);
+        coordinateSearch(request, locData);
+        otherLocDataSearch(request, locData)
       }
     }
   } else {
@@ -158,14 +159,28 @@ function analyze(request) {
   }
 }
 
+// from the location data json, finds all the address components to then use
+// in the text search
+function otherLocDataSearch(request, locData) {
+  const data = locData[2]
+  const lst = data["results"][0]["address_components"]
+  var locElems = []
+
+  // adds all the different components of the location address to list
+  for (var i = 0; i < lst.length; i++) {
+    const obj = lst[i]
+    if (locElems.indexOf(obj["long_name"]) === -1) locElems.push(obj["long_name"]);
+    if (locElems.indexOf(obj["short_name"]) === -1) locElems.push(obj["short_name"]);
+  }
+
+}
+
 // try to build floats out of HTTP request strings to find users location
-function locationSearch(request, locData) {
+function coordinateSearch(request, locData) {
   var lat = locData[0]
   var lng = locData[1]
   var absLat = Math.abs(lat)
   var absLng = Math.abs(lng)
-
-  console.log(lat,lng)
 
   //take request => JSON and build list of decimals
   var strReq = JSON.stringify(request);
