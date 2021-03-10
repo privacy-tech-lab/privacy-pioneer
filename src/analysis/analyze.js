@@ -140,23 +140,6 @@ function analyze(request) {
       }
     }
   }
-
-
-  // Now we can iterate through keywords
-  var strReq = JSON.stringify(request);
-  var splitReq = strReq.split(" ");
-  var keys = Object.keys(keywords);
-  for (var i = 0; i < splitReq.length; i++) {
-    var currWord = splitReq[i]
-    for (var j = 0; j < keys.length; j++) {
-      var bodyKeysLst = keywords[keys[j]]["Bodies"]
-      for (var k = 0; k < bodyKeysLst.length; k++) {
-        if (currWord.includes(bodyKeysLst[k])) {
-          console.log(keys[j] + " detected for snippet " + currWord)
-        }
-      }
-    }
-  }
 }
 
 // from the location data json, finds all the address components to then use
@@ -185,8 +168,8 @@ function otherLocDataSearch(request, locData) {
           locElems.push(obj["long_name"]);
         }
       }
-
     }
+    
     if (locElems.indexOf(obj["short_name"]) === -1) {
       // if the element is just an int we don't want it
       if (!(/^\d+$/.test(obj["short_name"]))) {
@@ -200,14 +183,9 @@ function otherLocDataSearch(request, locData) {
 
   // Now we can iterate through keywords
   var strReq = JSON.stringify(request);
-  var splitReq = strReq.split(" ");
-  var keys = Object.keys(keywords);
-  for (var i = 0; i < splitReq.length; i++) {
-    var currWord = splitReq[i]
-    for (var j = 0; j < locElems.length; j++) {
-      if (currWord.includes(locElems[j])) {
-        console.log(locElems[j] + " detected for snippet " + currWord)
-      }
+  for (var j = 0; j < locElems.length; j++) {
+    if (strReq.includes(locElems[j])) {
+      console.log(locElems[j] + " detected for snippet " + strReq)
     }
   }
 }
