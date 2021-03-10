@@ -4,7 +4,16 @@ analyze.js
 - analyze.js analyzes network requests
 */
 
-import { Request } from "./requestModel.js"
+/*
+For reference, here is a mockup of the Evidence type
+const evidence = new Evidence({
+  timestamp: "10/10/20",
+  permission: "location",
+  url: "facebook.com",
+  snippet: "blahblah"
+})
+*/
+import { Request, Evidence } from "./classModels.js"
 import { keywords } from "./importJson.js"
 import { services } from "./importJson.js"
 
@@ -169,7 +178,7 @@ function otherLocDataSearch(request, locData) {
         }
       }
     }
-    
+
     if (locElems.indexOf(obj["short_name"]) === -1) {
       // if the element is just an int we don't want it
       if (!(/^\d+$/.test(obj["short_name"]))) {

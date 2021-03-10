@@ -1,4 +1,4 @@
-/* 
+/*
 requestModel.js
 ================================================================================
 - requestModel.js defines a structure of a network request
@@ -13,5 +13,14 @@ export class Request {
     this.requestBody = requestBody // https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/API/webRequest/onBeforeRequest#details
     this.details = details // https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/API/webRequest/onBeforeRequest#details
     this.error = error // https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/API/webRequest/StreamFilter/onerror
+  }
+}
+
+export class Evidence {
+  constructor({timestamp, permission, url, snippet}) {
+    this.timestamp = timestamp;
+    this.permission = permission;
+    this.url = url;
+    this.snippet = snippet;
   }
 }
