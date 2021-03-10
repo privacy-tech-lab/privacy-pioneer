@@ -101,7 +101,8 @@ function resolveBuffer(id, locData) {
       // if this value is 0 the client likely denied location permission
       // or they could be on Null Island in the middle of the Gulf of Guinea
       if (locData[0] != 0 && locData[1] != 0) {
-        locationSearch(request, locData);
+        coordinateSearch(request, locData);
+        otherLocDataSearch(request, locData)
       }
     }
   } else {
@@ -158,14 +159,65 @@ function analyze(request) {
   }
 }
 
+// from the location data json, finds all the address components to then use
+// in the text search
+function otherLocDataSearch(request, locData) {
+  // list of state abbreviations we want to exclude as they are too small
+  // and will show up when they don't actually mean location
+  const states = ["AL", "AK", "AZ", "AR", "CA", "CO", "CT", "DC", "DE", "FL", "GA",
+        "HI", "ID", "IL", "IN", "IA", "KS", "KY", "LA", "ME", "MD",
+        "MA", "MI", "MN", "MS", "MO", "MT", "NE", "NV", "NH", "NJ",
+        "NM", "NY", "NC", "ND", "OH", "OK", "OR", "PA", "RI", "SC",
+        "SD", "TN", "TX", "UT", "VT", "VA", "WA", "WV", "WI", "WY"]
+
+  const data = locData[2]
+  const lst = data["results"][0]["address_components"]
+  var locElems = []
+  // adds all the different components of the location address to list
+  for (var i = 0; i < lst.length; i++) {
+    const obj = lst[i]
+
+    if (locElems.indexOf(obj["long_name"]) === -1) {
+      // if the element is just an int we don't want it
+      if (!(/^\d+$/.test(obj["long_name"]))) {
+        // we don't want country or state codes either
+        if (!(obj["long_name"] == "US" || states.includes(obj["long_name"]))) {
+          locElems.push(obj["long_name"]);
+        }
+      }
+
+    }
+    if (locElems.indexOf(obj["short_name"]) === -1) {
+      // if the element is just an int we don't want it
+      if (!(/^\d+$/.test(obj["short_name"]))) {
+        // we don't want country or state codes either
+        if (!(obj["short_name"] == "US" || states.includes(obj["short_name"]))) {
+          locElems.push(obj["short_name"]);
+        }
+      }
+    }
+  }
+
+  // Now we can iterate through keywords
+  var strReq = JSON.stringify(request);
+  var splitReq = strReq.split(" ");
+  var keys = Object.keys(keywords);
+  for (var i = 0; i < splitReq.length; i++) {
+    var currWord = splitReq[i]
+    for (var j = 0; j < locElems.length; j++) {
+      if (currWord.includes(locElems[j])) {
+        console.log(locElems[j] + " detected for snippet " + currWord)
+      }
+    }
+  }
+}
+
 // try to build floats out of HTTP request strings to find users location
-function locationSearch(request, locData) {
+function coordinateSearch(request, locData) {
   var lat = locData[0]
   var lng = locData[1]
   var absLat = Math.abs(lat)
   var absLng = Math.abs(lng)
-
-  console.log(lat,lng)
 
   //take request => JSON and build list of decimals
   var strReq = JSON.stringify(request);
