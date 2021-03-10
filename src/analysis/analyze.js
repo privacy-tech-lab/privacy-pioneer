@@ -200,14 +200,9 @@ function otherLocDataSearch(request, locData) {
 
   // Now we can iterate through keywords
   var strReq = JSON.stringify(request);
-  var splitReq = strReq.split(" ");
-  var keys = Object.keys(keywords);
-  for (var i = 0; i < splitReq.length; i++) {
-    var currWord = splitReq[i]
-    for (var j = 0; j < locElems.length; j++) {
-      if (currWord.includes(locElems[j])) {
-        console.log(locElems[j] + " detected for snippet " + currWord)
-      }
+  for (var j = 0; j < locElems.length; j++) {
+    if (strReq.includes(locElems[j])) {
+      console.log(locElems[j] + " detected for snippet " + strReq)
     }
   }
 }
