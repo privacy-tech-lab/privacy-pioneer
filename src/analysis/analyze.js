@@ -97,7 +97,6 @@ const onHeadersReceived = (details, loc, networkKeywords, urls) => {
 
 // Verifies if we have all the data for a request to be analyzed
 function resolveBuffer(id, loc, networkKeywords, urls) {
-  console.log(evidence)
   if (id in buffer) {
     const request = buffer[id]
     if (
@@ -107,7 +106,7 @@ function resolveBuffer(id, loc, networkKeywords, urls) {
       request.responseData !== undefined
     ) {
       delete buffer[id]
-      // analyze(request)
+
       // if this value is 0 the client likely denied location permission
       // or they could be on Null Island in the middle of the Gulf of Guinea
       if (loc[0] != 0 && loc[1] != 0) {
@@ -128,6 +127,23 @@ function resolveBuffer(id, loc, networkKeywords, urls) {
   }
 }
 
+// given the permission category, the url of the request, and the snippet
+// from the request, get the current time in ms and add to our evidence list
+function addToEvidenceList(perm, u, snip) {
+  var ts = Date.now()
+  var tsString = String(ts)
+  tsString = tsString.slice(0, -3)
+  tsString = tsString + "000"
+  evidence.add(new Evidence(
+    {
+      timestamp: tsString,
+      permission: perm,
+      url: u,
+      snippet: snip,
+    }
+  ))
+}
+
 // Look in request for keywords from list of keywords built from user's
 // location and the Google Maps geocoding API
 function locationKeywordSearch(request, networkKeywords) {
@@ -136,18 +152,7 @@ function locationKeywordSearch(request, networkKeywords) {
   for (var j = 0; j < locElems.length; j++) {
     if (strReq.includes(locElems[j])) {
       console.log(locElems[j] + " detected for snippet " + strReq)
-      var ts = Date.now()
-      var tsString = String(ts)
-      tsString = tsString.slice(0, -3)
-      tsString = tsString + "000"
-      evidence.add(new Evidence(
-        {
-          timestamp: tsString,
-          permission: "Location",
-          url: request.details["url"],
-          snippet: strReq,
-        }
-      ))
+      addToEvidenceList("Location", request.details["url"], strReq)
     }
   }
 }
@@ -171,18 +176,7 @@ function urlSearch(request, urls) {
           for (var u = 0; u < urlLst.length; u++) {
             if (url.includes(urlLst[u])) {
               console.log(cat + " URL detected for " + urlLst[u])
-              var ts = Date.now()
-              var tsString = String(ts)
-              tsString = tsString.slice(0, -3)
-              tsString = tsString + "000"
-              evidence.add(new Evidence(
-                {
-                  timestamp: tsString,
-                  permission: cat,
-                  url: request.details["url"],
-                  snippet: request.details["url"],
-                }
-              ))
+              addToEvidenceList(cat, request.details["url"], request.details["url"])
             }
           }
         }
@@ -190,18 +184,7 @@ function urlSearch(request, urls) {
         else {
           if (url.includes(urlLst)) {
             console.log(cat + " URL detected for " + urlLst)
-            var ts = Date.now()
-            var tsString = String(ts)
-            tsString = tsString.slice(0, -3)
-            tsString = tsString + "000"
-            evidence.add(new Evidence(
-              {
-                timestamp: tsString,
-                permission: cat,
-                url: request.details["url"],
-                snippet: request.details["url"],
-              }
-            ))
+            addToEvidenceList(cat, request.details["url"], request.details["url"])
           }
         }
       }
@@ -272,18 +255,7 @@ function coordinateSearch(request, locData) {
           if ( (Math.abs(asFloat - absLat) < 1) || (Math.abs(asFloat - absLng) < 1) )
           {
           console.log(`Your location is (${lat} , ${lng}): We found ${potentialMatch}`)
-          var ts = Date.now()
-          var tsString = String(ts)
-          tsString = tsString.slice(0, -3)
-          tsString = tsString + "000"
-          evidence.add(new Evidence(
-            {
-              timestamp: tsString,
-              permission: "Location",
-              url: request.details["url"],
-              snippet: strReq,
-            }
-          ))
+          addToEvidenceList("Location", request.details["url"], strReq)
           }
         }
       }
