@@ -16,6 +16,7 @@ export class Request {
   }
 }
 
+// class model for evidence type for when we find a keyword or URL
 export class Evidence {
   constructor({timestamp, permission, url, snippet}) {
     this.timestamp = timestamp;

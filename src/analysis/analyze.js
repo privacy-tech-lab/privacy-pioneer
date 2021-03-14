@@ -14,8 +14,8 @@ const evidence = new Evidence({
 })
 */
 import { Request, Evidence } from "./classModels.js"
-import { keywords } from "./importJson.js"
-import { services } from "./importJson.js"
+
+import { evidence } from "./background.js"
 
 // Temporary container to hold network requests while properties are being added from listener callbacks
 const buffer = {}
@@ -23,7 +23,7 @@ const buffer = {}
 // OnBeforeRequest callback
 // Mozilla docs outlines several ways to parse incoming chunks of data; Feel free to experiment with others
 // https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/API/webRequest/StreamFilter/ondata
-const onBeforeRequest = (details, locData) => {
+const onBeforeRequest = (details, loc, networkKeywords, urls) => {
   const filter = browser.webRequest.filterResponseData(details.requestId),
     decoder = new TextDecoder("utf-8"),
     data = []
@@ -55,12 +55,12 @@ const onBeforeRequest = (details, locData) => {
   filter.onstop = async (event) => {
     filter.close()
     request.responseData = data.toString()
-    resolveBuffer(request.id, locData)
+    resolveBuffer(request.id, loc, networkKeywords, urls)
   }
 }
 
 // OnBeforeSendHeaders callback
-const onBeforeSendHeaders = (details, locData) => {
+const onBeforeSendHeaders = (details, loc, networkKeywords, urls) => {
   let request
 
   if (details.requestId in buffer) {
@@ -74,11 +74,11 @@ const onBeforeSendHeaders = (details, locData) => {
     buffer[details.requestId] = request
   }
 
-  resolveBuffer(request.id, locData)
+  resolveBuffer(request.id, loc, networkKeywords, urls)
 }
 
 // OnHeadersReceived callback
-const onHeadersReceived = (details, locData) => {
+const onHeadersReceived = (details, loc, networkKeywords, urls) => {
   let request
 
   if (details.requestId in buffer) {
@@ -92,11 +92,12 @@ const onHeadersReceived = (details, locData) => {
     buffer[details.requestId] = request
   }
 
-  resolveBuffer(request.id, locData)
+  resolveBuffer(request.id, loc, networkKeywords, urls)
 }
 
 // Verifies if we have all the data for a request to be analyzed
-function resolveBuffer(id, locData) {
+function resolveBuffer(id, loc, networkKeywords, urls) {
+  console.log(evidence)
   if (id in buffer) {
     const request = buffer[id]
     if (
@@ -109,10 +110,17 @@ function resolveBuffer(id, locData) {
       // analyze(request)
       // if this value is 0 the client likely denied location permission
       // or they could be on Null Island in the middle of the Gulf of Guinea
-      if (locData[0] != 0 && locData[1] != 0) {
-        coordinateSearch(request, locData);
-        otherLocDataSearch(request, locData)
+      if (loc[0] != 0 && loc[1] != 0) {
+        coordinateSearch(request, loc);
       }
+      // if this network keyword length is 0 then the geocoding failed
+      // so no need to look through location keywords
+      if (networkKeywords["location"].length != 0) {
+        locationKeywordSearch(request, networkKeywords)
+      }
+
+      // search to see if the url comes up in our services list
+      urlSearch(request, urls)
     }
   } else {
     // I don't think this will ever happen, but just in case, maybe a redirect?
@@ -120,81 +128,83 @@ function resolveBuffer(id, locData) {
   }
 }
 
-// Analyzes request
-function analyze(request) {
-  // First we can iterate through URLs
-  var keys = Object.keys(services["categories"]);
-  for (var i = 0; i < keys.length; i++) {
-    var cat = keys[i]
-    var indivCats = services["categories"][cat]
-    for (var j = 0; j < indivCats.length; j++) {
-      var obj = services["categories"][cat][j]
-      var indivKey = Object.keys(obj)
-      var nextKey = Object.keys(services["categories"][cat][j][indivKey])
-      for (var k = 0; k < nextKey.length; k++) {
-        var urlLst = services["categories"][cat][j][indivKey][nextKey[k]]
-        var url = request.details["url"]
-        if (typeof urlLst === 'object') {
-          for (var u = 0; u < urlLst.length; u++) {
-            if (url.includes(urlLst[u])) {
-              console.log(cat + " URL detected for " + urlLst[u])
-            }
-          }
+// Look in request for keywords from list of keywords built from user's
+// location and the Google Maps geocoding API
+function locationKeywordSearch(request, networkKeywords) {
+  var strReq = JSON.stringify(request);
+  var locElems = networkKeywords["location"]
+  for (var j = 0; j < locElems.length; j++) {
+    if (strReq.includes(locElems[j])) {
+      console.log(locElems[j] + " detected for snippet " + strReq)
+      var ts = Date.now()
+      var tsString = String(ts)
+      tsString = tsString.slice(0, -3)
+      tsString = tsString + "000"
+      evidence.add(new Evidence(
+        {
+          timestamp: tsString,
+          permission: "Location",
+          url: request.details["url"],
+          snippet: strReq,
         }
-        else {
-          if (url.includes(urlLst)) {
-            console.log(cat + " URL detected for " + urlLst)
-          }
-        }
-      }
+      ))
     }
   }
 }
 
-// from the location data json, finds all the address components to then use
-// in the text search
-function otherLocDataSearch(request, locData) {
-  // list of state abbreviations we want to exclude as they are too small
-  // and will show up when they don't actually mean location
-  const states = ["AL", "AK", "AZ", "AR", "CA", "CO", "CT", "DC", "DE", "FL", "GA",
-        "HI", "ID", "IL", "IN", "IA", "KS", "KY", "LA", "ME", "MD",
-        "MA", "MI", "MN", "MS", "MO", "MT", "NE", "NV", "NH", "NJ",
-        "NM", "NY", "NC", "ND", "OH", "OK", "OR", "PA", "RI", "SC",
-        "SD", "TN", "TX", "UT", "VT", "VA", "WA", "WV", "WI", "WY"]
-
-  const data = locData[2]
-  const lst = data["results"][0]["address_components"]
-  var locElems = []
-  // adds all the different components of the location address to list
-  for (var i = 0; i < lst.length; i++) {
-    const obj = lst[i]
-
-    if (locElems.indexOf(obj["long_name"]) === -1) {
-      // if the element is just an int we don't want it
-      if (!(/^\d+$/.test(obj["long_name"]))) {
-        // we don't want country or state codes either
-        if (!(obj["long_name"] == "US" || states.includes(obj["long_name"]))) {
-          locElems.push(obj["long_name"]);
+// Gets the URL from the request and tries to match to our list of urls
+function urlSearch(request, urls) {
+  // First we can iterate through URLs
+  var keys = Object.keys(urls["categories"]);
+  for (var i = 0; i < keys.length; i++) {
+    var cat = keys[i]
+    var indivCats = urls["categories"][cat]
+    for (var j = 0; j < indivCats.length; j++) {
+      var obj = urls["categories"][cat][j]
+      var indivKey = Object.keys(obj)
+      var nextKey = Object.keys(urls["categories"][cat][j][indivKey])
+      for (var k = 0; k < nextKey.length; k++) {
+        var urlLst = urls["categories"][cat][j][indivKey][nextKey[k]]
+        var url = request.details["url"]
+        // if there are multiple URLs on the list we go here
+        if (typeof urlLst === 'object') {
+          for (var u = 0; u < urlLst.length; u++) {
+            if (url.includes(urlLst[u])) {
+              console.log(cat + " URL detected for " + urlLst[u])
+              var ts = Date.now()
+              var tsString = String(ts)
+              tsString = tsString.slice(0, -3)
+              tsString = tsString + "000"
+              evidence.add(new Evidence(
+                {
+                  timestamp: tsString,
+                  permission: cat,
+                  url: request.details["url"],
+                  snippet: request.details["url"],
+                }
+              ))
+            }
+          }
+        }
+        // else we go here
+        else {
+          if (url.includes(urlLst)) {
+            console.log(cat + " URL detected for " + urlLst)
+            var ts = Date.now()
+            var tsString = String(ts)
+            tsString = tsString.slice(0, -3)
+            tsString = tsString + "000"
+            evidence.add(new Evidence(
+              {
+                timestamp: tsString,
+                permission: cat,
+                url: request.details["url"],
+                snippet: request.details["url"],
+              }
+            ))
+          }
         }
       }
-    }
-
-    if (locElems.indexOf(obj["short_name"]) === -1) {
-      // if the element is just an int we don't want it
-      if (!(/^\d+$/.test(obj["short_name"]))) {
-        // we don't want country or state codes either
-        if (!(obj["short_name"] == "US" || states.includes(obj["short_name"]))) {
-          locElems.push(obj["short_name"]);
-        }
-      }
-    }
-  }
-
-  // Now we can iterate through keywords
-  var strReq = JSON.stringify(request);
-  for (var j = 0; j < locElems.length; j++) {
-    if (strReq.includes(locElems[j])) {
-      console.log(locElems[j] + " detected for snippet " + strReq)
     }
   }
 }
@@ -262,6 +272,18 @@ function coordinateSearch(request, locData) {
           if ( (Math.abs(asFloat - absLat) < 1) || (Math.abs(asFloat - absLng) < 1) )
           {
           console.log(`Your location is (${lat} , ${lng}): We found ${potentialMatch}`)
+          var ts = Date.now()
+          var tsString = String(ts)
+          tsString = tsString.slice(0, -3)
+          tsString = tsString + "000"
+          evidence.add(new Evidence(
+            {
+              timestamp: tsString,
+              permission: "Location",
+              url: request.details["url"],
+              snippet: strReq,
+            }
+          ))
           }
         }
       }
