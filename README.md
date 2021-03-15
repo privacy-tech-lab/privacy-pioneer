@@ -16,17 +16,7 @@ None of the existing tools really answers these questions.
 
 ## Development
 
-Check that you have node and npm installed
-
-```
-node -v
-```
-
-```
-npm -v
-```
-
-You can get node and npm [here](https://www.npmjs.com/get-npm).
+Ensure that you have [node and npm](https://www.npmjs.com/get-npm) installed.
 
 In the root directory of the project, start by installing the dependencies by runnning:
 
@@ -40,7 +30,7 @@ To start the project, run:
 npm start
 ```
 
-- Runs the extension in the development mode.
+- Runs the extension in development mode.
 - The popup, options, and background page will reload if you make edits.
 - You will also see any lint errors in the console.
 
@@ -54,7 +44,7 @@ Build the extension for production to the `dist` folder by running:
 npm build
 ```
 
-- The build is minified and the filenames include the hashes.
+- The build is minified and the filenames include hashes.
 - It correctly bundles and optimizes the extension for the best performance.
 
 The `web-ext` cli is included in the project. Learn more about packaging and signing for release at the [extension workshop](https://extensionworkshop.com/documentation/develop/getting-started-with-web-ext/).
