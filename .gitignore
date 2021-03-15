@@ -115,4 +115,8 @@ dist
 .yarn/install-state.gz
 .pnp.*
 
+# General
+.DS_*
+
+# Custom
 dev
