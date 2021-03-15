@@ -102,7 +102,8 @@ function resolveBuffer(id, locData) {
       // or they could be on Null Island in the middle of the Gulf of Guinea
       if (locData[0] != 0 && locData[1] != 0) {
         coordinateSearch(request, locData);
-        otherLocDataSearch(request, locData)
+        //otherLocDataSearch(request, locData);
+        userMatch(request);
       }
     }
   } else {
@@ -218,11 +219,9 @@ function coordinateSearch(request, locData) {
       potFloat.push(".");
       potFloat.push(oneRight);
 
-      if (oneLeft == ' ' || oneRight == ' ') {
-        //don't run routine when we have spaces on either side of the decimal
-      }
-      else
-      {
+      //don't run routine when we have spaces on either side of the decimal
+      if ( oneLeft != ' ' || oneRight != ' ') {
+        
         const twoLeft = strReq.charAt(index-2);
         const threeLeft = strReq.charAt(index-3);
         if (!isNaN(twoLeft) && twoLeft != ' ') {
@@ -250,15 +249,36 @@ function coordinateSearch(request, locData) {
         if (potentialMatch.length > 10) {
           const asFloat = parseFloat(potentialMatch);
           // lazy bound of 1 for matches.
-          if ( (Math.abs(asFloat - absLat) < 1) || (Math.abs(asFloat - absLng) < 1) )
-          {
-          console.log(`Your location is (${lat} , ${lng}): We found ${potentialMatch}`)
+          const deltaLat = Math.abs(asFloat - absLat);
+          const deltaLng = Math.abs(asFloat - absLng);
+
+          if (deltaLat < 1 && deltaLat > .1 || deltaLng < 1 && deltaLng > .1) {
+            console.log(`Lazy match for (${lat}, ${lng}) with ${potentialMatch}`);
           }
+          if (deltaLat < .1 && deltaLng < .1) {
+            conosole.log(`Tight match (within 7 miles) for (${lat}, ${lng}) with ${potentialMatch}`);
+          }
+          
         }
+       }
       }
-    }
-  })
-}
+     })
+   }
+
+  async function userMatch(request) {
+    let currKeywordsObject = await browser.storage.local.get("userKeywords");
+    var currKeywords = (Object.values(currKeywordsObject)[0]);
+    let requestStr = new String(request);
+
+    currKeywords.forEach(keyword => {
+      let re = new RegExp(`${keyword}`, "i");
+      if (requestStr.search(re) > 0) {
+        console.log(keyword);
+        console.log(requestStr.match(re));
+      }
+
+    })
+  }
 
 
 export { onBeforeRequest, onHeadersReceived, onBeforeSendHeaders }
