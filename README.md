@@ -16,24 +16,28 @@ None of the existing tools really answers these questions.
 
 ## Development
 
-Check that Yarn (^1.22.5) is installed by running:
+Check that you have node and npm installed
 
 ```
-yarn --version
+node -v
 ```
 
-You can get Yarn [here](https://classic.yarnpkg.com/en/docs/install).
+```
+npm -v
+```
+
+You can get node and npm [here](https://www.npmjs.com/get-npm).
 
 In the root directory of the project, start by installing the dependencies by runnning:
 
 ```
-yarn
+npm install
 ```
 
 To start the project, run:
 
 ```
-yarn start
+npm start
 ```
 
 - Runs the extension in the development mode.
@@ -47,7 +51,7 @@ A `dev` folder will be generated in the root directory, housing the generated ex
 Build the extension for production to the `dist` folder by running:
 
 ```
-yarn build
+npm build
 ```
 
 - The build is minified and the filenames include the hashes.

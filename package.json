@@ -3,7 +3,7 @@
   "version": "0.0.1",
   "scripts": {
     "prestart": "rimraf dev",
-    "start": "concurrently -k yarn:dev:frontend yarn:dev:background yarn:dev:extension",
+    "start": "concurrently -k npm:dev:frontend npm:dev:background npm:dev:extension",
     "dev:frontend": "webpack serve --config-name frontend --mode development",
     "dev:background": "webpack --watch --config-name background --mode development",
     "dev:extension": "wait-on ./dev/manifest.json && cd dev && web-ext run --watch-file bundle.background.js --start-url about:debugging#/runtime/this-firefox",
