@@ -120,6 +120,7 @@ function resolveBuffer(id, loc, networkKeywords, urls) {
 
       // search to see if the url comes up in our services list
       urlSearch(request, urls)
+      userMatch(request)
     }
   } else {
     // I don't think this will ever happen, but just in case, maybe a redirect?
@@ -220,11 +221,9 @@ function coordinateSearch(request, locData) {
       potFloat.push(".");
       potFloat.push(oneRight);
 
-      if (oneLeft == ' ' || oneRight == ' ') {
+      if (oneLeft != ' ' || oneRight != ' ') {
         //don't run routine when we have spaces on either side of the decimal
-      }
-      else
-      {
+
         const twoLeft = strReq.charAt(index-2);
         const threeLeft = strReq.charAt(index-3);
         if (!isNaN(twoLeft) && twoLeft != ' ') {
@@ -252,16 +251,64 @@ function coordinateSearch(request, locData) {
         if (potentialMatch.length > 10) {
           const asFloat = parseFloat(potentialMatch);
           // lazy bound of 1 for matches.
-          if ( (Math.abs(asFloat - absLat) < 1) || (Math.abs(asFloat - absLng) < 1) )
-          {
-          console.log(`Your location is (${lat} , ${lng}): We found ${potentialMatch}`)
-          addToEvidenceList("Location", request.details["url"], strReq)
+          const deltaLat = Math.abs(asFloat - absLat);
+          const deltaLng = Math.abs(asFloat - absLng);
+
+          if (deltaLat < 1 && deltaLat > .1 || deltaLng < 1 && deltaLng > .1) {
+            console.log(`Lazy match for (${lat}, ${lng}) with ${potentialMatch}`);
+            addToEvidenceList("Location", request.details["url"], strReq)
           }
+          if (deltaLat < .1 && deltaLng < .1) {
+            conosole.log(`Tight match (within 7 miles) for (${lat}, ${lng}) with ${potentialMatch}`);
+            addToEvidenceList("Location", request.details["url"], strReq)
         }
       }
     }
-  })
+  }
+ })
 }
+async function userMatch(request) {
+  let currKeywordsObject = await browser.storage.local.get("userKeywords");
+  var currKeywords = (Object.values(currKeywordsObject)[0]);
+  let strReq = JSON.stringify(request)
+
+  if (currKeywords != undefined) {
+    currKeywords.forEach(keyword => {
+
+      // first approach is to look for case-insensitive regex match
+      let re = new RegExp(`${keyword}`, "i");
+      let result = strReq.match(re)
+      if (result != null) {
+        console.log(result)
+      }
+  
+      // try for off-by-one regex match (heuristic that we will have less false positives for longer words)
+
+      if (keyword.length > 5) {
+        for (var i = 0; i < keyword.length; i++) {
+          var off_by_one = [];
+          for (var j = 0; j < keyword.length; j ++) {
+            if (i == j) {
+              off_by_one.push(`.`)
+            }
+            else {
+              off_by_one.push(keyword.charAt(j))
+            }
+           }
+          let attempt = off_by_one.join('');
+          let reg = new RegExp(attempt, "i");
+          let result = strReq.match(reg);
+          if (result != null) {
+            console.log(result);
+          }
+        }
+      }
+    })
+  }
+  
+}
+
+
 
 
 export { onBeforeRequest, onHeadersReceived, onBeforeSendHeaders }
