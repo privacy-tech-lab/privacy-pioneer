@@ -37,4 +37,4 @@ A potential paper could have three sections:
 
 1. A theoretical discussion for a technique of analyzying HTTP requests
 2. An implementation of that technique in a browser extension
-3. A usability study on the browser extension
+3. A usability study on the browser extension (especially, on privacy labels)
