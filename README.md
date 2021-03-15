@@ -14,9 +14,40 @@ The crucial point here is that by examining HTTP requests we are able to find ou
 
 None of the existing tools really answers these questions.
 
-## Installing and Running the Extension
+## Development
 
-Here are the [temporary run and install instructions](https://github.com/privacy-tech-lab/integrated-privacy-analysis/issues/12#issuecomment-776985944).
+Ensure that you have [node and npm](https://www.npmjs.com/get-npm) installed.
+
+In the root directory of the project, start by installing the dependencies by runnning:
+
+```
+npm install
+```
+
+To start the project, run:
+
+```
+npm start
+```
+
+- Runs the extension in development mode.
+- The popup, options, and background page will reload if you make edits.
+- You will also see any lint errors in the console.
+
+A `dev` folder will be generated in the root directory, housing the generated extension files. Firefox should automatically open with the extension installed. If not, you can follow the instructions [here](https://github.com/privacy-tech-lab/integrated-privacy-analysis/issues/12#issuecomment-776985944), where `dev` will be the new `src` folder.
+
+## Production
+
+Build the extension for production to the `dist` folder by running:
+
+```
+npm run build
+```
+
+- The build is minified and the filenames include hashes.
+- It correctly bundles and optimizes the extension for the best performance.
+
+The `web-ext` cli is included in the project. Learn more about packaging and signing for release at the [extension workshop](https://extensionworkshop.com/documentation/develop/getting-started-with-web-ext/).
 
 ## Possible Analysis Features and Techniques
 

@@ -15,7 +15,7 @@ const evidence = new Evidence({
 */
 import { Request, Evidence } from "./classModels.js"
 
-import { evidence } from "./background.js"
+import { evidence } from "../background.js"
 
 // Temporary container to hold network requests while properties are being added from listener callbacks
 const buffer = {}
