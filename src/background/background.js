@@ -6,10 +6,10 @@ background.js
 - https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/API/webRequest
 */
 
-import { onBeforeRequest, onBeforeSendHeaders, onHeadersReceived } from "./analyze.js"
-import { getLocationData, filterGeocodeResponse } from "./getLocationData.js"
-import { keywords } from "./importJson.js"
-import { services } from "./importJson.js"
+import { onBeforeRequest, onBeforeSendHeaders, onHeadersReceived } from "./analysis/analyze.js"
+import { getLocationData, filterGeocodeResponse } from "./analysis/getLocationData.js"
+import { keywords } from "./analysis/importJson.js"
+import { services } from "./analysis/importJson.js"
 
 // A filter that restricts the events that will be sent to a listener.
 // You can play around with the urls and types.

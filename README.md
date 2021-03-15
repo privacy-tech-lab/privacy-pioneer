@@ -14,9 +14,46 @@ The crucial point here is that by examining HTTP requests we are able to find ou
 
 None of the existing tools really answers these questions.
 
-## Installing and Running the Extension
+## Development
 
-Here are the [temporary run and install instructions](https://github.com/privacy-tech-lab/integrated-privacy-analysis/issues/12#issuecomment-776985944).
+Check that Yarn (^1.22.5) is installed by running:
+
+```
+yarn --version
+```
+
+You can get Yarn [here](https://classic.yarnpkg.com/en/docs/install).
+
+In the root directory of the project, start by installing the dependencies by runnning:
+
+```
+yarn
+```
+
+To start the project, run:
+
+```
+yarn start
+```
+
+- Runs the extension in the development mode.
+- The popup, options, and background page will reload if you make edits.
+- You will also see any lint errors in the console.
+
+A `dev` folder will be generated in the root directory, housing the generated extension files. Firefox should automatically open with the extension installed. If not, you can follow the instructions [here](https://github.com/privacy-tech-lab/integrated-privacy-analysis/issues/12#issuecomment-776985944), where `dev` will be the new `src` folder.
+
+## Production
+
+Build the extension for production to the `dist` folder by running:
+
+```
+yarn build
+```
+
+- The build is minified and the filenames include the hashes.
+- It correctly bundles and optimizes the extension for the best performance.
+
+The `web-ext` cli is included in the project. Learn more about packaging and signing for release at the [extension workshop](https://extensionworkshop.com/documentation/develop/getting-started-with-web-ext/).
 
 ## Possible Analysis Features and Techniques
 

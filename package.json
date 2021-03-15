@@ -1,0 +1,56 @@
+{
+  "name": "integrated-privacy-analysis",
+  "version": "0.0.1",
+  "scripts": {
+    "prestart": "rimraf dev",
+    "start": "concurrently -k yarn:dev:frontend yarn:dev:background yarn:dev:extension",
+    "dev:frontend": "webpack serve --config-name frontend --mode development",
+    "dev:background": "webpack --watch --config-name background --mode development",
+    "dev:extension": "wait-on ./dev/manifest.json && cd dev && web-ext run --watch-file bundle.background.js --start-url about:debugging#/runtime/this-firefox",
+    "prebuild": "rimraf dist",
+    "build": "webpack -c webpack.config.babel.js --mode production"
+  },
+  "repository": "https://github.com/privacy-tech-lab/integrated-privacy-analysis",
+  "license": "MIT",
+  "eslintConfig": {
+    "extends": "react-app",
+    "env": {
+      "webextensions": true
+    }
+  },
+  "dependencies": {
+    "react": "^17.0.1",
+    "react-dom": "^17.0.1"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.13.10",
+    "@babel/plugin-transform-runtime": "^7.13.10",
+    "@babel/preset-env": "^7.13.10",
+    "@babel/preset-react": "^7.12.13",
+    "@babel/register": "^7.13.8",
+    "@babel/runtime": "^7.13.10",
+    "babel-loader": "^8.2.2",
+    "concurrently": "^6.0.0",
+    "copy-webpack-plugin": "^8.0.0",
+    "css-loader": "^5.1.2",
+    "file-loader": "^6.2.0",
+    "html-webpack-plugin": "^5.3.1",
+    "rimraf": "^3.0.2",
+    "style-loader": "^2.0.0",
+    "terser-webpack-plugin": "^5.1.1",
+    "wait-on": "^5.2.1",
+    "web-ext": "^6.0.0",
+    "webpack": "^5.25.0",
+    "webpack-cli": "^4.5.0",
+    "webpack-dev-server": "^3.11.2"
+  },
+  "babel": {
+    "presets": [
+      "@babel/preset-react",
+      "@babel/preset-env"
+    ],
+    "plugins": [
+      "@babel/plugin-transform-runtime"
+    ]
+  }
+}
