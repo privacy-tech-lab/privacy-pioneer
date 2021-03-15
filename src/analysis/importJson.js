@@ -15,38 +15,6 @@ export const keywords = {
          "geo",
          "ip-geolocation-ipwhois-io",
          "telize"
-      ],
-      "Bodies": [
-         "longitude",
-         "lng",
-         "latitude",
-         "lat",
-         "altitude",
-         "location",
-         "geoloc",
-         "geolocation",
-         "geo_location",
-         "delivery_zip"
-      ]
-   },
-   "FINGERPRINT": {
-      "URLs": [
-         "placeholder.com"
-      ],
-      "Bodies": [
-         "screenSize",
-         "timezone",
-         "contentLang",
-         "canvas",
-         "fonts",
-         "adblock",
-         "deviceMemory",
-         "pixelRatio",
-         "colorDepth",
-         "screenWidth",
-         "screenHeight",
-         "screenDepth",
-         "webGL"
       ]
    },
    "PIXEL": {
@@ -66,33 +34,6 @@ export const keywords = {
          "idsync.rlcdn.com",
          "p.brsrvr.com",
          "adservice.google.com"
-      ],
-      "Bodies": [
-         "abcdefghijklmnop"
-      ]
-   },
-   "ANALYTICS": {
-      "URLs": [
-         "placeholder.com"
-      ],
-      "Bodies": [
-         "placeholder"
-      ]
-   },
-   "ADVERTISING": {
-      "URLs": [
-         "placeholder.com"
-      ],
-      "Bodies": [
-         "placeholder"
-      ]
-   },
-   "SOCIAL": {
-      "URLs": [
-         "placeholder.com"
-      ],
-      "Bodies": [
-         "placeholder"
       ]
    }
 }
