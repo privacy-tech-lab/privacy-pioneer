@@ -30,3 +30,11 @@ Here are the [temporary run and install instructions](https://github.com/privacy
 8. Privacy Policy: Does the site have a privacy policy? Depending on the other analysis results it may or may not need a privacy policy. If it does, is there a policy linked on the homepage as required, for example, by CalOPPA?
 9. Do Not Sell My Information: If the site has users from California and all requirements for the applicability of the law are met, a site must allow users to opt out from the sale of personal information and implement mechanisms for doing so. In particular, there must be a link "Do Not Sell My Personal Information" on the homepage of the site.
 10. Accessibility: Various laws, such as the CCPA, also require a site to be accessible. There are various accessibility checkers, for example, in form of [browser extensions](https://chrome.google.com/webstore/detail/siteimprove-accessibility/efcfolpjihicnikpmhnmphjhhpiclljc). Possibly, our analyzer could include such functionality as well.
+
+## Publication
+
+A potential paper could have three sections:
+
+1. A theoretical discussion for a technique of analyzying HTTP requests
+2. An implementation of that technique in a browser extension
+3. A usability study on the browser extension
