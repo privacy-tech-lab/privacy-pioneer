@@ -41,7 +41,7 @@ A `dev` folder will be generated in the root directory, housing the generated ex
 Build the extension for production to the `dist` folder by running:
 
 ```
-npm build
+npm run build
 ```
 
 - The build is minified and the filenames include hashes.
