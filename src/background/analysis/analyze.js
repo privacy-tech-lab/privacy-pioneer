@@ -130,19 +130,15 @@ function resolveBuffer(id, loc, networkKeywords, urls) {
 
 // given the permission category, the url of the request, and the snippet
 // from the request, get the current time in ms and add to our evidence list
-function addToEvidenceList(perm, u, snip) {
+function addToEvidenceList(perm, u, snip, id) {
   var ts = Date.now()
-  var tsString = String(ts)
-  tsString = tsString.slice(0, -3)
-  tsString = tsString + "000"
-  evidence.add(new Evidence(
-    {
-      timestamp: tsString,
-      permission: perm,
-      url: u,
-      snippet: snip,
-    }
-  ))
+  const e = new Evidence( {
+    timestamp: ts,
+    permission: perm,
+    url: u,
+    snippet: snip,
+  })
+  evidence[id] = e
 }
 
 // Look in request for keywords from list of keywords built from user's
@@ -153,7 +149,7 @@ function locationKeywordSearch(request, networkKeywords) {
   for (var j = 0; j < locElems.length; j++) {
     if (strReq.includes(locElems[j])) {
       console.log(locElems[j] + " detected for snippet " + strReq)
-      addToEvidenceList("Location", request.details["url"], strReq)
+      addToEvidenceList("Location", request.details["url"], strReq, request.id)
     }
   }
 }
@@ -177,7 +173,7 @@ function urlSearch(request, urls) {
           for (var u = 0; u < urlLst.length; u++) {
             if (url.includes(urlLst[u])) {
               console.log(cat + " URL detected for " + urlLst[u])
-              addToEvidenceList(cat, request.details["url"], request.details["url"])
+              addToEvidenceList(cat, request.details["url"], request.details["url"], request.id)
             }
           }
         }
@@ -185,7 +181,7 @@ function urlSearch(request, urls) {
         else {
           if (url.includes(urlLst)) {
             console.log(cat + " URL detected for " + urlLst)
-            addToEvidenceList(cat, request.details["url"], request.details["url"])
+            addToEvidenceList(cat, request.details["url"], request.details["url"], request.id)
           }
         }
       }
@@ -256,11 +252,11 @@ function coordinateSearch(request, locData) {
 
           if (deltaLat < 1 && deltaLat > .1 || deltaLng < 1 && deltaLng > .1) {
             console.log(`Lazy match for (${lat}, ${lng}) with ${potentialMatch}`);
-            addToEvidenceList("Location", request.details["url"], strReq)
+            addToEvidenceList("Location", request.details["url"], strReq), request.id
           }
           if (deltaLat < .1 && deltaLng < .1) {
             conosole.log(`Tight match (within 7 miles) for (${lat}, ${lng}) with ${potentialMatch}`);
-            addToEvidenceList("Location", request.details["url"], strReq)
+            addToEvidenceList("Location", request.details["url"], strReq, request.id)
         }
       }
     }
