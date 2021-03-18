@@ -16,7 +16,7 @@ import { importData } from "./analysis/importSearchData.js"
 // https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/API/webRequest/ResourceType
 const filter = { urls: ["<all_urls>"], types: ["script", "xmlhttprequest", "sub_frame", "websocket" , "main_frame"] }
 
-export var evidence = new Set()
+export var evidence = {}
 
 // call function to get all the url and keyword data
 importData()
@@ -24,7 +24,7 @@ importData()
     var coords = data[0]
     var networkKeywords = data[1]
     var urls = data[2]
-  
+
     // Listener to get response data, request body, and details about request
     browser.webRequest.onBeforeRequest.addListener(function (details) { onBeforeRequest(details, coords, networkKeywords, urls) }, filter, ["requestBody", "blocking"])
 
