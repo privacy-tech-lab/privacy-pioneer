@@ -106,7 +106,6 @@ function resolveBuffer(id, loc, networkKeywords, urls) {
       request.responseData !== undefined
     ) {
       delete buffer[id]
-
       // if this value is 0 the client likely denied location permission
       // or they could be on Null Island in the middle of the Gulf of Guinea
       if (loc[0] != 0 && loc[1] != 0) {
@@ -121,6 +120,7 @@ function resolveBuffer(id, loc, networkKeywords, urls) {
       // search to see if the url comes up in our services list
       urlSearch(request, urls)
       userMatch(request)
+      // console.log(evidence)
     }
   } else {
     // I don't think this will ever happen, but just in case, maybe a redirect?
@@ -281,7 +281,7 @@ async function userMatch(request) {
       if (result != null) {
         console.log(result)
       }
-  
+
       // try for off-by-one regex match (heuristic that we will have less false positives for longer words)
 
       if (keyword.length > 5) {
@@ -305,7 +305,7 @@ async function userMatch(request) {
       }
     })
   }
-  
+
 }
 
 
