@@ -1,6 +1,6 @@
 import React from "react"
 
-const AppView = () => {
+const App = () => {
   return (
     <div>
       <h1>Hello World</h1>
@@ -8,4 +8,4 @@ const AppView = () => {
   )
 }
 
-export default AppView
+export default App
