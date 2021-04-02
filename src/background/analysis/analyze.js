@@ -263,21 +263,207 @@ function coordinateSearch(request, locData) {
   }
  })
 }
+
+// takes an ssn string and builds a couple of representations
+function buildSSN(ssn) {
+
+  var ssn_arr = [];
+
+  // 123-45-6789
+  var pattern1 = [ssn.charAt(0), ssn.charAt(1), ssn.charAt(2), "-",
+                  ssn.charAt(3), ssn.charAt(4), "-",
+                  ssn.charAt(5), ssn.charAt(6), ssn.charAt(7), ssn.charAt(8)];
+  
+  ssn_arr.push(pattern1.join(""));
+
+  // 123.45.6789
+  var pattern2 = [ssn.charAt(0), ssn.charAt(1), ssn.charAt(2), "-",
+                  ssn.charAt(3), ssn.charAt(4), "-",
+                  ssn.charAt(5), ssn.charAt(6), ssn.charAt(7), ssn.charAt(8)];
+
+  ssn_arr.push(pattern2.join(""));
+
+  // 123-456789
+  var pattern3 = [ssn.charAt(0), ssn.charAt(1), ssn.charAt(2), "-",
+                ssn.charAt(3), ssn.charAt(4),
+                ssn.charAt(5), ssn.charAt(6), ssn.charAt(7), ssn.charAt(8)];
+
+  ssn_arr.push(pattern3.join(""));
+
+  // 123 45 6789
+  var pattern4 = [ssn.charAt(0), ssn.charAt(1), ssn.charAt(2), " ",
+                  ssn.charAt(3), ssn.charAt(4), " ",
+                ssn.charAt(5), ssn.charAt(6), ssn.charAt(7), ssn.charAt(8)];
+
+  ssn_arr.push(pattern4.join(""));
+
+  // 123 45-6789
+
+  var pattern5 = [ssn.charAt(0), ssn.charAt(1), ssn.charAt(2), " ",
+                  ssn.charAt(3), ssn.charAt(4), "-",
+                ssn.charAt(5), ssn.charAt(6), ssn.charAt(7), ssn.charAt(8)];
+  
+  ssn_arr.push(pattern5.join(""));
+
+  // 123-45 6789
+  var pattern6 = [ssn.charAt(0), ssn.charAt(1), ssn.charAt(2), "-",
+                  ssn.charAt(3), ssn.charAt(4), " ",
+                  ssn.charAt(5), ssn.charAt(6), ssn.charAt(7), ssn.charAt(8)];
+
+  ssn_arr.push(pattern6.join(""));
+
+  return ssn_arr
+}
+
+// takes phone as len 10 string and returns a list of different constructions of the phone number (also as strings)
+function buildPhone(phone) {
+
+  var phone_arr = [];
+
+  // like this 123-456-7890
+  var pattern1 = [phone.charAt(0), phone.charAt(1), phone.charAt(2), "-", 
+                    phone.charAt(3), phone.charAt(4), phone.charAt(5), "-",
+                    phone.charAt(6), phone.charAt(7), phone.charAt(8), phone.charAt(9)];
+  
+  phone_arr.push(pattern1.join(""));
+
+  // like this (415) 555-0132
+  var pattern2 = ["(", phone.charAt(0), phone.charAt(1), phone.charAt(2), ")", " ", 
+                    phone.charAt(3), phone.charAt(4), phone.charAt(5), "-",
+                    phone.charAt(6), phone.charAt(7), phone.charAt(8), phone.charAt(9)];
+  
+  phone_arr.push(pattern2.join(""));
+
+  // like this (415)555-0132
+  var pattern3 = ["(", phone.charAt(0), phone.charAt(1), phone.charAt(2), ")",
+                    phone.charAt(3), phone.charAt(4), phone.charAt(5), "-",
+                    phone.charAt(6), phone.charAt(7), phone.charAt(8), phone.charAt(9)];
+
+  phone_arr.push(pattern3.join(""));
+
+  // like this +1 415 555 0132
+  var pattern4 = ["+1", " ", phone.charAt(0), phone.charAt(1), phone.charAt(2), " ", 
+                    phone.charAt(3), phone.charAt(4), phone.charAt(5), " ",
+                    phone.charAt(6), phone.charAt(7), phone.charAt(8), phone.charAt(9)];
+  
+  phone_arr.push(pattern4.join(""));
+
+  // like this 123.456.7890
+  var pattern5 = [phone.charAt(0), phone.charAt(1), phone.charAt(2), ".",
+                    phone.charAt(3), phone.charAt(4), phone.charAt(5), ".",
+                    phone.charAt(6), phone.charAt(7), phone.charAt(8), phone.charAt(9)];
+  phone_arr.push(pattern5.join(""));
+
+  // like this 1.123.456.7890
+
+  var pattern6 = ["1.", phone.charAt(0), phone.charAt(1), phone.charAt(2), ".",
+                    phone.charAt(3), phone.charAt(4), phone.charAt(5), ".",
+                    phone.charAt(6), phone.charAt(7), phone.charAt(8), phone.charAt(9)];
+  phone_arr.push(pattern6.join(""));
+
+  // like this 1-123-456-7890
+  var pattern7 = ["1-", phone.charAt(0), phone.charAt(1), phone.charAt(2), "-",
+                    phone.charAt(3), phone.charAt(4), phone.charAt(5), "-",
+                    phone.charAt(6), phone.charAt(7), phone.charAt(8), phone.charAt(9)];
+  
+  phone_arr.push(pattern7.join(""));
+
+  // like this +11234567890
+
+  var pattern8 =  ["+1",phone.charAt(0), phone.charAt(1), phone.charAt(2), 
+  phone.charAt(3), phone.charAt(4), phone.charAt(5),
+  phone.charAt(6), phone.charAt(7), phone.charAt(8), phone.charAt(9)];
+
+  phone_arr.push(pattern8.join(""));
+
+  // like this 123-4567890
+
+  var pattern9 =  [phone.charAt(0), phone.charAt(1), phone.charAt(2), "-",
+  phone.charAt(3), phone.charAt(4), phone.charAt(5),
+  phone.charAt(6), phone.charAt(7), phone.charAt(8), phone.charAt(9)];
+
+  phone_arr.push(pattern9.join(""));
+
+  return phone_arr
+
+}
+
+// function to look for ANY email regex and log them to console
+// I think these patterns are pretty good.
+function emailSearch(strReq) {
+  let re = new RegExp("/^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/")
+  // alt regex
+  let realt = new RegExp("^([a-zA-Z0-9]+(?:[.-]?[a-zA-Z0-9]+)*@[a-zA-Z0-9]+(?:[.-]?[a-zA-Z0-9]+)*\.[a-zA-Z]{2,7})$")
+  let result = strReq.match(re)
+  if (result != null)
+  {
+    console.log(result)
+  }
+  let altresult = strReq.match(realt)
+  if (altresult != null)
+  {
+    console.log(altresult)
+  }
+
+}
+
+// it's tough to get as many patterns as you'd like because many of the known expressions create a distorting number of false positives
+// for example looking for a 10 digit number is nonsense here
+
+// looks for ANY phone number regex and log them to console
+// should add some more patterns. The difficulty is finding a pattern that does NOT include 1234567890. We have a good set of patterns in the build phone number function
+function phoneSearch(strReq) {
+  var reglist = []
+  // hyphen separated
+  reglist.push(new RegExp("^[2-9]\\d{2}-\\d{3}-\\d{4}$"))
+  // (910)456-7890 | (910)456-8970 x12 | (910)456-8970 1211
+  reglist.push(new RegExp("^[\\(]{0,1}([0-9]){3}[\\)]{0,1}[ ]?([^0-1]){1}([0-9]){2}[ ]?[-]?[ ]?([0-9]){4}[ ]*((x){0,1}([0-9]){1,5}){0,1}$"))
+
+  reglist.forEach(re => {
+    let result = strReq.match(re)
+    if (result != null) {
+      console.log(result)
+      console.log(re)
+    }
+  } )
+}
+
+// to be implemented
+function hashKeywords() {
+  //pass
+}
+
+// until we have ui set up
+var hardcodekeywords = ["example123456"];
+var hardcodePhone = "9738608562";
+var phone_posib = buildPhone(hardcodePhone);
+console.log(phone_posib);
+phone_posib.forEach(phone => hardcodekeywords.push(phone));
+
+// preliminary list to test method
+const regex_special_char = ['(', ')', '+', '.', '?']
+
+
+// this will clean a string of escape characters
+function escapeRegExp(text) {
+  return text.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, '\\$&');
+}
+
 async function userMatch(request) {
-  let currKeywordsObject = await browser.storage.local.get("userKeywords");
-  var currKeywords = (Object.values(currKeywordsObject)[0]);
+  var currKeywords = hardcodekeywords
+
   let strReq = JSON.stringify(request)
 
   if (currKeywords != undefined) {
     currKeywords.forEach(keyword => {
-
+      
+      let fixed = escapeRegExp(keyword)
       // first approach is to look for case-insensitive regex match
-      let re = new RegExp(`${keyword}`, "i");
+      let re = new RegExp(`${fixed}`, "i");
       let result = strReq.match(re)
       if (result != null) {
         console.log(result)
       }
-
       // try for off-by-one regex match (heuristic that we will have less false positives for longer words)
 
       if (keyword.length > 5) {
@@ -288,7 +474,12 @@ async function userMatch(request) {
               off_by_one.push(`.`)
             }
             else {
-              off_by_one.push(keyword.charAt(j))
+              let attempted_char = keyword.charAt(j)
+              // add escape characters to special characters              
+              if (regex_special_char.includes(attempted_char)) {
+                off_by_one.push('\\' + attempted_char)
+              }
+              else {off_by_one.push(attempted_char)}
             }
            }
           let attempt = off_by_one.join('');
@@ -303,8 +494,6 @@ async function userMatch(request) {
   }
 
 }
-
-
 
 
 export { onBeforeRequest, onHeadersReceived, onBeforeSendHeaders }
