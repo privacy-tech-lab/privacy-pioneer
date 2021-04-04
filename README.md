@@ -1,18 +1,10 @@
 # integrated-privacy-analysis
 
-The idea of this project is to create a browser extension for web users that analyzes and visualizes interesting privacy facts of HTTP requests and related website behavior. For example, the following URL-encoded string contains the latitude and longitude of a device:
+The idea of this project is to create a browser extension that helps users to understand the privacy implications of their visit to websites. For example, the following URL-encoded string contains the latitude and longitude of a device:
 
 > https%3A%2F%2Fwww.example.com%2Flocation%3Flat%3D32.715736%26lon%3D%20-117.161087
 
-If such a string is sent via an HTTP POST request, it can be concluded that a site is collecting location information. Observing such behaviors, a privacy label of a site could be created.
-
-The crucial point here is that by examining HTTP requests we are able to find out what information concretely is stored on a server. Usually, we only observe:
-
-1. the container of information (e.g., we see a cookie but do not know which information is contained in the cookie)
-2. know a third party but do not know which information it receives
-3. only see a permission use but do not know whether information is actually transimitted to a server
-
-None of the existing tools really answers these questions.
+If such a string is sent via an HTTP POST request, it can be concluded that a site is collecting location information from a user. Observing such behaviors, a privacy label of a site could be created to help the user get a better understanding of their privacy.
 
 ## Development
 
@@ -49,6 +41,17 @@ npm run build
 
 The `web-ext` cli is included in the project. Learn more about packaging and signing for release at the [extension workshop](https://extensionworkshop.com/documentation/develop/getting-started-with-web-ext/).
 
+## Features
+
+By analyzing the HTTP requests of a site, we want to understand where requests are being sent, i.e, the first or third party receiving a request. Once we know that, we can look for the following types of information in web requests:
+
+1. Structured data (phone numbers, social security numbers, GPS coordinates)
+2. Tracking pixels (Facebook, ...)
+3. Fingerprinting libraries (fingerprint.js, ...)
+4. Detecting pure HTTP requests (i.e., no encryption via HTTPS)
+
+This is the current set of features for which we analyze the HTTP requests.
+
 ## Paper Publication
 
 A potential paper could have three sections:
@@ -56,3 +59,11 @@ A potential paper could have three sections:
 1. A theoretical discussion for a technique of analyzying HTTP requests
 2. An implementation of that technique in a browser extension
 3. A usability study on the browser extension (especially, on privacy labels)
+
+The crucial point here is that by examining HTTP requests we are able to find out what information concretely is stored on a server. Usually, we only observe:
+
+1. the container of information (e.g., we see a cookie but do not know which information is contained in the cookie)
+2. know a third party but do not know which information it receives
+3. only see a permission use but do not know whether information is actually transimitted to a server
+
+None of the existing tools really answers these questions.
