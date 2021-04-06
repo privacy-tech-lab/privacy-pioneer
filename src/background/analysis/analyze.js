@@ -25,10 +25,13 @@ const buffer = {}
 // OnBeforeRequest callback
 // Mozilla docs outlines several ways to parse incoming chunks of data; Feel free to experiment with others
 // https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/API/webRequest/StreamFilter/ondata
-const onBeforeRequest = (details, loc, networkKeywords, urls) => {
+const onBeforeRequest = (details, data) => {
+  var loc = data[0]
+  var networkKeywords = data[1]
+  var urls = data[2]
   const filter = browser.webRequest.filterResponseData(details.requestId),
     decoder = new TextDecoder("utf-8"),
-    data = []
+    d = []
   let request
 
   if (details.requestId in buffer) {
@@ -48,7 +51,7 @@ const onBeforeRequest = (details, loc, networkKeywords, urls) => {
 
   filter.ondata = (event) => {
     const str = decoder.decode(event.data, { stream: true })
-    data.push(str)
+    d.push(str)
     filter.write(event.data)
   }
 
@@ -56,13 +59,16 @@ const onBeforeRequest = (details, loc, networkKeywords, urls) => {
 
   filter.onstop = async (event) => {
     filter.close()
-    request.responseData = data.toString()
+    request.responseData = d.toString()
     resolveBuffer(request.id, loc, networkKeywords, urls)
   }
 }
 
 // OnBeforeSendHeaders callback
-const onBeforeSendHeaders = (details, loc, networkKeywords, urls) => {
+const onBeforeSendHeaders = (details, data) => {
+  var loc = data[0]
+  var networkKeywords = data[1]
+  var urls = data[2]
   let request
 
   if (details.requestId in buffer) {
@@ -80,7 +86,10 @@ const onBeforeSendHeaders = (details, loc, networkKeywords, urls) => {
 }
 
 // OnHeadersReceived callback
-const onHeadersReceived = (details, loc, networkKeywords, urls) => {
+const onHeadersReceived = (details, data) => {
+  var loc = data[0]
+  var networkKeywords = data[1]
+  var urls = data[2]
   let request
 
   if (details.requestId in buffer) {
