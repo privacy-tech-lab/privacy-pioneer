@@ -21,20 +21,17 @@ export var evidence = {}
 // call function to get all the url and keyword data
 importData()
   .then((data) => {
-    var coords = data[0]
-    var networkKeywords = data[1]
-    var urls = data[2]
 
     // Listener to get response data, request body, and details about request
-    browser.webRequest.onBeforeRequest.addListener(function (details) { onBeforeRequest(details, coords, networkKeywords, urls) }, filter, ["requestBody", "blocking"])
+    browser.webRequest.onBeforeRequest.addListener(function (details) { onBeforeRequest(details, data) }, filter, ["requestBody", "blocking"])
 
     // Listener to get request headers
     // Note: I'm not sure if there is a difference between the details of a request here and onBeforeRequest
     // maybe timestamp difference, antyhing else important?
-    browser.webRequest.onBeforeSendHeaders.addListener(function (details) { onBeforeSendHeaders(details, coords, networkKeywords, urls) }, filter, ["requestHeaders"])
+    browser.webRequest.onBeforeSendHeaders.addListener(function (details) { onBeforeSendHeaders(details, data) }, filter, ["requestHeaders"])
 
     // Listener to get response headers
     // Note: I'm not sure if there is a difference between the details of a request here and onBeforeRequest
     // maybe timestamp differece, antyhing else important?
-    browser.webRequest.onResponseStarted.addListener(function (details) { onHeadersReceived(details, coords, networkKeywords, urls) }, filter, ["responseHeaders"])
+    browser.webRequest.onResponseStarted.addListener(function (details) { onHeadersReceived(details, data) }, filter, ["responseHeaders"])
   })
