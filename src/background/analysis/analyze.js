@@ -9,7 +9,9 @@ For reference, here is a mockup of the Evidence type
 const evidence = new Evidence({
   timestamp: "10/10/20",
   permission: "location",
-  url: "facebook.com",
+  type: "zipcode",
+  rooturl: "facebook.com",
+  requesturl: "facebook.com/js"
   snippet: "blahblah"
 })
 */
@@ -120,7 +122,6 @@ function resolveBuffer(id, loc, networkKeywords, urls) {
       // search to see if the url comes up in our services list
       urlSearch(request, urls)
       userMatch(request)
-      // console.log(evidence)
     }
   } else {
     // I don't think this will ever happen, but just in case, maybe a redirect?
@@ -128,17 +129,82 @@ function resolveBuffer(id, loc, networkKeywords, urls) {
   }
 }
 
+// given a type and a permission creates a unique has so there are no repeats
+// in our indexedDB. THIS IS NOT A SECURE HASH, but rather just a quick way
+// to convert a regular string into digits
+// taken basically from: https://werxltd.com/wp/2010/05/13/javascript-implementation-of-javas-string-hashcode-method/
+function hashTypeAndPermission(str) {
+  var hash = 0,
+     i,
+     chr;
+   for (i = 0; i < str.length; i++) {
+     chr = str.charCodeAt(i);
+     hash = (hash << 5) - hash + chr;
+     hash |= 0;
+   }
+   return hash;
+}
+
+// takes in full url and extracts just the domain host
+const getHostname = (url) => {
+  // use URL constructor and return hostname
+  try {
+    return new URL(url).hostname;
+  }
+  catch(err) {
+    console.log(err)
+    return url
+  }
+}
+
 // given the permission category, the url of the request, and the snippet
 // from the request, get the current time in ms and add to our evidence list
-function addToEvidenceList(perm, u, snip, id) {
+function addToEvidenceList(perm, rootU, snip, requestU, t) {
   var ts = Date.now()
+  if (rootU == undefined) {
+    rootU = requestU
+  }
+  var rootUrl = getHostname(rootU)
   const e = new Evidence( {
     timestamp: ts,
     permission: perm,
-    url: u,
+    rootUrl: rootUrl,
     snippet: snip,
+    requestUrl: requestU,
+    typ: t
   })
-  evidence[id] = e
+  var evidenceDict = {}
+  var typeHashed = hashTypeAndPermission(perm.concat(t));
+  evidenceDict[typeHashed] = e
+  var permDict = {}
+  permDict[perm] = evidenceDict
+
+    // if there already exists this specific type and permission we don't want to add it
+  if (rootUrl in evidence) {
+    var rootDict = evidence[rootUrl]
+    if (perm in evidence[rootUrl]) {
+      var permDictNew = evidence[rootUrl][perm]
+      if (typeHashed in evidence[rootUrl][perm]) {
+        // do nothing
+      }
+        // if it doesn't exist let's add it
+      else {
+        permDictNew[typeHashed] = e
+        evidence[rootUrl] = permDictNew
+      }
+    }
+      // if it doesn't exist let's add it
+    else {
+      rootDict[perm] = evidenceDict
+      evidence[rootUrl] = rootDict
+    }
+  }
+  // if it doesn't exist let's add it
+  else {
+    evidence[rootUrl] = permDict
+  }
+
+  console.log(evidence)
 }
 
 // Look in request for keywords from list of keywords built from user's
@@ -149,7 +215,7 @@ function locationKeywordSearch(request, networkKeywords) {
   for (var j = 0; j < locElems.length; j++) {
     if (strReq.includes(locElems[j])) {
       console.log(locElems[j] + " detected for snippet " + strReq)
-      addToEvidenceList("Location", request.details["url"], strReq, request.id)
+      addToEvidenceList("Location", request.details["originUrl"], strReq, request.details["url"], locElems[j])
     }
   }
 }
@@ -173,7 +239,7 @@ function urlSearch(request, urls) {
           for (var u = 0; u < urlLst.length; u++) {
             if (url.includes(urlLst[u])) {
               console.log(cat + " URL detected for " + urlLst[u])
-              addToEvidenceList(cat, request.details["url"], request.details["url"], request.id)
+              addToEvidenceList(cat, request.details["originUrl"], "null", request.details["url"], cat)
             }
           }
         }
@@ -181,7 +247,7 @@ function urlSearch(request, urls) {
         else {
           if (url.includes(urlLst)) {
             console.log(cat + " URL detected for " + urlLst)
-            addToEvidenceList(cat, request.details["url"], request.details["url"], request.id)
+            addToEvidenceList(cat, request.details["originUrl"], "null", request.details["url"], cat)
           }
         }
       }
@@ -252,11 +318,11 @@ function coordinateSearch(request, locData) {
 
           if (deltaLat < 1 && deltaLat > .1 || deltaLng < 1 && deltaLng > .1) {
             console.log(`Lazy match for (${lat}, ${lng}) with ${potentialMatch}`);
-            addToEvidenceList("Location", request.details["url"], strReq), request.id
+            addToEvidenceList("Location", request.details["originUrl"], strReq, request.details["url"], "coordinates")
           }
           if (deltaLat < .1 && deltaLng < .1) {
             conosole.log(`Tight match (within 7 miles) for (${lat}, ${lng}) with ${potentialMatch}`);
-            addToEvidenceList("Location", request.details["url"], strReq, request.id)
+            addToEvidenceList("Location", request.details["originUrl"], strReq, request.details["url"], "coordinates")
         }
       }
     }
@@ -273,7 +339,7 @@ function buildSSN(ssn) {
   var pattern1 = [ssn.charAt(0), ssn.charAt(1), ssn.charAt(2), "-",
                   ssn.charAt(3), ssn.charAt(4), "-",
                   ssn.charAt(5), ssn.charAt(6), ssn.charAt(7), ssn.charAt(8)];
-  
+
   ssn_arr.push(pattern1.join(""));
 
   // 123.45.6789
@@ -302,7 +368,7 @@ function buildSSN(ssn) {
   var pattern5 = [ssn.charAt(0), ssn.charAt(1), ssn.charAt(2), " ",
                   ssn.charAt(3), ssn.charAt(4), "-",
                 ssn.charAt(5), ssn.charAt(6), ssn.charAt(7), ssn.charAt(8)];
-  
+
   ssn_arr.push(pattern5.join(""));
 
   // 123-45 6789
@@ -321,17 +387,17 @@ function buildPhone(phone) {
   var phone_arr = [];
 
   // like this 123-456-7890
-  var pattern1 = [phone.charAt(0), phone.charAt(1), phone.charAt(2), "-", 
+  var pattern1 = [phone.charAt(0), phone.charAt(1), phone.charAt(2), "-",
                     phone.charAt(3), phone.charAt(4), phone.charAt(5), "-",
                     phone.charAt(6), phone.charAt(7), phone.charAt(8), phone.charAt(9)];
-  
+
   phone_arr.push(pattern1.join(""));
 
   // like this (415) 555-0132
-  var pattern2 = ["(", phone.charAt(0), phone.charAt(1), phone.charAt(2), ")", " ", 
+  var pattern2 = ["(", phone.charAt(0), phone.charAt(1), phone.charAt(2), ")", " ",
                     phone.charAt(3), phone.charAt(4), phone.charAt(5), "-",
                     phone.charAt(6), phone.charAt(7), phone.charAt(8), phone.charAt(9)];
-  
+
   phone_arr.push(pattern2.join(""));
 
   // like this (415)555-0132
@@ -342,10 +408,10 @@ function buildPhone(phone) {
   phone_arr.push(pattern3.join(""));
 
   // like this +1 415 555 0132
-  var pattern4 = ["+1", " ", phone.charAt(0), phone.charAt(1), phone.charAt(2), " ", 
+  var pattern4 = ["+1", " ", phone.charAt(0), phone.charAt(1), phone.charAt(2), " ",
                     phone.charAt(3), phone.charAt(4), phone.charAt(5), " ",
                     phone.charAt(6), phone.charAt(7), phone.charAt(8), phone.charAt(9)];
-  
+
   phone_arr.push(pattern4.join(""));
 
   // like this 123.456.7890
@@ -365,12 +431,12 @@ function buildPhone(phone) {
   var pattern7 = ["1-", phone.charAt(0), phone.charAt(1), phone.charAt(2), "-",
                     phone.charAt(3), phone.charAt(4), phone.charAt(5), "-",
                     phone.charAt(6), phone.charAt(7), phone.charAt(8), phone.charAt(9)];
-  
+
   phone_arr.push(pattern7.join(""));
 
   // like this +11234567890
 
-  var pattern8 =  ["+1",phone.charAt(0), phone.charAt(1), phone.charAt(2), 
+  var pattern8 =  ["+1",phone.charAt(0), phone.charAt(1), phone.charAt(2),
   phone.charAt(3), phone.charAt(4), phone.charAt(5),
   phone.charAt(6), phone.charAt(7), phone.charAt(8), phone.charAt(9)];
 
@@ -618,11 +684,6 @@ function phoneSearch(strReq) {
   } )
 }
 
-// to be implemented
-function hashKeywords() {
-  //pass
-}
-
 // until we have ui set up
 var hardcodeKeywords = ["example123456"];
 let hardcodePhone = "9738608562";
@@ -659,7 +720,7 @@ async function userMatch(request) {
 
   if (currKeywords != undefined) {
     currKeywords.forEach(keyword => {
-      
+
       let fixed = escapeRegExp(keyword)
       // first approach is to look for case-insensitive regex match
       let re = new RegExp(`${fixed}`, "i");
@@ -678,7 +739,7 @@ async function userMatch(request) {
             }
             else {
               let attempted_char = keyword.charAt(j)
-              // add escape characters to special characters              
+              // add escape characters to special characters
               if (regex_special_char.includes(attempted_char)) {
                 off_by_one.push('\\' + attempted_char)
               }

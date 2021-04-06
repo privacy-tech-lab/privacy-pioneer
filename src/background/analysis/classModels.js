@@ -18,10 +18,12 @@ export class Request {
 
 // class model for evidence type for when we find a keyword or URL
 export class Evidence {
-  constructor({timestamp, permission, url, snippet}) {
+  constructor({timestamp, permission, rootUrl, snippet, requestUrl, typ}) {
     this.timestamp = timestamp;
     this.permission = permission;
-    this.url = url;
+    this.rootUrl = rootUrl;
     this.snippet = snippet;
+    this.requestUrl = requestUrl;
+    this.typ = typ;
   }
 }
