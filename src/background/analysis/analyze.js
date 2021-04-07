@@ -26,9 +26,6 @@ const buffer = {}
 // Mozilla docs outlines several ways to parse incoming chunks of data; Feel free to experiment with others
 // https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/API/webRequest/StreamFilter/ondata
 const onBeforeRequest = (details, data) => {
-  var loc = data[0]
-  var networkKeywords = data[1]
-  var urls = data[2]
   const filter = browser.webRequest.filterResponseData(details.requestId),
     decoder = new TextDecoder("utf-8"),
     d = []
@@ -60,15 +57,13 @@ const onBeforeRequest = (details, data) => {
   filter.onstop = async (event) => {
     filter.close()
     request.responseData = d.toString()
-    resolveBuffer(request.id, loc, networkKeywords, urls)
+    resolveBuffer(request.id, data)
   }
 }
 
 // OnBeforeSendHeaders callback
 const onBeforeSendHeaders = (details, data) => {
-  var loc = data[0]
-  var networkKeywords = data[1]
-  var urls = data[2]
+
   let request
 
   if (details.requestId in buffer) {
@@ -82,14 +77,11 @@ const onBeforeSendHeaders = (details, data) => {
     buffer[details.requestId] = request
   }
 
-  resolveBuffer(request.id, loc, networkKeywords, urls)
+  resolveBuffer(request.id, data)
 }
 
 // OnHeadersReceived callback
 const onHeadersReceived = (details, data) => {
-  var loc = data[0]
-  var networkKeywords = data[1]
-  var urls = data[2]
   let request
 
   if (details.requestId in buffer) {
@@ -103,11 +95,11 @@ const onHeadersReceived = (details, data) => {
     buffer[details.requestId] = request
   }
 
-  resolveBuffer(request.id, loc, networkKeywords, urls)
+  resolveBuffer(request.id, data)
 }
 
 // Verifies if we have all the data for a request to be analyzed
-function resolveBuffer(id, loc, networkKeywords, urls) {
+function resolveBuffer(id, data) {
   if (id in buffer) {
     const request = buffer[id]
     if (
@@ -117,6 +109,10 @@ function resolveBuffer(id, loc, networkKeywords, urls) {
       request.responseData !== undefined
     ) {
       delete buffer[id]
+
+      var loc = data[0]
+      var networkKeywords = data[1]
+      var urls = data[2]
       // if this value is 0 the client likely denied location permission
       // or they could be on Null Island in the middle of the Gulf of Guinea
       if (loc[0] != 0 && loc[1] != 0) {
@@ -194,7 +190,7 @@ function addToEvidenceList(perm, rootU, snip, requestU, t) {
     if (perm in evidence[rootUrl]) {
       var permDictNew = evidence[rootUrl][perm]
       if (typeHashed in evidence[rootUrl][perm]) {
-        // do nothing
+        // do nothing because this type of category is already there
       }
         // if it doesn't exist let's add it
       else {
