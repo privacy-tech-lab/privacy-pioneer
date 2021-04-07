@@ -13,7 +13,6 @@ export default () => {
         <Route path="/info" component={Info} />
         <Route path="/watchlist" component={Watchlist} />
         <Route path="/" component={Home} />
-        <Home />
       </Switch>
     </AnimatePresence>
   )

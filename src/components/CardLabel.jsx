@@ -9,6 +9,7 @@ const Card = styled.div`
   display: flex;
   flex-direction: column;
   background-color: var(--cardColor);
+  max-width: 340px;
   margin-left: 16px;
   margin-right: 16px;
   margin-top: 16px;
