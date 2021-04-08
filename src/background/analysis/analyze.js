@@ -16,8 +16,9 @@ const evidence = new Evidence({
 })
 */
 import { Request, Evidence } from "./classModels.js"
-
+import { openDB } from 'idb';
 import { evidence } from "../background.js"
+import { idbKeyval } from "./openDB.js"
 
 // Temporary container to hold network requests while properties are being added from listener callbacks
 const buffer = {}
@@ -209,7 +210,7 @@ function addToEvidenceList(perm, rootU, snip, requestU, t) {
     evidence[rootUrl] = permDict
   }
 
-  console.log(evidence)
+  idbKeyval.set("evidence", evidence)
 }
 
 // Look in request for keywords from list of keywords built from user's
@@ -219,7 +220,7 @@ function locationKeywordSearch(request, networkKeywords) {
   var locElems = networkKeywords["location"]
   for (var j = 0; j < locElems.length; j++) {
     if (strReq.includes(locElems[j])) {
-      console.log(locElems[j] + " detected for snippet " + strReq)
+      // console.log(locElems[j] + " detected for snippet " + strReq)
       addToEvidenceList("Location", request.details["originUrl"], strReq, request.details["url"], locElems[j])
     }
   }
@@ -243,7 +244,7 @@ function urlSearch(request, urls) {
         if (typeof urlLst === 'object') {
           for (var u = 0; u < urlLst.length; u++) {
             if (url.includes(urlLst[u])) {
-              console.log(cat + " URL detected for " + urlLst[u])
+              // console.log(cat + " URL detected for " + urlLst[u])
               addToEvidenceList(cat, request.details["originUrl"], "null", request.details["url"], cat)
             }
           }
@@ -251,7 +252,7 @@ function urlSearch(request, urls) {
         // else we go here
         else {
           if (url.includes(urlLst)) {
-            console.log(cat + " URL detected for " + urlLst)
+            // console.log(cat + " URL detected for " + urlLst)
             addToEvidenceList(cat, request.details["originUrl"], "null", request.details["url"], cat)
           }
         }
@@ -322,11 +323,11 @@ function coordinateSearch(request, locData) {
           const deltaLng = Math.abs(asFloat - absLng);
 
           if (deltaLat < 1 && deltaLat > .1 || deltaLng < 1 && deltaLng > .1) {
-            console.log(`Lazy match for (${lat}, ${lng}) with ${potentialMatch}`);
+            // console.log(`Lazy match for (${lat}, ${lng}) with ${potentialMatch}`);
             addToEvidenceList("Location", request.details["originUrl"], strReq, request.details["url"], "coordinates")
           }
           if (deltaLat < .1 && deltaLng < .1) {
-            conosole.log(`Tight match (within 7 miles) for (${lat}, ${lng}) with ${potentialMatch}`);
+            // conosole.log(`Tight match (within 7 miles) for (${lat}, ${lng}) with ${potentialMatch}`);
             addToEvidenceList("Location", request.details["originUrl"], strReq, request.details["url"], "coordinates")
         }
       }
@@ -642,7 +643,7 @@ function getState(zipString) {
   } else {
       st = 'none';
       state = 'none';
-      console.log('No state found matching', zipcode);
+      // console.log('No state found matching', zipcode);
   }
 
   return [st, state];
@@ -658,12 +659,12 @@ function emailSearch(strReq) {
   let result = strReq.match(re)
   if (result != null)
   {
-    console.log(result)
+    // console.log(result)
   }
   let altresult = strReq.match(realt)
   if (altresult != null)
   {
-    console.log(altresult)
+    // console.log(altresult)
   }
 
 }
@@ -683,8 +684,8 @@ function phoneSearch(strReq) {
   reglist.forEach(re => {
     let result = strReq.match(re)
     if (result != null) {
-      console.log(result)
-      console.log(re)
+      // console.log(result)
+      // console.log(re)
     }
   } )
 }
@@ -707,7 +708,7 @@ var phone_posib = buildPhone(hardcodePhone);
 phone_posib.forEach(phone => hardcodeKeywords.push(phone));
 ssn_posib.forEach(ssn => hardcodeKeywords.push(ssn));
 
-console.log(hardcodeKeywords);
+// console.log(hardcodeKeywords);
 
 // preliminary list to test method
 const regex_special_char = ['(', ')', '+', '.', '?']
@@ -731,7 +732,7 @@ async function userMatch(request) {
       let re = new RegExp(`${fixed}`, "i");
       let result = strReq.match(re)
       if (result != null) {
-        console.log(result)
+        // console.log(result)
       }
       // try for off-by-one regex match (heuristic that we will have less false positives for longer words)
 
@@ -755,7 +756,7 @@ async function userMatch(request) {
           let reg = new RegExp(attempt, "i");
           let result = strReq.match(reg);
           if (result != null) {
-            console.log(result);
+            // console.log(result);
           }
         }
       }
