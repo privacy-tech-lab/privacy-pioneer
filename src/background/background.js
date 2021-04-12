@@ -8,6 +8,8 @@ background.js
 
 import { onBeforeRequest, onBeforeSendHeaders, onHeadersReceived } from "./analysis/analyze.js"
 import { importData } from "./analysis/importSearchData.js"
+import { openDB } from 'idb';
+
 
 // A filter that restricts the events that will be sent to a listener.
 // You can play around with the urls and types.
@@ -18,10 +20,10 @@ const filter = { urls: ["<all_urls>"], types: ["script", "xmlhttprequest", "sub_
 
 export var evidence = {}
 
+
 // call function to get all the url and keyword data
 importData()
   .then((data) => {
-
     // Listener to get response data, request body, and details about request
     browser.webRequest.onBeforeRequest.addListener(function (details) { onBeforeRequest(details, data) }, filter, ["requestBody", "blocking"])
 

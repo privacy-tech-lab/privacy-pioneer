@@ -16,8 +16,9 @@ const evidence = new Evidence({
 })
 */
 import { Request, Evidence } from "./classModels.js"
-
+import { openDB } from 'idb';
 import { evidence } from "../background.js"
+import { idbKeyval } from "./openDB.js"
 
 import { RegexSpecialChar, escapeRegExp } from "./regexFunctions.js"
 
@@ -28,9 +29,6 @@ const buffer = {}
 // Mozilla docs outlines several ways to parse incoming chunks of data; Feel free to experiment with others
 // https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/API/webRequest/StreamFilter/ondata
 const onBeforeRequest = (details, data) => {
-  var loc = data[0]
-  var networkKeywords = data[1]
-  var urls = data[2]
   const filter = browser.webRequest.filterResponseData(details.requestId),
     decoder = new TextDecoder("utf-8"),
     d = []
@@ -62,15 +60,13 @@ const onBeforeRequest = (details, data) => {
   filter.onstop = async (event) => {
     filter.close()
     request.responseData = d.toString()
-    resolveBuffer(request.id, loc, networkKeywords, urls)
+    resolveBuffer(request.id, data)
   }
 }
 
 // OnBeforeSendHeaders callback
 const onBeforeSendHeaders = (details, data) => {
-  var loc = data[0]
-  var networkKeywords = data[1]
-  var urls = data[2]
+
   let request
 
   if (details.requestId in buffer) {
@@ -84,14 +80,11 @@ const onBeforeSendHeaders = (details, data) => {
     buffer[details.requestId] = request
   }
 
-  resolveBuffer(request.id, loc, networkKeywords, urls)
+  resolveBuffer(request.id, data)
 }
 
 // OnHeadersReceived callback
 const onHeadersReceived = (details, data) => {
-  var loc = data[0]
-  var networkKeywords = data[1]
-  var urls = data[2]
   let request
 
   if (details.requestId in buffer) {
@@ -105,12 +98,11 @@ const onHeadersReceived = (details, data) => {
     buffer[details.requestId] = request
   }
 
-  resolveBuffer(request.id, loc, networkKeywords, urls)
+  resolveBuffer(request.id, data)
 }
 
 // Verifies if we have all the data for a request to be analyzed
-// So we call our search functions here
-function resolveBuffer(id, loc, networkKeywords, urls) {
+function resolveBuffer(id, data) {
   if (id in buffer) {
     const request = buffer[id]
     const strRequest = JSON.stringify(request)
@@ -121,6 +113,10 @@ function resolveBuffer(id, loc, networkKeywords, urls) {
       request.responseData !== undefined
     ) {
       delete buffer[id]
+
+      var loc = data[0]
+      var networkKeywords = data[1]
+      var urls = data[2]
       // if this value is 0 the client likely denied location permission
       // or they could be on Null Island in the middle of the Gulf of Guinea
       if (loc[0] != 0 && loc[1] != 0) {
@@ -200,7 +196,7 @@ function addToEvidenceList(perm, rootU, snip, requestU, t) {
     if (perm in evidence[rootUrl]) {
       var permDictNew = evidence[rootUrl][perm]
       if (typeHashed in evidence[rootUrl][perm]) {
-        // do nothing
+        // do nothing because this type of category is already there
       }
         // if it doesn't exist let's add it
       else {
@@ -219,7 +215,7 @@ function addToEvidenceList(perm, rootU, snip, requestU, t) {
     evidence[rootUrl] = permDict
   }
 
-  console.log(evidence)
+  idbKeyval.set("evidence", evidence)
 }
 
 // Look in request for keywords from list of keywords built from user's
@@ -229,7 +225,7 @@ function locationKeywordSearch(request, networkKeywords) {
   var locElems = networkKeywords["location"]
   for (var j = 0; j < locElems.length; j++) {
     if (strReq.includes(locElems[j])) {
-      console.log(locElems[j] + " detected for snippet " + strReq)
+      // console.log(locElems[j] + " detected for snippet " + strReq)
       addToEvidenceList("Location", request.details["originUrl"], strReq, request.details["url"], locElems[j])
     }
   }
@@ -253,7 +249,7 @@ function urlSearch(request, urls) {
         if (typeof urlLst === 'object') {
           for (var u = 0; u < urlLst.length; u++) {
             if (url.includes(urlLst[u])) {
-              console.log(cat + " URL detected for " + urlLst[u])
+              // console.log(cat + " URL detected for " + urlLst[u])
               addToEvidenceList(cat, request.details["originUrl"], "null", request.details["url"], cat)
             }
           }
@@ -261,7 +257,7 @@ function urlSearch(request, urls) {
         // else we go here
         else {
           if (url.includes(urlLst)) {
-            console.log(cat + " URL detected for " + urlLst)
+            // console.log(cat + " URL detected for " + urlLst)
             addToEvidenceList(cat, request.details["originUrl"], "null", request.details["url"], cat)
           }
         }
@@ -333,11 +329,11 @@ function coordinateSearch(request, locData) {
           const deltaLng = Math.abs(asFloat - absLng);
 
           if (deltaLat < 1 && deltaLat > .1 || deltaLng < 1 && deltaLng > .1) {
-            console.log(`Lazy match for (${lat}, ${lng}) with ${potentialMatch}`);
+            // console.log(`Lazy match for (${lat}, ${lng}) with ${potentialMatch}`);
             addToEvidenceList("Location", request.details["originUrl"], strReq, request.details["url"], "coordinates")
           }
           if (deltaLat < .1 && deltaLng < .1) {
-            conosole.log(`Tight match (within 7 miles) for (${lat}, ${lng}) with ${potentialMatch}`);
+            // conosole.log(`Tight match (within 7 miles) for (${lat}, ${lng}) with ${potentialMatch}`);
             addToEvidenceList("Location", request.details["originUrl"], strReq, request.details["url"], "coordinates")
         }
       }
