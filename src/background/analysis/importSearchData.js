@@ -22,6 +22,8 @@ export async function importData() {
 
     //zip routine
     const exampleZip = "06459"
+    const exampleCity = "Middletown"
+    const exampleAddress = "Lawn Ave"
     let userStateAbrev, userState;
     [userStateAbrev, userState] = getState(exampleZip)
 
@@ -31,7 +33,11 @@ export async function importData() {
 
     // for now setting placeholder of our location. Eventually this will
     // be swapped for the users custom input
-    var locElems = ["Middletown", "Connecticut", "Lawn Ave", "06457"]
+    var locElems = []
+    locElems.push(exampleZip)
+    locElems.push(userState)
+    locElems.push(exampleCity)
+    locElems.push(exampleAddress)
 
     networkKeywords["location"] = locElems
     networkKeywords["phone"] = userPhone

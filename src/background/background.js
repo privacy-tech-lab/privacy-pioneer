@@ -10,7 +10,6 @@ import { onBeforeRequest, onBeforeSendHeaders, onHeadersReceived } from "./analy
 import { importData } from "./analysis/importSearchData.js"
 import { openDB } from 'idb';
 
-
 // A filter that restricts the events that will be sent to a listener.
 // You can play around with the urls and types.
 // Maybe its the way I parse the data, but images and video won't load if I don't filter them out.
@@ -19,7 +18,6 @@ import { openDB } from 'idb';
 const filter = { urls: ["<all_urls>"], types: ["script", "xmlhttprequest", "sub_frame", "websocket" , "main_frame"] }
 
 export var evidence = {}
-
 
 // call function to get all the url and keyword data
 importData()
