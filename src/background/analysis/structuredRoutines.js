@@ -52,18 +52,18 @@ function getState(zipString) {
     if (typeof zipString !== 'string') {
         return;
     }
-  
+
     /* Ensure we have exactly 5 characters to parse */
     if (zipString.length !== 5) {
         return;
     }
-  
+
     /* Ensure we don't parse strings starting with 0 as octal values */
     const zipcode = parseInt(zipString, 10);
-  
+
     let st;
     let state;
-  
+
     /* Code cases alphabetized by state */
     if (zipcode >= 35000 && zipcode <= 36999) {
         st = 'AL';
@@ -226,7 +226,7 @@ function getState(zipString) {
         state = 'none';
         console.log('No state found matching', zipcode);
     }
-  
+
     return [st, state];
   }
 
@@ -235,7 +235,7 @@ function buildSsnRegex(ssn) {
     if (validate(ssn)) {
         let ssnString = format(ssn, '.')
         let ssnRegex = new RegExp(ssnString)
-        console.log(ssnRegex)
+        // console.log(ssnRegex)
         return ssnRegex
     }
     else {
