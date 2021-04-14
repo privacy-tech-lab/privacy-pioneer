@@ -9,8 +9,8 @@ const bundleFrontendScripts = (env, argv) => {
     name: "frontend",
     stats: "errors-warnings",
     entry: {
-      popup: "./src/popup/popup.jsx",
-      options: "./src/options/options.jsx",
+      popup: "./src/popup/index.js",
+      options: "./src/options/index.js",
     },
     output: {
       filename: "bundle.[name].js",
@@ -19,12 +19,12 @@ const bundleFrontendScripts = (env, argv) => {
     plugins: [
       new HtmlWebpackPlugin({
         filename: "popup.html",
-        template: "./src/popup/popup.html",
+        template: "./src/popup/index.html",
         chunks: ["popup"],
       }),
       new HtmlWebpackPlugin({
         filename: "options.html",
-        template: "./src/options/options.html",
+        template: "./src/options/index.html",
         chunks: ["options"],
       }),
     ],
@@ -52,7 +52,6 @@ const bundleFrontendScripts = (env, argv) => {
     devServer: {
       hot: true,
       contentBase: false,
-      clientLogLevel: "silent",
       writeToDisk: true,
       disableHostCheck: true,
       stats: "errors-only",
