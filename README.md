@@ -43,6 +43,20 @@ npm run build
 
 The `web-ext` cli is included in the project. Learn more about packaging and signing for release at the [extension workshop](https://extensionworkshop.com/documentation/develop/getting-started-with-web-ext/).
 
+## Directory Layout
+
+```bash
+.
+├── src                 # Extension source code
+|   |── assets          # Images and other public files used in the extension
+|   |── background      # Code for extension background related tasks (Ex. HTTP analysis)
+|   |── libs            # Utility functions and components used in frontend and background tasks
+|   |── options         # Options page frontend SPA
+|   |── popup           # Popup dialog view frontend SPA
+|   └── manifest.json   # Extension metadata
+└── ...
+```
+
 ## Features
 
 By analyzing the HTTP requests of a site, we want to understand where requests are being sent, i.e, the first or third party receiving a request. Once we know that, we can look for the following types of information in web requests:
