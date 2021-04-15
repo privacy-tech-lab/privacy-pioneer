@@ -58,7 +58,6 @@ async function addToEvidenceList(perm, rootU, snip, requestU, t) {
 
   // currently stored evidence
   var evidence = await idbKeyval.get("evidence")
-  console.log(evidence)
   
   // if we don't have evidence yet, we initialize it as an empty dict
   if (evidence === undefined) {
