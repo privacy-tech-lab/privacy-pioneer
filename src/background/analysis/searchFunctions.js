@@ -6,7 +6,6 @@ requests
 */
 import { Request, Evidence } from "./classModels.js"
 import { openDB } from 'idb';
-import { evidence } from "../background.js"
 import { idbKeyval } from "./openDB.js"
 
 import { RegexSpecialChar, escapeRegExp } from "./regexFunctions.js"
@@ -41,7 +40,8 @@ const getHostname = (url) => {
 
 // given the permission category, the url of the request, and the snippet
 // from the request, get the current time in ms and add to our evidence list
-function addToEvidenceList(perm, rootU, snip, requestU, t) {
+// async because it has to wait on get from db
+async function addToEvidenceList(perm, rootU, snip, requestU, t) {
   var ts = Date.now()
   if (rootU == undefined) {
     rootU = requestU
@@ -56,43 +56,41 @@ function addToEvidenceList(perm, rootU, snip, requestU, t) {
     typ: t
   })
 
-  // we're missing getting the stored evidence values for persistence. so this
-  // is where we will make a call to the indexedDB to set evidence as whatever
-  // is stored there for the rootURL
+  // currently stored evidence
+  var evidence = await idbKeyval.get("evidence")
+  
+  // if we don't have evidence yet, we initialize it as an empty dict
+  if (evidence === undefined) {
+    evidence = {}
+  }
 
-  var evidenceDict = {}
-  var typeHashed = hashTypeAndPermission(perm.concat(t));
-  evidenceDict[typeHashed] = e
-  var permDict = {}
-  permDict[perm] = evidenceDict
+  // to get something like "location_zip"
+  let labels = [perm, t]
+  var store_label = labels.join('_')
 
-    // if there already exists this specific type and permission we don't want to add it
+  // if we have this rootUrl in evidence already we check if we already have store_label
   if (rootUrl in evidence) {
-    var rootDict = evidence[rootUrl]
-    if (perm in evidence[rootUrl]) {
-      var permDictNew = evidence[rootUrl][perm]
-      if (typeHashed in evidence[rootUrl][perm]) {
-        // do nothing because this type of category is already there
-      }
-        // if it doesn't exist let's add it
-      else {
-        permDictNew[typeHashed] = e
-        evidence[rootUrl] = permDictNew
-      }
+    if (store_label in evidence[rootUrl]) {
+      //pass we already have evidence here
     }
-      // if it doesn't exist let's add it
     else {
-      rootDict[perm] = evidenceDict
-      evidence[rootUrl] = rootDict
+      // update evidence for this type_permission pair
+      evidence[rootUrl][store_label] = e
+      // commit to db
+      idbKeyval.set("evidence", evidence)
     }
   }
-  // if it doesn't exist let's add it
+  // we have don't have this rootUrl yet. We will initialize and set evidence at this url
   else {
-    evidence[rootUrl] = permDict
+    //init empty dict at this url
+    evidence[rootUrl] = {}
+    //add the evidence
+    evidence[rootUrl][store_label] = e
+    // commit to db
+    idbKeyval.set("evidence", evidence)
   }
-
-  idbKeyval.set("evidence", evidence)
 }
+
 
 // Look in request for keywords from list of keywords built from user's
 // location and the Google Maps geocoding API
@@ -125,6 +123,7 @@ function urlSearch(request, urls) {
           for (var u = 0; u < urlLst.length; u++) {
             if (url.includes(urlLst[u])) {
               // console.log(cat + " URL detected for " + urlLst[u])
+              // here originUrl is not always getting us what we want. For example it will be a google address while I'm on nyt
               addToEvidenceList(cat, request.details["originUrl"], "null", request.details["url"], cat)
             }
           }
@@ -133,6 +132,7 @@ function urlSearch(request, urls) {
         else {
           if (url.includes(urlLst)) {
             // console.log(cat + " URL detected for " + urlLst)
+            // here originUrl is not always getting us what we want. For example it will be a google address while I'm on nyt
             addToEvidenceList(cat, request.details["originUrl"], "null", request.details["url"], cat)
           }
         }
