@@ -17,8 +17,6 @@ import { openDB } from 'idb';
 // https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/API/webRequest/ResourceType
 const filter = { urls: ["<all_urls>"], types: ["script", "xmlhttprequest", "sub_frame", "websocket" , "main_frame"] }
 
-export var evidence = {}
-
 // call function to get all the url and keyword data
 importData()
   .then((data) => {
