@@ -15,6 +15,7 @@ const bundleFrontendScripts = (env, argv) => {
     output: {
       filename: "bundle.[name].js",
       path: _resolve(__dirname, isDev ? "dev" : "dist"),
+      publicPath: '/'
     },
     plugins: [
       new HtmlWebpackPlugin({
@@ -50,11 +51,13 @@ const bundleFrontendScripts = (env, argv) => {
       ],
     },
     devServer: {
-      hot: true,
+      hot: false,
+      inline: true,
+      overlay: true,
       contentBase: false,
       writeToDisk: true,
       disableHostCheck: true,
-      stats: "errors-only",
+      stats: "minimal",
       port: 8000,
     },
     optimization: {
@@ -88,6 +91,7 @@ const bundleBackgroundScripts = (env, argv) => {
     output: {
       filename: "bundle.[name].js",
       path: _resolve(__dirname, isDev ? "dev" : "dist"),
+      publicPath: '/'
     },
     plugins: [
       new CopyPlugin({

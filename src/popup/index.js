@@ -1,7 +1,7 @@
 import React from "react"
 import ReactDOM from "react-dom"
 import GlobalStyle from "../libs/global-style"
-import { BrowserRouter as Router } from "react-router-dom"
+import { HashRouter as Router } from "react-router-dom"
 import AppView from "./views/app-view"
 
 ReactDOM.render(

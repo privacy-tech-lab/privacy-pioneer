@@ -30,25 +30,25 @@ const NavBar = () => {
   return (
     <SNavBar>
       <SLeading>
-        <SLeadingContainer onClick={history.goBack}>
+        <SLeadingContainer onClick={() => configureRoute("/")}>
           <SBrandIcon src={logo} alt="Logo" />
           <SBrandTitle>Integrated Privacy Analysis</SBrandTitle>
         </SLeadingContainer>
       </SLeading>
       <STrailing>
-        <SNavAction active={tab === 0} onClick={() => configureRoute("/options.html")}>
+        <SNavAction active={tab === 0} onClick={() => configureRoute("/")}>
           <Icons.Home size="24px" />
           Home
         </SNavAction>
-        <SNavAction active={tab === 1} onClick={() => configureRoute("/options.html/watchlist")}>
+        <SNavAction active={tab === 1} onClick={() => configureRoute("/watchlist")}>
           <Icons.Radar size="20px" />
           Watchlist
         </SNavAction>
-        <SNavAction active={tab === 2} onClick={() => configureRoute("/options.html/settings")}>
+        <SNavAction active={tab === 2} onClick={() => configureRoute("/settings")}>
           <Icons.Settings size="24px" />
           Settings
         </SNavAction>
-        <SNavAction active={tab === 3} onClick={() => configureRoute("/options.html/about")}>
+        <SNavAction active={tab === 3} onClick={() => configureRoute("/about")}>
           <Icons.Info size="24px" />
           About
         </SNavAction>

@@ -17,12 +17,12 @@ const AppView = () => {
       <NavBar />
       <AnimatePresence exitBeforeEnter>
         <Switch location={location} key={location.pathname}>
-          <Route path="/options.html" exact component={HomeView} />
-          <Route path="/options.html/watchlist" component={WatchlistView} />
-          <Route path="/options.html/settings" component={SettingsView} />
-          <Route path="/options.html/about" component={AboutView} />
-          <Route path="/options.html/search" component={SearchView} />
-          <Route path="/options.html/website/:website" component={WebsiteView} />
+          <Route path="/" exact component={HomeView} />
+          <Route path="/watchlist" component={WatchlistView} />
+          <Route path="/settings" component={SettingsView} />
+          <Route path="/about" component={AboutView} />
+          <Route path="/search" component={SearchView} />
+          <Route path="/website/:website" component={WebsiteView} />
         </Switch>
       </AnimatePresence>
     </React.Fragment>

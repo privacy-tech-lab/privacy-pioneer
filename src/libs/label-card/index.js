@@ -1,7 +1,7 @@
 import React from "react"
 import WebsiteBadge from "../website-badge"
 import * as Icons from "../icons"
-import { useHistory, useLocation } from "react-router-dom"
+import { useHistory } from "react-router-dom"
 import { SCard, SDescription, SSeperator, SHeader, SHeaderLeading, SHeaderTitle, SHeaderTrailing, SMore } from "./style"
 
 const More = ({ count }) => (
@@ -13,15 +13,13 @@ const More = ({ count }) => (
 
 const LabelCard = (props) => {
   const history = useHistory()
-  const location = useLocation()
-  const root = location.pathname.split("/")[1]
   const website = "www.amazon.com"
   const label = "location"
   return (
     <SCard
       margin={props.margin}
       onClick={() =>
-        props.onTap != null ? props.onTap() : history.push({ pathname: `${root}/website/${website}/label/${label}` })
+        props.onTap != null ? props.onTap() : history.push({ pathname: `/website/${website}/label/${label}` })
       }
     >
       <SHeader>
