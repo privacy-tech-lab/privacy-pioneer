@@ -15,7 +15,7 @@ const bundleFrontendScripts = (env, argv) => {
     output: {
       filename: "bundle.[name].js",
       path: _resolve(__dirname, isDev ? "dev" : "dist"),
-      publicPath: '/'
+      publicPath: "/",
     },
     plugins: [
       new HtmlWebpackPlugin({
@@ -46,7 +46,12 @@ const bundleFrontendScripts = (env, argv) => {
         },
         {
           test: /\.(png|svg|jpg|gif)$/,
-          use: ["file-loader"],
+          loader: "file-loader",
+          options: {
+            outputPath: "assets/",
+            publicPath: "assets/",
+            name: "[name].[ext]",
+          },
         },
       ],
     },
@@ -91,7 +96,7 @@ const bundleBackgroundScripts = (env, argv) => {
     output: {
       filename: "bundle.[name].js",
       path: _resolve(__dirname, isDev ? "dev" : "dist"),
-      publicPath: '/'
+      publicPath: "/",
     },
     plugins: [
       new CopyPlugin({
