@@ -7,7 +7,7 @@ import { SContainer, SItem, SLabel, SLabelGroup, SSeperator } from "./style"
 const Item = () => {
   const history = useHistory()
   const onClick = (domain) => {
-    history.push({ pathname: `/options.html/website/${'www.amazon.com'}` })
+    history.push({ pathname: `/website/${domain}` })
   }
 
   return (

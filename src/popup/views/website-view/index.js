@@ -3,12 +3,21 @@ import Scaffold from "../../components/scaffold"
 import WebsiteLogo from "../../../libs/website-logo"
 import LabelCard from "../../../libs/label-card"
 import * as Icons from "../../../libs/icons"
-import { useHistory } from "react-router-dom"
 import { SLeading, SBrandIcon, SBrandTitle, STrailing, SBody, SHeader, STitle, SSubtitle, SIconWrapper } from "./style"
 import NavBar from "../../components/nav-bar"
 
 const WebsiteView = () => {
-  const history = useHistory()
+  const navigate = ({ urlHash = "" }) => {
+    const url = browser.runtime.getURL("options.html")
+    browser.tabs.query({ url: url }, function (tabs) {
+      if (tabs.length) {
+        browser.tabs.update(tabs[0].id, { active: true, url: url + urlHash })
+      } else {
+        browser.tabs.create({ url: url + urlHash })
+      }
+    })
+  }
+
   return (
     <Scaffold
       navigationBar={
@@ -20,10 +29,10 @@ const WebsiteView = () => {
           }
           trailing={
             <STrailing>
-              <SIconWrapper onClick={() => history.push({ pathname: "popup.html/watchlist" })}>
+              <SIconWrapper onClick={() => navigate({ urlHash: "#watchlist" })}>
                 <Icons.Radar size="24px" />
               </SIconWrapper>
-              <SIconWrapper onClick={() => browser.runtime.openOptionsPage()}>
+              <SIconWrapper onClick={() => navigate({ urlHash: "#" })}>
                 <Icons.Settings size="24px" />
               </SIconWrapper>
             </STrailing>

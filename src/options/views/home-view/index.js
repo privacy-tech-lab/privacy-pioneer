@@ -23,7 +23,7 @@ const HomeView = () => {
             <STitle>Recent</STitle>
             <SSubtitle>See companies who recently collected or shared personal information</SSubtitle>
           </div>
-          <SButtonText onClick={() => history.push({ pathname: "/options.html/search" })}>See All</SButtonText>
+          <SButtonText onClick={() => history.push({ pathname: "/search" })}>See All</SButtonText>
         </SSectionContainer>
         <WebsiteLabelList />
       </SContainer>
