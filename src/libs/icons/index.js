@@ -140,3 +140,25 @@ export const Close = ({ size }) => (
     </g>
   </svg>
 )
+
+export const Plus = ({ size }) => (
+  <svg height={size} width={size} xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+    <g data-name="Layer 2">
+      <g data-name="plus">
+        <rect width="24" height="24" transform="rotate(180 12 12)" opacity="0" />
+        <path d="M19 11h-6V5a1 1 0 0 0-2 0v6H5a1 1 0 0 0 0 2h6v6a1 1 0 0 0 2 0v-6h6a1 1 0 0 0 0-2z" />
+      </g>
+    </g>
+  </svg>
+)
+
+export const ChevronDown = ({ size }) => (
+  <svg height={size} width={size} xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+    <g data-name="Layer 2">
+      <g data-name="chevron-down">
+        <rect width="24" height="24" opacity="0" />
+        <path d="M12 15.5a1 1 0 0 1-.71-.29l-4-4a1 1 0 1 1 1.42-1.42L12 13.1l3.3-3.18a1 1 0 1 1 1.38 1.44l-4 3.86a1 1 0 0 1-.68.28z" />
+      </g>
+    </g>
+  </svg>
+)

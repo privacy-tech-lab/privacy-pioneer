@@ -10,7 +10,6 @@ const WebsiteView = () => {
   const navigate = ({ urlHash = "" }) => {
     const url = browser.runtime.getURL("options.html")
     browser.tabs.query({ url: url }, function (tabs) {
-      console.log(tabs)
       if (tabs.length) {
         browser.tabs.update(tabs[0].id, { active: true, url: url + urlHash })
       } else {
