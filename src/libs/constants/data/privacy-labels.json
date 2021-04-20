@@ -1,0 +1,34 @@
+{
+  "location": {
+    "displayName": "Location",
+    "description": "Location services...",
+    "subtypes": {
+      "coarse_location": {
+        "displayName": "Coarse Location"
+      },
+      "ip_address": {
+        "displayName": "IP Address Targeting"
+      }
+    }
+  },
+  "advertising": {
+    "displayName": "Advertising",
+    "description": "Uses the Internet to deliver promotional marketing messages to consumers.",
+    "subtypes": {}
+  },
+  "social": {
+    "displayName": "Social",
+    "description": "Social media are interactive technologies that allow the creation or sharing/exchange of information",
+    "subtypes": {}
+  },
+  "fingerprinting": {
+    "displayName": "Fingerprinting",
+    "description": "Information collected about the software and hardware of a remote computing device for the purpose of identification.",
+    "subtypes": {}
+  },
+  "pixels": {
+    "displayName": "Tracking Pixels",
+    "description": "Code snippet which is loaded when a user visits a website or opens an email. It is useful for tracking user behavior and conversions. ",
+    "subtypes": {}
+  }
+}
