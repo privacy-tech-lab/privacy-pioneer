@@ -1,3 +1,4 @@
+import { motion } from "framer-motion"
 import styled from "styled-components"
 
 export const SBody = styled.div`
@@ -44,7 +45,7 @@ export const SThirdParty = styled.div`
   flex-direction: column;
 `
 
-export const SItem = styled.div`
+export const SItem = styled(motion.div)`
   display: flex;
   flex-direction: column;
 `
@@ -60,6 +61,7 @@ export const SSeperator = styled.div`
 `
 
 export const SBadge = styled.div`
+  cursor: pointer;
   display: flex;
   flex-direction: row;
   justify-content: center;
@@ -73,4 +75,5 @@ export const SBadge = styled.div`
   padding-right: 8px;
   padding-top: 4px;
   padding-bottom: 4px;
+  ${props => props.selected ? 'font-weight: bold;' : null}
 `
