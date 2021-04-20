@@ -1,4 +1,4 @@
-import React from "react"
+import React, { useState } from "react"
 import {
   SBadge,
   SBadgeGroup,
@@ -14,10 +14,33 @@ import {
 } from "./style"
 import WebsiteLogo from "../website-logo"
 import WebsiteBadge from "../website-badge"
+import Evidence from "./components/evidence"
+import { AnimateSharedLayout, motion } from "framer-motion"
+
+const Item = () => {
+  const [show, setVisibility] = useState(false)
+
+  return (
+    <SItem layout>
+      <motion.div layout>
+        <WebsiteBadge domain={"Google"} />
+        <SBadgeGroup>
+          <SBadge selected={show} onClick={() => setVisibility((state) => !state)}>
+            Coarse Location
+          </SBadge>
+          <SBadge>Approximate Location</SBadge>
+        </SBadgeGroup>
+      </motion.div>
+      <Evidence show={show} />
+      <SSeperator marginTop="16px" />
+    </SItem>
+  )
+}
 
 const LabelDetail = () => {
   return (
     <SBody>
+      <motion.div layout>
       <SHeader>
         <WebsiteLogo large domain={"Amazon"} />
         <SSpacer />
@@ -30,33 +53,15 @@ const LabelDetail = () => {
         </SContent>
       </SHeader>
       <SSeperator marginLeft="16px" marginRight="16px" />
+      </motion.div>
       <SThirdParty>
         <STitle>Third Parties</STitle>
         <SDescription>Amazon shared your location data with the following third parties.</SDescription>
-        <SItem>
-          <WebsiteBadge domain={"Google"} />
-          <SBadgeGroup>
-            <SBadge>Coarse Location</SBadge>
-            <SBadge>Approximate Location</SBadge>
-          </SBadgeGroup>
-          <SSeperator marginTop="16px" />
-        </SItem>
-        <SItem>
-          <WebsiteBadge domain={"Spotify"} />
-          <SBadgeGroup>
-            <SBadge>Coarse Location</SBadge>
-            <SBadge>Approximate Location</SBadge>
-          </SBadgeGroup>
-          <SSeperator marginTop="16px" />
-        </SItem>
-        <SItem>
-          <WebsiteBadge domain={"Facebook"} />
-          <SBadgeGroup>
-            <SBadge>Coarse Location</SBadge>
-            <SBadge>Approximate Location</SBadge>
-          </SBadgeGroup>
-          <SSeperator marginTop="16px" />
-        </SItem>
+        <AnimateSharedLayout layout>
+          <Item />
+          <Item />
+          <Item />
+        </AnimateSharedLayout>
       </SThirdParty>
     </SBody>
   )

@@ -15,8 +15,8 @@ export const SBackdrop = styled(motion.div)`
 export const SModal = styled.div`
   display: flex;
   flex-direction: column;
-  padding: 0px 16px 16px 16px;
-  width: 360px;
+  padding: 0px 16px 16px 8px;
+  width: 720px;
   background-color: var(--cardColor);
   height: 600px;
   border-radius: 16px;
