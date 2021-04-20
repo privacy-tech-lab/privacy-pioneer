@@ -26,16 +26,44 @@ function hashTypeAndPermission(str) {
    return hash;
 }
 
+// code from https://stackoverflow.com/questions/8498592/extract-hostname-name-from-string
+function extractHostname(url) {
+    var hostname;
+    //find & remove protocol (http, ftp, etc.) and get hostname
+
+    if (url.indexOf("//") > -1) {
+        hostname = url.split('/')[2];
+    }
+    else {
+        hostname = url.split('/')[0];
+    }
+
+    //find & remove port number
+    hostname = hostname.split(':')[0];
+    //find & remove "?"
+    hostname = hostname.split('?')[0];
+
+    return hostname;
+}
+
 // takes in full url and extracts just the domain host
+// code from https://stackoverflow.com/questions/8498592/extract-hostname-name-from-string
 const getHostname = (url) => {
-  // use URL constructor and return hostname
-  try {
-    return new URL(url).hostname;
+  var domain = extractHostname(url),
+      splitArr = domain.split('.'),
+      arrLen = splitArr.length;
+
+  //extracting the root domain here
+  //if there is a subdomain
+  if (arrLen > 2) {
+      domain = splitArr[arrLen - 2] + '.' + splitArr[arrLen - 1];
+      //check to see if it's using a Country Code Top Level Domain (ccTLD) (i.e. ".me.uk")
+      if (splitArr[arrLen - 2].length == 2 && splitArr[arrLen - 1].length == 2) {
+          //this is using a ccTLD
+          domain = splitArr[arrLen - 3] + '.' + domain;
+      }
   }
-  catch(err) {
-    console.log(err)
-    return url
-  }
+  return domain;
 }
 
 // given the permission category, the url of the request, and the snippet
@@ -58,7 +86,7 @@ async function addToEvidenceList(perm, rootU, snip, requestU, t) {
 
   // currently stored evidence
   var evidence = await idbKeyval.get("evidence")
-  
+
   // if we don't have evidence yet, we initialize it as an empty dict
   if (evidence === undefined) {
     evidence = {}
