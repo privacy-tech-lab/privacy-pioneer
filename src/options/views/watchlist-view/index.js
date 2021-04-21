@@ -6,11 +6,15 @@ import * as Icons from "../../../libs/icons"
 import ListItem from "./components/list-item"
 import EditModal from "./components/edit-modal"
 import { idbKeyval } from "../../../libs/indexed-db"
+import { importData } from "../../../background/analysis/importSearchData"
 
 const WatchlistView = () => {
   const [modalConfig, configModal] = useState({ open: false, edit: false })
   const [items, setItems] = useState([])
-  const updateList = () => idbKeyval.values().then((values) => setItems(values))
+  const updateList = () => {
+    idbKeyval.values().then((values) => setItems(values));
+    importData();
+  }
 
   useEffect(() => updateList(), [])
 
