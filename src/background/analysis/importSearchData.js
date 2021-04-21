@@ -54,7 +54,6 @@ export async function importData() {
 
     networkKeywords["location"] = locElems
     if (typeof userPhone !== 'undefined') { networkKeywords["phone"] = userPhone }
-    console.log(networkKeywords)
 
     // now let's build up fingerprinting info
 
