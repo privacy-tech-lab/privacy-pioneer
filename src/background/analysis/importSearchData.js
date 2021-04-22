@@ -82,6 +82,5 @@ async function getWatchlistDict() {
            else { user_store_dict[ktype] = [keyword] }
         }
     }
-
     return user_store_dict
 }
