@@ -39,7 +39,7 @@ function buildPhone(userNumber) {
     }
 
     else {
-        console.log('the phone number you inputed was invalid!');
+        return []
     }
 }
 

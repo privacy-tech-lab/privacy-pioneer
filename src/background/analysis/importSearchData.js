@@ -9,6 +9,7 @@ import { keywords } from "./importJson.js"
 import { services } from "./importJson.js"
 import { getLocationData, filterGeocodeResponse } from "./getLocationData.js"
 import { buildPhone, getState, buildSsnRegex } from "./structuredRoutines.js"
+import { idbKeyval } from "../../libs/indexed-db/index.js"
 
 export async function importData() {
     var networkKeywords = {}
@@ -16,9 +17,21 @@ export async function importData() {
     // first let's build up the location info
     var locCoords = await getLocationData();
 
-    // phone number routine
-    const examplePhone = "9738608562";
-    const userPhone = buildPhone(examplePhone);
+    // get formatted data from the watchlist store
+    let user_store_dict = await getWatchlistDict()
+
+    // format every phone stored
+    var userPhone
+    if ('phone_number' in user_store_dict) {
+        userPhone = []
+        let phone_arr = user_store_dict['phone_number']
+        phone_arr.forEach( phone => {
+            let format_arr = buildPhone(phone)
+            format_arr.forEach( format => {
+                userPhone.push(format)
+            })
+        })
+    }
 
     //zip routine
     const exampleZip = "06459"
@@ -40,9 +53,34 @@ export async function importData() {
     locElems.push(exampleAddress)
 
     networkKeywords["location"] = locElems
-    networkKeywords["phone"] = userPhone
+    if (typeof userPhone !== 'undefined') { networkKeywords["phone"] = userPhone }
 
     // now let's build up fingerprinting info
 
     return [locCoords, networkKeywords, services]
+}
+
+async function getWatchlistDict() {
+    
+    var user_store_dict = {}
+
+    // iterate through the stored keywords in the watchlist store and add them to a dict that maps
+    // keywordtype -> list of keywords for that type
+    let keyarr = await idbKeyval.keys()
+    for (let key of keyarr) {
+        let ktype, keyword
+        let keywordObject = await idbKeyval.get(key)
+        for (let [t, val] of Object.entries(keywordObject) ) {
+            if (t == 'type') { ktype = val }
+            if (t == 'keyword') { keyword = val }
+       }
+       if (typeof ktype !== 'undefined' && typeof keyword !== 'undefined') {
+           if (ktype in user_store_dict) {
+            let updated = user_store_dict[ktype].concat([keyword]) //the concat is fine for now, I'm not sure why push isn't working
+            user_store_dict[ktype] = updated
+           }
+           else { user_store_dict[ktype] = [keyword] }
+        }
+    }
+    return user_store_dict
 }

@@ -132,9 +132,12 @@ function resolveBuffer(id, data) {
         locationKeywordSearch(strRequest, networkKeywords, rootUrl, reqUrl)
       }
 
-      if (networkKeywords["phone"].length != 0) {
-        regexSearch(strRequest, networkKeywords["phone"], rootUrl, reqUrl)
-      }
+      if ("phone_number" in networkKeywords) {
+          networkKeywords["phone_number"].forEach( number => {
+            regexSearch(strRequest, number, rootUrl, reqUrl)
+          })
+        }
+
       // search to see if the url comes up in our services list
       urlSearch(request, urls)
     }
