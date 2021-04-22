@@ -6,7 +6,7 @@ const dbPromise = openDB("watchlist-store", 1, {
   },
 })
 
-export const idbKeyval = {
+export const WatchlistKeyval = {
   async get(key) {
     return (await dbPromise).get("watchlist", key)
   },

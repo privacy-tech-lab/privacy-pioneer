@@ -12,7 +12,7 @@ const dbPromise = openDB('keyval-store', 1, {
   },
 });
 
-export const idbKeyval = {
+export const EvidenceKeyval = {
   async get(key) {
     return (await dbPromise).get('network-requests', key);
   },

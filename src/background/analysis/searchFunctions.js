@@ -4,9 +4,9 @@ searchFunctions.js
 - searchFunctions.js contains all functions used to search through network
 requests
 */
-import { Request, Evidence } from "./classModels.js"
+import { Request, Evidence, typeEnum, permissionEnum } from "./classModels.js"
 import { openDB } from 'idb';
-import { idbKeyval } from "./openDB.js"
+import { EvidenceKeyval } from "./openDB.js"
 
 import { RegexSpecialChar, escapeRegExp } from "./regexFunctions.js"
 
@@ -69,7 +69,7 @@ const getHostname = (url) => {
 // given the permission category, the url of the request, and the snippet
 // from the request, get the current time in ms and add to our evidence list
 // async because it has to wait on get from db
-async function addToEvidenceList(perm, rootU, snip, requestU, t) {
+async function addToEvidenceList(perm, rootU, snip, requestU, t, i) {
   var ts = Date.now()
   if (rootU == undefined) {
     rootU = requestU
@@ -81,11 +81,12 @@ async function addToEvidenceList(perm, rootU, snip, requestU, t) {
     rootUrl: rootUrl,
     snippet: snip,
     requestUrl: requestU,
-    typ: t
-  })
+    typ: t,
+    index: i
+  } )
 
-  // currently stored evidence
-  var evidence = await idbKeyval.get("evidence")
+  // currently stored evidence at this domain
+  var evidence = await EvidenceKeyval.get(rootUrl)
 
   // if we don't have evidence yet, we initialize it as an empty dict
   if (evidence === undefined) {
@@ -97,25 +98,24 @@ async function addToEvidenceList(perm, rootU, snip, requestU, t) {
   var store_label = labels.join('_')
 
   // if we have this rootUrl in evidence already we check if we already have store_label
-  if (rootUrl in evidence) {
-    if (store_label in evidence[rootUrl]) {
+  if (Object.keys(evidence).length !== 0) {
+    if (store_label in evidence) {
       //pass we already have evidence here
     }
     else {
       // update evidence for this type_permission pair
-      evidence[rootUrl][store_label] = e
+      evidence[store_label] = e
       // commit to db
-      idbKeyval.set("evidence", evidence)
+      console.log(evidence)
+      EvidenceKeyval.set(rootUrl, evidence)
     }
   }
-  // we have don't have this rootUrl yet. We will initialize and set evidence at this url
+  // we have don't have this rootUrl yet. So we  evidence at this url
   else {
-    //init empty dict at this url
-    evidence[rootUrl] = {}
-    //add the evidence
-    evidence[rootUrl][store_label] = e
+    evidence[store_label] = e
     // commit to db
-    idbKeyval.set("evidence", evidence)
+    console.log(evidence)
+    EvidenceKeyval.set(rootUrl, evidence)
   }
 }
 
@@ -123,11 +123,11 @@ async function addToEvidenceList(perm, rootU, snip, requestU, t) {
 // Look in request for keywords from list of keywords built from user's
 // location and the Google Maps geocoding API
 function locationKeywordSearch(strReq, networkKeywords, rootUrl, reqUrl) {
-  var locElems = networkKeywords["location"]
+  var locElems = networkKeywords[permissionEnum.Location]
   for (var j = 0; j < locElems.length; j++) {
     if (strReq.includes(locElems[j])) {
       // console.log(locElems[j] + " detected for snippet " + strReq)
-      addToEvidenceList("Location", rootUrl, strReq, reqUrl, locElems[j])
+      addToEvidenceList(permissionEnum.Location, rootUrl, strReq, reqUrl, locElems[j])
     }
   }
 }
@@ -152,7 +152,7 @@ function urlSearch(request, urls) {
             if (url.includes(urlLst[u])) {
               // console.log(cat + " URL detected for " + urlLst[u])
               // here originUrl is not always getting us what we want. For example it will be a google address while I'm on nyt
-              addToEvidenceList(cat, request.details["originUrl"], "null", request.details["url"], cat)
+              addToEvidenceList(cat, request.details["originUrl"], "null", request.details["url"], cat, undefined)
             }
           }
         }
@@ -161,7 +161,7 @@ function urlSearch(request, urls) {
           if (url.includes(urlLst)) {
             // console.log(cat + " URL detected for " + urlLst)
             // here originUrl is not always getting us what we want. For example it will be a google address while I'm on nyt
-            addToEvidenceList(cat, request.details["originUrl"], "null", request.details["url"], cat)
+            addToEvidenceList(cat, request.details["originUrl"], "null", request.details["url"], cat, undefined)
           }
         }
       }
@@ -231,12 +231,10 @@ function coordinateSearch(strReq, locData, rootUrl, reqUrl) {
           const deltaLng = Math.abs(asFloat - absLng);
 
           if (deltaLat < 1 && deltaLat > .1 || deltaLng < 1 && deltaLng > .1) {
-            // console.log(`Lazy match for (${lat}, ${lng}) with ${potentialMatch}`);
-            addToEvidenceList("Location", rootUrl, strReq, reqUrl, "coordinatesLazy")
+            addToEvidenceList(permissionEnum.Location, rootUrl, strReq, reqUrl, typeEnum.CoarseLocation, [index - 3, j])
           }
           if (deltaLat < .1 && deltaLng < .1) {
-            // conosole.log(`Tight match (within 7 miles) for (${lat}, ${lng}) with ${potentialMatch}`);
-            addToEvidenceList("Location", rootUrl, strReq, reqUrl, "coordinatesTight")
+            addToEvidenceList(permissionEnum.Location, rootUrl, strReq, reqUrl, typeEnum.TightLocation, [index - 3, j])
         }
       }
     }
@@ -245,19 +243,15 @@ function coordinateSearch(strReq, locData, rootUrl, reqUrl) {
 }
 
 // should be passed request as a string and keywords as an array
-function regexSearch(strReq, keywords, rootUrl, reqUrl) {
-  keywords.forEach(keyword => {
+function regexSearch(strReq, keyword, rootUrl, reqUrl, type) {
     let fixed = escapeRegExp(keyword)
     let re = new RegExp(`${fixed}`, "i");
     let result = strReq.search(re)
     if (result != -1) {
-      // 15 characters left and right of the found keyword
-      if (result - 15 > 0 && result + keyword.length + 15 < strReq.length) {
-        // console.log(strReq.slice(result - 15, result + keyword.length + 15))
-        addToEvidenceList("Phone", rootUrl, strReq, reqUrl, "phoneNumber")
+      {
+        addToEvidenceList(permissionEnum.PersonalData, rootUrl, strReq, reqUrl, type, [result, result + len(keyword)])
       }
     }
-  })
 }
 
 export { regexSearch, coordinateSearch, urlSearch, locationKeywordSearch }

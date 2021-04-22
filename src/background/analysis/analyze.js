@@ -13,12 +13,13 @@ const evidence = new Evidence({
   rooturl: "facebook.com",
   requesturl: "facebook.com/js"
   snippet: "blahblah"
+  index: undefined #to mean we don't want to pass an index
 })
 */
-import { Request, Evidence } from "./classModels.js"
+import { Request, Evidence, typeEnum, permissionEnum } from "./classModels.js"
 import { openDB } from 'idb';
 import { evidence } from "../background.js"
-import { idbKeyval } from "./openDB.js"
+import { EvidenceKeyval } from "./openDB.js"
 
 import { RegexSpecialChar, escapeRegExp } from "./regexFunctions.js"
 import { regexSearch, coordinateSearch, urlSearch, locationKeywordSearch } from "./searchFunctions"
@@ -128,15 +129,17 @@ function resolveBuffer(id, data) {
       }
       // if this network keyword length is 0 then the geocoding failed
       // so no need to look through location keywords
-      if (networkKeywords["location"].length != 0) {
+      if (networkKeywords[permissionEnum.Location].length != 0) {
         locationKeywordSearch(strRequest, networkKeywords, rootUrl, reqUrl)
       }
 
-      if ("phone_number" in networkKeywords) {
-          networkKeywords["phone_number"].forEach( number => {
-            regexSearch(strRequest, number, rootUrl, reqUrl)
+      if ( permissionEnum.PersonalData in networkKeywords) {
+        if ( typeEnum.Phone in networkKeywords[permissionEnum.PersonalData] ) {
+          networkKeywords[typeEnum.Phone].forEach( number => {
+            regexSearch(strRequest, number, rootUrl, reqUrl, typeEnum.Phone)
           })
         }
+      }
 
       // search to see if the url comes up in our services list
       urlSearch(request, urls)

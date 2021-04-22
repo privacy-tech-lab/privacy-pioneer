@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect } from "react"
 import { SAction, SItem, SKeyword, SType, SDropdownOptions, SDropdownItem } from "./style"
 import * as Icons from "../../../../../libs/icons"
-import { idbKeyval } from "../../../../../libs/indexed-db"
+import { WatchlistKeyval } from "../../../../../libs/indexed-db"
 import { keywordTypes } from "../../../../../libs/constants"
 
 const ListItem = (props) => {
@@ -27,7 +27,7 @@ const ListItem = (props) => {
           <SDropdownOptions show={showDropdown}>
             <SDropdownItem
               onClick={async () => {
-                await idbKeyval.delete(props.id)
+                await WatchlistKeyval.delete(props.id)
                 await props.updateList()
               }}
             >
