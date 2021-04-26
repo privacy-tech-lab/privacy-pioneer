@@ -33,7 +33,7 @@ export class Evidence {
 
 
 export const permissionEnum = Object.freeze( {
-  Location: "Location",
+  Location: "location",
   PersonalData: "PersonalData",
   Fingerprinting: "Fingerprinting",
   Advertising: "Advertising",
@@ -42,19 +42,19 @@ export const permissionEnum = Object.freeze( {
 
 
 export const typeEnum = Object.freeze( { 
-  CoarseLocation: "CoarseLocation",
-  TightLocation: "TightLocation",
+  CoarseLocation: "coarse_location",
+  TightLocation: "tight_location",
   City: "City",
   State: "State",
-  StreetAddress: "StreetAddress",
+  StreetAddress: "street_address",
   Social: "Social",
-  IpAddress: "IpAddress",
+  IpAddress: "ip_address",
   UserKeyword: "UserKeyword",
   Analytics: "Analytics",
   TrackingPixel: "TrackingPixel",
   CryptoMining: "CryptoMining",
   // for now we change convention to be consistent with the .json file 
   Phone: "phone_number",
-  Email: "Email",
-  Zipcode: "Zipcode",
+  Email: "email_address",
+  Zipcode: "zip_code",
 } )

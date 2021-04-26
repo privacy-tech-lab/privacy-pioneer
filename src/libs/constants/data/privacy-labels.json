@@ -3,8 +3,14 @@
     "displayName": "Location",
     "description": "Location services...",
     "subtypes": {
-      "zip_location": {
-        "displayName": "Coarse Location"
+      "coarse_location": {
+        "displayName": "Coarse location with coordinates"
+      },
+      "tight_location": {
+        "displayName": "Tigth location with coordinates"
+      },
+      "zip_code": {
+        "displayName": "Zip Code"
       },
       "ip_address": {
         "displayName": "IP Address Targeting"
