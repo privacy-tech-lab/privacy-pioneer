@@ -116,6 +116,7 @@ function resolveBuffer(id, data) {
     ) {
       delete buffer[id]
 
+      // this one two three comes from the structure of the importData function
       var loc = data[0]
       var networkKeywords = data[1]
       var urls = data[2]
@@ -133,10 +134,17 @@ function resolveBuffer(id, data) {
         locationKeywordSearch(strRequest, networkKeywords, rootUrl, reqUrl)
       }
 
+      // search for personal data
       if ( permissionEnum.PersonalData in networkKeywords) {
+        
         if ( typeEnum.Phone in networkKeywords[permissionEnum.PersonalData] ) {
-          networkKeywords[typeEnum.Phone].forEach( number => {
+          networkKeywords[permissionEnum.PersonalData][typeEnum.Phone].forEach( number => {
             regexSearch(strRequest, number, rootUrl, reqUrl, typeEnum.Phone)
+          })
+        }
+        if ( typeEnum.Email in networkKeywords[permissionEnum.PersonalData] ) {
+          networkKeywords[permissionEnum.PersonalData][typeEnum.Email].forEach( email => {
+            regexSearch(strRequest, email, rootUrl, reqUrl, typeEnum.Email)
           })
         }
       }

@@ -106,7 +106,6 @@ async function addToEvidenceList(perm, rootU, snip, requestU, t, i) {
       // update evidence for this type_permission pair
       evidence[store_label] = e
       // commit to db
-      console.log(evidence)
       EvidenceKeyval.set(rootUrl, evidence)
     }
   }
@@ -114,7 +113,6 @@ async function addToEvidenceList(perm, rootU, snip, requestU, t, i) {
   else {
     evidence[store_label] = e
     // commit to db
-    console.log(evidence)
     EvidenceKeyval.set(rootUrl, evidence)
   }
 }
@@ -124,10 +122,10 @@ async function addToEvidenceList(perm, rootU, snip, requestU, t, i) {
 // location and the Google Maps geocoding API
 function locationKeywordSearch(strReq, networkKeywords, rootUrl, reqUrl) {
   var locElems = networkKeywords[permissionEnum.Location]
-  for (var j = 0; j < locElems.length; j++) {
-    if (strReq.includes(locElems[j])) {
-      // console.log(locElems[j] + " detected for snippet " + strReq)
-      addToEvidenceList(permissionEnum.Location, rootUrl, strReq, reqUrl, locElems[j])
+  for (const [k, v] of Object.entries(locElems)) {
+    let result_i = strReq.search(v)
+    if (result_i != -1) {
+      addToEvidenceList(permissionEnum.Location, rootUrl, strReq, reqUrl, k, [result_i, result_i + v.length])
     }
   }
 }
@@ -242,14 +240,14 @@ function coordinateSearch(strReq, locData, rootUrl, reqUrl) {
  })
 }
 
-// should be passed request as a string and keywords as an array
+// passed keyword as string
 function regexSearch(strReq, keyword, rootUrl, reqUrl, type) {
     let fixed = escapeRegExp(keyword)
     let re = new RegExp(`${fixed}`, "i");
     let result = strReq.search(re)
     if (result != -1) {
       {
-        addToEvidenceList(permissionEnum.PersonalData, rootUrl, strReq, reqUrl, type, [result, result + len(keyword)])
+        addToEvidenceList(permissionEnum.PersonalData, rootUrl, strReq, reqUrl, type, [result, result + keyword.length])
       }
     }
 }

@@ -224,7 +224,6 @@ function getState(zipString) {
     } else {
         st = 'none';
         state = 'none';
-        console.log('No state found matching', zipcode);
     }
 
     return [st, state];
