@@ -27,7 +27,7 @@ function hashTypeAndPermission(str) {
 }
 
 // code from https://stackoverflow.com/questions/8498592/extract-hostname-name-from-string
-function extractHostname(url) {
+export function extractHostname(url) {
     var hostname;
     //find & remove protocol (http, ftp, etc.) and get hostname
 
@@ -48,7 +48,7 @@ function extractHostname(url) {
 
 // takes in full url and extracts just the domain host
 // code from https://stackoverflow.com/questions/8498592/extract-hostname-name-from-string
-const getHostname = (url) => {
+export const getHostname = (url) => {
   var domain = extractHostname(url),
       splitArr = domain.split('.'),
       arrLen = splitArr.length;

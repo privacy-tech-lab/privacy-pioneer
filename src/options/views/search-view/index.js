@@ -15,7 +15,7 @@ const SearchView = () => {
           <Icons.Search size="24px" />
           <SInput placeholder="Search" />
         </SInputContainer>
-        <WebsiteLabelList />
+        <WebsiteLabelList websites={{}} />
       </SContainer>
     </Scaffold>
   )

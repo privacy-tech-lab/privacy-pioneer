@@ -63,9 +63,12 @@ export const SHeader = styled.div`
 `
 
 export const STitle = styled.div`
+  padding-left: 16px;
+  padding-right: 16px;
   font-weight: bold;
   font-size: var(--title2);
   margin-top: 8px;
+  text-align: center;
 `
 
 export const SSubtitle = styled.div`

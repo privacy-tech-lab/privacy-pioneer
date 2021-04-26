@@ -1,5 +1,6 @@
-import React from "react"
+import React, { useEffect, useState } from "react"
 import { useHistory } from "react-router"
+import { getWebsites } from "../../../libs/indexed-db"
 import Scaffold from "../../components/scaffold"
 import WebsiteLabelList from "../../components/website-label-list"
 import LabelSummaryCard from "./components/label-summary-card"
@@ -7,6 +8,13 @@ import { SButtonText, SCardGroup, SContainer, SSectionContainer, SSubtitle, STit
 
 const HomeView = () => {
   const history = useHistory()
+  const [websites, setWebsites] = useState({})
+  const entries = Object.entries(websites)
+
+  useEffect(() => {
+    getWebsites().then((websites) => setWebsites(websites))
+  }, [])
+
   return (
     <Scaffold>
       <SContainer>
@@ -25,7 +33,7 @@ const HomeView = () => {
           </div>
           <SButtonText onClick={() => history.push({ pathname: "/search" })}>See All</SButtonText>
         </SSectionContainer>
-        <WebsiteLabelList />
+        <WebsiteLabelList websites={websites} maxLength={entries.length > 6 ? 5 : entries.length} />
       </SContainer>
     </Scaffold>
   )

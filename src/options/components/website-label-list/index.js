@@ -3,36 +3,33 @@ import WebsiteBadge from "../../../libs/website-badge"
 import * as Icons from "../../../libs/icons"
 import { useHistory } from "react-router-dom"
 import { SContainer, SItem, SLabel, SLabelGroup, SSeperator } from "./style"
+import { privacyLabels } from "../../../libs/constants"
 
-const Item = () => {
+const Item = (props) => {
   const history = useHistory()
-  const onClick = (domain) => {
-    history.push({ pathname: `/website/${domain}` })
-  }
-
   return (
-    <SItem onClick={() => onClick("www.amazon.com")}>
-      <WebsiteBadge domain="chartboost.com" />
+    <SItem onClick={() => history.push({ pathname: `/website/${props.domain}` })}>
+      <WebsiteBadge domain={props.domain} />
       <SLabelGroup>
-        <SLabel>
-          <Icons.Location size="24px" />
-          Location
-        </SLabel>
-        <SLabel>
-          <Icons.Location size="24px" />
-          Location
-        </SLabel>
+        {Array.from(props.labels).map((label) => (
+          <SLabel key={label}>
+            {Icons.getLabelIcon(label)}
+            {privacyLabels[label]["displayName"]}
+          </SLabel>
+        ))}
       </SLabelGroup>
       <SSeperator marginTop="16px" />
     </SItem>
   )
 }
 
-const WebsiteLabelList = () => {
+const WebsiteLabelList = (props) => {
+  const entries = Object.entries(props.websites)
   return (
     <SContainer>
-      <Item />
-      <Item />
+      {entries.slice(0, props.maxLength ?? entries.length).map(([key, value]) => (
+        <Item key={key} domain={key} labels={value} />
+      ))}
     </SContainer>
   )
 }

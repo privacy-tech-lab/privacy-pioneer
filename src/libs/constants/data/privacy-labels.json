@@ -3,7 +3,7 @@
     "displayName": "Location",
     "description": "Location services...",
     "subtypes": {
-      "coarse_location": {
+      "zip_location": {
         "displayName": "Coarse Location"
       },
       "ip_address": {

@@ -17,19 +17,13 @@ import WebsiteBadge from "../website-badge"
 import Evidence from "./components/evidence"
 import { AnimateSharedLayout, motion } from "framer-motion"
 
-const Item = () => {
+const Item = (props) => {
   const [show, setVisibility] = useState(false)
 
   return (
     <SItem layout>
       <motion.div layout>
-        <WebsiteBadge domain={"Google"} />
-        <SBadgeGroup>
-          <SBadge selected={show} onClick={() => setVisibility((state) => !state)}>
-            Coarse Location
-          </SBadge>
-          <SBadge>Approximate Location</SBadge>
-        </SBadgeGroup>
+        <WebsiteBadge domain={props.domain} />
       </motion.div>
       <Evidence show={show} />
       <SSeperator marginTop="16px" />
@@ -37,30 +31,45 @@ const Item = () => {
   )
 }
 
-const LabelDetail = () => {
+const LabelDetail = (props) => {
+  const keys = Object.keys(props.details)
+
+  const firstParyDescription = () => {
+    if (props.domain in props.details) {
+      return `Collected ${props.label} data.`
+    } else {
+      return `Did not collect ${props.label} data.`
+    }
+  }
+
+  const thirdPartyDescription = () => {
+    if (props.domain in props.details && keys.length === 1) {
+      return `${props.domain} did not share ${props.label} data.`
+    } else {
+      return `${props.domain} shared location data with the following third parties:`
+    }
+  }
+
   return (
     <SBody>
       <motion.div layout>
-      <SHeader>
-        <WebsiteLogo large domain={"Amazon"} />
-        <SSpacer />
-        <SContent>
-          <STitle>Amazon</STitle>
-          <SDescription>Collects the following location data:</SDescription>
-          <SBadgeGroup>
-            <SBadge>Coarse Location</SBadge>
-          </SBadgeGroup>
-        </SContent>
-      </SHeader>
-      <SSeperator marginLeft="16px" marginRight="16px" />
+        <SHeader>
+          <WebsiteLogo large domain={props.domain} />
+          <SSpacer />
+          <SContent>
+            <STitle>{props.domain}</STitle>
+            <SDescription>{firstParyDescription()} </SDescription>
+          </SContent>
+        </SHeader>
+        <SSeperator marginLeft="16px" marginRight="16px" />
       </motion.div>
       <SThirdParty>
         <STitle>Third Parties</STitle>
-        <SDescription>Amazon shared your location data with the following third parties.</SDescription>
+        <SDescription>{thirdPartyDescription()} </SDescription>
         <AnimateSharedLayout layout>
-          <Item />
-          <Item />
-          <Item />
+          {Object.entries(props.details).map(([key, value]) => {
+            if (key !== props.domain) return <Item key={key} domain={key} data={value} />
+          })}
         </AnimateSharedLayout>
       </SThirdParty>
     </SBody>
