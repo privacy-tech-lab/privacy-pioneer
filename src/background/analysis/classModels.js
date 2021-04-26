@@ -34,7 +34,7 @@ export class Evidence {
 
 export const permissionEnum = Object.freeze( {
   Location: "location",
-  PersonalData: "PersonalData",
+  PersonalData: "personalData",
   Fingerprinting: "Fingerprinting",
   Advertising: "Advertising",
   Content: "Content",

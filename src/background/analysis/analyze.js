@@ -136,7 +136,6 @@ function resolveBuffer(id, data) {
 
       // search for personal data
       if ( permissionEnum.PersonalData in networkKeywords) {
-        
         if ( typeEnum.Phone in networkKeywords[permissionEnum.PersonalData] ) {
           networkKeywords[permissionEnum.PersonalData][typeEnum.Phone].forEach( number => {
             regexSearch(strRequest, number, rootUrl, reqUrl, typeEnum.Phone)

@@ -12,6 +12,7 @@ import { buildPhone, getState, buildSsnRegex } from "./structuredRoutines.js"
 import { WatchlistKeyval } from "../../libs/indexed-db/index.js"
 import { typeEnum, permissionEnum } from "./classModels.js"
 
+
 export async function importData() {
     var networkKeywords = {}
     networkKeywords[permissionEnum.PersonalData] = {}
@@ -61,8 +62,8 @@ export async function importData() {
         networkKeywords[permissionEnum.PersonalData][typeEnum.Phone] = userPhone
     }
 
-    if ('email_address' in user_store_dict) {
-        networkKeywords[permissionEnum.PersonalData][typeEnum.Email] = user_store_dict['email_address']
+    if (typeEnum.Email in user_store_dict) {
+        networkKeywords[permissionEnum.PersonalData][typeEnum.Email] = user_store_dict[typeEnum.Email]
     }
     // now let's build up fingerprinting info
 

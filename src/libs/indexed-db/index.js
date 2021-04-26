@@ -50,18 +50,19 @@ export const getDomainLabels = async (domain) => {
     const domainEvidence = await evidenceIDB.get(domain)
     const data = {}
     for (const [key, value] of Object.entries(domainEvidence)) {
+      // here value is of type evidence, so we access it with the names defined in the evidence class (classModels.js)
       for (const label of Object.keys(privacyLabels)) {
         if (key.toLowerCase().includes(label.toLowerCase())) {
-          let key = getHostname(value["requestUrl"])
+          let key_ = getHostname(value["requestUrl"])
           let subKey = value["typ"]
           if (label in data) {
-            if (key in data[label]) {
-              data[label][key][subKey] = value
+            if (key_ in data[label]) {
+              data[label][key_][subKey] = value
             } else {
-              data[label][key] = { [subKey]: value }
+              data[label][key_] = { [subKey]: value }
             }
           } else {
-            data[label] = { [key]: { [subKey]: value } }
+            data[label] = { [key_]: { [subKey]: value } }
           }
         }
       }

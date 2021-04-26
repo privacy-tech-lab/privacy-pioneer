@@ -222,8 +222,8 @@ function getState(zipString) {
         st = 'WY';
         state = 'Wyoming';
     } else {
-        st = 'none';
-        state = 'none';
+        st = undefined;
+        state = undefined;
     }
 
     return [st, state];
