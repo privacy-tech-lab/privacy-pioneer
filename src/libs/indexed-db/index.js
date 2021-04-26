@@ -1,4 +1,7 @@
 import { openDB } from "idb"
+import { idbKeyval as evidenceIDB } from "../../background/analysis/openDB"
+import { getHostname } from "../../background/analysis/searchFunctions"
+import { privacyLabels } from "../constants"
 
 const dbPromise = openDB("watchlist-store", 1, {
   upgrade(db) {
@@ -39,4 +42,57 @@ export const hash = (str) => {
     hash |= 0
   }
   return hash.toString()
+}
+
+// Get labels from domain
+export const getDomainLabels = async (domain) => {
+  try {
+    const evidence = await evidenceIDB.values()
+    const domainEvidence = evidence[0][domain]
+    const data = {}
+    for (const [key, value] of Object.entries(domainEvidence)) {
+      for (const label of Object.keys(privacyLabels)) {
+        if (key.toLowerCase().includes(label.toLowerCase())) {
+          let key = getHostname(value["requestUrl"])
+          let subKey = value["typ"]
+          if (label in data) {
+            if (key in data[label]) {
+              data[label][key][subKey] = value
+            } else {
+              data[label][key] = { [subKey]: value }
+            }
+          } else {
+            data[label] = { [key]: { [subKey]: value } }
+          }
+        }
+      }
+    }
+    return data
+  } catch (error) {
+    return {}
+  }
+}
+
+// Get websites and labels
+export const getWebsites = async () => {
+  try {
+    const evidence = await evidenceIDB.values()
+    const data = {}
+    for (const [website, value] of Object.entries(evidence[0])) {
+      for (const [key, _] of Object.entries(value)) {
+        for (const label of Object.keys(privacyLabels)) {
+          if (key.toLowerCase().includes(label.toLowerCase())) {
+            if (website in data) {
+              data[website].add(label)
+            } else {
+              data[website] = new Set([label])
+            }
+          }
+        }
+      }
+    }
+    return data
+  } catch (error) {
+    return {}
+  }
 }

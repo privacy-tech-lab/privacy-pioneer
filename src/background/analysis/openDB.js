@@ -28,4 +28,7 @@ export const EvidenceKeyval = {
   async keys() {
     return (await dbPromise).getAllKeys('network-requests');
   },
+  async values() {
+    return (await dbPromise).getAll('network-requests')
+  },
 };
