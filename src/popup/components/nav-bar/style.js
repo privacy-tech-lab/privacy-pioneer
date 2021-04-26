@@ -14,6 +14,7 @@ export const SNav = styled.nav`
   align-items: center;
   ${(props) => !props.middle && "justify-content: space-between;"}
   max-width: 100%;
+  z-index: 100;
 `
 
 export const SMiddle = styled.div`
