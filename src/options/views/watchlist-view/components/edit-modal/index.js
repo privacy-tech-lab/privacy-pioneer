@@ -21,7 +21,7 @@ import {
 } from "./style"
 import * as Icons from "../../../../../libs/icons"
 import { AnimatePresence } from "framer-motion"
-import { hash, idbKeyval } from "../../../../../libs/indexed-db"
+import { hash, WatchlistKeyval } from "../../../../../libs/indexed-db"
 import { keywordTypes } from "../../../../../libs/constants"
 
 const Modal = (props) => {
@@ -101,9 +101,9 @@ const Modal = (props) => {
           <SAction
             onClick={async () => {
               if (keywordType in keywordTypes && keyword !== "") {
-                if (props.edit) await idbKeyval.delete(props.id)
+                if (props.edit) await WatchlistKeyval.delete(props.id)
                 let key = hash(keyword + keywordType)
-                await idbKeyval.set(key, { keyword: keyword, type: keywordType, id: key })
+                await WatchlistKeyval.set(key, { keyword: keyword, type: keywordType, id: key })
                 await props.updateList()
                 props.configModal((config) => ({ ...config, open: false }))
               }

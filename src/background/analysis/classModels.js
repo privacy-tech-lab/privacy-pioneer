@@ -17,13 +17,44 @@ export class Request {
 }
 
 // class model for evidence type for when we find a keyword or URL
+// we want index as an array [start, finish]
 export class Evidence {
-  constructor({timestamp, permission, rootUrl, snippet, requestUrl, typ}) {
+  constructor({timestamp, permission, rootUrl, snippet, requestUrl, typ, index}) {
     this.timestamp = timestamp;
     this.permission = permission;
     this.rootUrl = rootUrl;
     this.snippet = snippet;
     this.requestUrl = requestUrl;
     this.typ = typ;
+    this.index = index === undefined ? -1 : index
   }
 }
+
+
+
+export const permissionEnum = Object.freeze( {
+  Location: "location",
+  PersonalData: "personalData",
+  Fingerprinting: "Fingerprinting",
+  Advertising: "Advertising",
+  Content: "Content",
+} )
+
+
+export const typeEnum = Object.freeze( { 
+  CoarseLocation: "coarse_location",
+  TightLocation: "tight_location",
+  City: "City",
+  State: "State",
+  StreetAddress: "street_address",
+  Social: "Social",
+  IpAddress: "ip_address",
+  UserKeyword: "UserKeyword",
+  Analytics: "Analytics",
+  TrackingPixel: "TrackingPixel",
+  CryptoMining: "CryptoMining",
+  // for now we change convention to be consistent with the .json file 
+  Phone: "phone_number",
+  Email: "email_address",
+  Zipcode: "zip_code",
+} )

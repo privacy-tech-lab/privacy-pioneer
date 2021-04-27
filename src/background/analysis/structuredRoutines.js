@@ -222,9 +222,8 @@ function getState(zipString) {
         st = 'WY';
         state = 'Wyoming';
     } else {
-        st = 'none';
-        state = 'none';
-        console.log('No state found matching', zipcode);
+        st = undefined;
+        state = undefined;
     }
 
     return [st, state];

@@ -9,10 +9,13 @@ import { keywords } from "./importJson.js"
 import { services } from "./importJson.js"
 import { getLocationData, filterGeocodeResponse } from "./getLocationData.js"
 import { buildPhone, getState, buildSsnRegex } from "./structuredRoutines.js"
-import { idbKeyval } from "../../libs/indexed-db/index.js"
+import { WatchlistKeyval } from "../../libs/indexed-db/index.js"
+import { typeEnum, permissionEnum } from "./classModels.js"
+
 
 export async function importData() {
     var networkKeywords = {}
+    networkKeywords[permissionEnum.PersonalData] = {}
 
     // first let's build up the location info
     var locCoords = await getLocationData();
@@ -22,9 +25,9 @@ export async function importData() {
 
     // format every phone stored
     var userPhone
-    if ('phone_number' in user_store_dict) {
+    if ( typeEnum.Phone in user_store_dict) {
         userPhone = []
-        let phone_arr = user_store_dict['phone_number']
+        let phone_arr = user_store_dict[typeEnum.Phone]
         phone_arr.forEach( phone => {
             let format_arr = buildPhone(phone)
             format_arr.forEach( format => {
@@ -33,7 +36,7 @@ export async function importData() {
         })
     }
 
-    //zip routine
+    
     const exampleZip = "06459"
     const exampleCity = "Middletown"
     const exampleAddress = "Lawn Ave"
@@ -46,15 +49,22 @@ export async function importData() {
 
     // for now setting placeholder of our location. Eventually this will
     // be swapped for the users custom input
-    var locElems = []
-    locElems.push(exampleZip)
-    locElems.push(userState)
-    locElems.push(exampleCity)
-    locElems.push(exampleAddress)
+    var locElems = {}
+    locElems[typeEnum.Zipcode] = exampleZip
+    locElems[typeEnum.City] = exampleCity
+    locElems[typeEnum.StreetAddress] = exampleAddress
+    if (typeof userState !== 'undefined') { locElems[typeEnum.State] = userState }
 
-    networkKeywords["location"] = locElems
-    if (typeof userPhone !== 'undefined') { networkKeywords["phone"] = userPhone }
+    networkKeywords[permissionEnum.Location] = locElems
+    
+    // if we have a phone we put it in the network keywords dict
+    if (typeof userPhone !== 'undefined') { 
+        networkKeywords[permissionEnum.PersonalData][typeEnum.Phone] = userPhone
+    }
 
+    if (typeEnum.Email in user_store_dict) {
+        networkKeywords[permissionEnum.PersonalData][typeEnum.Email] = user_store_dict[typeEnum.Email]
+    }
     // now let's build up fingerprinting info
 
     return [locCoords, networkKeywords, services]
@@ -65,11 +75,11 @@ async function getWatchlistDict() {
     var user_store_dict = {}
 
     // iterate through the stored keywords in the watchlist store and add them to a dict that maps
-    // keywordtype -> list of keywords for that type
-    let keyarr = await idbKeyval.keys()
+    // keywordtype -> array of keywords for that type
+    let keyarr = await WatchlistKeyval.keys()
     for (let key of keyarr) {
         let ktype, keyword
-        let keywordObject = await idbKeyval.get(key)
+        let keywordObject = await WatchlistKeyval.get(key)
         for (let [t, val] of Object.entries(keywordObject) ) {
             if (t == 'type') { ktype = val }
             if (t == 'keyword') { keyword = val }

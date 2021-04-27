@@ -1,5 +1,5 @@
 import { openDB } from "idb"
-import { idbKeyval as evidenceIDB } from "../../background/analysis/openDB"
+import { EvidenceKeyval as evidenceIDB } from "../../background/analysis/openDB"
 import { getHostname } from "../../background/analysis/searchFunctions"
 import { privacyLabels } from "../constants"
 
@@ -9,7 +9,7 @@ const dbPromise = openDB("watchlist-store", 1, {
   },
 })
 
-export const idbKeyval = {
+export const WatchlistKeyval = {
   async get(key) {
     return (await dbPromise).get("watchlist", key)
   },
@@ -47,22 +47,22 @@ export const hash = (str) => {
 // Get labels from domain
 export const getDomainLabels = async (domain) => {
   try {
-    const evidence = await evidenceIDB.values()
-    const domainEvidence = evidence[0][domain]
+    const domainEvidence = await evidenceIDB.get(domain)
     const data = {}
     for (const [key, value] of Object.entries(domainEvidence)) {
+      // here value is of type evidence, so we access it with the names defined in the evidence class (classModels.js)
       for (const label of Object.keys(privacyLabels)) {
         if (key.toLowerCase().includes(label.toLowerCase())) {
-          let key = getHostname(value["requestUrl"])
+          let key_ = getHostname(value["requestUrl"])
           let subKey = value["typ"]
           if (label in data) {
-            if (key in data[label]) {
-              data[label][key][subKey] = value
+            if (key_ in data[label]) {
+              data[label][key_][subKey] = value
             } else {
-              data[label][key] = { [subKey]: value }
+              data[label][key_] = { [subKey]: value }
             }
           } else {
-            data[label] = { [key]: { [subKey]: value } }
+            data[label] = { [key_]: { [subKey]: value } }
           }
         }
       }
@@ -76,9 +76,10 @@ export const getDomainLabels = async (domain) => {
 // Get websites and labels
 export const getWebsites = async () => {
   try {
-    const evidence = await evidenceIDB.values()
     const data = {}
-    for (const [website, value] of Object.entries(evidence[0])) {
+    const evidence = await evidenceIDB.keys()
+    for (let website of evidence) {
+      let value = await evidenceIDB.get(website)
       for (const [key, _] of Object.entries(value)) {
         for (const label of Object.keys(privacyLabels)) {
           if (key.toLowerCase().includes(label.toLowerCase())) {
@@ -92,7 +93,8 @@ export const getWebsites = async () => {
       }
     }
     return data
-  } catch (error) {
+  }
+  catch (error) {
     return {}
   }
 }
