@@ -41,7 +41,7 @@ export const permissionEnum = Object.freeze( {
 } )
 
 
-export const typeEnum = Object.freeze( { 
+export const typeEnum = Object.freeze( {
   CoarseLocation: "coarse_location",
   TightLocation: "tight_location",
   City: "City",
@@ -53,8 +53,10 @@ export const typeEnum = Object.freeze( {
   Analytics: "Analytics",
   TrackingPixel: "TrackingPixel",
   CryptoMining: "CryptoMining",
-  // for now we change convention to be consistent with the .json file 
+  // for now we change convention to be consistent with the .json file
   Phone: "phone_number",
   Email: "email_address",
   Zipcode: "zip_code",
+  FingerprintLib: "fpLibraryList",
+  FingerprintJSON: "fpJSONList",
 } )
