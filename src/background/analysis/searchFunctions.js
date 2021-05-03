@@ -259,4 +259,16 @@ function regexSearch(strReq, keyword, rootUrl, reqUrl, type) {
     }
 }
 
-export { regexSearch, coordinateSearch, urlSearch, locationKeywordSearch }
+function fingerprintSearch(strReq, networkKeywords, rootUrl, reqUrl) {
+  var fpElems = networkKeywords[permissionEnum.Fingerprinting]
+
+  for (const [k, v] of Object.entries(fpElems)) {
+    let result_i = strReq.includes(v)
+    if (result_i != -1) {
+      addToEvidenceList(permissionEnum.Fingerprinting, rootUrl, strReq, reqUrl, k, [result_i, result_i + v.length])
+    }
+  }
+
+}
+
+export { regexSearch, coordinateSearch, urlSearch, locationKeywordSearch, fingerprintSearch }

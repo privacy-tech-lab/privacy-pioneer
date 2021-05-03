@@ -36,7 +36,7 @@ export async function importData() {
         })
     }
 
-    
+
     const exampleZip = "06459"
     const exampleCity = "Middletown"
     const exampleAddress = "Lawn Ave"
@@ -56,22 +56,26 @@ export async function importData() {
     if (typeof userState !== 'undefined') { locElems[typeEnum.State] = userState }
 
     networkKeywords[permissionEnum.Location] = locElems
-    
+
     // if we have a phone we put it in the network keywords dict
-    if (typeof userPhone !== 'undefined') { 
+    if (typeof userPhone !== 'undefined') {
         networkKeywords[permissionEnum.PersonalData][typeEnum.Phone] = userPhone
     }
 
     if (typeEnum.Email in user_store_dict) {
         networkKeywords[permissionEnum.PersonalData][typeEnum.Email] = user_store_dict[typeEnum.Email]
     }
+
     // now let's build up fingerprinting info
+    networkKeywords[permissionEnum.Fingerprinting] = {}
+    networkKeywords[permissionEnum.Fingerprinting][typeEnum.FingerprintLib] = keywords["FINGERPRINT"]["fpLibraryList"]
+    networkKeywords[permissionEnum.Fingerprinting][typeEnum.FingerprintJSON] =  keywords["FINGERPRINT"]["fpJSONList"]
 
     return [locCoords, networkKeywords, services]
 }
 
 async function getWatchlistDict() {
-    
+
     var user_store_dict = {}
 
     // iterate through the stored keywords in the watchlist store and add them to a dict that maps

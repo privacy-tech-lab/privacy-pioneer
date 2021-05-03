@@ -35,6 +35,70 @@ export const keywords = {
          "p.brsrvr.com",
          "adservice.google.com"
       ]
+   },
+   "FINGERPRINT": {
+     "fpLibraryList":[
+         `fingerprint`,
+
+         `Fingerprint2`,
+
+         `fingerprintID`,
+
+         `https://github.com/Valve/fingerprintjs2`,
+
+         `http://valve.github.io`,
+
+         `getFPParams`,
+
+         `getCanvasFp`,
+
+         `fingerprintjs2`,
+
+         `swfContainerId`,
+
+         `swfPath`,
+
+         `flash/compiled/FontList.swf`,
+
+         `Fingerprint2.x64hash128`,
+
+         `hasFingerprint`,
+
+         `window._sift`,
+
+         `https://cdn.sift.com/s.js`,
+
+         `_castle('setAppId'`,
+
+         `c$jscomp$0.config.F.Fonts`,
+
+         `c$jscomp$0.config.F.Flash`,
+
+         `window.Fingerprint2.FP2Options`,
+
+         `c.prototype.getCanvas`,
+
+         `http://admicro.vn/`,
+
+         `visitorFingerprint`,
+
+         `payload.push(btoa(gl.getParameter(debugInfo.UNMASKED_RENDERER_WEBGL)))`
+     ],
+     "fpJSONList":[
+         `OfflineAudioContext.createOscillator`,
+         `OfflineAudioContext.createDynamicsCompressor`,
+         `OfflineAudioContext.destination`,
+         `OfflineAudioContext.startRendering`,
+
+         `HTMLCanvasElement.toDataURL`
+
+         /*
+         I kept these "symbols" (methods) from the JSON because they were the methods that would
+         likely not be used in legitimate code. I cannot make similar promises about the other ones.
+
+         Found in (1) in the evidence list above.
+         */
+     ]
    }
 }
 
