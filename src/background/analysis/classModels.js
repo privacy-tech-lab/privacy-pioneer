@@ -30,32 +30,36 @@ export class Evidence {
   }
 }
 
+// should line up exactly with categories in privacy labels
 export const permissionEnum = Object.freeze({
-  Location: "location",
-  PersonalData: "personalData",
-  Fingerprinting: "Fingerprinting",
-  Advertising: "Advertising",
-  Content: "Content",
+  location: "location",
+  personalData: "personalData",
+  fingerprinting: "fingerprinting",
+  advertising: "advertising",
+  content: "content",
 })
 
+// should line up exactly with types in privacy Labels
 export const typeEnum = Object.freeze({
-  CoarseLocation: "coarse_location",
-  TightLocation: "tight_location",
-  City: "City",
-  State: "State",
-  StreetAddress: "street_address",
-  Social: "Social",
-  IpAddress: "ip_address",
-  UserKeyword: "UserKeyword",
-  Analytics: "Analytics",
-  TrackingPixel: "TrackingPixel",
-  CryptoMining: "CryptoMining",
-  // for now we change convention to be consistent with the .json file
-  Phone: "phone_number",
-  Email: "email_address",
-  Zipcode: "zip_code",
+  coarseLocation: "coarseLocation",
+  tightLocation: "tightLocation",
+  city: "city",
+  state: "state",
+  streetAddress: "streetAddress",
+  social: "social",
+  ipAddress: "ipAddress",
+  userKeyword: "userKeyword",
+  analytics: "analytics",
+  trackingPixel: "trackingPixel",
+  cryptoMining: "cryptoMining",
+  phone: "phoneNumber",
+  email: "emailAddress",
+  zipCode: "zipCode",
+  generalFingerprint: "generalFingerprint",
+  invasiveFingerprint: "invasiveFingerprint",
 })
 
+// source of truth for all naming conventions
 export const privacyLabels = Object.freeze({
   location: {
     displayName: "Location",
@@ -148,6 +152,4 @@ export const privacyLabels = Object.freeze({
     types: {},
   },
 })
-
-
 
