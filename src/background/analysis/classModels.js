@@ -89,10 +89,6 @@ export const privacyLabels = Object.freeze({
         displayName: "State",
         description: "",
       },
-      state: {
-        displayName: "State",
-        description: "",
-      },
     },
   },
   personalData: {
@@ -125,12 +121,26 @@ export const privacyLabels = Object.freeze({
         displayName: "Tracking Pixel",
         description: "",
       },
+      analytics: {
+        displayName: "Analytics",
+        description: "",
+      },
     },
   },
   fingerprinting: {
     displayName: "Fingerprinting",
     description: "",
-    types: {},
+    types: {
+      generalFingerprint: {
+        displayName: "General Fingerprinting",
+
+      },
+      invasiveFingerprint: {
+        displayName: "Invasive Fingerprinting",
+        description: "Used an API to extract information about a particular user’s computing environment when the API was not designed to expose such information.",
+      }
+
+    },
   },
   content: {
     displayName: "???",
@@ -138,3 +148,6 @@ export const privacyLabels = Object.freeze({
     types: {},
   },
 })
+
+
+
