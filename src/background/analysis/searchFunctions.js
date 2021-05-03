@@ -72,48 +72,55 @@ export const getHostname = (url) => {
 async function addToEvidenceList(perm, rootU, snip, requestU, t, i) {
   var ts = Date.now()
   if (rootU == undefined) {
-    rootU = requestU
+    // if the root URL is not in the request then let's just not save it
+    // as we cannot be sure what domain it is actually being called from
+    // we should, however, print the request to console for now just to see
+    // how often this is happening
+    console.log("No root URL detected for snippet:")
+    console.log(perm, snip, requestU, t)
   }
-  var rootUrl = getHostname(rootU)
-  const e = new Evidence( {
-    timestamp: ts,
-    permission: perm,
-    rootUrl: rootUrl,
-    snippet: snip,
-    requestUrl: requestU,
-    typ: t,
-    index: i
-  } )
+  else {
+    var rootUrl = getHostname(rootU)
+    const e = new Evidence( {
+      timestamp: ts,
+      permission: perm,
+      rootUrl: rootUrl,
+      snippet: snip,
+      requestUrl: requestU,
+      typ: t,
+      index: i
+    } )
 
-  // currently stored evidence at this domain
-  var evidence = await EvidenceKeyval.get(rootUrl)
+    // currently stored evidence at this domain
+    var evidence = await EvidenceKeyval.get(rootUrl)
 
-  // if we don't have evidence yet, we initialize it as an empty dict
-  if (evidence === undefined) {
-    evidence = {}
-  }
-
-  // to get something like "location_zip"
-  let labels = [perm, t]
-  var store_label = labels.join('_')
-
-  // if we have this rootUrl in evidence already we check if we already have store_label
-  if (Object.keys(evidence).length !== 0) {
-    if (store_label in evidence) {
-      //pass we already have evidence here
+    // if we don't have evidence yet, we initialize it as an empty dict
+    if (evidence === undefined) {
+      evidence = {}
     }
+
+    // to get something like "location_zip"
+    let labels = [perm, t]
+    var store_label = labels.join('_')
+
+    // if we have this rootUrl in evidence already we check if we already have store_label
+    if (Object.keys(evidence).length !== 0) {
+      if (store_label in evidence) {
+        //pass we already have evidence here
+      }
+      else {
+        // update evidence for this type_permission pair
+        evidence[store_label] = e
+        // commit to db
+        EvidenceKeyval.set(rootUrl, evidence)
+      }
+    }
+    // we have don't have this rootUrl yet. So we  evidence at this url
     else {
-      // update evidence for this type_permission pair
       evidence[store_label] = e
       // commit to db
       EvidenceKeyval.set(rootUrl, evidence)
     }
-  }
-  // we have don't have this rootUrl yet. So we  evidence at this url
-  else {
-    evidence[store_label] = e
-    // commit to db
-    EvidenceKeyval.set(rootUrl, evidence)
   }
 }
 
