@@ -5,51 +5,44 @@ import LabelCard from "../../../libs/label-card"
 import { SDescription, SHeader, SIcon, SLabelGroup, SText, STitle } from "./style"
 import { useParams } from "react-router-dom"
 import LabelModal from "./components/label-modal"
-import { getDomainLabels } from "../../../libs/indexed-db"
+import { getWebsiteLabels } from "../../../libs/indexed-db"
 
 const WebsiteView = () => {
   const params = useParams()
-  const domain = params.website
-  const [showModal, setShowModal] = useState({ show: false })
+  const website = params.website
+  const [modal, setModal] = useState({ show: false })
   const [labels, setLabels] = useState({})
 
-  const openModal = ({ label, details, domain }) =>
-    setShowModal((obj) => {
-      return { ...obj, label, details, domain, show: !obj.show }
-    })
-
-  useEffect(() => {
-    getDomainLabels(domain).then((labels) => setLabels(labels))
-  }, [])
+  useEffect(() => getWebsiteLabels(website).then((labels) => setLabels(labels)), [])
 
   return (
     <React.Fragment>
       <LabelModal
-        showModal={showModal.show}
-        setShowModal={setShowModal}
-        label={showModal.label}
-        details={showModal.details}
-        domain={showModal.domain}
+        show={modal.show}
+        setModal={setModal}
+        label={modal.label}
+        requests={modal.requests}
+        website={modal.website}
       />
       <Scaffold>
         <SHeader>
           <SIcon>
-            <WebsiteLogo large domain={domain} />
+            <WebsiteLogo large domain={website} />
           </SIcon>
           <SText>
-            <STitle>{domain}</STitle>
-            <SDescription>The following pravicy practices were identified from www.amazon.com</SDescription>
+            <STitle>{website}</STitle>
+            <SDescription>The following pravicy practices were identified from {website}</SDescription>
           </SText>
         </SHeader>
         <SLabelGroup>
-          {Object.entries(labels).map(([key, value]) => (
+          {Object.entries(labels).map(([label, requests]) => (
             <LabelCard
-              key={key}
-              onTap={() => openModal({ details: value, label: key, domain: domain })}
+              key={label}
+              onTap={() => setModal((obj) => ({ ...obj, label, requests, website, show: !obj.show }))}
               margin="16px 16px 0px 0px"
-              label={key}
-              data={value}
-              domain={domain}
+              label={label}
+              requests={requests}
+              website={website}
             />
           ))}
         </SLabelGroup>

@@ -1,52 +1,28 @@
-import React, { useState } from "react"
-import {
-  SBadge,
-  SBadgeGroup,
-  SBody,
-  SContent,
-  SDescription,
-  SHeader,
-  SItem,
-  SSeperator,
-  SSpacer,
-  SThirdParty,
-  STitle,
-} from "./style"
+import React from "react"
+import { SBody, SContent, SDescription, SHeader, SSeperator, SSpacer, SThirdParty, STitle } from "./style"
 import WebsiteLogo from "../website-logo"
-import WebsiteBadge from "../website-badge"
-import Evidence from "./components/evidence"
 import { AnimateSharedLayout, motion } from "framer-motion"
+import Item from "./components/item"
+import { SBadge, SBadgeGroup } from "./components/item/style"
+import { privacyLabels } from "../../background/analysis/classModels"
 
-const Item = (props) => {
-  const [show, setVisibility] = useState(false)
-
-  return (
-    <SItem layout>
-      <motion.div layout>
-        <WebsiteBadge domain={props.domain} />
-      </motion.div>
-      <Evidence show={show} />
-      <SSeperator marginTop="16px" />
-    </SItem>
-  )
-}
-
-const LabelDetail = (props) => {
-  const keys = Object.keys(props.details)
+const LabelDetail = ({ label, website, requests }) => {
+  const urls = Object.keys(requests) // detected request urls containing identified data
+  const collected = urls.includes(website) // Check if website collected data
 
   const firstParyDescription = () => {
-    if (props.domain in props.details) {
-      return `Collected ${props.label} data.`
+    if (collected) {
+      return `Collected the following ${label} data:`
     } else {
-      return `Did not collect ${props.label} data.`
+      return `Did not collect ${label} data.`
     }
   }
 
   const thirdPartyDescription = () => {
-    if (props.domain in props.details && keys.length === 1) {
-      return `${props.domain} did not share ${props.label} data.`
+    if (collected && urls.length === 1) {
+      return `${website} did not share ${label} data.`
     } else {
-      return `${props.domain} shared location data with the following third parties:`
+      return `${website} shared location data with the following third parties:`
     }
   }
 
@@ -54,11 +30,16 @@ const LabelDetail = (props) => {
     <SBody>
       <motion.div layout>
         <SHeader>
-          <WebsiteLogo large domain={props.domain} />
+          <WebsiteLogo large domain={website} />
           <SSpacer />
           <SContent>
-            <STitle>{props.domain}</STitle>
+            <STitle>{website}</STitle>
             <SDescription>{firstParyDescription()} </SDescription>
+            <SBadgeGroup>
+              {collected ? Object.entries(requests[website]).map(([type, request]) => (
+                <SBadge key={type}>{privacyLabels[label]["types"][type]["displayName"]}</SBadge>
+              )) : null}
+            </SBadgeGroup>
           </SContent>
         </SHeader>
         <SSeperator marginLeft="16px" marginRight="16px" />
@@ -67,8 +48,8 @@ const LabelDetail = (props) => {
         <STitle>Third Parties</STitle>
         <SDescription>{thirdPartyDescription()} </SDescription>
         <AnimateSharedLayout layout>
-          {Object.entries(props.details).map(([key, value]) => {
-            if (key !== props.domain) return <Item key={key} domain={key} data={value} />
+          {Object.entries(requests).map(([url, request]) => {
+            if (url !== website) return <Item key={url} website={url} request={request} label={label} />
           })}
         </AnimateSharedLayout>
       </SThirdParty>

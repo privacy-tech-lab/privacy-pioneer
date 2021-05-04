@@ -144,7 +144,6 @@ async function addToEvidenceList(perm, rootU, snip, requestU, t, i) {
     // commit to db
     EvidenceKeyval.set(rootUrl, evidence)
   }
-  console.log(evidence)
 }
 
 

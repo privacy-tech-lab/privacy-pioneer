@@ -59,6 +59,26 @@ export const typeEnum = Object.freeze({
   invasiveFingerprint: "invasiveFingerprint",
 })
 
+// types for user input
+export const keywordTypes = Object.freeze({
+  general: {
+    displayName: "General",
+    placeholder: "Keyword",
+  },
+  streetAddress: {
+    displayName: "Street Address",
+    placeholder: "45 Wyllys Ave, Middletown CT, 06459",
+  },
+  phoneNumber: {
+    displayName: "Phone Number",
+    placeholder: "+1 (860) 685-2000",
+  },
+  emailAddress: {
+    displayName: "Email Address",
+    placeholder: "jdoe@wesleyan.edu",
+  },
+})
+
 // source of truth for all naming conventions
 export const privacyLabels = Object.freeze({
   location: {
@@ -137,13 +157,12 @@ export const privacyLabels = Object.freeze({
     types: {
       generalFingerprint: {
         displayName: "General Fingerprinting",
-
       },
       invasiveFingerprint: {
         displayName: "Invasive Fingerprinting",
-        description: "Used an API to extract information about a particular user’s computing environment when the API was not designed to expose such information.",
-      }
-
+        description:
+          "Used an API to extract information about a particular user’s computing environment when the API was not designed to expose such information.",
+      },
     },
   },
   content: {
@@ -152,4 +171,3 @@ export const privacyLabels = Object.freeze({
     types: {},
   },
 })
-

@@ -5,22 +5,18 @@ import { useHistory, useParams } from "react-router-dom"
 import { SLeading } from "./style"
 import LabelDetail from "../../../libs/label-detail"
 import NavBar from "../../components/nav-bar"
-import { privacyLabels } from "../../../libs/constants"
-import { getDomainLabels } from "../../../libs/indexed-db"
+import { privacyLabels } from "../../../background/analysis/classModels"
+import { getWebsiteLabels } from "../../../libs/indexed-db"
 
 const LabelView = () => {
-  const [details, setDetails] = useState({})
+  const [requests, setRequests] = useState({})
 
   const history = useHistory()
   const params = useParams()
   const website = params.website
   const label = params.label
 
-  useEffect(() => {
-    getDomainLabels(website).then((labels) => {
-      setDetails(labels?.[label] ?? {})
-    })
-  }, [])
+  useEffect(() => getWebsiteLabels(website).then((labels) => setRequests(labels?.[label] ?? {})), [])
 
   return (
     <Scaffold
@@ -34,7 +30,9 @@ const LabelView = () => {
           middle={privacyLabels[label]["displayName"]}
         />
       }
-      body={Object.keys(details).length !== 0 ? <LabelDetail domain={website} label={label} details={details} /> : null}
+      body={
+        Object.keys(requests).length ? <LabelDetail website={website} label={label} requests={requests} /> : null
+      }
     />
   )
 }

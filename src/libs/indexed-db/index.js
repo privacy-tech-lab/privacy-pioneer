@@ -1,7 +1,6 @@
 import { openDB } from "idb"
 import { EvidenceKeyval as evidenceIDB } from "../../background/analysis/openDB"
-import { getHostname } from "../../background/analysis/searchFunctions"
-import { privacyLabels } from "../constants"
+import { privacyLabels } from "../../background/analysis/classModels"
 
 const dbPromise = openDB("watchlist-store", 1, {
   upgrade(db) {
@@ -44,57 +43,54 @@ export const hash = (str) => {
   return hash.toString()
 }
 
-// Get labels from domain
-export const getDomainLabels = async (domain) => {
+/**
+ * Get identified labels of website from indexedDB
+ * Restucture to display in UI
+ * result: {..., label: {..., requestURL: {..., labelType: requestObject}}}
+ */
+export const getWebsiteLabels = async (website) => {
   try {
-    const domainEvidence = await evidenceIDB.get(domain)
-    const data = {}
-    for (const [key, value] of Object.entries(domainEvidence)) {
-      // here value is of type evidence, so we access it with the names defined in the evidence class (classModels.js)
-      for (const label of Object.keys(privacyLabels)) {
-        if (key.toLowerCase().includes(label.toLowerCase())) {
-          let key_ = getHostname(value["requestUrl"])
-          let subKey = value["typ"]
-          if (label in data) {
-            if (key_ in data[label]) {
-              data[label][key_][subKey] = value
+    const evidence = await evidenceIDB.get(website) // website evidence from indexedDB
+    const result = {}
+    for (const [label, value] of Object.entries(evidence)) {
+      for (const [type, requests] of Object.entries(value)) {
+        for (const [url, request] of Object.entries(requests)) {
+          // Verify label and type are in privacyLabels
+          if (label in privacyLabels && type in privacyLabels[label]["types"]) {
+            // Add label in data to object
+            if (!(label in result)) {
+              result[label] = { [url]: { [type]: request } }
+            } else if (!(url in result[label])) {
+              result[label][url] = { [type]: request }
             } else {
-              data[label][key_] = { [subKey]: value }
+              result[label][url][type] = request
             }
-          } else {
-            data[label] = { [key_]: { [subKey]: value } }
           }
         }
       }
     }
-    return data
+    return result
   } catch (error) {
     return {}
   }
 }
 
-// Get websites and labels
+/**
+ * Get all identified websites and thier labels from indexedDB
+ * Restucture to display in UI
+ * result: {..., websiteURL: [..., label]}
+ */
 export const getWebsites = async () => {
   try {
-    const data = {}
-    const evidence = await evidenceIDB.keys()
-    for (let website of evidence) {
-      let value = await evidenceIDB.get(website)
-      for (const [key, _] of Object.entries(value)) {
-        for (const label of Object.keys(privacyLabels)) {
-          if (key.toLowerCase().includes(label.toLowerCase())) {
-            if (website in data) {
-              data[website].add(label)
-            } else {
-              data[website] = new Set([label])
-            }
-          }
-        }
-      }
+    const websites = await evidenceIDB.keys()
+    const result = {}
+    for (const website of websites) {
+      const evidence = await evidenceIDB.get(website) // website evidence from indexedDB
+      const labels = Object.keys(evidence).filter((label) => label in privacyLabels) // verify label in privacy labels
+      if (labels.length) result[website] = labels
     }
-    return data
-  }
-  catch (error) {
+    return result
+  } catch (error) {
     return {}
   }
 }

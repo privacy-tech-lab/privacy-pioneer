@@ -22,7 +22,7 @@ import {
 import * as Icons from "../../../../../libs/icons"
 import { AnimatePresence } from "framer-motion"
 import { hash, WatchlistKeyval } from "../../../../../libs/indexed-db"
-import { keywordTypes } from "../../../../../libs/constants"
+import { keywordTypes } from "../../../../../background/analysis/classModels"
 
 const Modal = (props) => {
   const backdropRef = useRef()

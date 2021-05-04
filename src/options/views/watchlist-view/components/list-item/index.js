@@ -2,7 +2,7 @@ import React, { useState, useRef, useEffect } from "react"
 import { SAction, SItem, SKeyword, SType, SDropdownOptions, SDropdownItem } from "./style"
 import * as Icons from "../../../../../libs/icons"
 import { WatchlistKeyval } from "../../../../../libs/indexed-db"
-import { keywordTypes } from "../../../../../libs/constants"
+import { keywordTypes } from "../../../../../background/analysis/classModels"
 
 const ListItem = (props) => {
   const dropdownRef = useRef()

@@ -5,11 +5,13 @@ import LabelCard from "../../../libs/label-card"
 import * as Icons from "../../../libs/icons"
 import { SLeading, SBrandIcon, SBrandTitle, STrailing, SBody, SHeader, STitle, SSubtitle, SIconWrapper } from "./style"
 import NavBar from "../../components/nav-bar"
-import { getDomainLabels } from "../../../libs/indexed-db"
+import { getWebsiteLabels } from "../../../libs/indexed-db"
 import { getHostname } from "../../../background/analysis/searchFunctions"
+import { useHistory } from "react-router"
 
 const WebsiteView = () => {
-  const [domain, setDomain] = useState("...")
+  const history = useHistory()
+  const [website, setWebsite] = useState("...")
   const [labels, setLabels] = useState({})
 
   const navigate = ({ urlHash = "" }) => {
@@ -38,8 +40,8 @@ const WebsiteView = () => {
     const message = (request, sender, sendResponse) => {
       if (request.msg === "popup.currentTab") {
         const host = getHostname(request.data)
-        getDomainLabels(host).then((labels) => setLabels(labels))
-        setDomain(host)
+        getWebsiteLabels(host).then((labels) => setLabels(labels))
+        setWebsite(host)
       }
     }
     browser.runtime.onMessage.addListener(message)
@@ -71,12 +73,19 @@ const WebsiteView = () => {
       body={
         <SBody>
           <SHeader>
-            <WebsiteLogo large margin={"16px 0px 0px 0px"} domain={domain} />
-            <STitle>{domain}</STitle>
+            <WebsiteLogo large margin={"16px 0px 0px 0px"} domain={website} />
+            <STitle>{website}</STitle>
             <SSubtitle>{getCount()}</SSubtitle>
           </SHeader>
-          {Object.entries(labels).map(([key, value]) => (
-            <LabelCard key={key} margin="16px 16px 0px 16px" label={key} data={value} domain={domain} />
+          {Object.entries(labels).map(([label, requests]) => (
+            <LabelCard
+              key={label}
+              onTap={() => history.push({ pathname: `/website/${website}/label/${label}` })}
+              margin="16px 16px 0px 16px"
+              label={label}
+              requests={requests}
+              website={website}
+            />
           ))}
         </SBody>
       }

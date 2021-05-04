@@ -1,5 +1,5 @@
-import { AnimatePresence } from "framer-motion"
 import React from "react"
+import { AnimatePresence } from "framer-motion"
 import { SContainer, SHeader } from "./style"
 
 const Evidence = (props) => {
