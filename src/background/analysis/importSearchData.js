@@ -62,7 +62,7 @@ export async function importData() {
         networkKeywords[permissionEnum.personalData][typeEnum.phone] = userPhone
     }
 
-    if (typeEnum.Email in user_store_dict) {
+    if (typeEnum.email in user_store_dict) {
         networkKeywords[permissionEnum.personalData][typeEnum.email] = user_store_dict[typeEnum.email]
     }
     // now let's build up fingerprinting info

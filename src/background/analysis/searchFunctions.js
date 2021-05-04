@@ -69,12 +69,30 @@ export const getHostname = (url) => {
 // given the permission category, the url of the request, and the snippet
 // from the request, get the current time in ms and add to our evidence list
 // async because it has to wait on get from db
+//
+//
+/* So, now the evidence looks like this:
+ 
+  let stored = await EvidenceKeyval.get(rootUrl)
+
+  now stored points to the nested object with our evidence at this url
+  There are three levels of nesting
+  1) permission level
+  2) type level
+  3) reqUrl level
+
+  The evidence object is in this final reqUrl level. 
+  We store a max of 5 pieces of evidence for a given permission type pair.
+}
+*/
 async function addToEvidenceList(perm, rootU, snip, requestU, t, i) {
   var ts = Date.now()
   if (rootU == undefined) {
     rootU = requestU
   }
   var rootUrl = getHostname(rootU)
+  var reqUrl = getHostname(requestU)
+
   const e = new Evidence( {
     timestamp: ts,
     permission: perm,
@@ -93,39 +111,51 @@ async function addToEvidenceList(perm, rootU, snip, requestU, t, i) {
     evidence = {}
   }
 
-  // to get something like "location_zip"
-  let labels = [perm, t]
-  var store_label = labels.join('_')
-
   // if we have this rootUrl in evidence already we check if we already have store_label
   if (Object.keys(evidence).length !== 0) {
-    if (store_label in evidence) {
-      //pass we already have evidence here
+    if (perm in evidence) { 
+      if (t in evidence) {
+        // if we have less than 5 different reqUrl's for this permission and this is a unique reqUrl, we save the evidence
+        if (Object.keys(evidence[perm][t]).length < 5 && (!(reqUrl in evidence[perm][t])) ) {
+          evidence[perm][t][reqUrl] = e
+        }
+      }
+      else { // we don't have this type yet, so we initialize it
+        evidence[perm][t] = {}
+        evidence[perm][t][reqUrl] = e
+      }
     }
-    else {
-      // update evidence for this type_permission pair
-      evidence[store_label] = e
+    else { // we don't have this permission yet so we initialize
+      evidence[perm] = {}
+      
+      // init dict for permission type pair
+      evidence[perm][t] = {}
+
+      evidence[perm][t][reqUrl] = e
       // commit to db
       EvidenceKeyval.set(rootUrl, evidence)
     }
   }
-  // we have don't have this rootUrl yet. So we  evidence at this url
+  // we have don't have this rootUrl yet. So we init evidence at this url
   else {
-    evidence[store_label] = e
+    evidence[perm] = {}
+    evidence[perm][t] = {}
+    evidence[perm][t][reqUrl] = e
     // commit to db
     EvidenceKeyval.set(rootUrl, evidence)
   }
+  console.log(evidence)
 }
 
 
 // Look in request for keywords from list of keywords built from user's
 // location and the Google Maps geocoding API
 function locationKeywordSearch(strReq, networkKeywords, rootUrl, reqUrl) {
-  var locElems = networkKeywords[permissionEnum.Location]
+  var locElems = networkKeywords[permissionEnum.location]
   for (const [k, v] of Object.entries(locElems)) {
     let result_i = strReq.search(v)
     if (result_i != -1) {
-      addToEvidenceList(permissionEnum.Location, rootUrl, strReq, reqUrl, k, [result_i, result_i + v.length])
+      addToEvidenceList(permissionEnum.location, rootUrl, strReq, reqUrl, k, [result_i, result_i + v.length])
     }
   }
 }
@@ -229,10 +259,10 @@ function coordinateSearch(strReq, locData, rootUrl, reqUrl) {
           const deltaLng = Math.abs(asFloat - absLng);
 
           if (deltaLat < 1 && deltaLat > .1 || deltaLng < 1 && deltaLng > .1) {
-            addToEvidenceList(permissionEnum.Location, rootUrl, strReq, reqUrl, typeEnum.CoarseLocation, [index - 3, j])
+            addToEvidenceList(permissionEnum.location, rootUrl, strReq, reqUrl, typeEnum.coarseLocation, [index - 3, j])
           }
           if (deltaLat < .1 && deltaLng < .1) {
-            addToEvidenceList(permissionEnum.Location, rootUrl, strReq, reqUrl, typeEnum.TightLocation, [index - 3, j])
+            addToEvidenceList(permissionEnum.location, rootUrl, strReq, reqUrl, typeEnum.tightLocation, [index - 3, j])
         }
       }
     }
@@ -247,7 +277,7 @@ function regexSearch(strReq, keyword, rootUrl, reqUrl, type) {
     let result = strReq.search(re)
     if (result != -1) {
       {
-        addToEvidenceList(permissionEnum.PersonalData, rootUrl, strReq, reqUrl, type, [result, result + keyword.length])
+        addToEvidenceList(permissionEnum.personalData, rootUrl, strReq, reqUrl, type, [result, result + keyword.length])
       }
     }
 }
