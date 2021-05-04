@@ -67,9 +67,9 @@ export async function importData() {
     }
 
     // now let's build up fingerprinting info
-    networkKeywords[permissionEnum.Fingerprinting] = {}
-    networkKeywords[permissionEnum.Fingerprinting][typeEnum.FingerprintLib] = keywords["FINGERPRINT"]["fpLibraryList"]
-    networkKeywords[permissionEnum.Fingerprinting][typeEnum.FingerprintJSON] =  keywords["FINGERPRINT"]["fpJSONList"]
+    networkKeywords[permissionEnum.fingerprinting] = {}
+    networkKeywords[permissionEnum.fingerprinting][typeEnum.fingerprintLib] = keywords["FINGERPRINT"]["fpLibraryList"]
+    networkKeywords[permissionEnum.fingerprinting][typeEnum.fingerprintJSON] =  keywords["FINGERPRINT"]["fpJSONList"]
 
     return [locCoords, networkKeywords, services]
 }

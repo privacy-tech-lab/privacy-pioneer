@@ -129,13 +129,15 @@ async function addToEvidenceList(perm, rootU, snip, requestU, t, i) {
     if (perm in evidence) { 
       if (t in evidence[perm]) {
         // if we have less than 5 different reqUrl's for this permission and this is a unique reqUrl, we save the evidence
-        if (Object.keys(evidence[perm][t]).length < 5 && (!(reqUrl in evidence[perm][t])) ) {
+        if ((Object.keys(evidence[perm][t]).length < 4) && !(reqUrl in evidence[perm][t] )) {
           evidence[perm][t][reqUrl] = e
+          EvidenceKeyval.set(rootUrl, evidence)
         }
       }
       else { // we don't have this type yet, so we initialize it
         evidence[perm][t] = {}
         evidence[perm][t][reqUrl] = e
+        EvidenceKeyval.set(rootUrl, evidence)
       }
     }
     else { // we don't have this permission yet so we initialize
@@ -145,7 +147,6 @@ async function addToEvidenceList(perm, rootU, snip, requestU, t, i) {
       evidence[perm][t] = {}
 
       evidence[perm][t][reqUrl] = e
-      // commit to db
       EvidenceKeyval.set(rootUrl, evidence)
     }
 
@@ -155,10 +156,8 @@ async function addToEvidenceList(perm, rootU, snip, requestU, t, i) {
     evidence[perm] = {}
     evidence[perm][t] = {}
     evidence[perm][t][reqUrl] = e
-    // commit to db
     EvidenceKeyval.set(rootUrl, evidence)
   }
-
 }
 
 
@@ -297,12 +296,12 @@ function regexSearch(strReq, keyword, rootUrl, reqUrl, type) {
 }
 
 function fingerprintSearch(strReq, networkKeywords, rootUrl, reqUrl) {
-  var fpElems = networkKeywords[permissionEnum.Fingerprinting]
+  var fpElems = networkKeywords[permissionEnum.fingerprinting]
 
   for (const [k, v] of Object.entries(fpElems)) {
     let result_i = strReq.includes(v)
     if (result_i != -1) {
-      addToEvidenceList(permissionEnum.Fingerprinting, rootUrl, strReq, reqUrl, k, [result_i, result_i + v.length])
+      addToEvidenceList(permissionEnum.fingerprinting, rootUrl, strReq, reqUrl, k, [result_i, result_i + v.length])
     }
   }
 

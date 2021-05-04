@@ -57,8 +57,8 @@ export const typeEnum = Object.freeze({
   zipCode: "zipCode",
   generalFingerprint: "generalFingerprint",
   invasiveFingerprint: "invasiveFingerprint",
-  FingerprintLib: "fpLibraryList",
-  FingerprintJSON: "fpJSONList",
+  fingerprintLib: "fpLibraryList",
+  fingerprintJSON: "fpJSONList",
 })
 
 // types for user input
@@ -159,12 +159,20 @@ export const privacyLabels = Object.freeze({
     types: {
       fingerprintingGeneral: {
         displayName: "General Fingerprinting",
+        description: "",
       },
       fingerprintingInvasive: {
         displayName: "Invasive Fingerprinting",
         description:
           "Used an API to extract information about a particular user’s computing environment when the API was not designed to expose such information.",
       },
+      fpLibararyList: {
+        displayName: "fpLibraryList",
+        description: "",
+      }, 
+      fpJSONList: {
+        displayName: "fpJSONList",
+        description: "",
     },
   },
   content: {
@@ -172,4 +180,5 @@ export const privacyLabels = Object.freeze({
     description: "",
     types: {},
   },
+ }
 })

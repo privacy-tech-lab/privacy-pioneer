@@ -31,7 +31,7 @@ const LabelCard = ({ requests, website, label, margin, onTap }) => {
     if ((collected && urls.length > 1) || !collected) {
       const filtered = urls.filter((url) => url !== website)
       if (filtered.length > 2) {
-        count = filtered.length - 2
+        var count = filtered.length - 2
         return (
           <>
             <SSeperator marginTop="16px" marginBottom="0px" />
