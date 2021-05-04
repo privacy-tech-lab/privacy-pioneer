@@ -22,7 +22,7 @@ import { evidence } from "../background.js"
 import { EvidenceKeyval } from "./openDB.js"
 
 import { RegexSpecialChar, escapeRegExp } from "./regexFunctions.js"
-import { regexSearch, coordinateSearch, urlSearch, locationKeywordSearch } from "./searchFunctions"
+import { regexSearch, coordinateSearch, urlSearch, locationKeywordSearch, fingerprintSearch } from "./searchFunctions"
 
 // Temporary container to hold network requests while properties are being added from listener callbacks
 const buffer = {}
@@ -150,6 +150,9 @@ function resolveBuffer(id, data) {
 
       // search to see if the url comes up in our services list
       urlSearch(request, urls)
+
+      // search to see if any fingerprint data
+      fingerprintSearch(strRequest, networkKeywords, rootUrl, reqUrl)
     }
   } else {
     // I don't think this will ever happen, but just in case, maybe a redirect?

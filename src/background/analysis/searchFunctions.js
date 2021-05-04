@@ -86,10 +86,18 @@ export const getHostname = (url) => {
 }
 */
 async function addToEvidenceList(perm, rootU, snip, requestU, t, i) {
+  
   var ts = Date.now()
   if (rootU == undefined) {
-    rootU = requestU
+    // if the root URL is not in the request then let's just not save it
+    // as we cannot be sure what domain it is actually being called from
+    // we should, however, print the request to console for now just to see
+    // how often this is happening
+    console.log("No root URL detected for snippet:")
+    console.log(perm, snip, requestU, t)
+    return
   }
+  
   var rootUrl = getHostname(rootU)
   var reqUrl = getHostname(requestU)
 
@@ -108,13 +116,13 @@ async function addToEvidenceList(perm, rootU, snip, requestU, t, i) {
     index: i
   } )
 
-  // currently stored evidence at this domain
-  var evidence = await EvidenceKeyval.get(rootUrl)
+    // currently stored evidence at this domain
+    var evidence = await EvidenceKeyval.get(rootUrl)
 
-  // if we don't have evidence yet, we initialize it as an empty dict
-  if (evidence === undefined) {
-    evidence = {}
-  }
+    // if we don't have evidence yet, we initialize it as an empty dict
+    if (evidence === undefined) {
+      evidence = {}
+    }
 
   // if we have this rootUrl in evidence already we check if we already have store_label
   if (Object.keys(evidence).length !== 0) {
@@ -141,7 +149,6 @@ async function addToEvidenceList(perm, rootU, snip, requestU, t, i) {
       EvidenceKeyval.set(rootUrl, evidence)
     }
 
-    console.log(evidence)
   }
   // we have don't have this rootUrl yet. So we init evidence at this url
   else {
@@ -151,6 +158,7 @@ async function addToEvidenceList(perm, rootU, snip, requestU, t, i) {
     // commit to db
     EvidenceKeyval.set(rootUrl, evidence)
   }
+
 }
 
 
@@ -288,4 +296,16 @@ function regexSearch(strReq, keyword, rootUrl, reqUrl, type) {
     }
 }
 
-export { regexSearch, coordinateSearch, urlSearch, locationKeywordSearch }
+function fingerprintSearch(strReq, networkKeywords, rootUrl, reqUrl) {
+  var fpElems = networkKeywords[permissionEnum.Fingerprinting]
+
+  for (const [k, v] of Object.entries(fpElems)) {
+    let result_i = strReq.includes(v)
+    if (result_i != -1) {
+      addToEvidenceList(permissionEnum.Fingerprinting, rootUrl, strReq, reqUrl, k, [result_i, result_i + v.length])
+    }
+  }
+
+}
+
+export { regexSearch, coordinateSearch, urlSearch, locationKeywordSearch, fingerprintSearch }

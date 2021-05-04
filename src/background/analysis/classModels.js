@@ -57,6 +57,8 @@ export const typeEnum = Object.freeze({
   zipCode: "zipCode",
   generalFingerprint: "generalFingerprint",
   invasiveFingerprint: "invasiveFingerprint",
+  FingerprintLib: "fpLibraryList",
+  FingerprintJSON: "fpJSONList",
 })
 
 // types for user input
