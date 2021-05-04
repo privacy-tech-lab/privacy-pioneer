@@ -54,16 +54,16 @@ export const getWebsiteLabels = async (website) => {
     const result = {}
     for (const [label, value] of Object.entries(evidence)) {
       for (const [type, requests] of Object.entries(value)) {
-        for (const [url, request] of Object.entries(requests)) {
+        for (const [url, evidence] of Object.entries(requests)) {
           // Verify label and type are in privacyLabels
           if (label in privacyLabels && type in privacyLabels[label]["types"]) {
             // Add label in data to object
             if (!(label in result)) {
-              result[label] = { [url]: { [type]: request } }
+              result[label] = { [url]: { [type]: evidence } }
             } else if (!(url in result[label])) {
-              result[label][url] = { [type]: request }
+              result[label][url] = { [type]: evidence }
             } else {
-              result[label][url][type] = request
+              result[label][url][type] = evidence
             }
           }
         }

@@ -40,7 +40,7 @@ export const keywords = {
 
 export const services = {
   "categories": {
-    "Advertising": [
+    "advertising": [
       {
         "2leep.com": {
           "http://2leep.com/": [
@@ -7561,7 +7561,7 @@ export const services = {
         }
       }
     ],
-    "Content": [
+    "content": [
       {
         "33Across": {
           "http://33across.com/": [
@@ -8664,7 +8664,7 @@ export const services = {
         }
       }
     ],
-    "Analytics": [
+    "analytics": [
       {
         "63 Squares": {
           "http://63squares.com/": [
@@ -10181,7 +10181,7 @@ export const services = {
         }
       }
     ],
-    "FingerprintingInvasive": [
+    "fingerprintingInvasive": [
       {
         "Adabra": {
           "https://www.adabra.com/": [
@@ -10859,7 +10859,7 @@ export const services = {
         }
       }
     ],
-    "FingerprintingGeneral": [
+    "fingerprintingGeneral": [
       {
         "Adbrain": {
           "http://www.adbrain.com/": [

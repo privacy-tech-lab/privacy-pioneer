@@ -93,6 +93,11 @@ async function addToEvidenceList(perm, rootU, snip, requestU, t, i) {
   var rootUrl = getHostname(rootU)
   var reqUrl = getHostname(requestU)
 
+  // hacky way to deal with the way we iterate through the disconnect json
+  if (perm.includes("fingerprint")) { perm = "fingerprinting"}
+  if (perm.includes("advertising")) { t = "analytics" }
+  if (perm.includes("analytics")) { perm = "advertising" }
+
   const e = new Evidence( {
     timestamp: ts,
     permission: perm,
@@ -114,7 +119,7 @@ async function addToEvidenceList(perm, rootU, snip, requestU, t, i) {
   // if we have this rootUrl in evidence already we check if we already have store_label
   if (Object.keys(evidence).length !== 0) {
     if (perm in evidence) { 
-      if (t in evidence) {
+      if (t in evidence[perm]) {
         // if we have less than 5 different reqUrl's for this permission and this is a unique reqUrl, we save the evidence
         if (Object.keys(evidence[perm][t]).length < 5 && (!(reqUrl in evidence[perm][t])) ) {
           evidence[perm][t][reqUrl] = e
@@ -135,6 +140,8 @@ async function addToEvidenceList(perm, rootU, snip, requestU, t, i) {
       // commit to db
       EvidenceKeyval.set(rootUrl, evidence)
     }
+
+    console.log(evidence)
   }
   // we have don't have this rootUrl yet. So we init evidence at this url
   else {

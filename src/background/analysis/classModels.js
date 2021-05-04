@@ -155,10 +155,10 @@ export const privacyLabels = Object.freeze({
     displayName: "Fingerprinting",
     description: "",
     types: {
-      generalFingerprint: {
+      fingerprintingGeneral: {
         displayName: "General Fingerprinting",
       },
-      invasiveFingerprint: {
+      fingerprintingInvasive: {
         displayName: "Invasive Fingerprinting",
         description:
           "Used an API to extract information about a particular user’s computing environment when the API was not designed to expose such information.",
