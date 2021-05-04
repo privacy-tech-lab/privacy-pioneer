@@ -205,6 +205,9 @@ export const QuestionMarkCircle = ({ size }) => (
   </svg>
 )
 
+/**
+ * Mappings of icons to privacy labels
+ */
 export const getLabelIcon = (label) => {
   const size = "24px"
   switch (label) {
@@ -214,10 +217,6 @@ export const getLabelIcon = (label) => {
       return <Megaphone size={size} />
     case "fingerprinting":
       return <Fingerprint size={size} />
-    case "social":
-      return <Social size={size} />
-    case "pixels":
-      return <Tracking size={size} />
     default:
       return <QuestionMarkCircle size={size} />
   }

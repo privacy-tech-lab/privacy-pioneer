@@ -15,7 +15,7 @@ import { typeEnum, permissionEnum } from "./classModels.js"
 
 export async function importData() {
     var networkKeywords = {}
-    networkKeywords[permissionEnum.PersonalData] = {}
+    networkKeywords[permissionEnum.personalData] = {}
 
     // first let's build up the location info
     var locCoords = await getLocationData();
@@ -25,9 +25,9 @@ export async function importData() {
 
     // format every phone stored
     var userPhone
-    if ( typeEnum.Phone in user_store_dict) {
+    if ( typeEnum.phone in user_store_dict) {
         userPhone = []
-        let phone_arr = user_store_dict[typeEnum.Phone]
+        let phone_arr = user_store_dict[typeEnum.phone]
         phone_arr.forEach( phone => {
             let format_arr = buildPhone(phone)
             format_arr.forEach( format => {
@@ -50,26 +50,26 @@ export async function importData() {
     // for now setting placeholder of our location. Eventually this will
     // be swapped for the users custom input
     var locElems = {}
-    locElems[typeEnum.Zipcode] = exampleZip
-    locElems[typeEnum.City] = exampleCity
-    locElems[typeEnum.StreetAddress] = exampleAddress
-    if (typeof userState !== 'undefined') { locElems[typeEnum.State] = userState }
+    locElems[typeEnum.zipCode] = exampleZip
+    locElems[typeEnum.city] = exampleCity
+    locElems[typeEnum.streetAddress] = exampleAddress
+    if (typeof userState !== 'undefined') { locElems[typeEnum.state] = userState }
 
-    networkKeywords[permissionEnum.Location] = locElems
-
+    networkKeywords[permissionEnum.location] = locElems
+    
     // if we have a phone we put it in the network keywords dict
-    if (typeof userPhone !== 'undefined') {
-        networkKeywords[permissionEnum.PersonalData][typeEnum.Phone] = userPhone
+    if (typeof userPhone !== 'undefined') { 
+        networkKeywords[permissionEnum.personalData][typeEnum.phone] = userPhone
     }
 
-    if (typeEnum.Email in user_store_dict) {
-        networkKeywords[permissionEnum.PersonalData][typeEnum.Email] = user_store_dict[typeEnum.Email]
+    if (typeEnum.email in user_store_dict) {
+        networkKeywords[permissionEnum.personalData][typeEnum.email] = user_store_dict[typeEnum.email]
     }
 
     // now let's build up fingerprinting info
-    networkKeywords[permissionEnum.Fingerprinting] = {}
-    networkKeywords[permissionEnum.Fingerprinting][typeEnum.FingerprintLib] = keywords["FINGERPRINT"]["fpLibraryList"]
-    networkKeywords[permissionEnum.Fingerprinting][typeEnum.FingerprintJSON] =  keywords["FINGERPRINT"]["fpJSONList"]
+    networkKeywords[permissionEnum.fingerprinting] = {}
+    networkKeywords[permissionEnum.fingerprinting][typeEnum.fingerprintLib] = keywords["FINGERPRINT"]["fpLibraryList"]
+    networkKeywords[permissionEnum.fingerprinting][typeEnum.fingerprintJSON] =  keywords["FINGERPRINT"]["fpJSONList"]
 
     return [locCoords, networkKeywords, services]
 }

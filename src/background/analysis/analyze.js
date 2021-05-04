@@ -130,20 +130,20 @@ function resolveBuffer(id, data) {
       }
       // if this network keyword length is 0 then the geocoding failed
       // so no need to look through location keywords
-      if (networkKeywords[permissionEnum.Location].length != 0) {
+      if (networkKeywords[permissionEnum.location].length != 0) {
         locationKeywordSearch(strRequest, networkKeywords, rootUrl, reqUrl)
       }
 
       // search for personal data
       if ( permissionEnum.PersonalData in networkKeywords) {
-        if ( typeEnum.Phone in networkKeywords[permissionEnum.PersonalData] ) {
-          networkKeywords[permissionEnum.PersonalData][typeEnum.Phone].forEach( number => {
-            regexSearch(strRequest, number, rootUrl, reqUrl, typeEnum.Phone)
+        if ( typeEnum.Phone in networkKeywords[permissionEnum.personalData] ) {
+          networkKeywords[permissionEnum.personalData][typeEnum.phone].forEach( number => {
+            regexSearch(strRequest, number, rootUrl, reqUrl, typeEnum.phone)
           })
         }
         if ( typeEnum.Email in networkKeywords[permissionEnum.PersonalData] ) {
-          networkKeywords[permissionEnum.PersonalData][typeEnum.Email].forEach( email => {
-            regexSearch(strRequest, email, rootUrl, reqUrl, typeEnum.Email)
+          networkKeywords[permissionEnum.personalData][typeEnum.email].forEach( email => {
+            regexSearch(strRequest, email, rootUrl, reqUrl, typeEnum.email)
           })
         }
       }

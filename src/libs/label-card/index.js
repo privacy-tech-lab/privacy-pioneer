@@ -3,54 +3,55 @@ import WebsiteBadge from "../website-badge"
 import * as Icons from "../icons"
 import { useHistory } from "react-router-dom"
 import { SCard, SDescription, SSeperator, SHeader, SHeaderLeading, SHeaderTitle, SHeaderTrailing, SMore } from "./style"
-import { privacyLabels } from "../constants"
+import { privacyLabels } from "../../background/analysis/classModels"
 
-const More = ({ count }) => (
-  <SMore>
-    <Icons.PlusCircle size="24px" />
-    <span style={{ marginLeft: "8px" }}>
-      {count} {count > 1 ? "others" : "other"}
-    </span>
-  </SMore>
-)
-
-const LabelCard = (props) => {
+const LabelCard = ({ requests, website, label, margin, onTap }) => {
   const history = useHistory()
-  const website = props.domain
-  const label = props.label
-  const keys = Object.keys(props.data)
+  const urls = Object.keys(requests) // detected request urls containing identified data
+  const collected = urls.includes(website) // Check if website collected data
 
+  /**
+   * Get label description
+   */
   const getDescription = () => {
-    let firstParty = keys.includes(website)
-    if (firstParty && keys.length > 1) {
+    if (collected && urls.length > 1) {
       return `${website} collected and shared ${label} data with the following companies:`
-    } else if (firstParty) {
+    } else if (collected) {
       return `${website} collected ${label} data.`
     } else {
       return `${website} shared ${label} data with the following companies:`
     }
   }
 
+  /**
+   * Get third party websites and render badges
+   * Render max 2 badges
+   */
   const getThirdParties = () => {
-    let firstParty = keys.includes(website)
-    if ((firstParty && keys.length > 1) || !firstParty) {
-      const _keys = keys.filter((item) => item !== website)
-      if (_keys.length > 2) {
+    if ((collected && urls.length > 1) || !collected) {
+      const filtered = urls.filter((url) => url !== website)
+      if (filtered.length > 2) {
+        var count = filtered.length - 2
         return (
           <>
             <SSeperator marginTop="16px" marginBottom="0px" />
-            {_keys.slice(0, 2).map((key) => (
-              <WebsiteBadge key={key} domain={key} />
+            {filtered.slice(0, 2).map((url) => (
+              <WebsiteBadge key={url} domain={url} />
             ))}
-            <More count={_keys.length - 2} />
+            <SMore>
+              <Icons.PlusCircle size="24px" />
+              <span style={{ marginLeft: "8px" }}>
+                {count} {count > 1 ? "others" : "other"}
+              </span>
+            </SMore>
           </>
         )
       } else {
         return (
           <>
             <SSeperator marginTop="16px" marginBottom="0px" />
-            {_keys.map((key) => (
-              <WebsiteBadge key={key} domain={key} />
+            {filtered.map((url) => (
+              <WebsiteBadge key={url} domain={url} />
             ))}
           </>
         )
@@ -62,10 +63,8 @@ const LabelCard = (props) => {
 
   return (
     <SCard
-      margin={props.margin}
-      onClick={() =>
-        props.onTap != null ? props.onTap() : history.push({ pathname: `/website/${website}/label/${label}` })
-      }
+      margin={margin}
+      onClick={onTap}
     >
       <SHeader>
         <SHeaderLeading>

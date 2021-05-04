@@ -238,7 +238,7 @@ function buildSsnRegex(ssn) {
         return ssnRegex
     }
     else {
-        console.log('invalid ssn')
+        return undefined
     }
 
 }

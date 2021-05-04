@@ -3,7 +3,7 @@ import WebsiteBadge from "../../../libs/website-badge"
 import * as Icons from "../../../libs/icons"
 import { useHistory } from "react-router-dom"
 import { SContainer, SItem, SLabel, SLabelGroup, SSeperator } from "./style"
-import { privacyLabels } from "../../../libs/constants"
+import { privacyLabels } from "../../../background/analysis/classModels"
 
 const Item = (props) => {
   const history = useHistory()
