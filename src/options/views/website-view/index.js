@@ -7,6 +7,9 @@ import { useParams } from "react-router-dom"
 import LabelModal from "./components/label-modal"
 import { getWebsiteLabels } from "../../../libs/indexed-db"
 
+/**
+ * Website page view containing overview of identified label cards
+ */
 const WebsiteView = () => {
   const params = useParams()
   const website = params.website
@@ -27,7 +30,7 @@ const WebsiteView = () => {
       <Scaffold>
         <SHeader>
           <SIcon>
-            <WebsiteLogo large domain={website} />
+            <WebsiteLogo large website={website} />
           </SIcon>
           <SText>
             <STitle>{website}</STitle>

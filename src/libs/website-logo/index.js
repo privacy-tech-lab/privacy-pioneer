@@ -1,6 +1,10 @@
 import React from "react"
 import styled from "styled-components"
 
+/**
+ * Generally this would be in a style.js file
+ * Since it belongs to such a simple component, it's here.
+ */
 const SWebsiteLogo = styled.div`
   display: flex;
   align-items: center;
@@ -15,10 +19,13 @@ const SWebsiteLogo = styled.div`
   margin: ${(props) => (props.margin ? props.margin : "0px")};
 `
 
-const WebsiteLogo = ({ domain, large, margin }) => {
+/**
+ * Displays website logo (which is the first letter of website)
+ */
+const WebsiteLogo = ({ website, large, margin }) => {
   return (
     <SWebsiteLogo margin={margin} large={large}>
-      {domain.charAt(0).toUpperCase()}
+      {website.charAt(0).toUpperCase()}
     </SWebsiteLogo>
   )
 }

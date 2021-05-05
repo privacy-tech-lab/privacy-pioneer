@@ -6,10 +6,16 @@ import Item from "./components/item"
 import { SBadge, SBadgeGroup } from "./components/item/style"
 import { privacyLabels } from "../../background/analysis/classModels"
 
+/**
+ * Detailed view of label and third parties
+ */
 const LabelDetail = ({ label, website, requests }) => {
   const urls = Object.keys(requests) // detected request urls containing identified data
   const collected = urls.includes(website) // Check if website collected data
 
+  /**
+   * Get first party description based on whether 'website' collected data
+   */
   const firstParyDescription = () => {
     if (collected) {
       return `Collected the following ${label} data:`
@@ -18,11 +24,14 @@ const LabelDetail = ({ label, website, requests }) => {
     }
   }
 
+  /**
+   * Get third party description based on whether 'website' shared data
+   */
   const thirdPartyDescription = () => {
     if (collected && urls.length === 1) {
       return `${website} did not share ${label} data.`
     } else {
-      return `${website} shared location data with the following third parties:`
+      return `${website} shared ${label} data with the following third parties:`
     }
   }
 
@@ -30,7 +39,7 @@ const LabelDetail = ({ label, website, requests }) => {
     <SBody>
       <motion.div layout>
         <SHeader>
-          <WebsiteLogo large domain={website} />
+          <WebsiteLogo large website={website} />
           <SSpacer />
           <SContent>
             <STitle>{website}</STitle>

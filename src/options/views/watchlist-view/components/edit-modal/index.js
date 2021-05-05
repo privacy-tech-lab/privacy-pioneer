@@ -20,22 +20,30 @@ import {
   SDropdownItem,
 } from "./style"
 import * as Icons from "../../../../../libs/icons"
-import { AnimatePresence } from "framer-motion"
-import { hash, WatchlistKeyval } from "../../../../../libs/indexed-db"
+import { saveKeyword } from "../../../../../libs/indexed-db"
 import { keywordTypes } from "../../../../../background/analysis/classModels"
 
-const Modal = (props) => {
+/**
+ * Popup modal to create/edit keyword
+ */
+const EditModal = ({ keywordType, keyword, edit, id, configModal, updateList }) => {
   const backdropRef = useRef()
   const dropdownRef = useRef()
   const [showDropdown, setDropdown] = useState(false)
-  const [keywordType, setKeywordType] = useState(props.edit ? props.keywordType : "Select Type")
-  const [keyword, setKeyword] = useState(props.edit ? props.keyword : "")
+  const [_keywordType, setKeywordType] = useState(edit ? keywordType : "Select Type")
+  const [_keyword, setKeyword] = useState(edit ? keyword : "")
   const [placeholder, setPlaceholder] = useState("Keyword")
 
+  /**
+   * Closes modal and refocuses watchlist view
+   */
   const dismissModal = (event) => {
-    if (backdropRef.current === event.target) props.configModal((config) => ({ ...config, open: false }))
+    if (backdropRef.current === event.target) configModal((config) => ({ ...config, open: false }))
   }
 
+  /**
+   * Closes dropdown when clicked outside
+   */
   const blur = (event) => {
     if (!dropdownRef.current.contains(event.target)) {
       setDropdown(false)
@@ -60,10 +68,10 @@ const Modal = (props) => {
         <SNavigationBar>
           <SLeading />
           <SMiddle>
-            <STitle>{props.edit ? "Edit Keyword" : "Add Keyword"}</STitle>
+            <STitle>{edit ? "Edit Keyword" : "Add Keyword"}</STitle>
           </SMiddle>
           <STrailing>
-            <IconWrapper onClick={() => props.configModal((config) => ({ ...config, open: false }))}>
+            <IconWrapper onClick={() => configModal((config) => ({ ...config, open: false }))}>
               <Icons.Close size="24px" />
             </IconWrapper>
           </STrailing>
@@ -85,27 +93,24 @@ const Modal = (props) => {
               ))}
             </SDropdownOptions>
             <SDropdownSelection>
-              {keywordType in keywordTypes ? keywordTypes[keywordType]["displayName"] : "Select Type"}
+              {_keywordType in keywordTypes ? keywordTypes[_keywordType]["displayName"] : "Select Type"}
               <Icons.ChevronDown size="24px" />
             </SDropdownSelection>
           </SDropdown>
         </SType>
         <SKeyword>
           <SHeader>KEYWORD</SHeader>
-          <SInput value={keyword} onChange={(event) => setKeyword(event.target.value)} placeholder={placeholder} />
+          <SInput value={_keyword} onChange={(event) => setKeyword(event.target.value)} placeholder={placeholder} />
         </SKeyword>
         <SActionGroup>
-          <SAction onClick={() => props.configModal((config) => ({ ...config, open: false }))} color="#e57373">
+          <SAction onClick={() => configModal((config) => ({ ...config, open: false }))} color="#e57373">
             Cancel
           </SAction>
           <SAction
             onClick={async () => {
-              if (keywordType in keywordTypes && keyword !== "") {
-                if (props.edit) await WatchlistKeyval.delete(props.id)
-                let key = hash(keyword + keywordType)
-                await WatchlistKeyval.set(key, { keyword: keyword, type: keywordType, id: key })
-                await props.updateList()
-                props.configModal((config) => ({ ...config, open: false }))
+              if (await saveKeyword(_keyword, _keywordType, id)) {
+                await updateList()
+                configModal((config) => ({ ...config, open: false }))
               }
             }}
             color="#64b5f6"
@@ -115,23 +120,6 @@ const Modal = (props) => {
         </SActionGroup>
       </SModal>
     </SBackdrop>
-  )
-}
-
-const EditModal = (props) => {
-  return (
-    <AnimatePresence>
-      {props.showModal ? (
-        <Modal
-          keywordType={props.keywordType}
-          keyword={props.keyword}
-          edit={props.edit}
-          id={props.id}
-          configModal={props.configModal}
-          updateList={props.updateList}
-        />
-      ) : null}
-    </AnimatePresence>
   )
 }
 

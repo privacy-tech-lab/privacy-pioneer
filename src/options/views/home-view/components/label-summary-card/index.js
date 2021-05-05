@@ -2,6 +2,9 @@ import React from "react"
 import * as Icons from "../../../../../libs/icons"
 import { SContainer, SFooter, SHeader, SLabel, STotal } from "./style"
 
+/**
+ * Summary card that highlights notable stat from identified label
+ */
 const LabelSummaryCard = ({ color }) => {
   return (
     <SContainer color={color}>

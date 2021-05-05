@@ -9,11 +9,17 @@ import { getWebsiteLabels } from "../../../libs/indexed-db"
 import { getHostname } from "../../../background/analysis/searchFunctions"
 import { useHistory } from "react-router"
 
+/**
+ * Page view containing current website and identified label cards
+ */
 const WebsiteView = () => {
   const history = useHistory()
   const [website, setWebsite] = useState("...")
   const [labels, setLabels] = useState({})
 
+  /**
+   * Navigate to route in options page based on urlHash
+   */
   const navigate = ({ urlHash = "" }) => {
     const url = browser.runtime.getURL("options.html")
     browser.tabs.query({ url: url }, function (tabs) {
@@ -25,6 +31,9 @@ const WebsiteView = () => {
     })
   }
 
+  /**
+   * Get number of privacy labels identified
+   */
   const getCount = () => {
     const keys = Object.keys(labels)
     if (keys.length === 0) {
@@ -37,6 +46,10 @@ const WebsiteView = () => {
   }
 
   useEffect(() => {
+    /**
+     * Send message to background page to get url of active tab
+     * Then set state of component with website url
+     */
     const message = (request, sender, sendResponse) => {
       if (request.msg === "popup.currentTab") {
         const host = getHostname(request.data)
@@ -73,7 +86,7 @@ const WebsiteView = () => {
       body={
         <SBody>
           <SHeader>
-            <WebsiteLogo large margin={"16px 0px 0px 0px"} domain={website} />
+            <WebsiteLogo large margin={"16px 0px 0px 0px"} website={website} />
             <STitle>{website}</STitle>
             <SSubtitle>{getCount()}</SSubtitle>
           </SHeader>

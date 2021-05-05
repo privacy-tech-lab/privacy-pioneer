@@ -3,11 +3,21 @@ import styled from "styled-components"
 import { motion } from "framer-motion"
 import { useHistory } from "react-router-dom"
 
+/**
+ * Generally this would be in a style.js file
+ * Since it belongs to such a simple component, it's here.
+ */
 const SScaffold = styled(motion.div)`
   display: flex;
   flex-direction: column;
   width: 100%;
 `
+
+/**
+ * Implements the basic deisgn visual layout stucture.
+ * This is the like the main div for each page (aka each component in view besides AppView).
+ * It handles animations from page to page
+ */
 const Scaffold = ({ navigationBar, body }) => {
   let inital, animate, exit
 

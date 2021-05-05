@@ -8,13 +8,17 @@ import NavBar from "../../components/nav-bar"
 import { privacyLabels } from "../../../background/analysis/classModels"
 import { getWebsiteLabels } from "../../../libs/indexed-db"
 
+/**
+ * Page view detailing information collected and shared.
+ * Destination after clicking a 'label card'
+ */
 const LabelView = () => {
   const [requests, setRequests] = useState({})
 
   const history = useHistory()
   const params = useParams()
-  const website = params.website
-  const label = params.label
+  const website = params.website // Get website passed from route
+  const label = params.label // Get label passed from route
 
   useEffect(() => getWebsiteLabels(website).then((labels) => setRequests(labels?.[label] ?? {})), [])
 
