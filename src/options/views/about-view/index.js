@@ -3,6 +3,9 @@ import Scaffold from "../../components/scaffold"
 import { STitle } from "./style"
 import { SContainer, SSubtitle } from "./style"
 
+/**
+ * About page view
+ */
 const AboutView = () => {
   return (
     <Scaffold>

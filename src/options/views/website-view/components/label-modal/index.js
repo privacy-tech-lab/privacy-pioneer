@@ -5,6 +5,10 @@ import * as Icons from "../../../../../libs/icons"
 import { AnimatePresence } from "framer-motion"
 import { privacyLabels } from "../../../../../background/analysis/classModels"
 
+/**
+ * Modal popup detailing information collected and shared.
+ * Destination after clicking a 'label card'
+ */
 const LabelModal = ({ show, setModal, label, requests, website }) => {
   const backdropRef = useRef()
 

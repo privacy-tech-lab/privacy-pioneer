@@ -9,6 +9,11 @@ import AboutView from "../about-view"
 import SettingsView from "../settings-view"
 import SearchView from "../search-view"
 
+/**
+ * Root node of application that handles routing
+ * With the help of AnimatePresence from 'Framer Motion' we can animate between route changes
+ *  See Scaffold component for specific animation
+ */
 const AppView = () => {
   const location = useLocation()
 

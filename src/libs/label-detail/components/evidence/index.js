@@ -2,6 +2,9 @@ import React from "react"
 import { AnimatePresence } from "framer-motion"
 import { SContainer, SHeader } from "./style"
 
+/**
+ * Dropdown info containing evidence/extra info about identified label type
+ */
 const Evidence = (props) => {
   return (
     <AnimatePresence>

@@ -3,6 +3,9 @@ import Scaffold from "../../components/scaffold"
 import { STitle } from "./style"
 import { SContainer, SSubtitle } from "./style"
 
+/**
+ * Settings page view
+ */
 const SettingsView = () => {
   return (
     <Scaffold>

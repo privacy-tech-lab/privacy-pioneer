@@ -6,14 +6,15 @@ import WebsiteLabelList from "../../components/website-label-list"
 import LabelSummaryCard from "./components/label-summary-card"
 import { SButtonText, SCardGroup, SContainer, SSectionContainer, SSubtitle, STitle } from "./style"
 
+/**
+ * Home page view containing overview and recently identified labels
+ */
 const HomeView = () => {
   const history = useHistory()
   const [websites, setWebsites] = useState({})
   const entries = Object.entries(websites)
 
-  useEffect(() => {
-    getWebsites().then((websites) => setWebsites(websites))
-  }, [])
+  useEffect(() => getWebsites().then((websites) => setWebsites(websites)), [])
 
   return (
     <Scaffold>

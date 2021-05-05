@@ -1,5 +1,8 @@
 import { createGlobalStyle, css } from "styled-components"
 
+/**
+ * Global style targeted for popup
+ */
 const Popup = css`
   body {
     height: 600px;
@@ -12,6 +15,9 @@ const Popup = css`
   }
 `
 
+/**
+ * Global style targeted for options page
+ */
 const Options = css`
   body {
     padding: 0px;
@@ -28,9 +34,15 @@ const Options = css`
   }
 `
 
+/**
+ * Styled component that creates global style
+ * Variables can be accesed in other styled components
+ * Styled components are automatically scoped to a local CSS class, therefore isolated from other components.
+ * The limitation is removed here and things like CSS resets or base stylesheets can be applied.
+ */
 const GlobalStyle = createGlobalStyle`
   :root {
-    /* Colors */
+    // Colors
     --primaryBrandColor: #6B219F;
     --primaryBrandTintColor: #F2E8F9;
     --backgroundColor: #ffffff;
@@ -40,7 +52,7 @@ const GlobalStyle = createGlobalStyle`
     --textFieldColor: #d1d1d6;
     --seperatorColor: #c6c6c8;
 
-    /* Font Sizes */
+    // Font sizes
     --title1: 24px;
     --title2: 20px;
     --headline: 18px;
@@ -48,7 +60,7 @@ const GlobalStyle = createGlobalStyle`
     --body2: 14px;
   }
 
-  /* Dark Mode */
+  // Dark Mode
   @media (prefers-color-scheme: dark) {
     :root {
       --backgroundColor: #1c1c1e;

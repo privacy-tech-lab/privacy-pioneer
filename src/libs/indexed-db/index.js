@@ -1,13 +1,19 @@
 import { openDB } from "idb"
 import { EvidenceKeyval as evidenceIDB } from "../../background/analysis/openDB"
-import { privacyLabels } from "../../background/analysis/classModels"
+import { keywordTypes, privacyLabels } from "../../background/analysis/classModels"
 
+/**
+ * Create/open indexed-db to store keywords for watchlist
+ */
 const dbPromise = openDB("watchlist-store", 1, {
   upgrade(db) {
     db.createObjectStore("watchlist")
   },
 })
 
+/**
+ * Wrapper functions for CRUD operations of 'watchlist' indexed-db
+ */
 export const WatchlistKeyval = {
   async get(key) {
     return (await dbPromise).get("watchlist", key)
@@ -29,18 +35,49 @@ export const WatchlistKeyval = {
   },
 }
 
-// to convert a regular string into digits
-// taken basically from: https://werxltd.com/wp/2010/05/13/javascript-implementation-of-javas-string-hashcode-method/
-export const hash = (str) => {
+/**
+ * Utility function to create hash for watchlist key based on keyword and type
+ * This will overwrite keywords in the watchlist store that have the same keyword and type
+ * Which is okay
+ * from: https://werxltd.com/wp/2010/05/13/javascript-implementation-of-javas-string-hashcode-method/
+ */ 
+const hash = (str) => {
   var hash = 0,
-    i,
-    chr
-  for (i = 0; i < str.length; i++) {
-    chr = str.charCodeAt(i)
-    hash = (hash << 5) - hash + chr
-    hash |= 0
+     i,
+     chr;
+   for (i = 0; i < str.length; i++) {
+     chr = str.charCodeAt(i);
+     hash = (hash << 5) - hash + chr;
+     hash |= 0;
+   }
+   return hash;
+}
+
+/**
+ * Saves/updates keyword from wathlist store
+ * Updates keyword when 'id' is not undefined
+ * Return true if successful, false otherwise
+ */
+export const saveKeyword = async (keyword, type, id) => {
+  // Validate
+  if (type in keywordTypes && keyword !== "") {
+    let key
+    if (id != null) {
+      key = id
+    } else {
+      key = hash(type.concat(keyword)).toString()
+    }
+    await WatchlistKeyval.set(key, { keyword: keyword, type: type, id: key })
+    return true
   }
-  return hash.toString()
+  return false
+}
+
+/**
+ * Deletes keyword from watchlist store
+ */
+ export const deleteKeyword = async (id) => {
+  await WatchlistKeyval.delete(id)
 }
 
 /**
@@ -51,6 +88,7 @@ export const hash = (str) => {
 export const getWebsiteLabels = async (website) => {
   try {
     const evidence = await evidenceIDB.get(website) // website evidence from indexedDB
+    console.log(evidence)
     const result = {}
     for (const [label, value] of Object.entries(evidence)) {
       for (const [type, requests] of Object.entries(value)) {

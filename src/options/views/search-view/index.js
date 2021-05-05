@@ -6,21 +6,28 @@ import * as Icons from "../../../libs/icons"
 import WebsiteLabelList from "../../components/website-label-list"
 import { getWebsites } from "../../../libs/indexed-db"
 
-
+/**
+ * Search view allowing user to search from identified labels
+ */
 const SearchView = () => {
   const [allWebsites, setAllWebsites] = useState({})
   const [filteredSites, setFilter] = useState({})
 
+  /**
+   * Filter websites based on user input string from text field
+   */
   const filter = (keyString) => {
-    const filteredKeys = Object.keys(allWebsites).filter(k => k.includes(keyString))
+    const filteredKeys = Object.keys(allWebsites).filter((k) => k.includes(keyString))
     var filteredWebsites = {}
     filteredKeys.forEach((websiteName) => (filteredWebsites[websiteName] = allWebsites[websiteName]))
     setFilter(filteredWebsites)
   }
 
-  
   useEffect(() => {
-    getWebsites().then((websites) => { setAllWebsites(websites); setFilter(websites)})
+    getWebsites().then((websites) => {
+      setAllWebsites(websites)
+      setFilter(websites)
+    })
   }, [])
 
   return (
@@ -30,7 +37,7 @@ const SearchView = () => {
         <SSubtitle>See browsed webistes accessing and sharing your personal information</SSubtitle>
         <SInputContainer>
           <Icons.Search size="24px" />
-          <SInput placeholder="Search" onChange={e => filter(e.target.value)} />
+          <SInput placeholder="Search" onChange={(e) => filter(e.target.value)} />
         </SInputContainer>
         <WebsiteLabelList websites={filteredSites} />
       </SContainer>

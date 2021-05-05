@@ -1,12 +1,13 @@
 import React from "react"
 import WebsiteBadge from "../website-badge"
 import * as Icons from "../icons"
-import { useHistory } from "react-router-dom"
 import { SCard, SDescription, SSeperator, SHeader, SHeaderLeading, SHeaderTitle, SHeaderTrailing, SMore } from "./style"
 import { privacyLabels } from "../../background/analysis/classModels"
 
+/**
+ * Card that briefly summarizes label and description for website
+ */
 const LabelCard = ({ requests, website, label, margin, onTap }) => {
-  const history = useHistory()
   const urls = Object.keys(requests) // detected request urls containing identified data
   const collected = urls.includes(website) // Check if website collected data
 
@@ -36,7 +37,7 @@ const LabelCard = ({ requests, website, label, margin, onTap }) => {
           <>
             <SSeperator marginTop="16px" marginBottom="0px" />
             {filtered.slice(0, 2).map((url) => (
-              <WebsiteBadge key={url} domain={url} />
+              <WebsiteBadge key={url} website={url} />
             ))}
             <SMore>
               <Icons.PlusCircle size="24px" />
@@ -51,7 +52,7 @@ const LabelCard = ({ requests, website, label, margin, onTap }) => {
           <>
             <SSeperator marginTop="16px" marginBottom="0px" />
             {filtered.map((url) => (
-              <WebsiteBadge key={url} domain={url} />
+              <WebsiteBadge key={url} website={url} />
             ))}
           </>
         )

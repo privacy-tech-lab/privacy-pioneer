@@ -4,11 +4,19 @@ import logo from "../../../../../assets/icon-48.png"
 import * as Icons from "../../../../../libs/icons"
 import { SNavBar, SLeading, SBrandIcon, SBrandTitle, STrailing, SNavAction, SLeadingContainer } from "./style"
 
+/**
+ * Navigation bar that allows navigating between home, watchlist, settings, and about
+ * Displays logo and title
+ */
 const NavBar = () => {
   const history = useHistory()
   const location = useLocation()
   const [tab, setTab] = useState(0)
 
+  /**
+   * Navigates/pushes a new route based on `path`
+   * Nothing happens if we are on the root page of the tabbed navigation
+   */
   const configureRoute = (path) => {
     if (history.location.pathname !== path) {
       history.push({ pathname: path })
