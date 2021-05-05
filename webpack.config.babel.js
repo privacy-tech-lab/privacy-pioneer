@@ -8,6 +8,7 @@ const bundleFrontendScripts = (env, argv) => {
   return {
     name: "frontend",
     stats: "errors-warnings",
+    devtool: isDev ? "eval-source-map" : "source-map",
     entry: {
       popup: "./src/popup/index.js",
       options: "./src/options/index.js",
