@@ -50,12 +50,16 @@ The `web-ext` cli is included in the project. Learn more about packaging and sig
 ├── src                 # Extension source code
 |   |── assets          # Images and other public files used in the extension
 |   |── background      # Code for extension background related tasks (Ex. HTTP analysis)
-|   |── libs            # Utility functions and components used in frontend and background tasks
+|   |── libs            # Reusable utility functions and components used in frontend
 |   |── options         # Options page frontend SPA
 |   |── popup           # Popup dialog view frontend SPA
 |   └── manifest.json   # Extension metadata
 └── ...
 ```
+
+The options and popup directories are similarly stuctured. Like many react projects they have an `index.html` file  and `index.js` file which serve as the entry points. These directories also have a `components` directory, which contains resuable components to be used within it's parent diretory, and a `views` directory, which contains page views (which are just more react components). Each component has an `index.js` file as an entry point to that component, and they may also contain a `style.js` file for scoped styling. For styling, we use a popular technique called CSS in JS to apply styles using the third party library, [styled components](https://styled-components.com). Styled components are prefixed with a `S`, e.g. `SContainer`. For more complex components or views, there may be an additonal `components` directory. For transitions and animations, we use the third party libarary [framer motion](https://www.framer.com/motion/).
+
+The `src/libs/indexed-db` directory, contains functions that communicate to the database.
 
 ## Features
 
@@ -83,3 +87,14 @@ The crucial point here is that by examining HTTP requests we are able to find ou
 3. only see a permission use but do not know whether information is actually transimitted to a server
 
 None of the existing tools really answers these questions.
+
+## Third Party Libraries
+
+This project uses the following third party libraries and resources. We thank the developers.
+
+- [React](https://reactjs.org)
+- [Styled Components](https://styled-components.com)
+- [Framer Motion](https://www.framer.com/motion/)
+- [Ion Icons](https://ionicons.com)
+- [Eva Icons](https://akveo.github.io/eva-icons/#/)
+- [Radar Icon](https://www.svgrepo.com/svg/167040/radar)
