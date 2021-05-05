@@ -37,6 +37,13 @@ export const keywords = {
       ]
    },
    "FINGERPRINT": {
+    /*
+      The contents of this list were populated from the following sources:
+      1: https://github.com/disconnectme/disconnect-tracking-protection/blob/master/descriptions.md
+      2: https://jonatron.github.io/webgl-fingerprinting/
+      3: https://sift.com/developers/docs/python/javascript-api/overview
+      4: Investigating hundreds of HTTP requests known to be fingerprinting.
+    */
      "fpLibraryList":[
          `fingerprint`,
 
@@ -93,8 +100,9 @@ export const keywords = {
          `HTMLCanvasElement.toDataURL`
 
          /*
-         I kept these "symbols" (methods) from the JSON because they were the methods that would
-         likely not be used in legitimate code. I cannot make similar promises about the other ones.
+         These methods were the most important ones used in a long JSON that many fingerprinting scripts
+         utilize. There are more methods used in that script, but these are the most likely not to be used
+         in legitimate code.
 
          Found in (1) in the evidence list above.
          */
