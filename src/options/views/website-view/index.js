@@ -6,6 +6,7 @@ import { SDescription, SHeader, SIcon, SLabelGroup, SText, STitle } from "./styl
 import { useParams } from "react-router-dom"
 import LabelModal from "./components/label-modal"
 import { getWebsiteLabels } from "../../../libs/indexed-db"
+import { Modal } from "bootstrap"
 
 /**
  * Website page view containing overview of identified label cards
@@ -16,17 +17,16 @@ const WebsiteView = () => {
   const [modal, setModal] = useState({ show: false })
   const [labels, setLabels] = useState({})
 
-  useEffect(() => getWebsiteLabels(website).then((labels) => setLabels(labels)), [])
-
+  useEffect(() => {
+    getWebsiteLabels(website).then((labels) => setLabels(labels))
+    // Add listener to modal so we can reset it by taking it off the dom so it doesn't hold references
+    document.getElementById("detail-modal").addEventListener("hidden.bs.modal", () => {
+      setModal({ show: false })
+    })
+  }, [])
   return (
     <React.Fragment>
-      <LabelModal
-        show={modal.show}
-        setModal={setModal}
-        label={modal.label}
-        requests={modal.requests}
-        website={modal.website}
-      />
+      <LabelModal label={modal.label} requests={modal.requests} website={modal.website} show={modal.show} />
       <Scaffold>
         <SHeader>
           <SIcon>
@@ -41,7 +41,11 @@ const WebsiteView = () => {
           {Object.entries(labels).map(([label, requests]) => (
             <LabelCard
               key={label}
-              onTap={() => setModal((obj) => ({ ...obj, label, requests, website, show: !obj.show }))}
+              onTap={() => {
+                const modal = new Modal(document.getElementById("detail-modal"))
+                setModal({ label, requests, website, show: true })
+                modal.show()
+              }}
               margin="16px 16px 0px 0px"
               label={label}
               requests={requests}

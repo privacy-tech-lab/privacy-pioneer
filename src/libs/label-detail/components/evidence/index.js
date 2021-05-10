@@ -1,33 +1,97 @@
 import React from "react"
-import { AnimatePresence } from "framer-motion"
-import { SContainer, SHeader } from "./style"
+import { privacyLabels } from "../../../../background/analysis/classModels"
+import { SContainer, SHeader, SCollapse, SCodeBlock, SBody } from "./style"
 
 /**
- * Dropdown info containing evidence/extra info about identified label type
+ * 'Collapse' containing evidence/extra info about identified label type
  */
-const Evidence = (props) => {
+const Evidence = ({ collapseId, request, label, type }) => {
+  /**
+   * Check if value is int
+   */
+  const isInt = (value) => {
+    var x
+    if (isNaN(value)) {
+      return false
+    }
+    x = parseFloat(value)
+    return (x | 0) === x
+  }
+
+  /**
+   * Get the identified evidence code snippet
+   */
+  const getSnippet = (request) => {
+    if (
+      request != null &&
+      request.snippet != null &&
+      request.index !== -1 &&
+      isInt(request.index[0]) &&
+      isInt(request.index[1])
+    ) {
+      const maxChars = 475
+      const data = { leading: "", middle: "", trailing: "" }
+      data.middle = request.snippet.slice(request.index[0], request.index[1])
+
+      data.leading = request.snippet.slice(0, request.index[0])
+      data.trailing = request.snippet.slice(request.index[1], request.snippet.length)
+
+      data.leading = "... " + data.leading.slice(maxChars * -1)
+      data.trailing = data.trailing.slice(0, maxChars) + " ..."
+
+      return data
+    } else {
+      return null
+    }
+  }
+
+  /**
+   * Get sub label description
+   */
+  const getDescription = (request) => {
+    if (request != null) {
+      const description = privacyLabels[label]["types"][type]["description"]
+      if (description.length) {
+        return description
+      } else {
+        return "None"
+      }
+    }
+    return ""
+  }
+
+  const description = getDescription(request)
+  const data = getSnippet(request)
+
   return (
-    <AnimatePresence>
-      {props.show ? (
-        <SContainer
-          layout
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          exit={{ opacity: 0 }}
-          transition={{ duration: 0.25, type: "tween", ease: "easeOut" }}
-        >
-          <SHeader>Evicence Snippet</SHeader>
+    <SCollapse className="collapse" id={collapseId}>
+      <SContainer className="card card-body">
+        <SHeader marginTop="16px">◉ Description</SHeader>
+        <SBody>{description}</SBody>
+        <SHeader marginTop="16px">◉ Request URL </SHeader>
+        <SBody>
           <pre>
-            <code>
-              ...example code block ksadlfkjas d skdalfj apsldkfja;sldkfj ;alkdj f;laskdjf ;laskdj flaksjdf kfj asl;kdf
-              <span> 100 Pine Street, Middletown CT, 06457</span> laksj dflkasj dflkjas dlfk as; lsdkafj al;skdfj
-              a;lskdfj ;lkasdfj l;aksdjf laksjd flaksjdf ;laksdfjla;skdjf a;sdkf ja;lsdkfj las;kfj alkd falskdfj alsdkf;
-              alsdkf jaldkf lkfj asldkf...
-            </code>
+            <code>{request != null ? request["requestUrl"] : ""}&nbsp;</code>
           </pre>
-        </SContainer>
-      ) : null}
-    </AnimatePresence>
+        </SBody>
+        <SHeader marginTop="16px" marginBottom="8px">
+          ◉ Data Snippet
+        </SHeader>
+        <SCodeBlock>
+          <pre>
+            {data != null ? (
+              <code>
+                {data.leading}
+                <span>{data.middle}</span>
+                {data.trailing}
+              </code>
+            ) : (
+              <code>Unavailable</code>
+            )}
+          </pre>
+        </SCodeBlock>
+      </SContainer>
+    </SCollapse>
   )
 }
 

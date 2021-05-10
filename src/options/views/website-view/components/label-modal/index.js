@@ -1,48 +1,57 @@
-import React, { useRef } from "react"
+import React from "react"
 import LabelDetail from "../../../../../libs/label-detail"
-import { IconWrapper, SBackdrop, SLeading, SMiddle, SModal, SNavigationBar, STitle, STrailing } from "./style"
+import {
+  IconWrapper,
+  SLeading,
+  SMiddle,
+  SModal,
+  SNavigationBar,
+  STitle,
+  STrailing,
+  SContainer,
+  SDialog,
+  SContent,
+} from "./style"
 import * as Icons from "../../../../../libs/icons"
-import { AnimatePresence } from "framer-motion"
 import { privacyLabels } from "../../../../../background/analysis/classModels"
 
 /**
  * Modal popup detailing information collected and shared.
  * Destination after clicking a 'label card'
  */
-const LabelModal = ({ show, setModal, label, requests, website }) => {
-  const backdropRef = useRef()
-
+const LabelModal = ({ label, requests, website, show }) => {
   return (
-    <AnimatePresence>
-      {show ? (
-        <SBackdrop
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          exit={{ opacity: 0 }}
-          transition={{ duration: 0.25, type: "tween", ease: "easeOut" }}
-          ref={backdropRef}
-          onClick={(event) => {
-            if (backdropRef.current === event.target) setModal({ show: false })
-          }}
-        >
-          <SModal>
-            <SNavigationBar>
-              <SLeading />
-              <SMiddle>
-                {Icons.getLabelIcon(label)}
-                <STitle>{privacyLabels[label]["displayName"]}</STitle>
-              </SMiddle>
-              <STrailing>
-                <IconWrapper onClick={() => setModal({ show: false })}>
-                  <Icons.Close size="24px" />
-                </IconWrapper>
-              </STrailing>
-            </SNavigationBar>
-            <LabelDetail website={website} label={label} requests={requests} />
-          </SModal>
-        </SBackdrop>
-      ) : null}
-    </AnimatePresence>
+    <>
+      <SContainer
+        className="modal fade"
+        id="detail-modal"
+        tabIndex="-1"
+        aria-labelledby="detail-modal"
+        aria-hidden="true"
+      >
+        <SDialog className="modal-dialog">
+          <SContent className="modal-content">
+            { show ? (
+              <SModal>
+                <SNavigationBar>
+                  <SLeading />
+                  <SMiddle>
+                    {Icons.getLabelIcon(label)}
+                    <STitle>{privacyLabels[label]["displayName"]}</STitle>
+                  </SMiddle>
+                  <STrailing>
+                    <IconWrapper data-bs-dismiss="modal" aria-label="Close">
+                      <Icons.Close size="24px" />
+                    </IconWrapper>
+                  </STrailing>
+                </SNavigationBar>
+                <LabelDetail website={website} label={label} requests={requests} />
+              </SModal>
+            ) : null}
+          </SContent>
+        </SDialog>
+      </SContainer>
+    </>
   )
 }
 

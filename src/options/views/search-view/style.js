@@ -38,8 +38,8 @@ export const SInputContainer = styled.div`
     fill: var(--secondaryTextColor);
   }
   svg {
-    padding-top: 36px;
-    padding-left: 8px;
+    margin-top: 36px;
+    margin-left: 8px;
     position: absolute;
   }
 `

@@ -19,6 +19,7 @@ export const SContainer = styled.div`
   box-shadow: 0px 0px 32px rgba(0, 0, 0, 0.05);
   border-radius: 16px;
   background: ${(props) => getColor(props.color)};
+  box-sizing: content-box;
   display: flex;
   flex-direction: column;
   padding: 16px 16px 16px;

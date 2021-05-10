@@ -12,6 +12,7 @@ const Popup = css`
     font-size: var(--body1);
     overflow-x: hidden;
     font-family: "Source Sans Pro", sans-serif;
+    line-height: normal;
   }
 `
 
@@ -24,6 +25,7 @@ const Options = css`
     margin: 0px;
     font-family: "Source Sans Pro", sans-serif;
     background-color: var(--backgroundColor);
+    line-height: normal;
   }
   #root {
     display: flex;

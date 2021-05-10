@@ -3,6 +3,7 @@ import { SAction, SItem, SKeyword, SType, SDropdownOptions, SDropdownItem } from
 import * as Icons from "../../../../../libs/icons"
 import { deleteKeyword } from "../../../../../libs/indexed-db"
 import { keywordTypes } from "../../../../../background/analysis/classModels"
+import { Modal } from "bootstrap"
 
 /**
  * List item displaying keyword and type
@@ -24,7 +25,7 @@ const ListItem = ({keyword, type, id, configModal, updateList}) => {
   useEffect(() => {
     document.addEventListener("mousedown", blur)
     return () => document.removeEventListener("mousedown", blur)
-  })
+  }, [])
 
   return (
     <SItem>
@@ -45,12 +46,14 @@ const ListItem = ({keyword, type, id, configModal, updateList}) => {
               onClick={() => {
                 configModal((config) => ({
                   ...config,
-                  open: true,
                   edit: true,
+                  show: true,
                   keyword: keyword,
                   keywordType: type,
                   id: id,
                 }))
+                const modal = new Modal(document.getElementById("edit-modal"))
+                modal.show()
               }}
             >
               Edit

@@ -1,10 +1,19 @@
 import React from "react"
-import { SBody, SContent, SDescription, SHeader, SSeperator, SSpacer, SThirdParty, STitle } from "./style"
+import {
+  SBody,
+  SContent,
+  SDescription,
+  SHeader,
+  SItem,
+  SSeperator,
+  SSpacer,
+  SThirdParty,
+  STitle,
+  SHeaderBadge,
+} from "./style"
 import WebsiteLogo from "../website-logo"
-import { AnimateSharedLayout, motion } from "framer-motion"
+import WebsiteBadge from "../website-badge"
 import Item from "./components/item"
-import { SBadge, SBadgeGroup } from "./components/item/style"
-import { privacyLabels } from "../../background/analysis/classModels"
 
 /**
  * Detailed view of label and third parties
@@ -37,30 +46,31 @@ const LabelDetail = ({ label, website, requests }) => {
 
   return (
     <SBody>
-      <motion.div layout>
-        <SHeader>
-          <WebsiteLogo large website={website} />
-          <SSpacer />
-          <SContent>
-            <STitle>{website}</STitle>
-            <SDescription>{firstParyDescription()} </SDescription>
-            <SBadgeGroup>
-              {collected ? Object.entries(requests[website]).map(([type, request]) => (
-                <SBadge key={type}>{privacyLabels[label]["types"][type]["displayName"]}</SBadge>
-              )) : null}
-            </SBadgeGroup>
-          </SContent>
-        </SHeader>
-        <SSeperator marginLeft="16px" marginRight="16px" />
-      </motion.div>
+      <SHeader>
+        <SHeaderBadge>
+          <WebsiteLogo website={website} />
+          <STitle style={{ marginLeft: "8px" }}>{website}</STitle>
+        </SHeaderBadge>
+        <SSpacer />
+        <SContent>
+          <SDescription>{firstParyDescription()} </SDescription>
+          {collected ? <Item url={website} request={requests[website]} label={label} /> : null}
+        </SContent>
+      </SHeader>
+      <SSeperator marginLeft="16px" marginRight="16px" />
       <SThirdParty>
         <STitle>Third Parties</STitle>
         <SDescription>{thirdPartyDescription()} </SDescription>
-        <AnimateSharedLayout layout>
-          {Object.entries(requests).map(([url, request]) => {
-            if (url !== website) return <Item key={url} website={url} request={request} label={label} />
-          })}
-        </AnimateSharedLayout>
+        {Object.entries(requests).map(([url, request]) => {
+          if (url !== website)
+            return (
+              <SItem key={url}>
+                <WebsiteBadge website={url} />
+                <Item url={url} request={request} label={label} />
+                <SSeperator marginTop="16px" />
+              </SItem>
+            )
+        })}
       </SThirdParty>
     </SBody>
   )
