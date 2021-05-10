@@ -1,27 +1,16 @@
-import { motion } from "framer-motion"
 import styled from "styled-components"
 
-export const SBackdrop = styled(motion.div)`
-  width: 100%;
-  height: 100%;
-  position: fixed;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background-color: rgba(0, 0, 0, 0.9);
-  z-index: 2;
+export const SContent = styled.div`
+  background-color: var(--cardColor);
+  border-radius: 16px;
 `
 
 export const SModal = styled.div`
   display: flex;
   flex-direction: column;
   padding: 0px 16px 16px 16px;
-  width: 360px;
   background-color: var(--cardColor);
   border-radius: 16px;
-  position: relative;
-  z-index: 3;
-  overflow: visible;
 `
 
 export const SNavigationBar = styled.div`
@@ -108,7 +97,7 @@ export const SType = styled.div`
 
 export const SDropdownOptions = styled.div`
   top: 56px;
-  display: ${props => props.show ? 'block' : 'none'};
+  display: ${(props) => (props.show ? "block" : "none")};
   position: absolute;
   background-color: var(--textFieldColor);
   box-shadow: 0px 4px 16px -8px rgba(0, 0, 0, 0.25);

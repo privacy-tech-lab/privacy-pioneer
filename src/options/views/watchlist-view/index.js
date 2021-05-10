@@ -7,13 +7,13 @@ import ListItem from "./components/list-item"
 import EditModal from "./components/edit-modal"
 import { WatchlistKeyval } from "../../../libs/indexed-db"
 import { importData } from "../../../background/analysis/importSearchData"
-import { AnimatePresence } from "framer-motion"
+import { Modal } from "bootstrap"
 
 /**
  * Watchlist page view allowing user to add/modify keywords
  */
 const WatchlistView = () => {
-  const [modalConfig, configModal] = useState({ open: false, edit: false })
+  const [modalConfig, configModal] = useState({ show: false, edit: false })
   const [items, setItems] = useState([])
 
   /**
@@ -24,22 +24,39 @@ const WatchlistView = () => {
     importData()
   }
 
-  useEffect(() => updateList(), [])
+  useEffect(() => {
+    updateList()
+    // Add listener to modal so we can reset it by taking it off the dom so it doesn't hold references
+    document.getElementById("edit-modal").addEventListener("hidden.bs.modal", () => {
+      configModal({ show: false })
+    })
+  }, [])
 
   return (
     <React.Fragment>
-      <AnimatePresence>
-        {modalConfig.open ? (
-          <EditModal
-            keywordType={modalConfig.keywordType}
-            keyword={modalConfig.keyword}
-            id={modalConfig.id}
-            edit={modalConfig.edit}
-            configModal={configModal}
-            updateList={updateList}
-          />
-        ) : null}
-      </AnimatePresence>
+      <div
+        className="modal fade"
+        data-bs-backdrop="static"
+        data-bs-keyboard="false"
+        id="edit-modal"
+        tabIndex="-1"
+        aria-labelledby="edit-modal"
+        aria-hidden="true"
+      >
+        <div className="modal-dialog modal-dialog-centered">
+          {modalConfig.show ? (
+            <EditModal
+              keywordType={modalConfig.keywordType}
+              keyword={modalConfig.keyword}
+              id={modalConfig.id}
+              edit={modalConfig.edit}
+              configModal={configModal}
+              updateList={updateList}
+            />
+          ) : null}
+        </div>
+      </div>
+
       <Scaffold>
         <SContainer>
           <SHeader>
@@ -50,7 +67,13 @@ const WatchlistView = () => {
               </SSubtitle>
             </div>
             <div>
-              <SAddButton onClick={() => configModal((config) => ({ open: !config.open }))}>
+              <SAddButton
+                onClick={() => {
+                  configModal({ show: true })
+                  const modal = new Modal(document.getElementById("edit-modal"))
+                  modal.show()
+                }}
+              >
                 <Icons.Plus size="24px" />
                 Add Keyword
               </SAddButton>

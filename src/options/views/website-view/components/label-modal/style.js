@@ -1,28 +1,21 @@
-import { motion } from "framer-motion"
 import styled from "styled-components"
 
-export const SBackdrop = styled(motion.div)`
-  width: 100%;
-  height: 100%;
-  position: fixed;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background-color: rgba(0, 0, 0, 0.9);
-  z-index: 2;
+export const SContainer = styled.div``
+
+export const SDialog = styled.div`
+`
+
+export const SContent = styled.div`
+  background-color: var(--cardColor);
+  border-radius: 16px;
 `
 
 export const SModal = styled.div`
   display: flex;
   flex-direction: column;
   padding: 0px 16px 16px 8px;
-  width: 720px;
   background-color: var(--cardColor);
-  height: 600px;
   border-radius: 16px;
-  position: relative;
-  z-index: 3;
-  overflow-y: auto;
 `
 
 export const SNavigationBar = styled.div`

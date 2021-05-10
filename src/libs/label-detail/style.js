@@ -6,9 +6,16 @@ export const SBody = styled.div`
   width: 100%;
 `
 
-export const SHeader = styled.div`
+export const SHeaderBadge = styled.div`
   display: flex;
   flex-direction: row;
+  align-items: center;
+  margin-top: 16px;
+`
+
+export const SHeader = styled.div`
+  display: flex;
+  flex-direction: column;
   margin: 16px;
 `
 
@@ -47,4 +54,9 @@ export const SSeperator = styled.div`
   background-color: var(--seperatorColor);
   margin-top: ${(prop) => prop.marginTop};
   margin-bottom: ${(prop) => prop.marginBottom};
+`
+
+export const SItem = styled.div`
+  display: flex;
+  flex-direction: column;
 `
