@@ -93,6 +93,7 @@ None of the existing tools really answers these questions.
 This project uses the following third party libraries and resources. We thank the developers.
 
 - [React](https://reactjs.org)
+- [Bootstrap](https://getbootstrap.com)
 - [Styled Components](https://styled-components.com)
 - [Framer Motion](https://www.framer.com/motion/)
 - [Ion Icons](https://ionicons.com)
