@@ -8,6 +8,7 @@ import EditModal from "./components/edit-modal"
 import { WatchlistKeyval } from "../../../libs/indexed-db"
 import { importData } from "../../../background/analysis/importSearchData"
 import { Modal } from "bootstrap"
+import { BrowserRouter } from "react-router-dom"
 
 /**
  * Watchlist page view allowing user to add/modify keywords
@@ -20,8 +21,10 @@ const WatchlistView = () => {
    * Inflates view with keywords from watchlist keystore
    */
   const updateList = () => {
-    WatchlistKeyval.values().then((values) => setItems(values))
-    importData()
+    WatchlistKeyval.values().then((values) => setItems(values));
+    browser.runtime.sendMessage( {
+      msg: "dataUpdated"
+    } );
   }
 
   useEffect(() => {
