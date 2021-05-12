@@ -23,6 +23,5 @@ for subdir, dirs, files in os.walk(DIR):
     for file in files:
         filepath = subdir + os.sep + file
         if filepath.endswith(".js"):
-            print(filepath)
             with open(filepath, 'r') as original: data = original.read()
             with open(filepath, 'w') as modified: modified.write(HEADER + data)
