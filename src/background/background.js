@@ -17,9 +17,6 @@ import { openDB } from "idb"
 // https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/API/webRequest/ResourceType
 const filter = { urls: ["<all_urls>"], types: ["script", "xmlhttprequest", "sub_frame", "websocket", "main_frame"] }
 
-function sleep(ms) {
-  return new Promise(resolve => setTimeout(resolve, ms));
-}
 
 // Get url of active tab for popup
 browser.runtime.onMessage.addListener((request, sender, sendResponse) => {
@@ -35,10 +32,7 @@ importData().then((data) => {
 
   browser.runtime.onMessage.addListener( async (request, sender, sendResponse) => {
     if (request.msg == "dataUpdated") {
-      await sleep(2000);
       data = await importData();
-      console.log('INSIDE')
-      console.log(data)
     }
   })
 
