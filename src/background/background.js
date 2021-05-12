@@ -17,6 +17,7 @@ import { openDB } from "idb"
 // https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/API/webRequest/ResourceType
 const filter = { urls: ["<all_urls>"], types: ["script", "xmlhttprequest", "sub_frame", "websocket", "main_frame"] }
 
+
 // Get url of active tab for popup
 browser.runtime.onMessage.addListener((request, sender, sendResponse) => {
   if (request.msg == "background.currentTab") {
@@ -28,6 +29,13 @@ browser.runtime.onMessage.addListener((request, sender, sendResponse) => {
 
 // call function to get all the url and keyword data
 importData().then((data) => {
+
+  browser.runtime.onMessage.addListener( async (request, sender, sendResponse) => {
+    if (request.msg == "dataUpdated") {
+      data = await importData();
+    }
+  })
+
   // Listener to get response data, request body, and details about request
   browser.webRequest.onBeforeRequest.addListener(
     function (details) {
