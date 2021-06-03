@@ -251,7 +251,6 @@ function coordinateSearch(strReq, locData, rootUrl, reqUrl) {
   }
 
   if (foundLat && foundLng) {
-    console.log(strReq.slice(start, end))
     addToEvidenceList(permissionEnum.location, rootUrl, strReq, reqUrl, typeEnum.coarseLocation, [start, end])
   }
 }
