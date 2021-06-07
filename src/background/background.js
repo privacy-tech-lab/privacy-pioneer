@@ -6,7 +6,7 @@ background.js
 - https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/API/webRequest
 */
 
-import { onBeforeRequest, onBeforeSendHeaders, onHeadersReceived } from "./analysis/analyze.js"
+import { onBeforeRequest, onBeforeSendHeaders, onHeadersReceived, tabUpdate } from "./analysis/analyze.js"
 import { importData } from "./analysis/importSearchData.js"
 import { openDB } from "idb"
 
@@ -35,6 +35,13 @@ importData().then((data) => {
       data = await importData();
     }
   })
+
+  // add url listener
+  browser.tabs.onUpdated.addListener(
+    function (tabId, changeInfo, tab) {
+      tabUpdate(tabId, changeInfo, tab, data)
+    }
+  )
 
   // Listener to get response data, request body, and details about request
   browser.webRequest.onBeforeRequest.addListener(

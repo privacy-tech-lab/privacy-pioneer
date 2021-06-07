@@ -228,8 +228,15 @@ function coordinateSearch(strReq, locData, rootUrl, reqUrl) {
   let start = undefined
   let end = undefined
 
+  let foundPreciseLat = false
+  let foundPreciseLng = false
+  let start_ = undefined
+  let end_ = undefined
+
+
   for (const match of matches) {
-    let potCoor = match[0]
+    //we take this substring because of non-digit in regex
+    let potCoor = match[0].substring(1)
     let startIndex = match.index
     let endIndex = startIndex + potCoor.length
 
@@ -248,11 +255,29 @@ function coordinateSearch(strReq, locData, rootUrl, reqUrl) {
       start = startIndex
       end = endIndex
     }
+
+    if (deltaLat < .1) {
+      foundPreciseLat = true
+      start_ = startIndex
+      end_ = endIndex
+    }
+
+    if (deltaLng < .1) {
+      foundPreciseLng = true
+      start_ = startIndex
+      end_ = endIndex
+    }
+  }
+
+  if (foundPreciseLat && foundPreciseLng) {
+    addToEvidenceList(permissionEnum.location, rootUrl, strReq, reqUrl, typeEnum.tightLocation, [start_, end_])
+    return
   }
 
   if (foundLat && foundLng) {
     addToEvidenceList(permissionEnum.location, rootUrl, strReq, reqUrl, typeEnum.coarseLocation, [start, end])
   }
+
 }
 
 
