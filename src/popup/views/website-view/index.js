@@ -31,7 +31,7 @@ const WebsiteView = () => {
   const history = useHistory();
   const [website, setWebsite] = useState("...");
   const [labels, setLabels] = useState({});
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [empty, setEmpty] = useState(true);
 
   /**
@@ -73,14 +73,17 @@ const WebsiteView = () => {
         getWebsiteLabels(host).then((labels) => {
           setLabels(labels);
           if (Object.keys(labels).length > 0) {
-            setEmpty(false), setLoading(false);
-          }
+            setTimeout(() => {
+              setEmpty(false), setLoading(false);
+            }, 800);
+          } else setTimeout(() => setLoading(false), 2000);
         });
         setWebsite(host);
       }
     };
 
     browser.runtime.onMessage.addListener(message);
+    console.log("listening");
     browser.runtime.sendMessage({ msg: "background.currentTab" });
 
     return () => {
@@ -129,10 +132,10 @@ const WebsiteView = () => {
             </SHeader>
             {empty ? (
               <SEmpty>
-                {" "}
                 <SEmptyText>
-                  We couldn't identify any privacy practices!
-                </SEmptyText>{" "}
+                  We couldn't identify any privacy practices at this time keep
+                  browsing and check back later!
+                </SEmptyText>
               </SEmpty>
             ) : (
               Object.entries(labels).map(([label, requests]) => (

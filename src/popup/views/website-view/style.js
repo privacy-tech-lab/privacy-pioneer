@@ -86,13 +86,16 @@ export const SLoader = styled.div`
 export const SEmpty = styled.div`
   display: flex;
   flex: 1;
+  margin-top: 12px;
+  padding-left: 12px;
+  padding-right: 12px;
   font-weight: bold;
+  flex-direction: column;
   font-size: var(--title2);
-  text-align: center;
   align-items: center;
   justify-content: center;
 `;
-export const SEmptyText = styled.div`
+export const SEmptyText = styled.text`
   display: flex;
   font-weight: bold;
   font-size: var(--title2);
