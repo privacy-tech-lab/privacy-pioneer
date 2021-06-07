@@ -1,7 +1,7 @@
-import React from "react"
-import styled from "styled-components"
-import { motion } from "framer-motion"
-import { useHistory } from "react-router-dom"
+import React from "react";
+import styled from "styled-components";
+import { motion } from "framer-motion";
+import { useHistory } from "react-router-dom";
 
 /**
  * Generally this would be in a style.js file
@@ -11,7 +11,8 @@ const SScaffold = styled(motion.div)`
   display: flex;
   flex-direction: column;
   width: 100%;
-`
+  height: 100%;
+`;
 
 /**
  * Implements the basic deisgn visual layout stucture.
@@ -19,16 +20,36 @@ const SScaffold = styled(motion.div)`
  * It handles animations from page to page
  */
 const Scaffold = ({ navigationBar, body }) => {
-  let inital, animate, exit
+  let inital, animate, exit;
 
   if (useHistory().action === "PUSH") {
-    inital = { position: "fixed", opacity: 0, x: "75%", transitionEnd: { position: "absolute" } }
-    animate = { position: "fixed", opacity: 1, x: "0%", transitionEnd: { position: "absolute" } }
-    exit = { position: "absolute", opacity: 0, x: "-75%" }
+    inital = {
+      position: "fixed",
+      opacity: 0,
+      x: "75%",
+      transitionEnd: { position: "absolute" },
+    };
+    animate = {
+      position: "fixed",
+      opacity: 1,
+      x: "0%",
+      transitionEnd: { position: "absolute" },
+    };
+    exit = { position: "absolute", opacity: 0, x: "-75%" };
   } else {
-    inital = { position: "absolute", opacity: 0, x: "-75%", transitionEnd: { position: "absolute" } }
-    animate = { position: "absolute", opacity: 1, x: "0%", transitionEnd: { position: "absolute" } }
-    exit = { position: "fixed", opacity: 0, x: "75%" }
+    inital = {
+      position: "absolute",
+      opacity: 0,
+      x: "-75%",
+      transitionEnd: { position: "absolute" },
+    };
+    animate = {
+      position: "absolute",
+      opacity: 1,
+      x: "0%",
+      transitionEnd: { position: "absolute" },
+    };
+    exit = { position: "fixed", opacity: 0, x: "75%" };
   }
 
   return (
@@ -41,7 +62,7 @@ const Scaffold = ({ navigationBar, body }) => {
       {navigationBar}
       {body}
     </SScaffold>
-  )
-}
+  );
+};
 
-export default Scaffold
+export default Scaffold;
