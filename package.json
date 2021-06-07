@@ -27,6 +27,7 @@
     "react": "^17.0.1",
     "react-dom": "^17.0.1",
     "react-router-dom": "^5.2.0",
+    "react-spinners": "^0.11.0",
     "styled-components": "^5.2.1"
   },
   "devDependencies": {
@@ -36,6 +37,7 @@
     "@babel/preset-react": "^7.12.13",
     "@babel/register": "^7.13.8",
     "@babel/runtime": "^7.13.10",
+    "@emotion/babel-plugin": "^11.3.0",
     "babel-loader": "^8.2.2",
     "concurrently": "^6.0.0",
     "copy-webpack-plugin": "^8.0.0",
@@ -57,6 +59,7 @@
       "@babel/preset-env"
     ],
     "plugins": [
+      "@emotion",
       "@babel/plugin-transform-runtime"
     ]
   }

@@ -1,4 +1,4 @@
-import { createGlobalStyle, css } from "styled-components"
+import { createGlobalStyle, css } from "styled-components";
 
 /**
  * Global style targeted for popup
@@ -14,7 +14,7 @@ const Popup = css`
     font-family: "Source Sans Pro", sans-serif;
     line-height: normal;
   }
-`
+`;
 
 /**
  * Global style targeted for options page
@@ -34,7 +34,7 @@ const Options = css`
     color: var(--primaryTextColor);
     font-size: var(--body1);
   }
-`
+`;
 
 /**
  * Styled component that creates global style
@@ -79,6 +79,6 @@ const GlobalStyle = createGlobalStyle`
   path, circle {
     fill: var(--primaryTextColor);
   }
-`
+`;
 
-export default GlobalStyle
+export default GlobalStyle;
