@@ -297,14 +297,15 @@ function regexSearch(strReq, keyword, rootUrl, reqUrl, type) {
 
 function fingerprintSearch(strReq, networkKeywords, rootUrl, reqUrl) {
   var fpElems = networkKeywords[permissionEnum.fingerprinting]
-
   for (const [k, v] of Object.entries(fpElems)) {
-    let result_i = strReq.includes(v)
-    if (result_i != -1) {
-      addToEvidenceList(permissionEnum.fingerprinting, rootUrl, strReq, reqUrl, k, [result_i, result_i + v.length])
+    for (const keyword of v){
+      if (strReq.includes(keyword)){
+        addToEvidenceList(permissionEnum.fingerprinting, rootUrl, strReq, reqUrl, k, [0, 1]);
+        break;
+      }
     }
+    
   }
-
 }
 
 export { regexSearch, coordinateSearch, urlSearch, locationKeywordSearch, fingerprintSearch }
