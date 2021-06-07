@@ -21,6 +21,7 @@ export async function importData() {
     var locCoords = await getLocationData();
 
     // get formatted data from the watchlist store
+    // at bottom of file
     let user_store_dict = await getWatchlistDict()
 
     // format every phone stored
@@ -61,7 +62,7 @@ export async function importData() {
     if (typeof userPhone !== 'undefined') { 
         networkKeywords[permissionEnum.personalData][typeEnum.phone] = userPhone
     }
-
+    // if the user entered an email, add it to our keywords to look out for
     if (typeEnum.email in user_store_dict) {
         networkKeywords[permissionEnum.personalData][typeEnum.email] = user_store_dict[typeEnum.email]
     }
@@ -83,8 +84,10 @@ async function getWatchlistDict() {
     let keyarr = await WatchlistKeyval.keys()
     for (let key of keyarr) {
         let ktype, keyword
+        // get the keyword associated with the key
         let keywordObject = await WatchlistKeyval.get(key)
         for (let [t, val] of Object.entries(keywordObject) ) {
+            // we have either a type of key or an actual key
             if (t == 'type') { ktype = val }
             if (t == 'keyword') { keyword = val }
        }

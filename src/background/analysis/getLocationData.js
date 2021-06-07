@@ -3,6 +3,7 @@ getLocationData.js
 ================================================================================
 - getLocationData.js takes users lat and long uses Google Map API to find other
 location info
+- if location permission is denied by the user, returns [0,0] for user lat, lng
 */
 
 // function to get the client's location data

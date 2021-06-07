@@ -31,6 +31,7 @@ const buffer = {}
 // Mozilla docs outlines several ways to parse incoming chunks of data; Feel free to experiment with others
 // https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/API/webRequest/StreamFilter/ondata
 const onBeforeRequest = (details, data) => {
+  // filter = you can now monitor a response before the request is sent
   const filter = browser.webRequest.filterResponseData(details.requestId),
     decoder = new TextDecoder("utf-8"),
     d = []
@@ -134,7 +135,7 @@ function resolveBuffer(id, data) {
         locationKeywordSearch(strRequest, networkKeywords, rootUrl, reqUrl)
       }
 
-      // search for personal data
+      // search for personal data from user's watchlist
       if ( permissionEnum.PersonalData in networkKeywords) {
         if ( typeEnum.Phone in networkKeywords[permissionEnum.personalData] ) {
           networkKeywords[permissionEnum.personalData][typeEnum.phone].forEach( number => {

@@ -1,7 +1,8 @@
 /*
-requestModel.js
+classModels.js
 ================================================================================
-- requestModel.js defines a structure of a network request
+- classModels.js defines important classes and objects that we use throughout
+the project
 */
 
 export class Request {

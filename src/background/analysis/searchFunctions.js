@@ -10,7 +10,7 @@ import { EvidenceKeyval } from "./openDB.js"
 
 import { RegexSpecialChar, escapeRegExp } from "./regexFunctions.js"
 
-// given a type and a permission creates a unique has so there are no repeats
+// given a type and a permission creates a unique hash so there are no repeats
 // in our indexedDB. THIS IS NOT A SECURE HASH, but rather just a quick way
 // to convert a regular string into digits
 // taken basically from: https://werxltd.com/wp/2010/05/13/javascript-implementation-of-javas-string-hashcode-method/
@@ -56,10 +56,11 @@ export const getHostname = (url) => {
   //extracting the root domain here
   //if there is a subdomain
   if (arrLen > 2) {
+    // domain = second to last and last domain. could be (xyz.me.uk) or (xyz.uk)
       domain = splitArr[arrLen - 2] + '.' + splitArr[arrLen - 1];
       //check to see if it's using a Country Code Top Level Domain (ccTLD) (i.e. ".me.uk")
       if (splitArr[arrLen - 2].length == 2 && splitArr[arrLen - 1].length == 2) {
-          //this is using a ccTLD
+          //this is using a ccTLD. set domain to include the actual host name
           domain = splitArr[arrLen - 3] + '.' + domain;
       }
   }
@@ -127,6 +128,7 @@ async function addToEvidenceList(perm, rootU, snip, requestU, t, i) {
   // if we have this rootUrl in evidence already we check if we already have store_label
   if (Object.keys(evidence).length !== 0) {
     if (perm in evidence) { 
+      // if type is in the permission
       if (t in evidence[perm]) {
         // if we have less than 5 different reqUrl's for this permission and this is a unique reqUrl, we save the evidence
         if ((Object.keys(evidence[perm][t]).length < 4) && !(reqUrl in evidence[perm][t] )) {
@@ -217,7 +219,7 @@ function coordinateSearch(strReq, locData, rootUrl, reqUrl) {
   var absLat = Math.abs(lat)
   var absLng = Math.abs(lng)
 
-  //take request => JSON and build list of decimals
+  //take request => JSON and build list of decimals' indices
   var decimalIndices = [];
   for (var i = 1; i < strReq.length - 1; i++) {
     if (strReq.charAt(i) === "." ) {
@@ -225,12 +227,13 @@ function coordinateSearch(strReq, locData, rootUrl, reqUrl) {
     }
   }
 
-  // iterate through decimals, and attempt to build float if there are numbers to either side of the decimal
+  // iterate through decimals' indices, and attempt to build float if there are numbers to either side of the decimal
   decimalIndices.forEach(index => {
     var potFloat = [];
     const oneLeft = strReq.charAt(index-1);
     const oneRight = strReq.charAt(index+1);
 
+    // making the assumption that anything with a decimal may be a number that could be location data
     if ( (!isNaN(oneLeft))  && (!isNaN(oneRight)) )
     {
       potFloat.push(oneLeft);
@@ -271,6 +274,7 @@ function coordinateSearch(strReq, locData, rootUrl, reqUrl) {
           const deltaLat = Math.abs(asFloat - absLat);
           const deltaLng = Math.abs(asFloat - absLng);
 
+          // if the number is pretty close to the user's actual location (as we got it), then add to evidence
           if (deltaLat < 1 && deltaLat > .1 || deltaLng < 1 && deltaLng > .1) {
             addToEvidenceList(permissionEnum.location, rootUrl, strReq, reqUrl, typeEnum.coarseLocation, [index - 3, j])
           }
@@ -280,10 +284,11 @@ function coordinateSearch(strReq, locData, rootUrl, reqUrl) {
       }
     }
   }
- })
+ }) 
 }
 
 // passed keyword as string
+// checks if the keyword appears in result
 function regexSearch(strReq, keyword, rootUrl, reqUrl, type) {
     let fixed = escapeRegExp(keyword)
     let re = new RegExp(`${fixed}`, "i");
@@ -295,16 +300,17 @@ function regexSearch(strReq, keyword, rootUrl, reqUrl, type) {
     }
 }
 
+// check if something from the fingerprint lists appears in the request
 function fingerprintSearch(strReq, networkKeywords, rootUrl, reqUrl) {
   var fpElems = networkKeywords[permissionEnum.fingerprinting]
 
   for (const [k, v] of Object.entries(fpElems)) {
-    let result_i = strReq.includes(v)
-    if (result_i != -1) {
-      addToEvidenceList(permissionEnum.fingerprinting, rootUrl, strReq, reqUrl, k, [result_i, result_i + v.length])
+      let result_i = strReq.includes(v)
+      if (result_i != -1) {
+        addToEvidenceList(permissionEnum.fingerprinting, rootUrl, strReq, reqUrl, k, [result_i, result_i + v.length])
+      }   
     }
-  }
-
+    
 }
 
 export { regexSearch, coordinateSearch, urlSearch, locationKeywordSearch, fingerprintSearch }
