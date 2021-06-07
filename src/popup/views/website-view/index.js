@@ -133,7 +133,7 @@ const WebsiteView = () => {
             {empty ? (
               <SEmpty>
                 <SEmptyText>
-                  We couldn't identify any privacy practices at this time keep
+                  Nothing yet... Keep
                   browsing and check back later!
                 </SEmptyText>
               </SEmpty>

@@ -86,7 +86,7 @@ export const SLoader = styled.div`
 export const SEmpty = styled.div`
   display: flex;
   flex: 1;
-  margin-top: 12px;
+  margin-top: 30px;
   padding-left: 12px;
   padding-right: 12px;
   font-weight: bold;
