@@ -52,7 +52,7 @@ export const typeEnum = Object.freeze({
   streetAddress: "streetAddress",
   social: "social",
   ipAddress: "ipAddress",
-  userKeyword: "userKeyword",
+  userKeyword: "general",
   analytics: "analytics",
   trackingPixel: "trackingPixel",
   cryptoMining: "cryptoMining",
