@@ -5,19 +5,30 @@ import { SContainer, SFooter, SHeader, SLabel, STotal } from "./style"
 /**
  * Summary card that highlights notable stat from identified label
  */
-const LabelSummaryCard = ({ color }) => {
+const LabelSummaryCard = ({labeltype, website }) => {
   return (
-    <SContainer color={color}>
+    <SContainer labeltype={labeltype}>
       <SHeader>
-        <STotal>29</STotal>
+        <STotal>{website}</STotal>
         <SLabel>
-          <Icons.Location size="24px" />
-          Location
+          {Icons.getLabelIcon(labeltype)}
+          {labeltype.charAt(0).toUpperCase() + labeltype.slice(1)}
         </SLabel>
       </SHeader>
-      <SFooter>Companies collected your location data</SFooter>
+      <SFooter>Companies collected your {labeltype} data</SFooter>
     </SContainer>
   )
 }
 
-export default LabelSummaryCard
+/**
+ * List of Summary cards given label and stat {label:stat}
+ */
+
+const LabelSummaryCardList = ({ labels }) => {
+  const entries = Object.entries(labels)
+  return (
+    entries.map(([labeltype, numOfWebsites]) =>
+      <LabelSummaryCard key={labeltype} labeltype={labeltype} website={numOfWebsites} />))
+      }
+
+      export default LabelSummaryCardList

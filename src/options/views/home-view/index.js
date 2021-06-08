@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react"
 import { useHistory } from "react-router"
-import { getWebsites } from "../../../libs/indexed-db"
+import { getWebsites, getLabels } from "../../../libs/indexed-db"
 import Scaffold from "../../components/scaffold"
 import WebsiteLabelList from "../../components/website-label-list"
-import LabelSummaryCard from "./components/label-summary-card"
+import LabelSummaryCardList from "./components/label-summary-card"
 import { SButtonText, SCardGroup, SContainer, SSectionContainer, SSubtitle, STitle } from "./style"
 
 /**
@@ -12,9 +12,13 @@ import { SButtonText, SCardGroup, SContainer, SSectionContainer, SSubtitle, STit
 const HomeView = () => {
   const history = useHistory()
   const [websites, setWebsites] = useState({})
+  const [labels, setLabels] = useState({})
   const entries = Object.entries(websites)
 
-  useEffect(() => getWebsites().then((websites) => setWebsites(websites)), [])
+  useEffect(() =>
+    getWebsites()
+      .then((websites) => { setWebsites(websites), getLabels(websites).then(labels => setLabels(labels))}
+  ), [])
 
   return (
     <Scaffold>
@@ -22,8 +26,7 @@ const HomeView = () => {
         <STitle>Overview</STitle>
         <SSubtitle>A summary of your privacy labels</SSubtitle>
         <SCardGroup>
-          <LabelSummaryCard color="orange" />
-          <LabelSummaryCard color="purple" />
+          <LabelSummaryCardList labels={labels} />
         </SCardGroup>
       </SContainer>
       <SContainer marginTop>

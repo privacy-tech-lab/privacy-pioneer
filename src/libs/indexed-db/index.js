@@ -113,6 +113,35 @@ export const getWebsiteLabels = async (website) => {
 }
 
 /**
+ * Uses above function to iterate through websites 
+ * Made for UI implementation
+ * result: {label : number of websites that uses label }
+ */
+
+export const getLabels = async (websites) => {
+  let labels = {}
+  try {
+    for (const website of Object.keys(websites)) {
+      await getWebsiteLabels(website)
+        .then((res) => {
+          Object.keys(res).forEach(label => {
+            Object.keys(labels).includes(label)
+              ? labels[label] += getNumOfWebsites(res[label])
+              : labels[label] = getNumOfWebsites(res[label])
+          })
+        })
+    }
+    return labels
+  }
+  catch (error) {
+    return labels
+  }
+}
+
+const getNumOfWebsites = (label) => Object.keys(label).length
+
+
+/**
  * Get all identified websites and thier labels from indexedDB
  * Restucture to display in UI
  * result: {..., websiteURL: [..., label]}
