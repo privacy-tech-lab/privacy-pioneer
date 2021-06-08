@@ -56,7 +56,7 @@ export const getHostname = (url) => {
   //extracting the root domain here
   //if there is a subdomain
   if (arrLen > 2) {
-    // domain = second to last and last domain. could be (xyz.me.uk) or (xyz.uk)
+      // domain = second to last and last domain. could be (xyz.me.uk) or (xyz.uk)
       domain = splitArr[arrLen - 2] + '.' + splitArr[arrLen - 1];
       //check to see if it's using a Country Code Top Level Domain (ccTLD) (i.e. ".me.uk")
       if (splitArr[arrLen - 2].length == 2 && splitArr[arrLen - 1].length == 2) {
@@ -216,7 +216,7 @@ function urlSearch(request, urls) {
 }
 
 // coordinate search looks for floating point numbers with a regular expression pattern. If we find a lat
-// and lng in the same reqeuest, we submit the evidence.
+// and lng in the same request, we submit the evidence.
 
 function coordinateSearch(strReq, locData, rootUrl, reqUrl) {
   var lat = locData[0]
@@ -233,8 +233,15 @@ function coordinateSearch(strReq, locData, rootUrl, reqUrl) {
   let start = undefined
   let end = undefined
 
+  let foundPreciseLat = false
+  let foundPreciseLng = false
+  let start_ = undefined
+  let end_ = undefined
+
+
   for (const match of matches) {
-    let potCoor = match[0]
+    //we take this substring because of non-digit in regex
+    let potCoor = match[0].substring(1)
     let startIndex = match.index
     let endIndex = startIndex + potCoor.length
 
@@ -246,18 +253,36 @@ function coordinateSearch(strReq, locData, rootUrl, reqUrl) {
       foundLat = true
       start = startIndex
       end = endIndex
-
+      
     }
     if (deltaLng < 1) {
       foundLng = true
       start = startIndex
       end = endIndex
     }
+
+    if (deltaLat < .1) {
+      foundPreciseLat = true
+      start_ = startIndex
+      end_ = endIndex
+    }
+
+    if (deltaLng < .1) {
+      foundPreciseLng = true
+      start_ = startIndex
+      end_ = endIndex
+    }
+  }
+
+  if (foundPreciseLat && foundPreciseLng) {
+    addToEvidenceList(permissionEnum.location, rootUrl, strReq, reqUrl, typeEnum.tightLocation, [start_, end_])
+    return
   }
 
   if (foundLat && foundLng) {
     addToEvidenceList(permissionEnum.location, rootUrl, strReq, reqUrl, typeEnum.coarseLocation, [start, end])
   }
+
 }
 
 
@@ -280,12 +305,12 @@ function fingerprintSearch(strReq, networkKeywords, rootUrl, reqUrl) {
   var fpElems = networkKeywords[permissionEnum.fingerprinting]
 
   for (const [k, v] of Object.entries(fpElems)) {
-      let result_i = strReq.includes(v)
-      if (result_i != -1) {
-        addToEvidenceList(permissionEnum.fingerprinting, rootUrl, strReq, reqUrl, k, [result_i, result_i + v.length])
-      }   
+    let result_i = strReq.includes(v)
+    if (result_i != -1) {
+      addToEvidenceList(permissionEnum.fingerprinting, rootUrl, strReq, reqUrl, k, [result_i, result_i + v.length])
     }
+  }
+
 }
-    
 
 export { regexSearch, coordinateSearch, urlSearch, locationKeywordSearch, fingerprintSearch }
