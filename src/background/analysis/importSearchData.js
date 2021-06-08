@@ -71,8 +71,9 @@ export async function importData() {
     }
 
     // if we have user keywords, we add them to the network keywords (formated as arr)
-    if (typeEnum.userKeyword in user_store_dict) {
-        networkKeywords[permissionEnum.personalData][typeEnum.userKeyword] = user_store_dict[typeEnum.userKeyword]
+    // we check for general because this is the title they get in the db.
+    if (typeEnum.general in user_store_dict) {
+        networkKeywords[permissionEnum.personalData][typeEnum.userKeyword] = user_store_dict[typeEnum.general]
     }
 
     // build fingerprinting info. Adding fingerprinting library keywords, 
