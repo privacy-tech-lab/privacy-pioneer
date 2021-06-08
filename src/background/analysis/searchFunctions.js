@@ -299,8 +299,9 @@ function fingerprintSearch(strReq, networkKeywords, rootUrl, reqUrl) {
   var fpElems = networkKeywords[permissionEnum.fingerprinting]
   for (const [k, v] of Object.entries(fpElems)) {
     for (const keyword of v){
-      if (strReq.includes(keyword)){
-        addToEvidenceList(permissionEnum.fingerprinting, rootUrl, strReq, reqUrl, k, [0, 1]);
+      const idxKeyword = strReq.indexOf(keyword);
+      if (idxKeyword != -1){
+        addToEvidenceList(permissionEnum.fingerprinting, rootUrl, strReq, reqUrl, k, [idxKeyword, idxKeyword + keyword.length]);
         break;
       }
     }
