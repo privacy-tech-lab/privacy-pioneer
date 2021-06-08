@@ -10,7 +10,7 @@ import { EvidenceKeyval } from "./openDB.js"
 
 import { RegexSpecialChar, escapeRegExp } from "./regexFunctions.js"
 
-// given a type and a permission creates a unique has so there are no repeats
+// given a type and a permission creates a unique hash so there are no repeats
 // in our indexedDB. THIS IS NOT A SECURE HASH, but rather just a quick way
 // to convert a regular string into digits
 // taken basically from: https://werxltd.com/wp/2010/05/13/javascript-implementation-of-javas-string-hashcode-method/
@@ -56,10 +56,11 @@ export const getHostname = (url) => {
   //extracting the root domain here
   //if there is a subdomain
   if (arrLen > 2) {
+      // domain = second to last and last domain. could be (xyz.me.uk) or (xyz.uk)
       domain = splitArr[arrLen - 2] + '.' + splitArr[arrLen - 1];
       //check to see if it's using a Country Code Top Level Domain (ccTLD) (i.e. ".me.uk")
       if (splitArr[arrLen - 2].length == 2 && splitArr[arrLen - 1].length == 2) {
-          //this is using a ccTLD
+          //this is using a ccTLD. set domain to include the actual host name
           domain = splitArr[arrLen - 3] + '.' + domain;
       }
   }
@@ -106,6 +107,9 @@ async function addToEvidenceList(perm, rootU, snip, requestU, t, i) {
   if (perm.includes("advertising")) { t = "analytics" }
   if (perm.includes("analytics")) { perm = "advertising" }
 
+  // snippet = code snippet we identified as having sent personal data
+  // typ = type of data identified
+  // index = [start, end] indexes for snippet
   const e = new Evidence( {
     timestamp: ts,
     permission: perm,
@@ -127,6 +131,7 @@ async function addToEvidenceList(perm, rootU, snip, requestU, t, i) {
   // if we have this rootUrl in evidence already we check if we already have store_label
   if (Object.keys(evidence).length !== 0) {
     if (perm in evidence) { 
+      // if type is in the permission
       if (t in evidence[perm]) {
         // if we have less than 5 different reqUrl's for this permission and this is a unique reqUrl, we save the evidence
         if ((Object.keys(evidence[perm][t]).length < 4) && !(reqUrl in evidence[perm][t] )) {
@@ -211,7 +216,7 @@ function urlSearch(request, urls) {
 }
 
 // coordinate search looks for floating point numbers with a regular expression pattern. If we find a lat
-// and lng in the same reqeuest, we submit the evidence.
+// and lng in the same request, we submit the evidence.
 
 function coordinateSearch(strReq, locData, rootUrl, reqUrl) {
   var lat = locData[0]
@@ -283,6 +288,7 @@ function coordinateSearch(strReq, locData, rootUrl, reqUrl) {
 
 
 // passed keyword as string
+// checks if the keyword appears in result
 function regexSearch(strReq, keyword, rootUrl, reqUrl, type) {
     let fixed = escapeRegExp(keyword)
     let re = new RegExp(`${fixed}`, "i");
@@ -294,6 +300,7 @@ function regexSearch(strReq, keyword, rootUrl, reqUrl, type) {
     }
 }
 
+// check if something from the fingerprint lists appears in the request
 function fingerprintSearch(strReq, networkKeywords, rootUrl, reqUrl) {
   var fpElems = networkKeywords[permissionEnum.fingerprinting]
   for (const [k, v] of Object.entries(fpElems)) {

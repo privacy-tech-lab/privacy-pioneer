@@ -12,6 +12,8 @@ const dbPromise = openDB('keyval-store', 1, {
   },
 });
 
+// Wrapper functions for CRUD operations of 'EvidenceKeyval' indexed-db
+// imported in src/libs/indexed-db/index.js to be displayed in the frontend
 export const EvidenceKeyval = {
   async get(key) {
     return (await dbPromise).get('network-requests', key);

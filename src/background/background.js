@@ -21,8 +21,11 @@ const filter = { urls: ["<all_urls>"], types: ["script", "xmlhttprequest", "sub_
 // Get url of active tab for popup
 browser.runtime.onMessage.addListener((request, sender, sendResponse) => {
   if (request.msg == "background.currentTab") {
+    // send current, open tab to the runtime (our extension)
     const send = (tabs) => browser.runtime.sendMessage({ msg: "popup.currentTab", data: tabs[0].url })
+    // get the current open tab (is a promise)
     const querying = browser.tabs.query({active: true, currentWindow: true});
+    // once all open visible tabs have been added to querying, send to runtime
     querying.then((tabs) => send(tabs), (error) => send(""));
   }
 })

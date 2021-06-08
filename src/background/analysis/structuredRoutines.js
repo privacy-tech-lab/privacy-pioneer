@@ -44,7 +44,7 @@ function buildPhone(userNumber) {
 }
 
 
-//zip code -> state abreviation, state function
+// zip code -> state abbreviation, state name
 // function gets passed a string that must be length 5.
 function getState(zipString) {
 
