@@ -22,7 +22,7 @@ import { evidence } from "../background.js"
 import { EvidenceKeyval } from "./openDB.js"
 
 import { RegexSpecialChar, escapeRegExp } from "./regexFunctions.js"
-import { regexSearch, coordinateSearch, urlSearch, locationKeywordSearch, fingerprintSearch } from "./searchFunctions"
+import { regexSearch, coordinateSearch, urlSearch, locationKeywordSearch, fingerprintSearch, extractHostname } from "./searchFunctions"
 
 // Temporary container to hold network requests while properties are being added from listener callbacks
 const buffer = {}
@@ -179,4 +179,14 @@ function resolveBuffer(id, data) {
   }
 }
 
-export { onBeforeRequest, onHeadersReceived, onBeforeSendHeaders }
+// callback for tab update. Right now used to run analysis on the url
+const tabUpdate = (tabId, changeInfo, tab, data) => {
+
+  if (changeInfo.url) {
+    let loc = data[0]
+    let root = extractHostname(changeInfo.url)
+    coordinateSearch(changeInfo.url, loc, root, root)
+  }
+}
+
+export { onBeforeRequest, onHeadersReceived, onBeforeSendHeaders, tabUpdate }

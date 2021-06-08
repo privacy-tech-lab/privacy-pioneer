@@ -215,7 +215,9 @@ function urlSearch(request, urls) {
   }
 }
 
-// try to build floats out of HTTP request strings to find users location
+// coordinate search looks for floating point numbers with a regular expression pattern. If we find a lat
+// and lng in the same reqeuest, we submit the evidence.
+
 function coordinateSearch(strReq, locData, rootUrl, reqUrl) {
   var lat = locData[0]
   var lng = locData[1]
@@ -237,8 +239,7 @@ function coordinateSearch(strReq, locData, rootUrl, reqUrl) {
     const oneRight = strReq.charAt(index+1);
 
     // making the assumption that anything with a decimal may be a number that could be location data
-    if ( (!isNaN(oneLeft))  && (!isNaN(oneRight)) )
-    {
+    if ( (!isNaN(oneLeft))  && (!isNaN(oneRight)) ) {
       potFloat.push(oneLeft);
       potFloat.push(".");
       potFloat.push(oneRight);
@@ -254,41 +255,81 @@ function coordinateSearch(strReq, locData, rootUrl, reqUrl) {
         if (!isNaN(threeLeft) && threeLeft != ' ') {
           potFloat.unshift(threeLeft);
         }
-
-        var j = index + 2;
-        var ctr = 0;
-        // keep building the float as long as we haven't gone past 14 digits (rough heuristic) and we're still looking at numbers
-        while ( (!isNaN(strReq.charAt(j)) && (j < strReq.length) && (ctr < 14)) ) {
-          if (strReq.charAt(j) === ' ') {
-            break;
-          }
-          potFloat.push(strReq.charAt(j));
-          j = j + 1;
-          ctr = ctr + 1;
-        }
-
-        //here's the potential float
-        const potentialMatch = potFloat.join('');
-
-        //heursitic that longer decimals are likely to be locations
-        if (potentialMatch.length > 10) {
-          const asFloat = parseFloat(potentialMatch);
-          // lazy bound of 1 for matches.
-          const deltaLat = Math.abs(asFloat - absLat);
-          const deltaLng = Math.abs(asFloat - absLng);
-
-          // if the number is pretty close to the user's actual location (as we got it), then add to evidence
-          if (deltaLat < 1 && deltaLat > .1 || deltaLng < 1 && deltaLng > .1) {
-            addToEvidenceList(permissionEnum.location, rootUrl, strReq, reqUrl, typeEnum.coarseLocation, [index - 3, j])
-          }
-          if (deltaLat < .1 && deltaLng < .1) {
-            addToEvidenceList(permissionEnum.location, rootUrl, strReq, reqUrl, typeEnum.tightLocation, [index - 3, j])
-        }
       }
     }
-  }
- }) 
+    
+    // floating point regex non-digit, then 2-3 digits (should think about 1 digit starts later, this reduces matches a lot and helps speed), then a ".", then 4 to 10 digits, g is global flag
+    let floatReg = /\D\d{2,3}\.\d{4,10}/g
+    const matches = strReq.matchAll(floatReg)
+
+    let foundLat = false
+    let foundLng = false
+    let start = undefined
+    let end = undefined
+
+    let foundPreciseLat = false
+    let foundPreciseLng = false
+    let start_ = undefined
+    let end_ = undefined
+
+
+    for (const match of matches) {
+      //we take this substring because of non-digit in regex
+      let potCoor = match[0].substring(1)
+      let startIndex = match.index
+      let endIndex = startIndex + potCoor.length
+
+      // if the number is pretty close to the user's actual location (as we got it), then add to evidence
+      if (deltaLat < 1 && deltaLat > .1 || deltaLng < 1 && deltaLng > .1) {
+        addToEvidenceList(permissionEnum.location, rootUrl, strReq, reqUrl, typeEnum.coarseLocation, [index - 3, j])
+      }
+      if (deltaLat < .1 && deltaLng < .1) {
+        addToEvidenceList(permissionEnum.location, rootUrl, strReq, reqUrl, typeEnum.tightLocation, [index - 3, j])
+      }
+    
+      const asFloat = parseFloat(potCoor)
+      const deltaLat = Math.abs(asFloat - absLat)
+      const deltaLng = Math.abs(asFloat - absLng)
+
+      if (deltaLat < 1) {
+        foundLat = true
+        start = startIndex
+        end = endIndex
+        
+      }
+      if (deltaLng < 1) {
+        foundLng = true
+        start = startIndex
+        end = endIndex
+      }
+
+      if (deltaLat < .1) {
+        foundPreciseLat = true
+        start_ = startIndex
+        end_ = endIndex
+      }
+
+      if (deltaLng < .1) {
+        foundPreciseLng = true
+        start_ = startIndex
+        end_ = endIndex
+      }
+    }
+  
+  
+
+    if (foundPreciseLat && foundPreciseLng) {
+      addToEvidenceList(permissionEnum.location, rootUrl, strReq, reqUrl, typeEnum.tightLocation, [start_, end_])
+      return
+    }
+
+    if (foundLat && foundLng) {
+      addToEvidenceList(permissionEnum.location, rootUrl, strReq, reqUrl, typeEnum.coarseLocation, [start, end])
+    }
+}, undefined)
 }
+
+
 
 // passed keyword as string
 // checks if the keyword appears in result
@@ -313,7 +354,7 @@ function fingerprintSearch(strReq, networkKeywords, rootUrl, reqUrl) {
         addToEvidenceList(permissionEnum.fingerprinting, rootUrl, strReq, reqUrl, k, [result_i, result_i + v.length])
       }   
     }
-    
 }
+    
 
 export { regexSearch, coordinateSearch, urlSearch, locationKeywordSearch, fingerprintSearch }
