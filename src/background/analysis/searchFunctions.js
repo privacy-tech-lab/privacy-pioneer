@@ -224,109 +224,40 @@ function coordinateSearch(strReq, locData, rootUrl, reqUrl) {
   var absLat = Math.abs(lat)
   var absLng = Math.abs(lng)
 
-  //take request => JSON and build list of decimals' indices
-  var decimalIndices = [];
-  for (var i = 1; i < strReq.length - 1; i++) {
-    if (strReq.charAt(i) === "." ) {
-      decimalIndices.push(i);
+  // floating point regex non-digit, then 2-3 digits (should think about 1 digit starts later, this reduces matches a lot and helps speed), then a ".", then 4 to 10 digits, g is global flag
+  let floatReg = /\D\d{2,3}\.\d{4,10}/g
+  const matches = strReq.matchAll(floatReg)
+
+  let foundLat = false
+  let foundLng = false
+  let start = undefined
+  let end = undefined
+
+  for (const match of matches) {
+    let potCoor = match[0]
+    let startIndex = match.index
+    let endIndex = startIndex + potCoor.length
+
+    const asFloat = parseFloat(potCoor)
+    const deltaLat = Math.abs(asFloat - absLat)
+    const deltaLng = Math.abs(asFloat - absLng)
+
+    if (deltaLat < 1) {
+      foundLat = true
+      start = startIndex
+      end = endIndex
+
+    }
+    if (deltaLng < 1) {
+      foundLng = true
+      start = startIndex
+      end = endIndex
     }
   }
 
-  // iterate through decimals' indices, and attempt to build float if there are numbers to either side of the decimal
-  decimalIndices.forEach(index => {
-    var potFloat = [];
-    const oneLeft = strReq.charAt(index-1);
-    const oneRight = strReq.charAt(index+1);
-
-    // making the assumption that anything with a decimal may be a number that could be location data
-    if ( (!isNaN(oneLeft))  && (!isNaN(oneRight)) ) {
-      potFloat.push(oneLeft);
-      potFloat.push(".");
-      potFloat.push(oneRight);
-
-      if (oneLeft != ' ' || oneRight != ' ') {
-        //don't run routine when we have spaces on either side of the decimal
-
-        const twoLeft = strReq.charAt(index-2);
-        const threeLeft = strReq.charAt(index-3);
-        if (!isNaN(twoLeft) && twoLeft != ' ') {
-          potFloat.unshift(twoLeft);
-        }
-        if (!isNaN(threeLeft) && threeLeft != ' ') {
-          potFloat.unshift(threeLeft);
-        }
-      }
-    }
-    
-    // floating point regex non-digit, then 2-3 digits (should think about 1 digit starts later, this reduces matches a lot and helps speed), then a ".", then 4 to 10 digits, g is global flag
-    let floatReg = /\D\d{2,3}\.\d{4,10}/g
-    const matches = strReq.matchAll(floatReg)
-
-    let foundLat = false
-    let foundLng = false
-    let start = undefined
-    let end = undefined
-
-    let foundPreciseLat = false
-    let foundPreciseLng = false
-    let start_ = undefined
-    let end_ = undefined
-
-
-    for (const match of matches) {
-      //we take this substring because of non-digit in regex
-      let potCoor = match[0].substring(1)
-      let startIndex = match.index
-      let endIndex = startIndex + potCoor.length
-
-      // if the number is pretty close to the user's actual location (as we got it), then add to evidence
-      if (deltaLat < 1 && deltaLat > .1 || deltaLng < 1 && deltaLng > .1) {
-        addToEvidenceList(permissionEnum.location, rootUrl, strReq, reqUrl, typeEnum.coarseLocation, [index - 3, j])
-      }
-      if (deltaLat < .1 && deltaLng < .1) {
-        addToEvidenceList(permissionEnum.location, rootUrl, strReq, reqUrl, typeEnum.tightLocation, [index - 3, j])
-      }
-    
-      const asFloat = parseFloat(potCoor)
-      const deltaLat = Math.abs(asFloat - absLat)
-      const deltaLng = Math.abs(asFloat - absLng)
-
-      if (deltaLat < 1) {
-        foundLat = true
-        start = startIndex
-        end = endIndex
-        
-      }
-      if (deltaLng < 1) {
-        foundLng = true
-        start = startIndex
-        end = endIndex
-      }
-
-      if (deltaLat < .1) {
-        foundPreciseLat = true
-        start_ = startIndex
-        end_ = endIndex
-      }
-
-      if (deltaLng < .1) {
-        foundPreciseLng = true
-        start_ = startIndex
-        end_ = endIndex
-      }
-    }
-  
-  
-
-    if (foundPreciseLat && foundPreciseLng) {
-      addToEvidenceList(permissionEnum.location, rootUrl, strReq, reqUrl, typeEnum.tightLocation, [start_, end_])
-      return
-    }
-
-    if (foundLat && foundLng) {
-      addToEvidenceList(permissionEnum.location, rootUrl, strReq, reqUrl, typeEnum.coarseLocation, [start, end])
-    }
-}, undefined)
+  if (foundLat && foundLng) {
+    addToEvidenceList(permissionEnum.location, rootUrl, strReq, reqUrl, typeEnum.coarseLocation, [start, end])
+  }
 }
 
 
