@@ -152,17 +152,22 @@ function resolveBuffer(id, data) {
       if (networkKeywords[permissionEnum.location].length != 0) {
         locationKeywordSearch(strRequest, networkKeywords, rootUrl, reqUrl)
       }
-
       // search for personal data from user's watchlist
-      if ( permissionEnum.PersonalData in networkKeywords) {
+      if ( permissionEnum.personalData in networkKeywords) {
         if ( typeEnum.Phone in networkKeywords[permissionEnum.personalData] ) {
           networkKeywords[permissionEnum.personalData][typeEnum.phone].forEach( number => {
             regexSearch(strRequest, number, rootUrl, reqUrl, typeEnum.phone)
           })
         }
-        if ( typeEnum.Email in networkKeywords[permissionEnum.PersonalData] ) {
+        if ( typeEnum.Email in networkKeywords[permissionEnum.personalData] ) {
           networkKeywords[permissionEnum.personalData][typeEnum.email].forEach( email => {
             regexSearch(strRequest, email, rootUrl, reqUrl, typeEnum.email)
+          })
+        }
+
+        if ( typeEnum.userKeyword in networkKeywords[permissionEnum.personalData] ) {
+          networkKeywords[permissionEnum.personalData][typeEnum.userKeyword].forEach ( keyword => {
+            regexSearch(strRequest, keyword, rootUrl, reqUrl, typeEnum.userKeyword)
           })
         }
       }

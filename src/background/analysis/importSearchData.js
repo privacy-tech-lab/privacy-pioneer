@@ -65,9 +65,15 @@ export async function importData() {
     if (typeof userPhone !== 'undefined') { 
         networkKeywords[permissionEnum.personalData][typeEnum.phone] = userPhone
     }
-    // if the user entered an email, add it to our keywords to look out for
+    // if the user entered an email/s, add it to network keywords (formated as arr)
     if (typeEnum.email in user_store_dict) {
         networkKeywords[permissionEnum.personalData][typeEnum.email] = user_store_dict[typeEnum.email]
+    }
+
+    // if we have user keywords, we add them to the network keywords (formated as arr)
+    // we check for general because this is the title they get in the db.
+    if (typeEnum.general in user_store_dict) {
+        networkKeywords[permissionEnum.personalData][typeEnum.userKeyword] = user_store_dict[typeEnum.general]
     }
 
     // build fingerprinting info. Adding fingerprinting library keywords, 
