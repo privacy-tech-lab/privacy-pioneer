@@ -18,7 +18,10 @@ export class Request {
 }
 
 // class model for evidence type for when we find a keyword or URL
-// we want index as an array [start, finish]
+// permission = permission we associated the evidence to (from permissionEnum below)
+// snippet = identified snippet of code we identified as containing the user's data
+// typ = type (from typeEnum below)
+// index = array like [start, finish] (for snippet)
 export class Evidence {
   constructor({ timestamp, permission, rootUrl, snippet, requestUrl, typ, index }) {
     this.timestamp = timestamp

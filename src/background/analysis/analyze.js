@@ -38,10 +38,12 @@ const onBeforeRequest = (details, data) => {
   let request
 
   if (details.requestId in buffer) {
+    // if the requestID has already been added, update details, request body as needed
     request = buffer[details.requestId]
     request.details = details !== undefined ? details : null
     request.requestBody = details.requestBody !== undefined ? details.requestBody : null
   } else {
+    // requestID not seen, create new request, add details and request body as needed
     request = new Request({
       id: details.requestId,
       details: details !== undefined ? details : null,
@@ -52,6 +54,7 @@ const onBeforeRequest = (details, data) => {
 
   filter.onstart = (event) => {}
 
+  // on data received, add it to list d. This is analyzed for our keywords, etc later
   filter.ondata = (event) => {
     const str = decoder.decode(event.data, { stream: true })
     d.push(str)
@@ -60,6 +63,8 @@ const onBeforeRequest = (details, data) => {
 
   filter.onerror = (event) => (request.error = filter.error)
 
+  // when the filter stops, close filter, add data from d (as connected string) to
+  // our Request created earlier. Sends to resolveBuffer (below)
   filter.onstop = async (event) => {
     filter.close()
     request.responseData = d.toString()
@@ -73,9 +78,11 @@ const onBeforeSendHeaders = (details, data) => {
   let request
 
   if (details.requestId in buffer) {
+    // if the requestID has already been added, update request headers as needed
     request = buffer[details.requestId]
     request.requestHeaders = details.requestHeaders !== undefined ? details.requestHeaders : null
   } else {
+    // requestID not seen, create new request, add request headers as needed
     request = new Request({
       id: details.requestId,
       requestHeaders: details.requestHeaders !== undefined ? details.requestHeaders : null,
@@ -83,6 +90,7 @@ const onBeforeSendHeaders = (details, data) => {
     buffer[details.requestId] = request
   }
 
+  // below
   resolveBuffer(request.id, data)
 }
 
@@ -91,16 +99,19 @@ const onHeadersReceived = (details, data) => {
   let request
 
   if (details.requestId in buffer) {
+    // if the requestID has already been added, update request headers as needed
     request = buffer[details.requestId]
-    request.responseHeaders = details.responeHeaders !== undefined ? details.responseHeaders : null
+    request.responseHeaders = details.responseHeaders !== undefined ? details.responseHeaders : null
   } else {
+    // requestID not seen, create new request, add response headers as needed
     request = new Request({
       id: details.requestId,
-      responseHeaders: details.responeHeaders !== undefined ? details.responseHeaders : null,
+      responseHeaders: details.responseHeaders !== undefined ? details.responseHeaders : null,
     })
     buffer[details.requestId] = request
   }
 
+  // below
   resolveBuffer(request.id, data)
 }
 
@@ -115,11 +126,18 @@ function resolveBuffer(id, data) {
       request.details !== undefined &&
       request.responseData !== undefined
     ) {
+      // if our request is completely valid and we have everything we need to analyze
+      // the request, continue. No else statement
+
+      // delete the request from our buffer (we have it stored for this function as request)
       delete buffer[id]
 
-      // this one two three comes from the structure of the importData function
+      // this 0, 1, 2 comes from the structure of the importData function
+      // location we obtained from google maps API
       var loc = data[0]
+      // {phone #s, emails, location elements entered by the user, fingerprinting keywords}
       var networkKeywords = data[1]
+      // websites that have identification objectives
       var urls = data[2]
       const rootUrl = request.details["originUrl"]
       const reqUrl = request.details["url"]
@@ -149,7 +167,7 @@ function resolveBuffer(id, data) {
         }
       }
 
-      // search to see if the url comes up in our services list
+      // search to see if the url of the root or request comes up in our services list
       urlSearch(request, urls)
 
       // search to see if any fingerprint data

@@ -107,6 +107,9 @@ async function addToEvidenceList(perm, rootU, snip, requestU, t, i) {
   if (perm.includes("advertising")) { t = "analytics" }
   if (perm.includes("analytics")) { perm = "advertising" }
 
+  // snippet = code snippet we identified as having sent personal data
+  // typ = type of data identified
+  // index = [start, end] indexes for snippet
   const e = new Evidence( {
     timestamp: ts,
     permission: perm,

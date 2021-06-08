@@ -3,6 +3,9 @@ importJson.js
 ================================================================================
 -
 */
+
+// keywords that we are searching for in HTTP requests. these keywords showing 
+// up indicate that the site is trying to identify users
 export const keywords = {
    "LOCATION": {
       "URLs": [
@@ -102,6 +105,8 @@ export const keywords = {
    }
 }
 
+// websites that have identification objectives, categorized for labeling in
+// our frontend
 export const services = {
   "categories": {
     "advertising": [

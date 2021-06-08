@@ -15,6 +15,8 @@ import { typeEnum, permissionEnum } from "./classModels.js"
 
 export async function importData() {
     var networkKeywords = {}
+    // personalData == data entered by the user in our extension
+    // ex phone numbers, emails, etc
     networkKeywords[permissionEnum.personalData] = {}
 
     // first let's build up the location info
@@ -30,6 +32,7 @@ export async function importData() {
         userPhone = []
         let phone_arr = user_store_dict[typeEnum.phone]
         phone_arr.forEach( phone => {
+            // creates an array of possible re-configurations for each number
             let format_arr = buildPhone(phone)
             format_arr.forEach( format => {
                 userPhone.push(format)
@@ -67,11 +70,15 @@ export async function importData() {
         networkKeywords[permissionEnum.personalData][typeEnum.email] = user_store_dict[typeEnum.email]
     }
 
-    // now let's build up fingerprinting info
+    // build fingerprinting info. Adding fingerprinting library keywords, 
+    // JSON list methods 
     networkKeywords[permissionEnum.fingerprinting] = {}
     networkKeywords[permissionEnum.fingerprinting][typeEnum.fingerprintLib] = keywords["FINGERPRINT"]["fpLibraryList"]
     networkKeywords[permissionEnum.fingerprinting][typeEnum.fingerprintJSON] =  keywords["FINGERPRINT"]["fpJSONList"]
 
+    // returns [location we obtained from google maps API, {phone #s, emails, 
+    // location elements entered by the user, fingerprinting keywords}, websites 
+    // that have identification objectives as services]
     return [locCoords, networkKeywords, services]
 }
 
@@ -79,8 +86,8 @@ async function getWatchlistDict() {
 
     var user_store_dict = {}
 
-    // iterate through the stored keywords in the watchlist store and add them to a dict that maps
-    // keywordtype -> array of keywords for that type
+    // iterate through the stored keywords in the watchlist store and add them to 
+    // a dict that maps keywordtype -> array of keywords for that type
     let keyarr = await WatchlistKeyval.keys()
     for (let key of keyarr) {
         let ktype, keyword
@@ -99,5 +106,6 @@ async function getWatchlistDict() {
            else { user_store_dict[ktype] = [keyword] }
         }
     }
+    // returns array of user inputs (as keywords) per type of input
     return user_store_dict
 }
