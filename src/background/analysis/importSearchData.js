@@ -40,35 +40,38 @@ export async function importData() {
         })
     }
 
-
-    const exampleZip = "06459"
-    const exampleCity = "Middletown"
-    const exampleAddress = "Lawn Ave"
-    let userStateAbrev, userState;
-    [userStateAbrev, userState] = getState(exampleZip)
-
-    // ssn routine
-    const exampleSsn = '163125213'
-    const SsnRegex = buildSsnRegex(exampleSsn)
-
-    // for now setting placeholder of our location. Eventually this will
-    // be swapped for the users custom input
-    var locElems = {}
-    locElems[typeEnum.zipCode] = exampleZip
-    locElems[typeEnum.city] = exampleCity
-    locElems[typeEnum.streetAddress] = exampleAddress
-    if (typeof userState !== 'undefined') { locElems[typeEnum.state] = userState }
-
-    networkKeywords[permissionEnum.location] = locElems
-    
     // if we have a phone we put it in the network keywords dict
     if (typeof userPhone !== 'undefined') { 
         networkKeywords[permissionEnum.personalData][typeEnum.phone] = userPhone
     }
-    // if the user entered an email/s, add it to network keywords (formated as arr)
-    if (typeEnum.email in user_store_dict) {
-        networkKeywords[permissionEnum.personalData][typeEnum.email] = user_store_dict[typeEnum.email]
+
+    var locElems = {}
+
+    if (typeEnum.zipCode in user_store_dict) {
+        const userZip = user_store_dict[typeEnum.zipCode][0]
+        locElems[typeEnum.zipCode] = userZip
+        let userStateAbrev, userState;
+        [userStateAbrev, userState] = getState(userZip)
+        if (typeof userState !== 'undefined') { locElems[typeEnum.state] = userState }
     }
+
+    if (typeEnum.city in user_store_dict) {
+        const userCity = user_store_dict[typeEnum.city][0]
+        locElems[typeEnum.city] = userCity
+    }
+
+    if (typeEnum.streetAddress in user_store_dict) {
+        const userAddress = user_store_dict[typeEnum.streetAddress][0]
+        locElems[typeEnum.streetAddress] = userAddress
+    }
+
+    networkKeywords[permissionEnum.location] = locElems
+
+    /* I don't think this should be part of our tool's functionality... We can discuss next meeting.
+    // ssn routine
+    const exampleSsn = '163125213'
+    const SsnRegex = buildSsnRegex(exampleSsn)
+    */
 
     // if we have user keywords, we add them to the network keywords (formated as arr)
     // we check for general because this is the title they get in the db.
@@ -85,6 +88,8 @@ export async function importData() {
     // returns [location we obtained from google maps API, {phone #s, emails, 
     // location elements entered by the user, fingerprinting keywords}, websites 
     // that have identification objectives as services]
+
+    console.log(networkKeywords)
     return [locCoords, networkKeywords, services]
 }
 
