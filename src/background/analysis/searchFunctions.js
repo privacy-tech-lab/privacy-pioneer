@@ -319,7 +319,7 @@ function fingerprintSearch(strReq, networkKeywords, rootUrl, reqUrl) {
 // ipAddress search. The distinction here is that it only runs for 3rd party requests
 function ipSearch(strReq, ip, rootUrl, reqUrl, type) {
   // we're only interested in third party requests
-  if ( getHostname(rootUrl) == getHostname(reqUrl) ) {
+  if ( getHostname(rootUrl) === getHostname(reqUrl) ) {
     return
   }
 
