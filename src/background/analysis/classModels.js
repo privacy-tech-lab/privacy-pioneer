@@ -187,3 +187,19 @@ export const privacyLabels = Object.freeze({
   },
  }
 })
+
+export const userSettings = Object.freeze({
+  locationBound: {
+    storeKey: "locationBound",
+    description: "Define the coarse location tag's bounds in number of degrees"
+  },
+
+  generalDistance: {
+    storeKey: "generalDistance",
+    description: "Define how general keywords are flagged. Can range from 0 (exact match) to 3 (off by up to 3 characters)"
+  },
+
+  }
+)
+
+
