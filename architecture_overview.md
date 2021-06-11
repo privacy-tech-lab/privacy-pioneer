@@ -8,7 +8,7 @@
 ### 2
 - These functions can be found in searchFunctions.js.
 
-- urlSearch looks for urls from the disconnect.me list,  fingerprintSearch looks for text that matches the list that we have compiled (found in /analysis/staticJSONs/services.json), coordinateSearch looks for longitude and latitudes, and regexSearch matches regular expression patterns passed to it.
+- urlSearch looks for urls from the disconnect.me list,  fingerprintSearch looks for text that matches the list that we have compiled (found in src/assets/services.json), coordinateSearch looks for longitude and latitudes, and regexSearch matches regular expression patterns passed to it.
 
 - Some of these functions, like regexSearch get passed user data from the WatchlistKeyval.
 
@@ -20,7 +20,7 @@
 
 - `networkKeywords` grabs all the user data in the WatchlistKeyval, runs the appropriate structured routines in structuredRoutines.js (reformats phone numbers with google's api for example), and then returns everything as a dictionary.
 
-- `services` is the json from analysis/staticJSONs.json.
+- `services` is the json from src/assets/staticJSONs.json. This contains important websites that regularly perform invasive procedures, and we alert users to instances of their use.
 
 - Right now, this function is called on load `importData().then((data) => {` in background.js. Then, we pass data to the listeners. We have to alter this architecture to allow for intra-session changes in user data.
 
