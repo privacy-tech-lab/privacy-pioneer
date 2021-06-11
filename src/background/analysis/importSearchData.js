@@ -5,12 +5,14 @@ importSearchData.js
 both the URL and the keyword list for words and URLs to look for in the
 network requests
 */
-import { keywords } from "./importJson.js"
-import { services } from "./importJson.js"
 import { getLocationData, filterGeocodeResponse } from "./getLocationData.js"
 import { buildPhone, getState, buildSsnRegex } from "./structuredRoutines.js"
 import { WatchlistKeyval } from "../../libs/indexed-db/index.js"
 import { typeEnum, permissionEnum } from "./classModels.js"
+
+// import keywords, services JSONs
+const keywords = require("../../assets/keywords.json");
+const services = require("../../assets/services.json");
 
 
 export async function importData() {
