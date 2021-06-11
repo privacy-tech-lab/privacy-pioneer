@@ -145,7 +145,7 @@ export const privacyLabels = Object.freeze({
     },
   },
   advertising: {
-    displayName: "Personal Data",
+    displayName: "Advertising",
     description: "",
     types: {
       trackingPixel: {

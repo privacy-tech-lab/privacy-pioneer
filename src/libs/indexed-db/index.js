@@ -88,6 +88,7 @@ export const saveKeyword = async (keyword, type, id) => {
 export const getWebsiteLabels = async (website) => {
   try {
     const evidence = await evidenceIDB.get(website) // website evidence from indexedDB
+    console.log(evidence)
     const result = {}
     for (const [label, value] of Object.entries(evidence)) {
       for (const [type, requests] of Object.entries(value)) {

@@ -74,22 +74,26 @@ const Evidence = ({ collapseId, request, label, type }) => {
             <code>{request != null ? request["requestUrl"] : ""}&nbsp;</code>
           </pre>
         </SBody>
-        <SHeader marginTop="16px" marginBottom="8px">
-          ◉ Data Snippet
-        </SHeader>
-        <SCodeBlock>
-          <pre>
-            {data != null ? (
-              <code>
-                {data.leading}
-                <span>{data.middle}</span>
-                {data.trailing}
-              </code>
-            ) : (
-              <code>Unavailable</code>
-            )}
-          </pre>
-        </SCodeBlock>
+        {data ?
+          <div>
+            <SHeader marginTop="16px" marginBottom="8px">
+            ◉ Data Snippet
+            </SHeader>
+            <SCodeBlock>
+              <pre>
+                {data != null ? (
+                  <code>
+                    {data.leading}
+                    <span>{data.middle}</span>
+                    {data.trailing}
+                  </code>
+                ) : (
+                  <code>Unavailable</code>
+                )}
+              </pre>
+            </SCodeBlock>
+          </div> 
+        : null}
       </SContainer>
     </SCollapse>
   )
