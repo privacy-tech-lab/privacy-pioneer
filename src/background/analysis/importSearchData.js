@@ -72,6 +72,11 @@ export async function importData() {
     const exampleSsn = '163125213'
     const SsnRegex = buildSsnRegex(exampleSsn)
     */
+    
+    // if the user entered an email/s, add it to network keywords (formated as arr)
+    if (typeEnum.email in user_store_dict) {
+        networkKeywords[permissionEnum.personalData][typeEnum.email] = user_store_dict[typeEnum.email]
+    }
 
     // if we have user keywords, we add them to the network keywords (formated as arr)
     // we check for general because this is the title they get in the db.
@@ -88,8 +93,7 @@ export async function importData() {
     // returns [location we obtained from google maps API, {phone #s, emails, 
     // location elements entered by the user, fingerprinting keywords}, websites 
     // that have identification objectives as services]
-
-    console.log(networkKeywords)
+    
     return [locCoords, networkKeywords, services]
 }
 

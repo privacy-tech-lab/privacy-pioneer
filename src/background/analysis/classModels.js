@@ -74,17 +74,8 @@ export const keywordTypes = Object.freeze({
   },
   streetAddress: {
     displayName: "Street Address",
-    placeholder: "45 Wyllys Ave",
+    placeholder: "45 Wyllys Ave, Middletown, CT",
   },
-  zipCode: {
-    displayName: "Zip Code",
-    placeholder: "90210",
-  },
-  city: {
-    displayName: "City",
-    placeholder: "Middletown",
-  },
-  
   phoneNumber: {
     displayName: "Phone Number",
     placeholder: "+1 (860) 685-2000",
