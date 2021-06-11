@@ -11,8 +11,8 @@ import { WatchlistKeyval } from "../../libs/indexed-db/index.js"
 import { typeEnum, permissionEnum } from "./classModels.js"
 
 // import keywords, services JSONs
-const keywords = require("../../assets/staticJSONs/keywords.json");
-const services = require("./staticJSONs/services.json");
+const keywords = require("../../assets/keywords.json");
+const services = require("../../assets/services.json");
 
 
 export async function importData() {
