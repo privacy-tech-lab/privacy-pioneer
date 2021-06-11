@@ -76,6 +76,10 @@ export async function importData() {
         networkKeywords[permissionEnum.personalData][typeEnum.userKeyword] = user_store_dict[typeEnum.general]
     }
 
+    if (typeEnum.ipAddress in user_store_dict) {
+        networkKeywords[permissionEnum.personalData][typeEnum.ipAddress] = user_store_dict[typeEnum.ipAddress]
+    }
+
     // build fingerprinting info. Adding fingerprinting library keywords, 
     // JSON list methods 
     networkKeywords[permissionEnum.fingerprinting] = {}

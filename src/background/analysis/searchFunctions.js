@@ -28,6 +28,7 @@ function hashTypeAndPermission(str) {
 
 // code from https://stackoverflow.com/questions/8498592/extract-hostname-name-from-string
 export function extractHostname(url) {
+
     var hostname;
     //find & remove protocol (http, ftp, etc.) and get hostname
 
@@ -289,13 +290,14 @@ function coordinateSearch(strReq, locData, rootUrl, reqUrl) {
 
 // passed keyword as string
 // checks if the keyword appears in result
-function regexSearch(strReq, keyword, rootUrl, reqUrl, type) {
+// default param is personal data but takes optional permission parameter
+function regexSearch(strReq, keyword, rootUrl, reqUrl, type, perm = permissionEnum.personalData ) {
     let fixed = escapeRegExp(keyword)
     let re = new RegExp(`${fixed}`, "i");
     let result = strReq.search(re)
     if (result != -1) {
       {
-        addToEvidenceList(permissionEnum.personalData, rootUrl, strReq, reqUrl, type, [result, result + keyword.length])
+        addToEvidenceList( perm, rootUrl, strReq, reqUrl, type, [result, result + keyword.length])
       }
     }
 }
@@ -315,4 +317,18 @@ function fingerprintSearch(strReq, networkKeywords, rootUrl, reqUrl) {
   }
 }
 
-export { regexSearch, coordinateSearch, urlSearch, locationKeywordSearch, fingerprintSearch }
+// ipAddress search. The distinction here is that it only runs for 3rd party requests
+function ipSearch(strReq, ip, rootUrl, reqUrl, type) {
+
+  if ( rootUrl === undefined || reqUrl === undefined ) { return }
+  // we're only interested in third party requests
+  if ( getHostname(rootUrl) === getHostname(reqUrl) ) {
+    return
+  }
+
+  //otherwise just do a standard text search
+  return regexSearch(strReq, ip, rootUrl, reqUrl, typeEnum.ipAddress)
+
+}
+
+export { regexSearch, coordinateSearch, urlSearch, locationKeywordSearch, fingerprintSearch, ipSearch }

@@ -22,7 +22,7 @@ import { evidence } from "../background.js"
 import { EvidenceKeyval } from "./openDB.js"
 
 import { RegexSpecialChar, escapeRegExp } from "./regexFunctions.js"
-import { regexSearch, coordinateSearch, urlSearch, locationKeywordSearch, fingerprintSearch, extractHostname } from "./searchFunctions"
+import { regexSearch, coordinateSearch, urlSearch, locationKeywordSearch, fingerprintSearch, ipSearch, extractHostname } from "./searchFunctions"
 
 // Temporary container to hold network requests while properties are being added from listener callbacks
 const buffer = {}
@@ -168,6 +168,12 @@ function resolveBuffer(id, data) {
         if ( typeEnum.userKeyword in networkKeywords[permissionEnum.personalData] ) {
           networkKeywords[permissionEnum.personalData][typeEnum.userKeyword].forEach ( keyword => {
             regexSearch(strRequest, keyword, rootUrl, reqUrl, typeEnum.userKeyword)
+          })
+        }
+
+        if ( typeEnum.ipAddress in networkKeywords[permissionEnum.personalData] ) {
+          networkKeywords[permissionEnum.personalData][typeEnum.ipAddress].forEach( ip => {
+            ipSearch(strRequest, ip, rootUrl, reqUrl, typeEnum.ipAddress)
           })
         }
       }
