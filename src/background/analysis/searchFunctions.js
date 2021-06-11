@@ -28,6 +28,7 @@ function hashTypeAndPermission(str) {
 
 // code from https://stackoverflow.com/questions/8498592/extract-hostname-name-from-string
 export function extractHostname(url) {
+
     var hostname;
     //find & remove protocol (http, ftp, etc.) and get hostname
 
@@ -318,6 +319,8 @@ function fingerprintSearch(strReq, networkKeywords, rootUrl, reqUrl) {
 
 // ipAddress search. The distinction here is that it only runs for 3rd party requests
 function ipSearch(strReq, ip, rootUrl, reqUrl, type) {
+
+  if ( rootUrl === undefined || reqUrl === undefined ) { return }
   // we're only interested in third party requests
   if ( getHostname(rootUrl) === getHostname(reqUrl) ) {
     return
