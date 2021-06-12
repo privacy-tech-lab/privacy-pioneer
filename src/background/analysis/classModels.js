@@ -171,7 +171,7 @@ export const privacyLabels = Object.freeze({
         description:
           "Used an API to extract information about a particular user’s computing environment when the API was not designed to expose such information.",
       },
-      fpLibararyList: {
+      fpLibraryList: {
         displayName: "fpLibraryList",
         description: "",
       }, 

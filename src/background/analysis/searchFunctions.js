@@ -135,20 +135,20 @@ async function addToEvidenceList(perm, rootU, snip, requestU, t, i) {
       if (t in evidence[perm]) {
         // if we have less than 5 different reqUrl's for this permission and this is a unique reqUrl, we save the evidence
         if ((Object.keys(evidence[perm][t]).length < 4) && !(reqUrl in evidence[perm][t] )) {
-          console.log('<5 reqUrls. e:', e)
+          // if (perm=='fingerprinting') console.log('<5 reqUrls. e:', e)
           evidence[perm][t][reqUrl] = e
           EvidenceKeyval.set(rootUrl, evidence)
         }
       }
       else { // we don't have this type yet, so we initialize it
-        console.log('nothing in this type yet. e:', e)
+        // if (perm=='fingerprinting') console.log('nothing in this type yet. e:', e)
         evidence[perm][t] = {}
         evidence[perm][t][reqUrl] = e
         EvidenceKeyval.set(rootUrl, evidence)
       }
     }
     else { // we don't have this permission yet so we initialize
-      console.log('nothing in this permission yet. e:', e)
+      // if (perm=='fingerprinting') console.log('nothing in this permission yet. e:', e)
       evidence[perm] = {}
       
       // init dict for permission type pair
@@ -161,7 +161,7 @@ async function addToEvidenceList(perm, rootU, snip, requestU, t, i) {
   }
   // we have don't have this rootUrl yet. So we init evidence at this url
   else {
-    console.log('no root yet. e:', e)
+    // if (perm=='fingerprinting') console.log('no root yet. e:', e)
     evidence[perm] = {}
     evidence[perm][t] = {}
     evidence[perm][t][reqUrl] = e
@@ -311,7 +311,7 @@ function fingerprintSearch(strReq, networkKeywords, rootUrl, reqUrl) {
     for (const keyword of v){
       const idxKeyword = strReq.indexOf(keyword);
       if (idxKeyword != -1){
-        addToEvidenceList(permissionEnum.fingerprinting, rootUrl, strReq.substr(idxKeyword-50, 150), reqUrl, k, [idxKeyword, idxKeyword + keyword.length]);
+        addToEvidenceList(permissionEnum.fingerprinting, rootUrl, strReq, reqUrl, k, [idxKeyword, idxKeyword + keyword.length]);
         break;
       }
     }

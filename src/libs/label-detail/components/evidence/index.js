@@ -77,23 +77,19 @@ const Evidence = ({ collapseId, request, label, type }) => {
         {data ?
           <div>
             <SHeader marginTop="16px" marginBottom="8px">
-            ◉ Data Snippet
+              ◉ Data Snippet
             </SHeader>
             <SCodeBlock>
               <pre>
-                {data != null ? (
-                  <code>
-                    {data.leading}
-                    <span>{data.middle}</span>
-                    {data.trailing}
-                  </code>
-                ) : (
-                  <code>Unavailable</code>
-                )}
+                <code>
+                  {data.leading}
+                  <span>{data.middle}</span>
+                  {data.trailing}
+                </code>
               </pre>
             </SCodeBlock>
           </div> 
-        : null}
+        : null} 
       </SContainer>
     </SCollapse>
   )
