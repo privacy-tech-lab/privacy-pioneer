@@ -159,7 +159,6 @@ async function addToEvidenceList(perm, rootU, snip, requestU, t, i) {
   }
   // we have don't have this rootUrl yet. So we init evidence at this url
   else {
-    // if (perm=='fingerprinting') console.log('no root yet. e:', e)
     evidence[perm] = {}
     evidence[perm][t] = {}
     evidence[perm][t][reqUrl] = e
