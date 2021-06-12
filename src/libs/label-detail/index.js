@@ -25,7 +25,7 @@ const LabelDetail = ({ label, website, requests }) => {
   /**
    * Get first party description based on whether 'website' collected data
    */
-  const firstParyDescription = () => {
+  const firstPartyDescription = () => {
     if (collected) {
       return `Collected the following ${label} data:`
     } else {
@@ -53,7 +53,7 @@ const LabelDetail = ({ label, website, requests }) => {
         </SHeaderBadge>
         <SSpacer />
         <SContent>
-          <SDescription>{firstParyDescription()} </SDescription>
+          <SDescription>{firstPartyDescription()} </SDescription>
           {collected ? <Item url={website} request={requests[website]} label={label} /> : null}
         </SContent>
       </SHeader>
