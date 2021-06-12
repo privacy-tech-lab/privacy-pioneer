@@ -136,20 +136,17 @@ async function addToEvidenceList(perm, rootU, snip, requestU, t, i) {
       if (t in evidence[perm]) {
         // if we have less than 5 different reqUrl's for this permission and this is a unique reqUrl, we save the evidence
         if ((Object.keys(evidence[perm][t]).length < 4) && !(reqUrl in evidence[perm][t] )) {
-          // if (perm=='fingerprinting') console.log('<5 reqUrls. e:', e)
           evidence[perm][t][reqUrl] = e
           EvidenceKeyval.set(rootUrl, evidence)
         }
       }
       else { // we don't have this type yet, so we initialize it
-        // if (perm=='fingerprinting') console.log('nothing in this type yet. e:', e)
         evidence[perm][t] = {}
         evidence[perm][t][reqUrl] = e
         EvidenceKeyval.set(rootUrl, evidence)
       }
     }
     else { // we don't have this permission yet so we initialize
-      // if (perm=='fingerprinting') console.log('nothing in this permission yet. e:', e)
       evidence[perm] = {}
       
       // init dict for permission type pair
