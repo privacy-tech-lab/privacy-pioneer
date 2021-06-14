@@ -23,7 +23,6 @@ import * as Icons from "../../../../../libs/icons"
 import { saveKeyword } from "../../../../../libs/indexed-db"
 import { keywordTypes } from "../../../../../background/analysis/classModels"
 import { Modal } from "bootstrap"
-import { PhoneNumberUtil } from "google-libphonenumber"
 
 /**
  * Popup modal to create/edit keyword
@@ -36,8 +35,6 @@ const EditModal = ({ keywordType, keyword, edit, id, updateList }) => {
   const [placeholder, setPlaceholder] = useState("Keyword")
   const [inputValid, setInputValid] = useState(true)
   const [keyType, setKeyType] = useState('');
-
-  const phoneUtil = require('google-libphonenumber').PhoneNumberUtil.getInstance();
 
   /**
    * Closes dropdown when clicked outside
