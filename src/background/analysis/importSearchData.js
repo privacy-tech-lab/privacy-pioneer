@@ -88,6 +88,29 @@ export async function importData() {
     return [locCoords, networkKeywords, services]
 }
 
+
+/*
+    this function takes a location object that is created when a user puts their street-address in the multi-line input and 
+    updates the dictionary being built in the getWatchlistDict() function. It ignores the state entry
+    because we will take this from the zip.
+*/
+function parseLocationObject(locObj, user_dict) {
+
+    const locElems = new Set([typeEnum.address, typeEnum.city, typeEnum.zipCode])
+
+    for ( let [t, val] of Object.entries(locObj) ) {
+        if(locElems.has(t)) {
+            let ktype = t
+            let keyword = val
+            if (t in user_dict) {
+                let updated = user_dict[ktype].concat([keyword])
+                user_dict[ktype] = updated
+            }
+            else { user_dict[ktype] = [keyword] }
+        }
+    }
+}
+
 async function getWatchlistDict() {
 
     var user_store_dict = {}
@@ -101,6 +124,8 @@ async function getWatchlistDict() {
         let keywordObject = await WatchlistKeyval.get(key)
         for (let [t, val] of Object.entries(keywordObject) ) {
             // we have either a type of key or an actual key
+            // the multi-line input gets parsed with its own function
+            if (t == 'location') { parseLocationObject(val, user_store_dict) }
             if (t == 'type') { ktype = val }
             if (t == 'keyword') { keyword = val }
        }
@@ -113,5 +138,6 @@ async function getWatchlistDict() {
         }
     }
     // returns array of user inputs (as keywords) per type of input
+
     return user_store_dict
 }
