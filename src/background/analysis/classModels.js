@@ -106,6 +106,11 @@ export const keywordTypes = Object.freeze({
     displayName: "Email Address",
     placeholder: "jdoe@wesleyan.edu",
   },
+  ipAddress: {
+    displayName: "IP Address",
+    placeholder: "999.99.999.999",
+    toolTip: "Google: What\'s my IP?. We will only flag instances where your IP is shared with a 3rd party. All websites you connect to have access to your IP address."
+  },
 });
 
 // source of truth for all naming conventions
@@ -124,10 +129,6 @@ export const privacyLabels = Object.freeze({
       },
       zipCode: {
         displayName: "Zip Code",
-        description: "",
-      },
-      ipAddress: {
-        displayName: "Ip Address",
         description: "",
       },
       streetAddress: {
@@ -164,10 +165,14 @@ export const privacyLabels = Object.freeze({
         displayName: "Keyword",
         description: "",
       },
+      ipAddress: {
+        displayName: "IP Address",
+        description: "",
+      },
     },
   },
   advertising: {
-    displayName: "Personal Data",
+    displayName: "Advertising",
     description: "",
     types: {
       trackingPixel: {
@@ -193,7 +198,7 @@ export const privacyLabels = Object.freeze({
         description:
           "Used an API to extract information about a particular user’s computing environment when the API was not designed to expose such information.",
       },
-      fpLibararyList: {
+      fpLibraryList: {
         displayName: "fpLibraryList",
         description: "",
       },

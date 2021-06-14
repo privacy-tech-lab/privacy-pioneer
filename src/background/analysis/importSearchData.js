@@ -5,12 +5,14 @@ importSearchData.js
 both the URL and the keyword list for words and URLs to look for in the
 network requests
 */
-import { keywords } from "./importJson.js"
-import { services } from "./importJson.js"
 import { getLocationData, filterGeocodeResponse } from "./getLocationData.js"
 import { buildPhone, getState, buildSsnRegex } from "./structuredRoutines.js"
 import { WatchlistKeyval } from "../../libs/indexed-db/index.js"
 import { typeEnum, permissionEnum } from "./classModels.js"
+
+// import keywords, services JSONs
+const keywords = require("../../assets/keywords.json");
+const services = require("../../assets/services.json");
 
 
 export async function importData() {
@@ -85,6 +87,10 @@ export async function importData() {
     // we check for general because this is the title they get in the db.
     if (typeEnum.general in user_store_dict) {
         networkKeywords[permissionEnum.personalData][typeEnum.userKeyword] = user_store_dict[typeEnum.general]
+    }
+
+    if (typeEnum.ipAddress in user_store_dict) {
+        networkKeywords[permissionEnum.personalData][typeEnum.ipAddress] = user_store_dict[typeEnum.ipAddress]
     }
 
     // build fingerprinting info. Adding fingerprinting library keywords, 
