@@ -1,26 +1,46 @@
-import React from "react"
+import React from "react";
 
 export const Radar = ({ size }) => (
-  <svg height={size} width={size} viewBox="0 0 297 297" xmlns="http://www.w3.org/2000/svg">
+  <svg
+    height={size}
+    width={size}
+    viewBox="0 0 297 297"
+    xmlns="http://www.w3.org/2000/svg"
+  >
     <path d="m148.5 112.16c-20.038 0-36.341 16.303-36.341 36.341s16.303 36.341 36.341 36.341 36.341-16.303 36.341-36.341-16.303-36.341-36.341-36.341zm0 51.766c-8.505 0-15.425-6.92-15.425-15.425s6.92-15.426 15.425-15.426 15.425 6.921 15.425 15.426-6.92 15.425-15.425 15.425z" />
     <path d="m148.5 60.394c-4.593 0-9.104 0.355-13.509 1.035-5.085-5.909-12.611-9.663-21.002-9.663-15.281 0-27.713 12.432-27.713 27.713 0 2.085 0.239 4.111 0.677 6.066-16.372 16.002-26.56 38.305-26.56 62.955 0 48.582 39.523 88.106 88.106 88.106s88.106-39.524 88.106-88.106-39.522-88.106-88.105-88.106zm-34.511 12.288c3.748 0 6.798 3.049 6.798 6.797s-3.05 6.798-6.798 6.798-6.797-3.05-6.797-6.798c0-3.749 3.049-6.797 6.797-6.797zm34.511 143.01c-37.05 0-67.191-30.143-67.191-67.191 0-17.587 6.802-33.607 17.904-45.594 4.281 2.71 9.347 4.285 14.776 4.285 14.544 0 26.499-11.264 27.619-25.525 2.266-0.234 4.564-0.357 6.892-0.357 37.05 0 67.191 30.142 67.191 67.191s-30.141 67.191-67.191 67.191z" />
     <path d="m297 79.479c0-15.281-12.432-27.713-27.713-27.713-2.552 0-5.021 0.354-7.368 1.003-27.262-32.248-67.984-52.769-113.42-52.769-81.883 0-148.5 66.617-148.5 148.5 0 45.434 20.521 86.157 52.768 113.42-0.649 2.349-1.002 4.818-1.002 7.369 0 15.281 12.433 27.713 27.713 27.713 7.77 0 14.798-3.218 19.834-8.386 15.402 5.424 31.955 8.386 49.187 8.386 81.883 0 148.5-66.617 148.5-148.5 0-17.234-2.961-33.785-8.386-49.187 5.168-5.036 8.386-12.065 8.386-19.834zm-20.915 0c0 3.748-3.05 6.798-6.798 6.798s-6.798-3.05-6.798-6.798 3.05-6.797 6.798-6.797 6.798 3.048 6.798 6.797zm-196.61 196.6c-3.748 0-6.797-3.049-6.797-6.797s3.049-6.798 6.797-6.798 6.798 3.05 6.798 6.798c-1e-3 3.748-3.05 6.797-6.798 6.797zm69.021 0c-14.453 0-28.347-2.425-41.311-6.875-0.042-15.245-12.455-27.635-27.711-27.635-5.077 0-9.837 1.379-13.934 3.772-27.3-23.417-44.63-58.143-44.63-96.847 0-70.351 57.234-127.58 127.58-127.58 38.704 0 73.43 17.328 96.847 44.629-2.395 4.098-3.772 8.856-3.772 13.934 0 15.256 12.391 27.67 27.636 27.711 4.449 12.963 6.875 26.857 6.875 41.311 0 70.351-57.234 127.58-127.58 127.58z" />
   </svg>
-)
+);
 
 export const ChevronRight = ({ size }) => (
-  <svg height={size} width={size} xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+  <svg
+    height={size}
+    width={size}
+    xmlns="http://www.w3.org/2000/svg"
+    viewBox="0 0 24 24"
+  >
     <g data-name="Layer 2">
       <g data-name="chevron-right">
-        <rect width="24" height="24" transform="rotate(-90 12 12)" opacity="0" />
+        <rect
+          width="24"
+          height="24"
+          transform="rotate(-90 12 12)"
+          opacity="0"
+        />
         <path d="M10.5 17a1 1 0 0 1-.71-.29 1 1 0 0 1 0-1.42L13.1 12 9.92 8.69a1 1 0 0 1 0-1.41 1 1 0 0 1 1.42 0l3.86 4a1 1 0 0 1 0 1.4l-4 4a1 1 0 0 1-.7.32z" />
       </g>
     </g>
   </svg>
-)
+);
 
 export const Location = ({ size }) => (
-  <svg height={size} width={size} xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+  <svg
+    height={size}
+    width={size}
+    xmlns="http://www.w3.org/2000/svg"
+    viewBox="0 0 24 24"
+  >
     <g data-name="Layer 2">
       <g data-name="navigation-2">
         <rect width="24" height="24" opacity="0" />
@@ -28,10 +48,15 @@ export const Location = ({ size }) => (
       </g>
     </g>
   </svg>
-)
+);
 
 export const Identifier = ({ size }) => (
-  <svg height={size} width={size} xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+  <svg
+    height={size}
+    width={size}
+    xmlns="http://www.w3.org/2000/svg"
+    viewBox="0 0 24 24"
+  >
     <g data-name="Layer 2">
       <g data-name="credit-card">
         <rect width="24" height="24" opacity="0" />
@@ -39,10 +64,15 @@ export const Identifier = ({ size }) => (
       </g>
     </g>
   </svg>
-)
+);
 
 export const PlusCircle = ({ size }) => (
-  <svg height={size} width={size} xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+  <svg
+    height={size}
+    width={size}
+    xmlns="http://www.w3.org/2000/svg"
+    viewBox="0 0 24 24"
+  >
     <g data-name="Layer 2">
       <g data-name="plus-circle">
         <rect width="24" height="24" opacity="0" />
@@ -51,10 +81,15 @@ export const PlusCircle = ({ size }) => (
       </g>
     </g>
   </svg>
-)
+);
 
 export const Back = ({ size }) => (
-  <svg height={size} width={size} xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+  <svg
+    height={size}
+    width={size}
+    xmlns="http://www.w3.org/2000/svg"
+    viewBox="0 0 24 24"
+  >
     <g data-name="Layer 2">
       <g data-name="arrow-back">
         <rect width="24" height="24" transform="rotate(90 12 12)" opacity="0" />
@@ -62,23 +97,38 @@ export const Back = ({ size }) => (
       </g>
     </g>
   </svg>
-)
+);
 
 export const MoreVertical = ({ size }) => (
-  <svg height={size} width={size} xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+  <svg
+    height={size}
+    width={size}
+    xmlns="http://www.w3.org/2000/svg"
+    viewBox="0 0 24 24"
+  >
     <g data-name="Layer 2">
       <g data-name="more-vertical">
-        <rect width="24" height="24" transform="rotate(-90 12 12)" opacity="0" />
+        <rect
+          width="24"
+          height="24"
+          transform="rotate(-90 12 12)"
+          opacity="0"
+        />
         <circle cx="12" cy="12" r="2" />
         <circle cx="12" cy="5" r="2" />
         <circle cx="12" cy="19" r="2" />
       </g>
     </g>
   </svg>
-)
+);
 
 export const Settings = ({ size }) => (
-  <svg height={size} width={size} xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+  <svg
+    height={size}
+    width={size}
+    xmlns="http://www.w3.org/2000/svg"
+    viewBox="0 0 24 24"
+  >
     <g data-name="Layer 2">
       <g data-name="settings">
         <rect width="24" height="24" opacity="0" />
@@ -90,7 +140,7 @@ export const Settings = ({ size }) => (
       </g>
     </g>
   </svg>
-)
+);
 
 export const Home = ({ size }) => (
   <svg
@@ -104,23 +154,38 @@ export const Home = ({ size }) => (
   >
     <path d="M12 5.69L17 10.19V18H15V12H9V18H7V10.19L12 5.69M12 3L2 12H5V20H11V14H13V20H19V12H22L12 3Z" />
   </svg>
-)
+);
 
 export const Info = ({ size }) => (
-  <svg height={size} width={size} xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+  <svg
+    height={size}
+    width={size}
+    xmlns="http://www.w3.org/2000/svg"
+    viewBox="0 0 24 24"
+  >
     <g data-name="Layer 2">
       <g data-name="info">
-        <rect width="24" height="24" transform="rotate(180 12 12)" opacity="0" />
+        <rect
+          width="24"
+          height="24"
+          transform="rotate(180 12 12)"
+          opacity="0"
+        />
         <path d="M12 2a10 10 0 1 0 10 10A10 10 0 0 0 12 2zm0 18a8 8 0 1 1 8-8 8 8 0 0 1-8 8z" />
         <circle cx="12" cy="8" r="1" />
         <path d="M12 10a1 1 0 0 0-1 1v5a1 1 0 0 0 2 0v-5a1 1 0 0 0-1-1z" />
       </g>
     </g>
   </svg>
-)
+);
 
 export const Search = ({ size }) => (
-  <svg height={size} width={size} xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+  <svg
+    height={size}
+    width={size}
+    xmlns="http://www.w3.org/2000/svg"
+    viewBox="0 0 24 24"
+  >
     <g data-name="Layer 2">
       <g data-name="search">
         <rect width="24" height="24" opacity="0" />
@@ -128,32 +193,57 @@ export const Search = ({ size }) => (
       </g>
     </g>
   </svg>
-)
+);
 
 export const Close = ({ size }) => (
-  <svg height={size} width={size} xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+  <svg
+    height={size}
+    width={size}
+    xmlns="http://www.w3.org/2000/svg"
+    viewBox="0 0 24 24"
+  >
     <g data-name="Layer 2">
       <g data-name="close">
-        <rect width="24" height="24" transform="rotate(180 12 12)" opacity="0" />
+        <rect
+          width="24"
+          height="24"
+          transform="rotate(180 12 12)"
+          opacity="0"
+        />
         <path d="M13.41 12l4.3-4.29a1 1 0 1 0-1.42-1.42L12 10.59l-4.29-4.3a1 1 0 0 0-1.42 1.42l4.3 4.29-4.3 4.29a1 1 0 0 0 0 1.42 1 1 0 0 0 1.42 0l4.29-4.3 4.29 4.3a1 1 0 0 0 1.42 0 1 1 0 0 0 0-1.42z" />
       </g>
     </g>
   </svg>
-)
+);
 
 export const Plus = ({ size }) => (
-  <svg height={size} width={size} xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+  <svg
+    height={size}
+    width={size}
+    xmlns="http://www.w3.org/2000/svg"
+    viewBox="0 0 24 24"
+  >
     <g data-name="Layer 2">
       <g data-name="plus">
-        <rect width="24" height="24" transform="rotate(180 12 12)" opacity="0" />
+        <rect
+          width="24"
+          height="24"
+          transform="rotate(180 12 12)"
+          opacity="0"
+        />
         <path d="M19 11h-6V5a1 1 0 0 0-2 0v6H5a1 1 0 0 0 0 2h6v6a1 1 0 0 0 2 0v-6h6a1 1 0 0 0 0-2z" />
       </g>
     </g>
   </svg>
-)
+);
 
 export const ChevronDown = ({ size }) => (
-  <svg height={size} width={size} xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+  <svg
+    height={size}
+    width={size}
+    xmlns="http://www.w3.org/2000/svg"
+    viewBox="0 0 24 24"
+  >
     <g data-name="Layer 2">
       <g data-name="chevron-down">
         <rect width="24" height="24" opacity="0" />
@@ -161,63 +251,107 @@ export const ChevronDown = ({ size }) => (
       </g>
     </g>
   </svg>
-)
+);
 
 export const Megaphone = ({ size }) => (
-  <svg height={size} width={size} xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+  <svg
+    height={size}
+    width={size}
+    xmlns="http://www.w3.org/2000/svg"
+    viewBox="0 0 512 512"
+  >
     <title>Megaphone</title>
     <path d="M48 176v.66a17.38 17.38 0 01-4.2 11.23v.05C38.4 194.32 32 205.74 32 224c0 16.55 5.3 28.23 11.68 35.91A19 19 0 0148 272a32 32 0 0032 32h8a8 8 0 008-8V152a8 8 0 00-8-8h-8a32 32 0 00-32 32zM452.18 186.55l-.93-.17a4 4 0 01-3.25-3.93V62c0-12.64-8.39-24-20.89-28.32-11.92-4.11-24.34-.76-31.68 8.53a431.18 431.18 0 01-51.31 51.69c-23.63 20-46.24 34.25-67 42.31a8 8 0 00-5.15 7.47V299a16 16 0 009.69 14.69c19.34 8.29 40.24 21.83 62 40.28a433.74 433.74 0 0151.68 52.16 26.22 26.22 0 0021.1 9.87 33.07 33.07 0 0010.44-1.74C439.71 410 448 399.05 448 386.4V265.53a4 4 0 013.33-3.94l.85-.14C461.8 258.84 480 247.67 480 224s-18.2-34.84-27.82-37.45zM240 320V152a8 8 0 00-8-8h-96a8 8 0 00-8 8v304a24 24 0 0024 24h52.45a32.66 32.66 0 0025.93-12.45 31.65 31.65 0 005.21-29.05c-1.62-5.18-3.63-11-5.77-17.19-7.91-22.9-18.34-37.07-21.12-69.32A32 32 0 00240 320z" />
   </svg>
-)
+);
 
 export const Fingerprint = ({ size }) => (
-  <svg height={size} width={size} xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+  <svg
+    height={size}
+    width={size}
+    xmlns="http://www.w3.org/2000/svg"
+    viewBox="0 0 512 512"
+  >
     <title>Finger Print</title>
     <path d="M63.28 202a15.29 15.29 0 01-7.7-2 14.84 14.84 0 01-5.52-20.46C69.34 147.36 128 72.25 256 72.25c55.47 0 104.12 14.57 144.53 43.29 33.26 23.57 51.9 50.25 60.78 63.1a14.79 14.79 0 01-4 20.79 15.52 15.52 0 01-21.24-4C420 172.32 371 102 256 102c-112.25 0-163 64.71-179.53 92.46A15 15 0 0163.28 202z" />
     <path d="M320.49 496a15.31 15.31 0 01-3.79-.43c-92.85-23-127.52-115.82-128.93-119.68l-.22-.85c-.76-2.68-19.39-66.33 9.21-103.61 13.11-17 33.05-25.72 59.38-25.72 24.48 0 42.14 7.61 54.28 23.36 10 12.86 14 28.72 17.87 44 8.13 31.82 14 48.53 47.79 50.25 14.84.75 24.59-7.93 30.12-15.32 14.95-20.15 17.55-53 6.28-82C398 228.57 346.61 158 256 158c-38.68 0-74.22 12.43-102.72 35.79-23.59 19.35-42.28 46.67-51.28 74.75-16.69 52.28 5.2 134.46 5.41 135.21A14.83 14.83 0 0196.54 422a15.39 15.39 0 01-18.74-10.6c-1-3.75-24.38-91.4-5.1-151.82 21-65.47 85.81-131.47 183.33-131.47 45.07 0 87.65 15.32 123.19 44.25 27.52 22.5 50 52.72 61.76 82.93 14.95 38.57 10.94 81.86-10.19 110.14-14.08 18.86-34.13 28.72-56.34 27.65-57.86-2.9-68.26-43.29-75.84-72.75-7.8-30.22-12.79-44.79-42.58-44.79-16.36 0-27.85 4.5-35 13.82-9.75 12.75-10.51 32.68-9.43 47.14a152.44 152.44 0 005.1 29.79c2.38 6 33.37 82 107.59 100.39a14.88 14.88 0 0111 18.11 15.36 15.36 0 01-14.8 11.21z" />
     <path d="M201.31 489.14a15.5 15.5 0 01-11.16-4.71c-37.16-39-58.18-82.61-66.09-137.14V347c-4.44-36.1 2.06-87.21 33.91-122.35 23.51-25.93 56.56-39.11 98.06-39.11 49.08 0 87.65 22.82 111.7 65.89 17.45 31.29 20.91 62.47 21 63.75a15.07 15.07 0 01-13.65 16.4 15.26 15.26 0 01-16.79-13.29A154 154 0 00340.43 265c-18.64-32.89-47-49.61-84.51-49.61-32.4 0-57.75 9.75-75.19 29-25.14 27.75-30 70.5-26.55 98.78 6.93 48.22 25.46 86.58 58.18 120.86a14.7 14.7 0 01-.76 21.11 15.44 15.44 0 01-10.29 4z" />
     <path d="M372.5 446.18c-32.5 0-60.13-9-82.24-26.89-44.42-35.79-49.4-94.08-49.62-96.54a15.27 15.27 0 0130.45-2.36c.11.86 4.55 48.54 38.79 76 20.26 16.18 47.34 22.6 80.71 18.85a15.2 15.2 0 0116.91 13.18 14.92 14.92 0 01-13.44 16.5 187 187 0 01-21.56 1.26zM398.18 48.79C385.5 40.54 340.54 16 256 16c-88.74 0-133.81 27.11-143.78 34a11.59 11.59 0 00-1.84 1.4.36.36 0 01-.22.1 14.87 14.87 0 00-5.09 11.15 15.06 15.06 0 0015.31 14.85 15.56 15.56 0 008.88-2.79c.43-.32 39.22-28.82 126.77-28.82S382.58 74.29 383 74.5a15.25 15.25 0 009.21 3 15.06 15.06 0 0015.29-14.89 14.9 14.9 0 00-9.32-13.82z" />
   </svg>
-)
+);
 
 export const Social = ({ size }) => (
-  <svg height={size} width={size} xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+  <svg
+    height={size}
+    width={size}
+    xmlns="http://www.w3.org/2000/svg"
+    viewBox="0 0 512 512"
+  >
     <title>Share Social</title>
     <path d="M384 336a63.78 63.78 0 00-46.12 19.7l-148-83.27a63.85 63.85 0 000-32.86l148-83.27a63.8 63.8 0 10-15.73-27.87l-148 83.27a64 64 0 100 88.6l148 83.27A64 64 0 10384 336z" />
   </svg>
-)
+);
 
 export const Tracking = ({ size }) => (
-  <svg height={size} width={size} xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+  <svg
+    height={size}
+    width={size}
+    xmlns="http://www.w3.org/2000/svg"
+    viewBox="0 0 512 512"
+  >
     <title>Analytics</title>
     <path d="M456 128a40 40 0 00-37.23 54.6l-84.17 84.17a39.86 39.86 0 00-29.2 0l-60.17-60.17a40 40 0 10-74.46 0L70.6 306.77a40 40 0 1022.63 22.63L193.4 229.23a39.86 39.86 0 0029.2 0l60.17 60.17a40 40 0 1074.46 0l84.17-84.17A40 40 0 10456 128z" />
   </svg>
-)
+);
+
+export const Personal = ({ size }) => (
+  <svg
+    viewBox="0 0 20 20"
+    height={size}
+    width={size}
+    xmlns="http://www.w3.org/2000/svg"
+  >
+    <title>Personal</title>
+    <path d="M12.075,10.812c1.358-0.853,2.242-2.507,2.242-4.037c0-2.181-1.795-4.618-4.198-4.618S5.921,4.594,5.921,6.775c0,1.53,0.884,3.185,2.242,4.037c-3.222,0.865-5.6,3.807-5.6,7.298c0,0.23,0.189,0.42,0.42,0.42h14.273c0.23,0,0.42-0.189,0.42-0.42C17.676,14.619,15.297,11.677,12.075,10.812 M6.761,6.775c0-2.162,1.773-3.778,3.358-3.778s3.359,1.616,3.359,3.778c0,2.162-1.774,3.778-3.359,3.778S6.761,8.937,6.761,6.775 M3.415,17.69c0.218-3.51,3.142-6.297,6.704-6.297c3.562,0,6.486,2.787,6.705,6.297H3.415z"></path>
+  </svg>
+);
 
 export const QuestionMarkCircle = ({ size }) => (
-  <svg height={size} width={size} xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+  <svg
+    height={size}
+    width={size}
+    xmlns="http://www.w3.org/2000/svg"
+    viewBox="0 0 24 24"
+  >
     <g data-name="Layer 2">
       <g data-name="menu-arrow-circle">
-        <rect width="24" height="24" transform="rotate(180 12 12)" opacity="0" />
+        <rect
+          width="24"
+          height="24"
+          transform="rotate(180 12 12)"
+          opacity="0"
+        />
         <path d="M12 2a10 10 0 1 0 10 10A10 10 0 0 0 12 2zm0 16a1 1 0 1 1 1-1 1 1 0 0 1-1 1zm1-5.16V14a1 1 0 0 1-2 0v-2a1 1 0 0 1 1-1 1.5 1.5 0 1 0-1.5-1.5 1 1 0 0 1-2 0 3.5 3.5 0 1 1 4.5 3.34z" />
       </g>
     </g>
   </svg>
-)
+);
 
 /**
  * Mappings of icons to privacy labels
  */
 export const getLabelIcon = (label) => {
-  const size = "24px"
+  const size = "24px";
   switch (label) {
     case "location":
-      return <Location size={size} />
+      return <Location size={size} />;
     case "advertising":
-      return <Megaphone size={size} />
+      return <Megaphone size={size} />;
     case "fingerprinting":
-      return <Fingerprint size={size} />
+      return <Fingerprint size={size} />;
+    case "personalData":
+      return <Personal size={size} />;
     default:
-      return <QuestionMarkCircle size={size} />
+      return <QuestionMarkCircle size={size} />;
   }
-}
+};
