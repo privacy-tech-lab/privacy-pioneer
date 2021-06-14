@@ -53,6 +53,11 @@ const EditModal = ({ keywordType, keyword, edit, id, updateList }) => {
     return () => document.removeEventListener("mousedown", blur)
   }, [])
 
+  const badInput = (type) => {
+    setInputValid(false);
+    setKeyType(type);
+  }
+
   return (
     <>
       <SContent className="modal-content">
@@ -108,9 +113,16 @@ const EditModal = ({ keywordType, keyword, edit, id, updateList }) => {
                 let emailRegex = new RegExp(/^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/)
                 let emailRegex2 = new RegExp(/^([a-zA-Z0-9]+(?:[.-]?[a-zA-Z0-9]+)*@[a-zA-Z0-9]+(?:[.-]?[a-zA-Z0-9]+)*\.[a-zA-Z]{2,7})$/)
                 let ipRegex = new RegExp(/^(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$/)
-                if (_keywordType=='phoneNumber' && !(numRegex.test(_keyword) || numRegex2.test(_keyword))) {setInputValid(false);setKeyType('phone number');return;}
-                else if (_keywordType=='emailAddress' && !(emailRegex.test(_keyword) || emailRegex2.test(_keyword))) {setInputValid(false);setKeyType('email address');return;}
-                else if (_keywordType=='ipAddress' && !ipRegex.test(_keyword)) {setInputValid(false);setKeyType('IP address');return;}
+                if (_keywordType=='phoneNumber' && !(numRegex.test(_keyword) || numRegex2.test(_keyword))) {
+                  badInput('phone number');
+                  return;
+                } else if (_keywordType=='emailAddress' && !(emailRegex.test(_keyword) || emailRegex2.test(_keyword))) {
+                  badInput('email address');
+                  return;
+                } else if (_keywordType=='ipAddress' && !ipRegex.test(_keyword)) {
+                  badInput('IP address')
+                  return;
+                }
 
                 if (await saveKeyword(_keyword, _keywordType, id)) {
                   await updateList()
