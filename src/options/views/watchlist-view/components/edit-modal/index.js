@@ -40,6 +40,8 @@ const EditModal = ({ keywordType, keyword, edit, id, updateList }) => {
   const [_keyword, setKeyword] = useState(edit ? keyword : "");
   const [_location, setLocation] = useState(edit ? keyword : {});
   const [errorText, setError] = useState("");
+  const [inputValid, setInputValid] = useState(true);
+  const [keyType, setKeyType] = useState('');
 
   /**
    * Closes dropdown when clicked outside
@@ -68,6 +70,11 @@ const EditModal = ({ keywordType, keyword, edit, id, updateList }) => {
     return () => document.removeEventListener("mousedown", blur);
   }, []);
 
+  const badInput = (type) => {
+    setInputValid(false);
+    setKeyType(type);
+  }
+
   return (
     <>
       <SContent className="modal-content">
@@ -95,6 +102,8 @@ const EditModal = ({ keywordType, keyword, edit, id, updateList }) => {
                   <SDropdownItem
                     onClick={() => {
                       setKeywordType(key);
+                      setInputValid(true)
+                      setKeyword('')
                     }}
                     key={index}
                   >
@@ -118,6 +127,7 @@ const EditModal = ({ keywordType, keyword, edit, id, updateList }) => {
               keywordType == permissionEnum.location ? _location : _keyword
             }
           />
+          {inputValid ? <text><br></br><br></br></text> : <text><br></br>Please enter a valid {keyType}</text>}
           <SActionGroup>
             <SAction data-bs-dismiss="modal" aria-label="Close" color="#e57373">
               Cancel
@@ -128,6 +138,27 @@ const EditModal = ({ keywordType, keyword, edit, id, updateList }) => {
                   _keywordType == permissionEnum.location
                     ? _location
                     : _keyword;
+
+                // allows for input validation of items a user is attempting to add to their watch list
+                let numRegex = new RegExp(/\d?(\s?|-?|\+?|\.?)((\(\d{1,4}\))|(\d{1,3})|\s?)(\s?|-?|\.?)((\(\d{1,3}\))|(\d{1,3})|\s?)(\s?|-?|\.?)((\(\d{1,3}\))|(\d{1,3})|\s?)(\s?|-?|\.?)\d{3}(-|\.|\s)\d{4}/)
+                let numRegex2 = new RegExp(/\d{10}/)
+                let emailRegex = new RegExp(/^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/)
+                let emailRegex2 = new RegExp(/^([a-zA-Z0-9]+(?:[.-]?[a-zA-Z0-9]+)*@[a-zA-Z0-9]+(?:[.-]?[a-zA-Z0-9]+)*\.[a-zA-Z]{2,7})$/)
+                let ipRegex_4 = new RegExp(/^(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$/)
+                let ipRegex_6 = new RegExp(/^(?:[0-9a-fA-F]{1,4}:){7}[0-9a-fA-F]{1,4}$|^::(?:[0-9a-fA-F]{1,4}:){0,6}[0-9a-fA-F]{1,4}$|^[0-9a-fA-F]{1,4}::(?:[0-9a-fA-F]{1,4}:){0,5}[0-9a-fA-F]{1,4}$|^[0-9a-fA-F]{1,4}:[0-9a-fA-F]{1,4}::(?:[0-9a-fA-F]{1,4}:){0,4}[0-9a-fA-F]{1,4}$|^(?:[0-9a-fA-F]{1,4}:){0,2}[0-9a-fA-F]{1,4}::(?:[0-9a-fA-F]{1,4}:){0,3}[0-9a-fA-F]{1,4}$|^(?:[0-9a-fA-F]{1,4}:){0,3}[0-9a-fA-F]{1,4}::(?:[0-9a-fA-F]{1,4}:){0,2}[0-9a-fA-F]{1,4}$|^(?:[0-9a-fA-F]{1,4}:){0,4}[0-9a-fA-F]{1,4}::(?:[0-9a-fA-F]{1,4}:)?[0-9a-fA-F]{1,4}$|^(?:[0-9a-fA-F]{1,4}:){0,5}[0-9a-fA-F]{1,4}::[0-9a-fA-F]{1,4}$|^(?:[0-9a-fA-F]{1,4}:){0,6}[0-9a-fA-F]{1,4}::$/)
+                
+                // check if user input is valid
+                if (_keywordType=='phoneNumber' && !(numRegex.test(_keyword) || numRegex2.test(_keyword))) {
+                  badInput('phone number');
+                  return;
+                } else if (_keywordType=='emailAddress' && !(emailRegex.test(_keyword) || emailRegex2.test(_keyword))) {
+                  badInput('email address');
+                  return;
+                } else if (_keywordType=='ipAddress' && !(ipRegex_4.test(_keyword) || ipRegex_6.test(_keyword))) {
+                  badInput('IP address')
+                  return;
+                }
+
                 if (await saveKeyword(key, _keywordType, id)) {
                   await updateList();
                   const modal = Modal.getInstance(
