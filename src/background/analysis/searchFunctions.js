@@ -172,12 +172,14 @@ async function addToEvidenceList(perm, rootU, snip, requestU, t, i) {
 function locationKeywordSearch(strReq, networkKeywords, rootUrl, reqUrl) {
   var locElems = networkKeywords[permissionEnum.location]
   for (const [k, v] of Object.entries(locElems)) {
-    let result_i = strReq.search(v)
-    if (result_i != -1) {
-      addToEvidenceList(permissionEnum.location, rootUrl, strReq, reqUrl, k, [result_i, result_i + v.length])
+    // every entry is an array, so we iterate through it.
+    for (let value of v) {
+      let result_i = strReq.search(value)
+      if (result_i != -1) {
+      addToEvidenceList(permissionEnum.location, rootUrl, strReq, reqUrl, k, [result_i, result_i + value.length])
     }
   }
-}
+}}
 
 // Gets the URL from the request and tries to match to our list of urls
 function urlSearch(request, urls) {

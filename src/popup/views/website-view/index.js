@@ -131,8 +131,7 @@ const WebsiteView = () => {
             {empty ? (
               <SEmpty>
                 <SEmptyText>
-                  Nothing yet... Keep
-                  browsing and check back later!
+                  Nothing yet... Keep browsing and check back later!
                 </SEmptyText>
               </SEmpty>
             ) : (
