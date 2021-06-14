@@ -102,8 +102,6 @@ export async function importData() {
     // returns [location we obtained from google maps API, {phone #s, emails, 
     // location elements entered by the user, fingerprinting keywords}, websites 
     // that have identification objectives as services]
-
-    console.log(networkKeywords)
     return [locCoords, networkKeywords, services]
 }
 
