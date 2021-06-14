@@ -127,7 +127,7 @@ const EditModal = ({ keywordType, keyword, edit, id, updateList }) => {
               keywordType == permissionEnum.location ? _location : _keyword
             }
           />
-          {inputValid ? <text><br></br><br></br></text> : <text><br></br>Please enter a valid {keyType}</text>}
+          {inputValid ? <text><br></br><br></br></text> : <text><br></br> Please enter a valid {keyType} </text>}
           <SActionGroup>
             <SAction data-bs-dismiss="modal" aria-label="Close" color="#e57373">
               Cancel
@@ -148,13 +148,13 @@ const EditModal = ({ keywordType, keyword, edit, id, updateList }) => {
                 let ipRegex_6 = new RegExp(/^(?:[0-9a-fA-F]{1,4}:){7}[0-9a-fA-F]{1,4}$|^::(?:[0-9a-fA-F]{1,4}:){0,6}[0-9a-fA-F]{1,4}$|^[0-9a-fA-F]{1,4}::(?:[0-9a-fA-F]{1,4}:){0,5}[0-9a-fA-F]{1,4}$|^[0-9a-fA-F]{1,4}:[0-9a-fA-F]{1,4}::(?:[0-9a-fA-F]{1,4}:){0,4}[0-9a-fA-F]{1,4}$|^(?:[0-9a-fA-F]{1,4}:){0,2}[0-9a-fA-F]{1,4}::(?:[0-9a-fA-F]{1,4}:){0,3}[0-9a-fA-F]{1,4}$|^(?:[0-9a-fA-F]{1,4}:){0,3}[0-9a-fA-F]{1,4}::(?:[0-9a-fA-F]{1,4}:){0,2}[0-9a-fA-F]{1,4}$|^(?:[0-9a-fA-F]{1,4}:){0,4}[0-9a-fA-F]{1,4}::(?:[0-9a-fA-F]{1,4}:)?[0-9a-fA-F]{1,4}$|^(?:[0-9a-fA-F]{1,4}:){0,5}[0-9a-fA-F]{1,4}::[0-9a-fA-F]{1,4}$|^(?:[0-9a-fA-F]{1,4}:){0,6}[0-9a-fA-F]{1,4}::$/)
                 
                 // check if user input is valid
-                if (_keywordType=='phoneNumber' && !(numRegex.test(_keyword) || numRegex2.test(_keyword))) {
+                if (_keywordType == typeEnum.phone && !(numRegex.test(_keyword) || numRegex2.test(_keyword))) {
                   badInput('phone number');
                   return;
-                } else if (_keywordType=='emailAddress' && !(emailRegex.test(_keyword) || emailRegex2.test(_keyword))) {
+                } else if (_keywordType == typeEnum.email && !(emailRegex.test(_keyword) || emailRegex2.test(_keyword))) {
                   badInput('email address');
                   return;
-                } else if (_keywordType=='ipAddress' && !(ipRegex_4.test(_keyword) || ipRegex_6.test(_keyword))) {
+                } else if (_keywordType == typeEnum.ipAddress && !(ipRegex_4.test(_keyword) || ipRegex_6.test(_keyword))) {
                   badInput('IP address')
                   return;
                 }
