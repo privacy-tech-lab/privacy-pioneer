@@ -83,12 +83,10 @@ const WebsiteView = () => {
     };
 
     browser.runtime.onMessage.addListener(message);
-    console.log("listening");
     browser.runtime.sendMessage({ msg: "background.currentTab" });
 
     return () => {
       browser.runtime.onMessage.removeListener(message);
-      console.log("not listening");
     };
   }, []);
 
@@ -133,8 +131,7 @@ const WebsiteView = () => {
             {empty ? (
               <SEmpty>
                 <SEmptyText>
-                  Nothing yet... Keep
-                  browsing and check back later!
+                  Nothing yet... Keep browsing and check back later!
                 </SEmptyText>
               </SEmpty>
             ) : (

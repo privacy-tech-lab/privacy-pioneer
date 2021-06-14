@@ -1,9 +1,9 @@
-import styled from "styled-components"
+import styled from "styled-components";
 
 export const SContent = styled.div`
   background-color: var(--cardColor);
   border-radius: 16px;
-`
+`;
 
 export const SModal = styled.div`
   display: flex;
@@ -11,7 +11,7 @@ export const SModal = styled.div`
   padding: 0px 16px 16px 16px;
   background-color: var(--cardColor);
   border-radius: 16px;
-`
+`;
 
 export const SNavigationBar = styled.div`
   display: flex;
@@ -22,7 +22,7 @@ export const SNavigationBar = styled.div`
   width: 100%;
   align-items: center;
   max-width: 100%;
-`
+`;
 
 export const SMiddle = styled.div`
   display: flex;
@@ -30,26 +30,26 @@ export const SMiddle = styled.div`
   min-width: 0;
   flex-direction: row;
   align-items: center;
-`
+`;
 
 export const STitle = styled.span`
   margin-left: 8px;
   font-weight: bold;
-`
+`;
 
 export const SLeading = styled.div`
   flex: 1;
   display: flex;
   justify-content: left;
   min-width: 0;
-`
+`;
 
 export const STrailing = styled.div`
   flex: 1;
   display: flex;
   justify-content: right;
   min-width: 0;
-`
+`;
 
 export const IconWrapper = styled.div`
   :hover {
@@ -59,12 +59,19 @@ export const IconWrapper = styled.div`
     filter: brightness(1.25);
   }
   cursor: pointer;
-`
+`;
 
 export const SKeyword = styled.div`
   display: flex;
+  flex: 1;
   flex-direction: column;
-`
+  margin: 0px 4px;
+`;
+
+export const SForm = styled.div`
+  display: flex;
+  flex-direction: column;
+`;
 
 export const SInput = styled.input`
   padding-left: 8px;
@@ -82,18 +89,23 @@ export const SInput = styled.input`
   ::placeholder {
     color: var(--secondaryTextColor);
   }
-`
+`;
 
 export const SHeader = styled.div`
   margin-top: 24px;
   color: var(--secondaryTextColor);
   font-size: var(--body2);
-`
+`;
 
 export const SType = styled.div`
   display: flex;
   flex-direction: column;
-`
+`;
+
+export const SErrorText = styled.div`
+  color: crimson;
+  padding-top: 4px;
+`;
 
 export const SDropdownOptions = styled.div`
   top: 56px;
@@ -115,7 +127,7 @@ export const SDropdownOptions = styled.div`
       border-bottom-right-radius: 8px;
     }
   }
-`
+`;
 
 export const SDropdownItem = styled.div`
   border: 1px solid var(--seperatorColor);
@@ -136,12 +148,12 @@ export const SDropdownItem = styled.div`
       filter: brightness(1.15);
     }
   }
-`
+`;
 
 export const SDropdown = styled.div`
   position: relative;
   display: inline-block;
-`
+`;
 
 export const SDropdownSelection = styled.div`
   cursor: pointer;
@@ -171,14 +183,14 @@ export const SDropdownSelection = styled.div`
       filter: brightness(1.15);
     }
   }
-`
+`;
 
 export const SActionGroup = styled.div`
   margin-top: 16px;
   display: flex;
   flex-direction: row;
   justify-content: flex-end;
-`
+`;
 
 export const SAction = styled.div`
   color: ${(props) => props.color};
@@ -190,4 +202,4 @@ export const SAction = styled.div`
     filter: brightness(1.25);
   }
   cursor: pointer;
-`
+`;
