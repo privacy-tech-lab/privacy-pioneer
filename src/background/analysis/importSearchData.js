@@ -40,31 +40,42 @@ export async function importData() {
         })
     }
 
+    // if we have a phone we put it in the network keywords dict
+    if ( typeof userPhone !== 'undefined' ) { 
+        networkKeywords[permissionEnum.personalData][typeEnum.phone] = userPhone
+    }
 
-    const exampleZip = "06459"
-    const exampleCity = "Middletown"
-    const exampleAddress = "Lawn Ave"
-    let userStateAbrev, userState;
-    [userStateAbrev, userState] = getState(exampleZip)
-
-    // ssn routine
-    const exampleSsn = '163125213'
-    const SsnRegex = buildSsnRegex(exampleSsn)
-
-    // for now setting placeholder of our location. Eventually this will
-    // be swapped for the users custom input
+    // build location Elements
     var locElems = {}
-    locElems[typeEnum.zipCode] = exampleZip
-    locElems[typeEnum.city] = exampleCity
-    locElems[typeEnum.streetAddress] = exampleAddress
-    if (typeof userState !== 'undefined') { locElems[typeEnum.state] = userState }
+
+    if (typeEnum.zipCode in user_store_dict) {
+        const userZip = user_store_dict[typeEnum.zipCode]
+        locElems[typeEnum.zipCode] = userZip
+        var userState = []
+
+        userZip.forEach( zip => { 
+            let abrev, state;
+            [abrev, state] = getState(zip)
+            if (typeof state !== 'undefined') { userState.push(state) }
+        } )
+        if ( userState === undefined || userState.length == 0 ) {  
+            // invalid zip input
+        }
+        else { locElems[typeEnum.state] = userState }
+    }
+
+    if (typeEnum.city in user_store_dict) {
+        const userCity = user_store_dict[typeEnum.city]
+        locElems[typeEnum.city] = userCity
+    }
+
+    if (typeEnum.address in user_store_dict) {
+        const userAddress = user_store_dict[typeEnum.address]
+        locElems[typeEnum.address] = userAddress
+    }
 
     networkKeywords[permissionEnum.location] = locElems
     
-    // if we have a phone we put it in the network keywords dict
-    if (typeof userPhone !== 'undefined') { 
-        networkKeywords[permissionEnum.personalData][typeEnum.phone] = userPhone
-    }
     // if the user entered an email/s, add it to network keywords (formated as arr)
     if (typeEnum.email in user_store_dict) {
         networkKeywords[permissionEnum.personalData][typeEnum.email] = user_store_dict[typeEnum.email]
@@ -85,6 +96,8 @@ export async function importData() {
     // returns [location we obtained from google maps API, {phone #s, emails, 
     // location elements entered by the user, fingerprinting keywords}, websites 
     // that have identification objectives as services]
+
+    console.log(networkKeywords)
     return [locCoords, networkKeywords, services]
 }
 
@@ -125,7 +138,7 @@ async function getWatchlistDict() {
         for (let [t, val] of Object.entries(keywordObject) ) {
             // we have either a type of key or an actual key
             // the multi-line input gets parsed with its own function
-            if (t == 'location') { parseLocationObject(val, user_store_dict) }
+            if (t == permissionEnum.location ) { parseLocationObject(val, user_store_dict) }
             if (t == 'type') { ktype = val }
             if (t == 'keyword') { keyword = val }
        }
