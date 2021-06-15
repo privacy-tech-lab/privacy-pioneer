@@ -6,7 +6,7 @@ requests
 */
 import { Request, typeEnum, permissionEnum } from "./classModels.js"
 import { addToEvidenceList } from "./addEvidence.js"
-import { RegexSpecialChar, escapeRegExp } from "./regexFunctions.js"
+import { regexSpecialChar, escapeRegExp } from "./regexFunctions.js"
 import { getHostname } from "./util.js"
 
 
