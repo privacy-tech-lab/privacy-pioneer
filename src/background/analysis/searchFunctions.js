@@ -221,71 +221,57 @@ function urlSearch(request, urls) {
 // and lng in the same request, we submit the evidence.
 
 function coordinateSearch(strReq, locData, rootUrl, reqUrl) {
-  var lat = locData[0]
-  var lng = locData[1]
-  var absLat = Math.abs(lat)
-  var absLng = Math.abs(lng)
+  const lat = locData[0]
+  const lng = locData[1]
+  const absLat = Math.abs(lat)
+  const absLng = Math.abs(lng)
 
   // floating point regex non-digit, then 2-3 digits (should think about 1 digit starts later, this reduces matches a lot and helps speed), then a ".", then 4 to 10 digits, g is global flag
   let floatReg = /\D\d{2,3}\.\d{4,10}/g
   const matches = strReq.matchAll(floatReg)
+  const matchArr = Array.from(matches)
+  // not possible to have pair without at least 2 matches
+  if ( matchArr.length < 2 ) { return }
 
-  let foundLat = false
-  let foundLng = false
-  let start = undefined
-  let end = undefined
-
-  let foundPreciseLat = false
-  let foundPreciseLng = false
-  let start_ = undefined
-  let end_ = undefined
-
-
-  for (const match of matches) {
-    //we take this substring because of non-digit in regex
-    let potCoor = match[0].substring(1)
-    console.log(match)
-    let startIndex = match.index
-    let endIndex = startIndex + potCoor.length
-
-    const asFloat = parseFloat(potCoor)
-    const deltaLat = Math.abs(asFloat - absLat)
-    const deltaLng = Math.abs(asFloat - absLng)
-
-    if (deltaLat < 1) {
-      foundLat = true
-      start = startIndex
-      end = endIndex
+  // when we find lat we look for lng, and vice versa
+  function findPair(matchArr, goal, arrIndex, matchIndex) {
+    // we want lat and lng to be in close proximity
+    let bound = matchIndex + 250
+    let j = arrIndex + 1
+    while ( j < matchArr.length ) {
+      let match = matchArr[j]
+      let potCoor = match[0].substring(1)
+      let startIndex = match.index
+      let endIndex = startIndex + potCoor.length
       
-    }
-    if (deltaLng < 1) {
-      foundLng = true
-      start = startIndex
-      end = endIndex
-    }
+      if (startIndex > bound) { return startIndex + 1 }
 
-    if (deltaLat < .1) {
-      foundPreciseLat = true
-      start_ = startIndex
-      end_ = endIndex
+      let asFloat = parseFloat(potCoor)
+      let delta = Math.abs(asFloat - goal)
+      if (delta < .1) {
+        addToEvidenceList(permissionEnum.location, rootUrl, strReq, reqUrl, typeEnum.tightLocation, [startIndex, endIndex])
+        // if we find evidence for this request we return an index that will terminate the loop
+        return matchArr.length
+      }
+      j += 1
     }
-
-    if (deltaLng < .1) {
-      foundPreciseLng = true
-      start_ = startIndex
-      end_ = endIndex
-    }
+    return arrIndex + 1
   }
 
-  if (foundPreciseLat && foundPreciseLng) {
-    addToEvidenceList(permissionEnum.location, rootUrl, strReq, reqUrl, typeEnum.tightLocation, [start_, end_])
-    return
-  }
+  var i = 0
+  while (i < matchArr.length) {
+    let match = matchArr[i]
+    let potCoor = match[0].substring(1)
+    let startIndex = match.index
 
-  if (foundLat && foundLng) {
-    addToEvidenceList(permissionEnum.location, rootUrl, strReq, reqUrl, typeEnum.coarseLocation, [start, end])
-  }
+    let asFloat = parseFloat(potCoor)
+    let deltaLat = Math.abs(asFloat - absLat)
+    let deltaLng = Math.abs(asFloat - absLng)
 
+    if (deltaLat < .1) { i = findPair(matchArr, absLng, i, startIndex) }
+    else if (deltaLng < .1 ) { i = findPair(matchArr, absLat, i, startIndex) }
+    else { i += 1}
+  }
 }
 
 
