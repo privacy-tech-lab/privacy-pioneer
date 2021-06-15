@@ -26,7 +26,8 @@ import {
   typeEnum,
 } from "../../../../../background/analysis/classModels";
 import { Modal } from "bootstrap";
-import Form from "./forms";
+import Form from "./components/forms";
+import inputValidator from "./components/input-validators";
 
 /**
  * Popup modal to create/edit keyword
@@ -39,7 +40,8 @@ const EditModal = ({ keywordType, keyword, edit, id, updateList }) => {
   );
   const [_keyword, setKeyword] = useState(edit ? keyword : "");
   const [_location, setLocation] = useState(edit ? keyword : {});
-  const [errorText, setError] = useState("");
+  const [inputValid, setInputValid] = useState(true);
+  const [keyType, setKeyType] = useState("");
 
   /**
    * Closes dropdown when clicked outside
@@ -68,6 +70,42 @@ const EditModal = ({ keywordType, keyword, edit, id, updateList }) => {
     return () => document.removeEventListener("mousedown", blur);
   }, []);
 
+  const badInput = (type) => {
+    setInputValid(false);
+    setKeyType(type);
+  };
+
+  const validate = () => {
+    if (
+      _keywordType == typeEnum.phone &&
+      !(
+        inputValidator.numRegex.test(_keyword) ||
+        inputValidator.numRegex2.test(_keyword)
+      )
+    ) {
+      badInput("phone number");
+      return false;
+    } else if (
+      _keywordType == typeEnum.email &&
+      !(
+        inputValidator.emailRegex.test(_keyword) ||
+        inputValidator.emailRegex2.test(_keyword)
+      )
+    ) {
+      badInput("email address");
+      return false;
+    } else if (
+      _keywordType == typeEnum.ipAddress &&
+      !(
+        inputValidator.ipRegex_4.test(_keyword) ||
+        inputValidator.ipRegex_6.test(_keyword)
+      )
+    ) {
+      badInput("IP address");
+      return false;
+    } else return true;
+  };
+
   return (
     <>
       <SContent className="modal-content">
@@ -83,7 +121,6 @@ const EditModal = ({ keywordType, keyword, edit, id, updateList }) => {
               </IconWrapper>
             </STrailing>
           </SNavigationBar>
-          <SErrorText>{errorText ? errorText : null}</SErrorText>
           <SType>
             <SHeader>TYPE</SHeader>
             <SDropdown
@@ -95,6 +132,8 @@ const EditModal = ({ keywordType, keyword, edit, id, updateList }) => {
                   <SDropdownItem
                     onClick={() => {
                       setKeywordType(key);
+                      setInputValid(true);
+                      setKeyword("");
                     }}
                     key={index}
                   >
@@ -118,6 +157,9 @@ const EditModal = ({ keywordType, keyword, edit, id, updateList }) => {
               keywordType == permissionEnum.location ? _location : _keyword
             }
           />
+          {inputValid ? null : (
+            <SErrorText> Please enter a valid {keyType} </SErrorText>
+          )}
           <SActionGroup>
             <SAction data-bs-dismiss="modal" aria-label="Close" color="#e57373">
               Cancel
@@ -128,14 +170,15 @@ const EditModal = ({ keywordType, keyword, edit, id, updateList }) => {
                   _keywordType == permissionEnum.location
                     ? _location
                     : _keyword;
-                if (await saveKeyword(key, _keywordType, id)) {
-                  await updateList();
-                  const modal = Modal.getInstance(
-                    document.getElementById("edit-modal")
-                  );
-                  modal.hide();
-                } else {
-                  setError("Sorry, something went wrong!");
+                // check if user input is valid
+                if (validate()) {
+                  if (await saveKeyword(key, _keywordType, id)) {
+                    await updateList();
+                    const modal = Modal.getInstance(
+                      document.getElementById("edit-modal")
+                    );
+                    modal.hide();
+                  }
                 }
               }}
               color="#64b5f6"

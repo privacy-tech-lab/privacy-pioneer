@@ -1,11 +1,10 @@
 import React from "react";
-import { SInput, SForm, SKeyword, SHeader } from "./style";
+import { SInput, SForm, SKeyword, SHeader } from "../style";
 import {
   typeEnum,
   permissionEnum,
-} from "../../../../../background/analysis/classModels";
-import { keywordTypes } from "../../../../../background/analysis/classModels";
-
+} from "../../../../../../background/analysis/classModels";
+import { keywordTypes } from "../../../../../../background/analysis/classModels";
 const AddressForm = ({ onChange, value }) => {
   return (
     <SForm>

@@ -104,7 +104,7 @@ export const SType = styled.div`
 
 export const SErrorText = styled.div`
   color: crimson;
-  padding-top: 4px;
+  padding-top: 16px;
 `;
 
 export const SDropdownOptions = styled.div`
