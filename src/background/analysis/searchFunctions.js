@@ -169,8 +169,7 @@ async function addToEvidenceList(perm, rootU, snip, requestU, t, i) {
 
 // Look in request for keywords from list of keywords built from user's
 // location and the Google Maps geocoding API
-function locationKeywordSearch(strReq, networkKeywords, rootUrl, reqUrl) {
-  var locElems = networkKeywords[permissionEnum.location]
+function locationKeywordSearch(strReq, locElems, rootUrl, reqUrl) {
   for (const [k, v] of Object.entries(locElems)) {
     // every entry is an array, so we iterate through it.
     for (let value of v) {
@@ -245,6 +244,7 @@ function coordinateSearch(strReq, locData, rootUrl, reqUrl) {
   for (const match of matches) {
     //we take this substring because of non-digit in regex
     let potCoor = match[0].substring(1)
+    console.log(match)
     let startIndex = match.index
     let endIndex = startIndex + potCoor.length
 

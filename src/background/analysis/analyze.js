@@ -119,75 +119,83 @@ const onHeadersReceived = (details, data) => {
 function resolveBuffer(id, data) {
   if (id in buffer) {
     const request = buffer[id]
-    const strRequest = JSON.stringify(request)
     if (
       request.requestHeaders !== undefined &&
       request.responseHeaders !== undefined &&
       request.details !== undefined &&
       request.responseData !== undefined
     ) {
-      // if our request is completely valid and we have everything we need to analyze
-      // the request, continue. No else statement
+    // if our request is completely valid and we have everything we need to analyze
+    // the request, continue. No else statement
+    // delete the request from our buffer (we have it stored for this function as request)
+    delete buffer[id]
 
-      // delete the request from our buffer (we have it stored for this function as request)
-      delete buffer[id]
+    // run analysis
+    analyze(request, data)
 
-      // this 0, 1, 2 comes from the structure of the importData function
-      // location we obtained from google maps API
-      var loc = data[0]
-      // {phone #s, emails, location elements entered by the user, fingerprinting keywords}
-      var networkKeywords = data[1]
-      // websites that have identification objectives
-      var urls = data[2]
-      const rootUrl = request.details["originUrl"]
-      const reqUrl = request.details["url"]
-
-      // if this value is 0 the client likely denied location permission
-      // or they could be on Null Island in the middle of the Gulf of Guinea
-      if (loc[0] != 0 && loc[1] != 0) {
-        coordinateSearch(strRequest, loc, rootUrl, reqUrl);
-      }
-      // if this network keyword length is 0 then the geocoding failed
-      // so no need to look through location keywords
-      if (networkKeywords[permissionEnum.location].length != 0) {
-        locationKeywordSearch(strRequest, networkKeywords, rootUrl, reqUrl)
-      }
-      // search for personal data from user's watchlist
-      if ( permissionEnum.personalData in networkKeywords) {
-        if ( typeEnum.Phone in networkKeywords[permissionEnum.personalData] ) {
-          networkKeywords[permissionEnum.personalData][typeEnum.phone].forEach( number => {
-            regexSearch(strRequest, number, rootUrl, reqUrl, typeEnum.phone)
-          })
-        }
-        if ( typeEnum.Email in networkKeywords[permissionEnum.personalData] ) {
-          networkKeywords[permissionEnum.personalData][typeEnum.email].forEach( email => {
-            regexSearch(strRequest, email, rootUrl, reqUrl, typeEnum.email)
-          })
-        }
-
-        if ( typeEnum.userKeyword in networkKeywords[permissionEnum.personalData] ) {
-          networkKeywords[permissionEnum.personalData][typeEnum.userKeyword].forEach ( keyword => {
-            regexSearch(strRequest, keyword, rootUrl, reqUrl, typeEnum.userKeyword)
-          })
-        }
-
-        if ( typeEnum.ipAddress in networkKeywords[permissionEnum.personalData] ) {
-          networkKeywords[permissionEnum.personalData][typeEnum.ipAddress].forEach( ip => {
-            ipSearch(strRequest, ip, rootUrl, reqUrl, typeEnum.ipAddress)
-          })
-        }
-      }
-
-      // search to see if the url of the root or request comes up in our services list
-      urlSearch(request, urls)
-
-      // search to see if any fingerprint data
-      fingerprintSearch(strRequest, networkKeywords, rootUrl, reqUrl)
     }
-  } else {
+  } 
+  
+  else {
     // I don't think this will ever happen, but just in case, maybe a redirect?
     console.log(`ERROR: REQUEST WITH ID: ${id} NOT IN BUFFER`)
   }
+}
+
+function analyze(request, userData) {
+
+    const strRequest = JSON.stringify(request)
+
+    // this 0, 1, 2 comes from the structure of the importData function
+    // location we obtained from google maps API
+    var loc = userData[0]
+    // {phone #s, emails, location elements entered by the user, fingerprinting keywords}
+    var networkKeywords = userData[1]
+    // websites that have identification objectives
+    var urls = userData[2]
+    const rootUrl = request.details["originUrl"]
+    const reqUrl = request.details["url"]
+
+    // if this value is 0 the client likely denied location permission
+    // or they could be on Null Island in the middle of the Gulf of Guinea
+    if (loc[0] != 0 && loc[1] != 0) {
+      coordinateSearch(strRequest, loc, rootUrl, reqUrl);
+    }
+    // search for location data if we have it
+    if ( permissionEnum.location in networkKeywords) {
+      locationKeywordSearch(strRequest, networkKeywords[permissionEnum.location], rootUrl, reqUrl)
+    }
+    // search for personal data from user's watchlist
+    if ( permissionEnum.personalData in networkKeywords) {
+      if ( typeEnum.Phone in networkKeywords[permissionEnum.personalData] ) {
+        networkKeywords[permissionEnum.personalData][typeEnum.phone].forEach( number => {
+          regexSearch(strRequest, number, rootUrl, reqUrl, typeEnum.phone)
+        })
+      }
+      if ( typeEnum.Email in networkKeywords[permissionEnum.personalData] ) {
+        networkKeywords[permissionEnum.personalData][typeEnum.email].forEach( email => {
+          regexSearch(strRequest, email, rootUrl, reqUrl, typeEnum.email)
+        })
+      }
+
+      if ( typeEnum.userKeyword in networkKeywords[permissionEnum.personalData] ) {
+        networkKeywords[permissionEnum.personalData][typeEnum.userKeyword].forEach ( keyword => {
+          regexSearch(strRequest, keyword, rootUrl, reqUrl, typeEnum.userKeyword)
+        })
+      }
+
+      if ( typeEnum.ipAddress in networkKeywords[permissionEnum.personalData] ) {
+        networkKeywords[permissionEnum.personalData][typeEnum.ipAddress].forEach( ip => {
+          ipSearch(strRequest, ip, rootUrl, reqUrl, typeEnum.ipAddress)
+        })
+      }
+    }
+
+    // search to see if the url of the root or request comes up in our services list
+    urlSearch(request, urls)
+
+    // search to see if any fingerprint data
+    fingerprintSearch(strRequest, networkKeywords, rootUrl, reqUrl)
 }
 
 // callback for tab update. Right now used to run analysis on the url
