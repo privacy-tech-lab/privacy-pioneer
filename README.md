@@ -1,7 +1,7 @@
 # integrated-privacy-analysis
 
 <p align="center">
-  <a href="https://addons.mozilla.org/en-US/firefox/addon/optmeowt/"><img src="https://github.com/privacy-tech-lab/integrated-privacy-analysis/blob/main/firefox-add-ons-badge.png" width="172px" alt="Firefox Add Ons badge"></a>
+  <a href="https://addons.mozilla.org/en-US/firefox/user/12247904/"><img src="https://github.com/privacy-tech-lab/integrated-privacy-analysis/blob/main/firefox-add-ons-badge.png" width="172px" alt="Firefox Add Ons badge"></a>
 <p>
 
 The idea of this browser extension is to helps users to understand the privacy implications of their visits to websites. For example, the following URL-encoded string contains the latitude and longitude of a device:
