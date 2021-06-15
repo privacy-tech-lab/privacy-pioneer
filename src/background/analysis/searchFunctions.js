@@ -243,8 +243,9 @@ function coordinateSearch(strReq, locData, rootUrl, reqUrl) {
       let potCoor = match[0].substring(1)
       let startIndex = match.index
       let endIndex = startIndex + potCoor.length
-      
-      if (startIndex > bound) { return startIndex + 1 }
+
+      // potential is too far away, move on
+      if (startIndex > bound) { return arrIndex + 1 }
 
       let asFloat = parseFloat(potCoor)
       let delta = Math.abs(asFloat - goal)
@@ -259,6 +260,7 @@ function coordinateSearch(strReq, locData, rootUrl, reqUrl) {
   }
 
   var i = 0
+  // matchArr is sorted by index, so we only need to look at elements to the right of a potential match
   while (i < matchArr.length) {
     let match = matchArr[i]
     let potCoor = match[0].substring(1)
