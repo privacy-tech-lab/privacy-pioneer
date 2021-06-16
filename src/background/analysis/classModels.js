@@ -30,6 +30,7 @@ export class Request {
 // snippet = identified snippet of code we identified as containing the user's data
 // typ = type (from typeEnum below)
 // index = array like [start, finish] (for snippet)
+// firstPartyRoot is a boolean to indicate if this request has a rootUrl from a site the user has visited themselves
 export class Evidence {
   constructor({
     timestamp,
@@ -39,6 +40,7 @@ export class Evidence {
     requestUrl,
     typ,
     index,
+    firstPartyRoot,
   }) {
     this.timestamp = timestamp;
     this.permission = permission;
@@ -47,6 +49,7 @@ export class Evidence {
     this.requestUrl = requestUrl;
     this.typ = typ;
     this.index = index === undefined ? -1 : index;
+    this.firstPartyRoot = firstPartyRoot;
   }
 }
 
