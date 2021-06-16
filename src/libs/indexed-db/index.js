@@ -1,5 +1,5 @@
 import { openDB } from "idb";
-import { EvidenceKeyval as evidenceIDB } from "../../background/analysis/openDB";
+import { evidenceKeyval as evidenceIDB } from "../../background/analysis/openDB";
 import {
   keywordTypes,
   permissionEnum,
@@ -19,7 +19,7 @@ const dbPromise = openDB("watchlist-store", 1, {
 /**
  * Wrapper functions for CRUD operations of 'watchlist' indexed-db
  */
-export const WatchlistKeyval = {
+export const watchlistKeyval = {
   async get(key) {
     return (await dbPromise).get("watchlist", key);
   },
@@ -73,12 +73,12 @@ export const saveKeyword = async (keyword, type, id) => {
       key = hash(type.concat(keyword)).toString();
     }
     type != permissionEnum.location
-      ? await WatchlistKeyval.set(key, {
+      ? await watchlistKeyval.set(key, {
           keyword: keyword,
           type: type,
           id: key,
         })
-      : await WatchlistKeyval.set(key, {
+      : await watchlistKeyval.set(key, {
           location: keyword,
           type: type,
           id: key,
@@ -92,7 +92,7 @@ export const saveKeyword = async (keyword, type, id) => {
  * Deletes keyword from watchlist store
  */
 export const deleteKeyword = async (id) => {
-  await WatchlistKeyval.delete(id);
+  await watchlistKeyval.delete(id);
 };
 
 /**

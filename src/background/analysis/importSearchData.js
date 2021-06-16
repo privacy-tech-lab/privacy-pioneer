@@ -7,7 +7,7 @@ network requests
 */
 import { getLocationData, filterGeocodeResponse } from "./getLocationData.js"
 import { buildPhone, getState, buildSsnRegex } from "./structuredRoutines.js"
-import { WatchlistKeyval } from "../../libs/indexed-db/index.js"
+import { watchlistKeyval } from "../../libs/indexed-db/index.js"
 import { typeEnum, permissionEnum } from "./classModels.js"
 
 // import keywords, services JSONs
@@ -134,11 +134,11 @@ async function getWatchlistDict() {
 
     // iterate through the stored keywords in the watchlist store and add them to 
     // a dict that maps keywordtype -> array of keywords for that type
-    let keyarr = await WatchlistKeyval.keys()
+    let keyarr = await watchlistKeyval.keys()
     for (let key of keyarr) {
         let ktype, keyword
         // get the keyword associated with the key
-        let keywordObject = await WatchlistKeyval.get(key)
+        let keywordObject = await watchlistKeyval.get(key)
         for (let [t, val] of Object.entries(keywordObject) ) {
             // we have either a type of key or an actual key
             // the multi-line input gets parsed with its own function
