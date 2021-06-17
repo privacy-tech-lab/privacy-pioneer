@@ -4,14 +4,21 @@ searchFunctions.js
 - searchFunctions.js contains all functions used to search through network
 requests
 */
-import { Request, typeEnum, permissionEnum } from "./classModels.js"
+import { Request, typeEnum, permissionEnum, Evidence } from "./classModels.js"
 import { addToEvidenceList } from "./addEvidence.js"
 import { regexSpecialChar, escapeRegExp } from "./regexFunctions.js"
 import { getHostname } from "./util.js"
 
 
-// Look in request for keywords from list of keywords built from user's
-// location and the Google Maps geocoding API
+/**
+ * Iterates through the user's location elements and adds exact text matches to evidence. 
+ * Evidence will be added with permission location and the type of the found evidence (city or zip for example)
+ * 
+ * @param {string} strReq 
+ * @param {Dict<typeEnum>} locElems 
+ * @param {string} rootUrl 
+ * @param {string} reqUrl 
+ */
 function locationKeywordSearch(strReq, locElems, rootUrl, reqUrl) {
   for (const [k, v] of Object.entries(locElems)) {
     // every entry is an array, so we iterate through it.
@@ -23,7 +30,14 @@ function locationKeywordSearch(strReq, locElems, rootUrl, reqUrl) {
   }
 }}
 
-// Gets the URL from the request and tries to match to our list of urls
+/**
+ * Iterates through the disconnect list and adds evidence accordingly. It creates evidence with the category of the disconnect JSON as both the permission
+ * and the type.
+ * 
+ * @param {Request} request An HTTP request
+ * @param {object} urls The disconnect JSON
+ * @returns {void} Nothing. Adds to evidence when we find URL's from the disconnect list.
+ */
 function urlSearch(request, urls) {
   // First we can iterate through URLs
   var keys = Object.keys(urls["categories"]);
@@ -60,9 +74,18 @@ function urlSearch(request, urls) {
   }
 }
 
-// coordinate search looks for floating point numbers with a regular expression pattern. If we find a lat
-// and lng in the same request, we submit the evidence.
 
+/**
+ * Searches an HTTP request for a users lattitude and longitude. Uses regular expression patterns to look for floating point patterns.
+ * 
+ * @param {string} strReq The HTTP request as a string 
+ * @param {Array<number>} locData The coordinates of the user
+ * @param {string} rootUrl The rootUrl as a string
+ * @param {string} reqUrl The requestUrl as a string
+ * @returns {void} Populates the DB if a match is found. We only add evidence if we find a .1 distance from both the 
+ * lattitude and the longitude within 250 characters of each other in the request
+ * 
+ */
 function coordinateSearch(strReq, locData, rootUrl, reqUrl) {
   const lat = locData[0]
   const lng = locData[1]
@@ -76,7 +99,15 @@ function coordinateSearch(strReq, locData, rootUrl, reqUrl) {
   // not possible to have pair without at least 2 matches
   if ( matchArr.length < 2 ) { return }
 
-  // when we find lat we look for lng, and vice versa
+  /**
+   * If we find lattitude, we search for longitude and vice versa
+   * 
+   * @param {Array<String>} matchArr An array with possible floating point strings
+   * @param {number} goal Either a lattitude or a longitude.
+   * @param {number} arrIndex An index of where in matchArr the previous coordinate was found
+   * @param {number} matchIndex The index in the original request string of the first coordinate.
+   * @returns {number} The next index to be searched. Or the length of the array if a pair is found (This will terminate the outer while loop).
+   */
   function findPair(matchArr, goal, arrIndex, matchIndex) {
     // we want lat and lng to be in close proximity
     let bound = matchIndex + 250
@@ -121,9 +152,18 @@ function coordinateSearch(strReq, locData, rootUrl, reqUrl) {
 
 
 
-// passed keyword as string
-// checks if the keyword appears in result
-// default param is personal data but takes optional permission parameter
+/**
+ * Searches a request using regular expressions. Case insensitive. Can process special characters.
+ * 
+ * @param {string} strReq The request as a string
+ * @param {string} keyword The keyword as a string
+ * @param {string} rootUrl The rootUrl as a string
+ * @param {string} reqUrl The requestUrl as a string
+ * @param {string} type From typeEnum
+ * @param {string} perm From permissionEnum
+ * @returns {void} Nothing. Adds evidence if found.
+ *
+ */
 function regexSearch(strReq, keyword, rootUrl, reqUrl, type, perm = permissionEnum.personalData ) {
     let fixed = escapeRegExp(keyword)
     let re = new RegExp(`${fixed}`, "i");
@@ -135,7 +175,15 @@ function regexSearch(strReq, keyword, rootUrl, reqUrl, type, perm = permissionEn
     }
 }
 
-// check if something from the fingerprint lists appears in the request
+/**
+ * 
+ * @param {string} strReq The request as a string
+ * @param {Dict} networkKeywords A dictionary containing fingerprinting keywords
+ * @param {string} rootUrl The rootUrl as a string
+ * @param {string} reqUrl The requestUrl as a string
+ * 
+ * Searches a request for the fingerprinting elements populated in the networkKeywords it is passed. These elements can be found in the keywords JSON
+ */
 function fingerprintSearch(strReq, networkKeywords, rootUrl, reqUrl) {
   var fpElems = networkKeywords[permissionEnum.fingerprinting]
   for (const [k, v] of Object.entries(fpElems)) {
@@ -150,8 +198,17 @@ function fingerprintSearch(strReq, networkKeywords, rootUrl, reqUrl) {
   }
 }
 
-// ipAddress search. The distinction here is that it only runs for 3rd party requests
-function ipSearch(strReq, ip, rootUrl, reqUrl, type) {
+/**
+ * ipSearch first checks if we have a different rootUrl and reqUrl. If we do, it does a standard text search for the given ip.
+ * 
+ * @param {string} strReq The request as a string
+ * @param {string} ip An ip address as a string
+ * @param {string} rootUrl Root url as a string
+ * @param {string} reqUrl The request url as a string
+ * @returns {void} Nothing. Calls search function
+ * 
+ */
+function ipSearch(strReq, ip, rootUrl, reqUrl) {
 
   if ( rootUrl === undefined || reqUrl === undefined ) { return }
   // we're only interested in third party requests
@@ -161,6 +218,7 @@ function ipSearch(strReq, ip, rootUrl, reqUrl, type) {
 
   //otherwise just do a standard text search
   return regexSearch(strReq, ip, rootUrl, reqUrl, typeEnum.ipAddress)
+  
 
 }
 

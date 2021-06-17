@@ -33,13 +33,19 @@ browser.runtime.onMessage.addListener((request, sender, sendResponse) => {
 // call function to get all the url and keyword data
 importData().then((data) => {
 
+  /**
+   * Re-imports data to be passed to analysis on update
+   * @listens dataUpdatedMessage
+   */
   browser.runtime.onMessage.addListener( async (request, sender, sendResponse) => {
     if (request.msg == "dataUpdated") {
       data = await importData();
     }
   })
-
-  // add url listener
+  /**
+   * calls tabUpdate callback on tabChange
+   * @listens tabUpdateEvent
+   */
   browser.tabs.onUpdated.addListener(
     function (tabId, changeInfo, tab) {
       tabUpdate(tabId, changeInfo, tab, data)
