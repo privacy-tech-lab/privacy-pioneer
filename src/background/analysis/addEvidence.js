@@ -1,27 +1,24 @@
 import { getHostname } from "./util.js"
 import { evidenceKeyval } from "./openDB.js"
-import { Evidence } from "./classModels.js"
+import { Evidence, typeEnum } from "./classModels.js"
+import { ipSearch } from "./searchFunctions.js"
 
-// given the permission category, the url of the request, and the snippet
-// from the request, get the current time in ms and add to our evidence list
-// async because it has to wait on get from db
-//
-//
-/* So, now the evidence looks like this: 
- 
-  let stored = await evidenceKeyval.get(rootUrl)
-
-  now stored points to the nested object with our evidence at this url
-  There are three levels of nesting
-  1) permission level
-  2) type level
-  3) reqUrl level
-
-  The evidence object is in this final reqUrl level. 
-  We store a max of 5 pieces of evidence for a given permission type pair.
-}
-*/
-
+/**
+ * 
+ * @param {string} perm The permission of this piece of evidence
+ * @param {string} rootU The rootUrl of the request
+ * @param {string} snip The request as a string
+ * @param {string} requestU The requestUrl of the request
+ * @param {string} t The type of the evidence
+ * @param {Array|undefined} i The index (where in the request string) of the evidence (Either an array or length 2 or undefined)
+ * @returns {void} Nothing. The evidence DB is updated.
+ * 
+ * addToEvidenceList is the function that is called to populate the DB with a piece of evidence. Called by the functions in 
+ * searchFuncitons.js. The function is async because it makes calls to the DB and the browser history. Pieces of evidence are stored as 
+ * Evidence objects. These objects are stored at keys of their rootUrl. At each rootUrl, there is a dictionary with a permission level
+ * (defined in permissionEnum) and then a further type level (defined in typeEnum). We store only one piece of evidence per permssion/type for a
+ * given rootUrl and a maximum of 5 pieces of evidence in total for a permission/type.
+ */
 async function addToEvidenceList(perm, rootU, snip, requestU, t, i) {
   
   var ts = Date.now()
@@ -46,9 +43,10 @@ async function addToEvidenceList(perm, rootU, snip, requestU, t, i) {
   // gets the ten most recently visited websites
   var historyQuery = browser.history.search({text: "", maxResults: 10})
 
-  // takes the return of the browser history query and tells us if the rootUrl of the evidence currently being added
-  // has been recently visited
-  // returns true if this evidence has a root for a site that's been visited; false otherwise
+  /**
+   * @param {Promise} queryData 
+   * @returns {boolean} Boolean. Whether or not the given request has a first party rootUrl.
+   */
   function firstPartyCheck(queryData) {
 
     let recentlyVisited = new Set()
@@ -65,6 +63,14 @@ async function addToEvidenceList(perm, rootU, snip, requestU, t, i) {
     let isFirstParty = firstPartyCheck(queryData)
     setEvidence(isFirstParty)
 
+    /**
+     * Takes the parameters from the outer addToEvidenceList function, queries what's currently in the database at
+     * the given rootUrl and updates the DB accordingly. 
+     * 
+     * @param {boolean} firstParty Whether or not the evidence has a rootUrl that the user visited
+     * @returns {void} Nothing. Populates the DB with the new evidence.
+     *
+     */
     async function setEvidence(firstParty) {
 
       var evidence = await evidenceKeyval.get(rootUrl)
@@ -123,5 +129,6 @@ async function addToEvidenceList(perm, rootU, snip, requestU, t, i) {
     }
   } )
 }
+
 
 export { addToEvidenceList }

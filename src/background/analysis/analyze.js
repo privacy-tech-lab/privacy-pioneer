@@ -4,18 +4,6 @@ analyze.js
 - analyze.js analyzes network requests
 */
 
-/*
-For reference, here is a mockup of the Evidence type
-const evidence = new Evidence({
-  timestamp: "10/10/20",
-  permission: "location",
-  type: "zipcode",
-  rooturl: "facebook.com",
-  requesturl: "facebook.com/js"
-  snippet: "blahblah"
-  index: undefined #to mean we don't want to pass an index
-})
-*/
 import { Request, Evidence, typeEnum, permissionEnum } from "./classModels.js"
 import { openDB } from 'idb';
 import { evidence } from "../background.js"
@@ -143,6 +131,13 @@ function resolveBuffer(id, data) {
   }
 }
 
+/**
+ * Calls the analysis functions from searchFunctions.js on the appropriate data that we have
+ * 
+ * @param {Request} request 
+ * @param {Array} userData 
+ * @returns {void} calls a number of functions
+ */
 function analyze(request, userData) {
 
     const strRequest = JSON.stringify(request)
@@ -199,7 +194,15 @@ function analyze(request, userData) {
     fingerprintSearch(strRequest, networkKeywords, rootUrl, reqUrl)
 }
 
-// callback for tab update. Right now used to run analysis on the url
+/**
+ * Callback for when the tab is updated. Calls coordinate search
+ * @callback tabUpdate
+ * @function tabUpdate
+ * @param {number} tabId id of the tab 
+ * @param {object} changeInfo object containing information about the updated 
+ * @param {object} tab The new state of the tab 
+ * @param {Array} data The imported data from importData()
+ */
 const tabUpdate = (tabId, changeInfo, tab, data) => {
 
   if (changeInfo.url) {

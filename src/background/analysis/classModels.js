@@ -1,10 +1,23 @@
 /*
 classModels.js
 ================================================================================
-- classModels.js defines important classes and objects that we use throughout
-the project
+- classModels.js defines important classes, objects, and enums that we use throughout
+the codebase.
 */
 
+/**
+ * Represents an HTTP request.
+ * 
+ * @class Request
+ * @property {string} id The ID of the request to filter.
+ * @property {object} details Contains details about the request https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/API/webRequest/onBeforeRequest#details 
+ * @property {object} requestHeaders Contains the request headers of the request https://developer.mozilla.org/en-US/docs/Glossary/Request_header
+ * @property {object} responseHeaders Contains the response headers of the request. https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/API/webRequest/HttpHeaders
+ * @property {object} requestBody Contains the HTTP request body data.  https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/API/webRequest/onBeforeRequest#details.
+ * @property {object} responseData A StreamFilter object used to monitor the response. https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/API/webRequest/StreamFilter
+ * @property {string} error After an error event is fired. This property will contain information about the error.  https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/API/webRequest/StreamFilter/onerror
+ * @throws Error. Event that fires on error. Usually due to invalid ID to the webRequest.filterResponseData()
+ */
 export class Request {
   constructor({
     id,
@@ -15,22 +28,30 @@ export class Request {
     responseData,
     error,
   }) {
-    this.id = id; // https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/API/webRequest/filterResponseData#parameters
-    this.requestHeaders = requestHeaders; // https://developer.mozilla.org/en-US/docs/Glossary/Request_header
-    this.responseHeaders = responseHeaders; // https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/API/webRequest/HttpHeaders
-    this.responseData = responseData; // https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/API/webRequest/StreamFilter
-    this.requestBody = requestBody; // https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/API/webRequest/onBeforeRequest#details
-    this.details = details; // https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/API/webRequest/onBeforeRequest#details
-    this.error = error; // https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/API/webRequest/StreamFilter/onerror
+    this.id = id;
+    this.requestHeaders = requestHeaders;
+    this.responseHeaders = responseHeaders;
+    this.responseData = responseData;
+    this.requestBody = requestBody;
+    this.details = details;
+    this.error = error;
   }
 }
 
-// class model for evidence type for when we find a keyword or URL
-// permission = permission we associated the evidence to (from permissionEnum below)
-// snippet = identified snippet of code we identified as containing the user's data
-// typ = type (from typeEnum below)
-// index = array like [start, finish] (for snippet)
-// firstPartyRoot is a boolean to indicate if this request has a rootUrl from a site the user has visited themselves
+
+
+/**
+ * An evidence object created from a request
+ * @class Evidence
+ * @property {date} timestamp The timestamp of the request
+ * @property {enum} permission The permission of the evidence
+ * @property {string} rootUrl The rootUrl of the request
+ * @property {string} snippet JSON.stringify of the request (The request as a string)
+ * @property {string} requestUrl The request Url as a string
+ * @property {enum} typ The type of the evdience
+ * @property {Array|undefined} index A length 2 array with the indexes of the evidence or undefined if not applicable
+ * @property {boolean} firstPartyRoot A boolean indicating if the evidence was generated with a first party root (the rootUrl of the request is the same as the website that generated the request)
+ */
 export class Evidence {
   constructor({
     timestamp,
@@ -53,7 +74,9 @@ export class Evidence {
   }
 }
 
-// should line up exactly with categories in privacy labels
+/**
+ * @enum {string} Enum used to reference permissions. Type: String
+ */
 export const permissionEnum = Object.freeze({
   location: "location",
   personalData: "personalData",
@@ -62,7 +85,9 @@ export const permissionEnum = Object.freeze({
   content: "content",
 });
 
-// should line up exactly with types in privacy Labels
+/**
+ * @enum {string} Enum used to reference types. Type: String
+ */
 export const typeEnum = Object.freeze({
   coarseLocation: "coarseLocation",
   tightLocation: "tightLocation",
@@ -86,7 +111,12 @@ export const typeEnum = Object.freeze({
   fingerprintJSON: "fpJSONList",
 });
 
-// types for user input
+/**
+ * An object containing the keyword types for the watchlist and information to populate defaults.
+ * @typedef keywordTypes
+ * @type {object}
+ *
+ */
 export const keywordTypes = Object.freeze({
   general: {
     displayName: "General",
@@ -116,7 +146,11 @@ export const keywordTypes = Object.freeze({
   },
 });
 
-// source of truth for all naming conventions
+/**
+ * An object used by the front end to create labels. The permissions and types should be exactly the same as the enums.
+ * @typedef privacyLabels
+ * @type {object}
+ */
 export const privacyLabels = Object.freeze({
   location: {
     displayName: "Location",
