@@ -2,6 +2,7 @@ import { getHostname } from "./util.js"
 import { evidenceKeyval } from "./openDB.js"
 import { Evidence, typeEnum } from "./classModels.js"
 import { ipSearch } from "./searchFunctions.js"
+const parentJson = require('../../assets/parents.json')
 
 /**
  * 
@@ -41,6 +42,9 @@ async function addToEvidenceList(perm, rootU, snip, requestU, t, i) {
   var reqUrl = getHostname(requestU)
 
   // gets the ten most recently visited websites
+  /**
+   * @var historyQuery Searches most recent sites opened in the browser
+   */
   var historyQuery = browser.history.search({text: "", maxResults: 10})
 
   /**
@@ -56,22 +60,54 @@ async function addToEvidenceList(perm, rootU, snip, requestU, t, i) {
     
     return recentlyVisited.has(rootUrl)
   }
+ 
+  /**
+   * Looks at a request and returns the parent of the company making the 
+   * request if the company making the request was in our version of 
+   * disconnect's "entries" list
+   * 
+   * @param {string} reqHost The request host name
+   * @param {object} parents The parents json from src/assets/parents.json
+   * @returns {string} The parent company of the website making the request
+   */
+  function getParent(reqHost, parents = parentJson){
+    for (const [parent, urlLst] of Object.entries(parents)){
+      for (const url of urlLst) {
+        if (reqHost.includes(url)){
+          return parent
+        }
+      }
+    }
+    return null
+  }
+
+  /**
+   * Calls firstPartyCheck, getParent functions
+   * 
+   * @param {Promise} queryData queryData from historyQuery
+   * @param {string} reqHost The request host name
+   * @returns {array} [Whether the root url is a first party site, parent company of site making the request if possible]
+   */
+  function checkPartyParent(queryData, reqHost){
+    return [firstPartyCheck(queryData), getParent(reqHost)]
+  }
 
   // after we queried the browser history, we can proceed with updating evidence
   historyQuery.then( queryData => {
 
-    let isFirstParty = firstPartyCheck(queryData)
-    setEvidence(isFirstParty)
+    let [isFirstParty, requestParent] = checkPartyParent(queryData, reqUrl)
+    setEvidence(isFirstParty, requestParent)
 
     /**
      * Takes the parameters from the outer addToEvidenceList function, queries what's currently in the database at
      * the given rootUrl and updates the DB accordingly. 
      * 
      * @param {boolean} firstParty Whether or not the evidence has a rootUrl that the user visited
+     * @param {string} requestParent Parent company of site making the request, if possible
      * @returns {void} Nothing. Populates the DB with the new evidence.
      *
      */
-    async function setEvidence(firstParty) {
+    async function setEvidence(firstParty, requestParent) {
 
       var evidence = await evidenceKeyval.get(rootUrl)
     
@@ -83,7 +119,8 @@ async function addToEvidenceList(perm, rootU, snip, requestU, t, i) {
         requestUrl: requestU,
         typ: t,
         index: i,
-        firstPartyRoot: firstParty
+        firstPartyRoot: firstParty,
+        parentCompany: requestParent
       } )
     
       // if we don't have evidence yet, we initialize it as an empty dict
