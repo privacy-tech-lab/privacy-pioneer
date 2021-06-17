@@ -81,21 +81,11 @@ async function addToEvidenceList(perm, rootU, snip, requestU, t, i) {
     return null
   }
 
-  /**
-   * Calls firstPartyCheck, getParent functions
-   * 
-   * @param {Promise} queryData queryData from historyQuery
-   * @param {string} reqHost The request host name
-   * @returns {array} [Whether the root url is a first party site, parent company of site making the request if possible]
-   */
-  function checkPartyParent(queryData, reqHost){
-    return [firstPartyCheck(queryData), getParent(reqHost)]
-  }
-
   // after we queried the browser history, we can proceed with updating evidence
   historyQuery.then( queryData => {
 
-    let [isFirstParty, requestParent] = checkPartyParent(queryData, reqUrl)
+    let isFirstParty = firstPartyCheck(queryData)
+    let requestParent = getParent(reqUrl)
     setEvidence(isFirstParty, requestParent)
 
     /**
