@@ -51,6 +51,7 @@ export class Request {
  * @property {enum} typ The type of the evdience
  * @property {Array|undefined} index A length 2 array with the indexes of the evidence or undefined if not applicable
  * @property {boolean} firstPartyRoot A boolean indicating if the evidence was generated with a first party root (the rootUrl of the request is the same as the website that generated the request)
+ * @property {string|null} parentCompany If we have identified a parent company for this url, we store it here for the frontend. Else, null.
  */
 export class Evidence {
   constructor({
@@ -62,6 +63,7 @@ export class Evidence {
     typ,
     index,
     firstPartyRoot,
+    parentCompany,
   }) {
     this.timestamp = timestamp;
     this.permission = permission;
@@ -71,6 +73,7 @@ export class Evidence {
     this.typ = typ;
     this.index = index === undefined ? -1 : index;
     this.firstPartyRoot = firstPartyRoot;
+    this.parentCompany = parentCompany;
   }
 }
 
