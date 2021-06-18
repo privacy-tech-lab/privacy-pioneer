@@ -11,7 +11,7 @@ import { SContainer, SSubtitle } from "./style";
 import * as Icons from "../../../libs/icons";
 import ListItem from "./components/list-item";
 import EditModal from "./components/edit-modal";
-import { WatchlistKeyval } from "../../../libs/indexed-db";
+import { watchlistKeyval } from "../../../libs/indexed-db";
 import { Modal } from "bootstrap";
 import { permissionEnum } from "../../../background/analysis/classModels";
 
@@ -26,7 +26,7 @@ const WatchlistView = () => {
    * Inflates view with keywords from watchlist keystore
    */
   const updateList = () => {
-    WatchlistKeyval.values().then((values) => setItems(values));
+    watchlistKeyval.values().then((values) => setItems(values));
     browser.runtime.sendMessage({
       msg: "dataUpdated",
     });

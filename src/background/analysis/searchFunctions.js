@@ -4,173 +4,22 @@ searchFunctions.js
 - searchFunctions.js contains all functions used to search through network
 requests
 */
-import { Request, Evidence, typeEnum, permissionEnum } from "./classModels.js"
-import { openDB } from 'idb';
-import { EvidenceKeyval } from "./openDB.js"
-
-import { RegexSpecialChar, escapeRegExp } from "./regexFunctions.js"
-
-// given a type and a permission creates a unique hash so there are no repeats
-// in our indexedDB. THIS IS NOT A SECURE HASH, but rather just a quick way
-// to convert a regular string into digits
-// taken basically from: https://werxltd.com/wp/2010/05/13/javascript-implementation-of-javas-string-hashcode-method/
-function hashTypeAndPermission(str) {
-  var hash = 0,
-     i,
-     chr;
-   for (i = 0; i < str.length; i++) {
-     chr = str.charCodeAt(i);
-     hash = (hash << 5) - hash + chr;
-     hash |= 0;
-   }
-   return hash;
-}
-
-// code from https://stackoverflow.com/questions/8498592/extract-hostname-name-from-string
-export function extractHostname(url) {
-
-    var hostname;
-    //find & remove protocol (http, ftp, etc.) and get hostname
-
-    if (url.indexOf("//") > -1) {
-        hostname = url.split('/')[2];
-    }
-    else {
-        hostname = url.split('/')[0];
-    }
-
-    //find & remove port number
-    hostname = hostname.split(':')[0];
-    //find & remove "?"
-    hostname = hostname.split('?')[0];
-
-    return hostname;
-}
-
-// takes in full url and extracts just the domain host
-// code from https://stackoverflow.com/questions/8498592/extract-hostname-name-from-string
-export const getHostname = (url) => {
-  var domain = extractHostname(url),
-      splitArr = domain.split('.'),
-      arrLen = splitArr.length;
-
-  //extracting the root domain here
-  //if there is a subdomain
-  if (arrLen > 2) {
-      // domain = second to last and last domain. could be (xyz.me.uk) or (xyz.uk)
-      domain = splitArr[arrLen - 2] + '.' + splitArr[arrLen - 1];
-      //check to see if it's using a Country Code Top Level Domain (ccTLD) (i.e. ".me.uk")
-      if (splitArr[arrLen - 2].length == 2 && splitArr[arrLen - 1].length == 2) {
-          //this is using a ccTLD. set domain to include the actual host name
-          domain = splitArr[arrLen - 3] + '.' + domain;
-      }
-  }
-  return domain;
-}
-
-// given the permission category, the url of the request, and the snippet
-// from the request, get the current time in ms and add to our evidence list
-// async because it has to wait on get from db
-//
-//
-/* So, now the evidence looks like this:
- 
-  let stored = await EvidenceKeyval.get(rootUrl)
-
-  now stored points to the nested object with our evidence at this url
-  There are three levels of nesting
-  1) permission level
-  2) type level
-  3) reqUrl level
-
-  The evidence object is in this final reqUrl level. 
-  We store a max of 5 pieces of evidence for a given permission type pair.
-}
-*/
-async function addToEvidenceList(perm, rootU, snip, requestU, t, i) {
-  
-  var ts = Date.now()
-  if (rootU == undefined) {
-    // if the root URL is not in the request then let's just not save it
-    // as we cannot be sure what domain it is actually being called from
-    // we should, however, print the request to console for now just to see
-    // how often this is happening
-    console.log("No root URL detected for snippet:")
-    console.log(perm, snip, requestU, t)
-    return
-  }
-  
-  var rootUrl = getHostname(rootU)
-  var reqUrl = getHostname(requestU)
-
-  // hacky way to deal with the way we iterate through the disconnect json
-  if (perm.includes("fingerprint")) { perm = "fingerprinting"}
-  if (perm.includes("advertising")) { t = "analytics" }
-  if (perm.includes("analytics")) { perm = "advertising" }
-
-  // snippet = code snippet we identified as having sent personal data
-  // typ = type of data identified
-  // index = [start, end] indexes for snippet
-  const e = new Evidence( {
-    timestamp: ts,
-    permission: perm,
-    rootUrl: rootUrl,
-    snippet: snip,
-    requestUrl: requestU,
-    typ: t,
-    index: i
-  } )
-
-    // currently stored evidence at this domain
-    var evidence = await EvidenceKeyval.get(rootUrl)
-
-    // if we don't have evidence yet, we initialize it as an empty dict
-    if (evidence === undefined) {
-      evidence = {}
-    }
-
-  // if we have this rootUrl in evidence already we check if we already have store_label
-  if (Object.keys(evidence).length !== 0) {
-    if (perm in evidence) { 
-      // if type is in the permission
-      if (t in evidence[perm]) {
-        // if we have less than 5 different reqUrl's for this permission and this is a unique reqUrl, we save the evidence
-        if ((Object.keys(evidence[perm][t]).length < 4) && !(reqUrl in evidence[perm][t] )) {
-          evidence[perm][t][reqUrl] = e
-          EvidenceKeyval.set(rootUrl, evidence)
-        }
-      }
-      else { // we don't have this type yet, so we initialize it
-        evidence[perm][t] = {}
-        evidence[perm][t][reqUrl] = e
-        EvidenceKeyval.set(rootUrl, evidence)
-      }
-    }
-    else { // we don't have this permission yet so we initialize
-      evidence[perm] = {}
-      
-      // init dict for permission type pair
-      evidence[perm][t] = {}
-
-      evidence[perm][t][reqUrl] = e
-      EvidenceKeyval.set(rootUrl, evidence)
-    }
-
-  }
-  // we have don't have this rootUrl yet. So we init evidence at this url
-  else {
-    evidence[perm] = {}
-    evidence[perm][t] = {}
-    evidence[perm][t][reqUrl] = e
-    EvidenceKeyval.set(rootUrl, evidence)
-  }
-}
+import { Request, typeEnum, permissionEnum, Evidence } from "./classModels.js"
+import { addToEvidenceList } from "./addEvidence.js"
+import { regexSpecialChar, escapeRegExp } from "./regexFunctions.js"
+import { getHostname } from "./util.js"
 
 
-// Look in request for keywords from list of keywords built from user's
-// location and the Google Maps geocoding API
-function locationKeywordSearch(strReq, networkKeywords, rootUrl, reqUrl) {
-  var locElems = networkKeywords[permissionEnum.location]
+/**
+ * Iterates through the user's location elements and adds exact text matches to evidence. 
+ * Evidence will be added with permission location and the type of the found evidence (city or zip for example)
+ * 
+ * @param {string} strReq 
+ * @param {Dict<typeEnum>} locElems 
+ * @param {string} rootUrl 
+ * @param {string} reqUrl 
+ */
+function locationKeywordSearch(strReq, locElems, rootUrl, reqUrl) {
   for (const [k, v] of Object.entries(locElems)) {
     // every entry is an array, so we iterate through it.
     for (let value of v) {
@@ -181,7 +30,14 @@ function locationKeywordSearch(strReq, networkKeywords, rootUrl, reqUrl) {
   }
 }}
 
-// Gets the URL from the request and tries to match to our list of urls
+/**
+ * Iterates through the disconnect list and adds evidence accordingly. It creates evidence with the category of the disconnect JSON as both the permission
+ * and the type.
+ * 
+ * @param {Request} request An HTTP request
+ * @param {object} urls The disconnect JSON
+ * @returns {void} Nothing. Adds to evidence when we find URL's from the disconnect list.
+ */
 function urlSearch(request, urls) {
   // First we can iterate through URLs
   var keys = Object.keys(urls["categories"]);
@@ -218,81 +74,96 @@ function urlSearch(request, urls) {
   }
 }
 
-// coordinate search looks for floating point numbers with a regular expression pattern. If we find a lat
-// and lng in the same request, we submit the evidence.
 
+/**
+ * Searches an HTTP request for a users lattitude and longitude. Uses regular expression patterns to look for floating point patterns.
+ * 
+ * @param {string} strReq The HTTP request as a string 
+ * @param {Array<number>} locData The coordinates of the user
+ * @param {string} rootUrl The rootUrl as a string
+ * @param {string} reqUrl The requestUrl as a string
+ * @returns {void} Populates the DB if a match is found. We only add evidence if we find a .1 distance from both the 
+ * lattitude and the longitude within 250 characters of each other in the request
+ * 
+ */
 function coordinateSearch(strReq, locData, rootUrl, reqUrl) {
-  var lat = locData[0]
-  var lng = locData[1]
-  var absLat = Math.abs(lat)
-  var absLng = Math.abs(lng)
+  const lat = locData[0]
+  const lng = locData[1]
+  const absLat = Math.abs(lat)
+  const absLng = Math.abs(lng)
 
   // floating point regex non-digit, then 2-3 digits (should think about 1 digit starts later, this reduces matches a lot and helps speed), then a ".", then 4 to 10 digits, g is global flag
   let floatReg = /\D\d{2,3}\.\d{4,10}/g
   const matches = strReq.matchAll(floatReg)
+  const matchArr = Array.from(matches)
+  // not possible to have pair without at least 2 matches
+  if ( matchArr.length < 2 ) { return }
 
-  let foundLat = false
-  let foundLng = false
-  let start = undefined
-  let end = undefined
+  /**
+   * If we find lattitude, we search for longitude and vice versa
+   * 
+   * @param {Array<String>} matchArr An array with possible floating point strings
+   * @param {number} goal Either a lattitude or a longitude.
+   * @param {number} arrIndex An index of where in matchArr the previous coordinate was found
+   * @param {number} matchIndex The index in the original request string of the first coordinate.
+   * @returns {number} The next index to be searched. Or the length of the array if a pair is found (This will terminate the outer while loop).
+   */
+  function findPair(matchArr, goal, arrIndex, matchIndex) {
+    // we want lat and lng to be in close proximity
+    let bound = matchIndex + 250
+    let j = arrIndex + 1
+    while ( j < matchArr.length ) {
+      let match = matchArr[j]
+      let potCoor = match[0].substring(1)
+      let startIndex = match.index
+      let endIndex = startIndex + potCoor.length
 
-  let foundPreciseLat = false
-  let foundPreciseLng = false
-  let start_ = undefined
-  let end_ = undefined
+      // potential is too far away, move on
+      if (startIndex > bound) { return arrIndex + 1 }
 
+      let asFloat = parseFloat(potCoor)
+      let delta = Math.abs(asFloat - goal)
+      if (delta < .1) {
+        addToEvidenceList(permissionEnum.location, rootUrl, strReq, reqUrl, typeEnum.tightLocation, [startIndex, endIndex])
+        // if we find evidence for this request we return an index that will terminate the loop
+        return matchArr.length
+      }
+      j += 1
+    }
+    return arrIndex + 1
+  }
 
-  for (const match of matches) {
-    //we take this substring because of non-digit in regex
+  var i = 0
+  // matchArr is sorted by index, so we only need to look at elements to the right of a potential match
+  while (i < matchArr.length) {
+    let match = matchArr[i]
     let potCoor = match[0].substring(1)
     let startIndex = match.index
-    let endIndex = startIndex + potCoor.length
 
-    const asFloat = parseFloat(potCoor)
-    const deltaLat = Math.abs(asFloat - absLat)
-    const deltaLng = Math.abs(asFloat - absLng)
+    let asFloat = parseFloat(potCoor)
+    let deltaLat = Math.abs(asFloat - absLat)
+    let deltaLng = Math.abs(asFloat - absLng)
 
-    if (deltaLat < 1) {
-      foundLat = true
-      start = startIndex
-      end = endIndex
-      
-    }
-    if (deltaLng < 1) {
-      foundLng = true
-      start = startIndex
-      end = endIndex
-    }
-
-    if (deltaLat < .1) {
-      foundPreciseLat = true
-      start_ = startIndex
-      end_ = endIndex
-    }
-
-    if (deltaLng < .1) {
-      foundPreciseLng = true
-      start_ = startIndex
-      end_ = endIndex
-    }
+    if (deltaLat < .1) { i = findPair(matchArr, absLng, i, startIndex) }
+    else if (deltaLng < .1 ) { i = findPair(matchArr, absLat, i, startIndex) }
+    else { i += 1}
   }
-
-  if (foundPreciseLat && foundPreciseLng) {
-    addToEvidenceList(permissionEnum.location, rootUrl, strReq, reqUrl, typeEnum.tightLocation, [start_, end_])
-    return
-  }
-
-  if (foundLat && foundLng) {
-    addToEvidenceList(permissionEnum.location, rootUrl, strReq, reqUrl, typeEnum.coarseLocation, [start, end])
-  }
-
 }
 
 
 
-// passed keyword as string
-// checks if the keyword appears in result
-// default param is personal data but takes optional permission parameter
+/**
+ * Searches a request using regular expressions. Case insensitive. Can process special characters.
+ * 
+ * @param {string} strReq The request as a string
+ * @param {string} keyword The keyword as a string
+ * @param {string} rootUrl The rootUrl as a string
+ * @param {string} reqUrl The requestUrl as a string
+ * @param {string} type From typeEnum
+ * @param {string} perm From permissionEnum
+ * @returns {void} Nothing. Adds evidence if found.
+ *
+ */
 function regexSearch(strReq, keyword, rootUrl, reqUrl, type, perm = permissionEnum.personalData ) {
     let fixed = escapeRegExp(keyword)
     let re = new RegExp(`${fixed}`, "i");
@@ -304,7 +175,15 @@ function regexSearch(strReq, keyword, rootUrl, reqUrl, type, perm = permissionEn
     }
 }
 
-// check if something from the fingerprint lists appears in the request
+/**
+ * 
+ * @param {string} strReq The request as a string
+ * @param {Dict} networkKeywords A dictionary containing fingerprinting keywords
+ * @param {string} rootUrl The rootUrl as a string
+ * @param {string} reqUrl The requestUrl as a string
+ * 
+ * Searches a request for the fingerprinting elements populated in the networkKeywords it is passed. These elements can be found in the keywords JSON
+ */
 function fingerprintSearch(strReq, networkKeywords, rootUrl, reqUrl) {
   var fpElems = networkKeywords[permissionEnum.fingerprinting]
   for (const [k, v] of Object.entries(fpElems)) {
@@ -319,8 +198,17 @@ function fingerprintSearch(strReq, networkKeywords, rootUrl, reqUrl) {
   }
 }
 
-// ipAddress search. The distinction here is that it only runs for 3rd party requests
-function ipSearch(strReq, ip, rootUrl, reqUrl, type) {
+/**
+ * ipSearch first checks if we have a different rootUrl and reqUrl. If we do, it does a standard text search for the given ip.
+ * 
+ * @param {string} strReq The request as a string
+ * @param {string} ip An ip address as a string
+ * @param {string} rootUrl Root url as a string
+ * @param {string} reqUrl The request url as a string
+ * @returns {void} Nothing. Calls search function
+ * 
+ */
+function ipSearch(strReq, ip, rootUrl, reqUrl) {
 
   if ( rootUrl === undefined || reqUrl === undefined ) { return }
   // we're only interested in third party requests
@@ -330,6 +218,7 @@ function ipSearch(strReq, ip, rootUrl, reqUrl, type) {
 
   //otherwise just do a standard text search
   return regexSearch(strReq, ip, rootUrl, reqUrl, typeEnum.ipAddress)
+  
 
 }
 

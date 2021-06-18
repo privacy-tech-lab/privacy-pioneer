@@ -1,10 +1,16 @@
 # integrated-privacy-analysis
 
-The idea of this project is to create a browser extension that helps users to understand the privacy implications of their visit to websites. For example, the following URL-encoded string contains the latitude and longitude of a device:
+<p align="center">
+  <a href="https://addons.mozilla.org/en-US/firefox/user/12247904/"><img src="https://github.com/privacy-tech-lab/integrated-privacy-analysis/blob/main/firefox-add-ons-badge.png" width="172px" alt="Firefox Add Ons badge"></a>
+<p>
+
+The idea of this browser extension is to helps users to understand the privacy implications of their visits to websites. For example, the following URL-encoded string contains the latitude and longitude of a device:
 
 > https%3A%2F%2Fwww.example.com%2Flocation%3Flat%3D32.715736%26lon%3D%20-117.161087
 
-If such a string is sent via an HTTP POST request, it can be concluded that a site is collecting location information from a user. Observing such behaviors, a privacy label of a site could be created to help the user get a better understanding of their privacy.
+If such a string is sent via an HTTP POST request, it can be concluded that a site is collecting location data. Observing such behaviors, a privacy profile of a site is created to help users get a better understanding of their privacy.
+
+Currently, we only support Firefox.
 
 ## Development
 
@@ -43,7 +49,7 @@ npm run build
 
 The `web-ext` cli is included in the project. Learn more about packaging and signing for release at the [extension workshop](https://extensionworkshop.com/documentation/develop/getting-started-with-web-ext/).
 
-## Directory Layout
+## Source Directory Layout
 
 ```bash
 .
@@ -61,32 +67,9 @@ The options and popup directories are similarly stuctured. Like many react proje
 
 The `src/libs/indexed-db` directory, contains functions that communicate to the database.
 
-## Features
+## Architecture
 
-By analyzing the HTTP requests of a site, we want to understand where requests are being sent, i.e, the first or third party receiving a request. Once we know that, we can look for the following types of information in web requests:
-
-1. Structured data (phone numbers, social security numbers, GPS coordinates)
-2. Tracking pixels (Facebook, ...)
-3. Fingerprinting libraries (fingerprint.js, ...)
-4. Detecting pure HTTP requests (i.e., no encryption via HTTPS)
-
-This is the current set of features for which we analyze the HTTP requests.
-
-## Paper Publication
-
-A potential paper could have three sections:
-
-1. A theoretical discussion for a technique of analyzying HTTP requests
-2. An implementation of that technique in a browser extension
-3. A usability study on the browser extension (especially, on privacy labels)
-
-The crucial point here is that by examining HTTP requests we are able to find out what information concretely is stored on a server. Usually, we only observe:
-
-1. the container of information (e.g., we see a cookie but do not know which information is contained in the cookie)
-2. know a third party but do not know which information it receives
-3. only see a permission use but do not know whether information is actually transimitted to a server
-
-None of the existing tools really answers these questions.
+An overview of the architecture of our extension is available [separately](https://github.com/privacy-tech-lab/integrated-privacy-analysis/blob/main/architecture_overview.md).
 
 ## Third Party Libraries
 
@@ -100,3 +83,7 @@ This project uses the following third party libraries and resources. We thank th
 - [Eva Icons](https://akveo.github.io/eva-icons/#/)
 - [Radar Icon](https://www.svgrepo.com/svg/167040/radar)
 - [React Spinners](https://www.npmjs.com/package/react-spinners)
+
+<p align="center">
+  <img src="https://github.com/privacy-tech-lab/integrated-privacy-analysis/blob/main/plt_logo.png" width="200px" height="200px" alt="privacy-tech-lab logo">
+<p>
