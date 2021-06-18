@@ -62,19 +62,24 @@ async function addToEvidenceList(perm, rootU, snip, requestU, t, i) {
   }
  
   /**
-   * Looks at a request and returns the parent of the company making the 
-   * request if the company making the request was in our version of 
-   * disconnect's "entries" list
+   * Identifies if the request url hostname is in our list of parent companies, modified from Disconnect's entities.json, 
+   * found here (https://github.com/disconnectme/disconnect-tracking-protection/blob/master/entities.json). 
+   * Changes were made to compile the properties and resources lists from that json into one list, then filtered so that 
+   * only companies with 5 or more related websites are searched for
    * 
    * @param {string} reqHost The request host name
    * @param {object} parents The parents json from src/assets/parents.json
-   * @returns {string} The parent company of the website making the request
+   * @returns {string|null} The parent company of the website making the request
    */
   function getParent(reqHost, parents = parentJson){
-    for (const [parent, urlLst] of Object.entries(parents)){
-      for (const url of urlLst) {
-        if (reqHost.includes(url)){
-          return parent
+    for (const [entry, relationList] of Object.entries(parents)){
+      if (entry!="__comment"){
+        for (const [parent, urlLst] of Object.entries(relationList)){
+          for (const url of urlLst) {
+            if (reqHost.includes(url)){
+              return parent
+            }
+          }
         }
       }
     }
