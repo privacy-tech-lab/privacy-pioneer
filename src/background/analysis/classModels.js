@@ -44,6 +44,7 @@ export class Request {
 
 /**
  * @enum {string} Enum used to reference the types of HTTP requests. This filter is set up in background.js.
+ * https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/API/webRequest/ResourceType
  */
 export const httpTypeEnum = Object.freeze( {
   image: "image",
@@ -53,7 +54,6 @@ export const httpTypeEnum = Object.freeze( {
   WebSocket: "websocket", 
   mainFrame: "main_frame"
 })
-
 
 /**
  * An evidence object created from a request

@@ -196,7 +196,8 @@ function analyze(request, userData) {
     // search to see if any fingerprint data
     fingerprintSearch(strRequest, networkKeywords, rootUrl, reqUrl)
 
-    if ( request.type == httpTypeEnum.image ) {
+    // if the request is an image and is coming from a different url than the root, we look for our pixel URLs
+    if ( request.type == httpTypeEnum.image && rootUrl != reqUrl ) {
       pixelSearch(strRequest, networkKeywords, rootUrl, reqUrl)
     }
 }

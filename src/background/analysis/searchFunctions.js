@@ -211,7 +211,13 @@ function pixelSearch(strReq, networkKeywords, rootUrl, reqUrl) {
   for (let url of pixelUrls) {
     let searchIndex = strReq.indexOf(url)
     if (searchIndex != -1) {
-      addToEvidenceList(permissionEnum.tracking, rootUrl, strReq, reqUrl, typeEnum.trackingPixel, [searchIndex, searchIndex + url.length])
+      let reqUrlIndex = strReq.indexOf(reqUrl)
+      if (reqUrlIndex != -1) {
+        addToEvidenceList(permissionEnum.tracking, rootUrl, strReq, reqUrl, typeEnum.trackingPixel, [reqUrlIndex, reqUrlIndex + reqUrl.length])
+      }
+      else {
+        addToEvidenceList(permissionEnum.tracking, rootUrl, strReq, reqUrl, typeEnum.trackingPixel, [searchIndex, searchIndex + url.length])
+      }  
     }
   }
 }
