@@ -1,28 +1,37 @@
-import React from "react"
-import WebsiteBadge from "../website-badge"
-import * as Icons from "../icons"
-import { SCard, SDescription, SSeperator, SHeader, SHeaderLeading, SHeaderTitle, SHeaderTrailing, SMore } from "./style"
-import { privacyLabels } from "../../background/analysis/classModels"
+import React from "react";
+import WebsiteBadge from "../website-badge";
+import * as Icons from "../icons";
+import {
+  SCard,
+  SDescription,
+  SSeperator,
+  SHeader,
+  SHeaderLeading,
+  SHeaderTitle,
+  SHeaderTrailing,
+  SMore,
+} from "./style";
+import { privacyLabels } from "../../background/analysis/classModels";
 
 /**
  * Card that briefly summarizes label and description for website
  */
-const LabelCard = ({ requests, website, label, margin, onTap }) => {
-  const urls = Object.keys(requests) // detected request urls containing identified data
-  const collected = urls.includes(website) // Check if website collected data
+const LabelCard = ({ requests, website, label, margin, onTap, popup }) => {
+  const urls = Object.keys(requests); // detected request urls containing identified data
+  const collected = urls.includes(website); // Check if website collected data
 
   /**
    * Get label description
    */
   const getDescription = () => {
     if (collected && urls.length > 1) {
-      return `${website} collected and shared ${label} data with the following companies:`
+      return `${website} collected and shared ${label} data`;
     } else if (collected) {
-      return `${website} collected ${label} data.`
+      return `${website} collected ${label} data.`;
     } else {
-      return `${website} shared ${label} data with the following companies:`
+      return `${website} shared ${label} data`;
     }
-  }
+  };
 
   /**
    * Get third party websites and render badges
@@ -30,9 +39,9 @@ const LabelCard = ({ requests, website, label, margin, onTap }) => {
    */
   const getThirdParties = () => {
     if ((collected && urls.length > 1) || !collected) {
-      const filtered = urls.filter((url) => url !== website)
+      const filtered = urls.filter((url) => url !== website);
       if (filtered.length > 2) {
-        var count = filtered.length - 2
+        var count = filtered.length - 2;
         return (
           <>
             <SSeperator marginTop="16px" marginBottom="0px" />
@@ -46,7 +55,7 @@ const LabelCard = ({ requests, website, label, margin, onTap }) => {
               </span>
             </SMore>
           </>
-        )
+        );
       } else {
         return (
           <>
@@ -55,18 +64,15 @@ const LabelCard = ({ requests, website, label, margin, onTap }) => {
               <WebsiteBadge key={url} website={url} />
             ))}
           </>
-        )
+        );
       }
     } else {
-      return null
+      return null;
     }
-  }
+  };
 
   return (
-    <SCard
-      margin={margin}
-      onClick={onTap}
-    >
+    <SCard margin={margin} onClick={onTap} popup={popup}>
       <SHeader>
         <SHeaderLeading>
           {Icons.getLabelIcon(label)}
@@ -79,7 +85,7 @@ const LabelCard = ({ requests, website, label, margin, onTap }) => {
       <SDescription>{getDescription()}</SDescription>
       {getThirdParties()}
     </SCard>
-  )
-}
+  );
+};
 
-export default LabelCard
+export default LabelCard;

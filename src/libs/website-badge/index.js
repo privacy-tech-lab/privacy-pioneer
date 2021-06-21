@@ -1,6 +1,6 @@
-import React from "react"
-import styled from "styled-components"
-import WebsiteLogo from "../website-logo"
+import React from "react";
+import styled from "styled-components";
+import WebsiteLogo from "../website-logo";
 
 /**
  * Generally this would be in a style.js file
@@ -11,7 +11,7 @@ const SBadge = styled.div`
   flex-direction: row;
   align-items: center;
   margin-top: 16px;
-`
+`;
 
 /**
  * Displays website logo (which is the first letter of website) and title of website
@@ -20,9 +20,9 @@ const WebsiteBadge = ({ website }) => {
   return (
     <SBadge>
       <WebsiteLogo website={website} />
-      <span style={{ marginLeft: "8px" }}>{website}</span>
+      <span style={{ marginLeft: "8px", fontSize: "18px" }}>{website}</span>
     </SBadge>
-  )
-}
+  );
+};
 
-export default WebsiteBadge
+export default WebsiteBadge;

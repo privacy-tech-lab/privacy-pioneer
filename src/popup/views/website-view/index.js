@@ -20,7 +20,7 @@ import {
 } from "./style";
 import NavBar from "../../components/nav-bar";
 import { getWebsiteLabels } from "../../../libs/indexed-db";
-import { getHostname } from "../../../background/analysis/util.js"
+import { getHostname } from "../../../background/analysis/util.js";
 import { useHistory } from "react-router";
 import RiseLoader from "react-spinners/RiseLoader";
 
@@ -137,6 +137,7 @@ const WebsiteView = () => {
             ) : (
               Object.entries(labels).map(([label, requests]) => (
                 <LabelCard
+                  popup
                   key={label}
                   onTap={() =>
                     history.push({
