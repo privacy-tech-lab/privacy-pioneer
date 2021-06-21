@@ -4,7 +4,7 @@ analyze.js
 - analyze.js analyzes network requests
 */
 
-import { Request, Evidence, typeEnum, permissionEnum, httpTypeEnum } from "./classModels.js"
+import { Request, Evidence, typeEnum, permissionEnum, resourceTypeEnum } from "./classModels.js"
 import { openDB } from 'idb';
 import { evidence } from "../background.js"
 import { evidenceKeyval } from "./openDB.js"
@@ -197,7 +197,7 @@ function analyze(request, userData) {
     fingerprintSearch(strRequest, networkKeywords, rootUrl, reqUrl)
 
     // if the request is an image and is coming from a different url than the root, we look for our pixel URLs
-    if ( request.type == httpTypeEnum.image && rootUrl != reqUrl ) {
+    if ( request.type == resourceTypeEnum.image && rootUrl != reqUrl ) {
       pixelSearch(strRequest, networkKeywords, rootUrl, reqUrl)
     }
 }

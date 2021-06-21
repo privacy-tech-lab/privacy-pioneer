@@ -16,7 +16,7 @@ the codebase.
  * @property {object} requestBody Contains the HTTP request body data.  https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/API/webRequest/onBeforeRequest#details.
  * @property {object} responseData A StreamFilter object used to monitor the response. https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/API/webRequest/StreamFilter
  * @property {string} error After an error event is fired. This property will contain information about the error.  https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/API/webRequest/StreamFilter/onerror
- * @property {string} type We set up a filter for types in background.js. We look at types enumerated in httpTypeEnum
+ * @property {string} type We set up a filter for types in background.js. We look at types enumerated in resourceTypeEnum
  * @throws Error. Event that fires on error. Usually due to invalid ID to the webRequest.filterResponseData()
  */
 export class Request {
@@ -46,7 +46,7 @@ export class Request {
  * @enum {string} Enum used to reference the types of HTTP requests. This filter is set up in background.js.
  * https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/API/webRequest/ResourceType
  */
-export const httpTypeEnum = Object.freeze( {
+export const resourceTypeEnum = Object.freeze( {
   image: "image",
   script: "script",
   xml: "xmlhttprequest",
