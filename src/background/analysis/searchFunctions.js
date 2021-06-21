@@ -199,7 +199,10 @@ function fingerprintSearch(strReq, networkKeywords, rootUrl, reqUrl) {
 }
 
 /**
- * Pixel search looks iterates through our list of pixel URLS from keywords.JSON. This function is only called on requests with type image
+ * Pixel search looks iterates through our list of pixel URLS from keywords.JSON. This function is only called on requests with type image and different root/req Urls
+ * It will index the evidence as the requestUrl if it can find it in the strReq (which it always should). 
+ * This is because most pixels contain data encoded into the reqUrl
+ * If for some reason this doesn't work, it will choose the index of the url from the list.
  * 
  * @param {string} strReq The request as a string
  * @param {Dict} networkKeywords A dictionary containing the pixel URLs
@@ -212,9 +215,11 @@ function pixelSearch(strReq, networkKeywords, rootUrl, reqUrl) {
     let searchIndex = strReq.indexOf(url)
     if (searchIndex != -1) {
       let reqUrlIndex = strReq.indexOf(reqUrl)
+      // preference to show the reqUrl on the front end
       if (reqUrlIndex != -1) {
         addToEvidenceList(permissionEnum.tracking, rootUrl, strReq, reqUrl, typeEnum.trackingPixel, [reqUrlIndex, reqUrlIndex + reqUrl.length])
       }
+      // otherwise show the url from the pixel list on the front end
       else {
         addToEvidenceList(permissionEnum.tracking, rootUrl, strReq, reqUrl, typeEnum.trackingPixel, [searchIndex, searchIndex + url.length])
       }  
