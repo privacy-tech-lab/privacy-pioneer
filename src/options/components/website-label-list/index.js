@@ -3,11 +3,6 @@ import WebsiteBadge from "../../../libs/website-badge";
 import * as Icons from "../../../libs/icons";
 import LabelCard from "../../../libs/label-card";
 import { SContainer, SItem, SLabel, SLabelGroup, SSeperator } from "./style";
-import { privacyLabels } from "../../../background/analysis/classModels";
-import {
-  getAllWebsiteLabels,
-  getWebsiteLabels,
-} from "../../../libs/indexed-db";
 
 /**
  * Makes label cards for a given website
