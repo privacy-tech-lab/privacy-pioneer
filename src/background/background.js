@@ -15,7 +15,7 @@ import { openDB } from "idb"
 // Maybe its the way I parse the data, but images and video won't load if I don't filter them out.
 // https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/API/webRequest/RequestFilter
 // https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/API/webRequest/ResourceType
-const filter = { urls: ["<all_urls>"], types: ["script", "xmlhttprequest", "sub_frame", "websocket", "main_frame"] }
+const filter = { urls: ["<all_urls>"], types: ["script", "xmlhttprequest", "sub_frame", "websocket", "main_frame", "image" ] }
 
 
 // Get url of active tab for popup
