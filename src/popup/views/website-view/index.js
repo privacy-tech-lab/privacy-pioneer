@@ -20,7 +20,7 @@ import {
 } from "./style";
 import NavBar from "../../components/nav-bar";
 import { getWebsiteLabels } from "../../../libs/indexed-db";
-import { getHostname } from "../../../background/analysis/util.js"
+import { getHostname } from "../../../background/analysis/util.js";
 import { useHistory } from "react-router";
 import RiseLoader from "react-spinners/RiseLoader";
 
@@ -106,7 +106,7 @@ const WebsiteView = () => {
                 <Icons.Radar size="24px" />
               </SIconWrapper>
               <SIconWrapper onClick={() => navigate({ urlHash: "#" })}>
-                <Icons.MoreVertical size="24px" />
+                <Icons.Home size="32px" />
               </SIconWrapper>
             </STrailing>
           }

@@ -6,7 +6,10 @@ location info
 - if location permission is denied by the user, returns [0,0] for user lat, lng
 */
 
-// function to get the client's location data
+/**
+ * Uses the navigator API to get the users coordinates.
+ * @returns {object} An object with properties long and lat
+ */
 const getCoords = async () => {
   const pos = await new Promise((resolve, reject) => {
     navigator.geolocation.getCurrentPosition(resolve, reject);
@@ -20,8 +23,10 @@ const getCoords = async () => {
   };
 };
 
-// from client's location, makes api call to google maps to get other location
-// info for later static search analysis
+/**
+ * Calls getCoords to return an array containing [lat, long]. Returns [0,0] on error
+ * @returns {Array<number>} The coordinates of the user
+ */
 export async function getLocationData() {
   try {
     const coords = await getCoords();

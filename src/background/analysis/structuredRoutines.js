@@ -2,8 +2,12 @@ import { PhoneNumberUtil } from "google-libphonenumber";
 import { format, validate } from "parse-ssn";
 
 
-//takes user phone as input, and returns a list of reformatted numbers using google's libphonenumber
-//this can take in most formats from the user
+/**
+ * Uses google's libphonenumber library to reformat the user's phone number
+ * 
+ * @param {string} userNumber 
+ * @returns {Array<strings>} An array of reformatted phone numbers. Empty list if invalid input.
+ */
 function buildPhone(userNumber) {
 
     const PNF = require('google-libphonenumber').PhoneNumberFormat;
@@ -44,8 +48,13 @@ function buildPhone(userNumber) {
 }
 
 
-// zip code -> state abbreviation, state name
-// function gets passed a string that must be length 5.
+/**
+ * Takes the user's zip code and returns an array containing [stateAbrev, stateFull]. Uses structure of zipCode to do so.
+ * Adapted from (https://stackoverflow.com/questions/28821804/how-can-i-quickly-determine-the-state-for-a-given-zipcode)
+ * 
+ * @param {string} zipString 
+ * @returns {Array<string>|Array<undefined>} An array containing [undefined, undefined] if invalid input, or the state abreviation and name if valid input
+ */
 function getState(zipString) {
 
     /* Ensure param is a string to prevent unpredictable parsing results */
@@ -229,6 +238,11 @@ function getState(zipString) {
     return [st, state];
   }
 
+/**
+ * Takes a string and returns a regular expression of the input if the input was a valid SSN.
+ * @param {string} ssn A string
+ * @returns {RegExp|undefined} A regular expression if valid input, undefined if not.
+ */
 function buildSsnRegex(ssn) {
     //validate and format are functions imported function from lib
     if (validate(ssn)) {

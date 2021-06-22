@@ -2,10 +2,11 @@ function sleep(ms) {
     return new Promise(resolve => setTimeout(resolve, ms));
   }
 
-  // given a type and a permission creates a unique hash so there are no repeats
-// in our indexedDB. THIS IS NOT A SECURE HASH, but rather just a quick way
-// to convert a regular string into digits
-// taken basically from: https://werxltd.com/wp/2010/05/13/javascript-implementation-of-javas-string-hashcode-method/
+/**
+ * A non-secure hash that takes str -> int
+ * @param {string} str 
+ * @returns {number}
+ */
 function hashTypeAndPermission(str) {
   var hash = 0,
      i,
@@ -18,7 +19,12 @@ function hashTypeAndPermission(str) {
    return hash;
 }
 
-// code from https://stackoverflow.com/questions/8498592/extract-hostname-name-from-string
+
+/**
+ * Returns only the hostnames from a url. code from https://stackoverflow.com/questions/8498592/extract-hostname-name-from-string
+ * @param {string} url 
+ * @returns {string} The hostname of the given URL.
+ */
 function extractHostname(url) {
 
     var hostname;
@@ -39,8 +45,11 @@ function extractHostname(url) {
     return hostname;
 }
 
-// takes in full url and extracts just the domain host
-// code from https://stackoverflow.com/questions/8498592/extract-hostname-name-from-string
+/**
+ * Takes a url and returns its domain.
+ * @param {string} url 
+ * @returns {string} The domain of a the inputted url https://stackoverflow.com/questions/8498592/extract-hostname-name-from-string
+ */
 function getHostname(url) {
   var domain = extractHostname(url),
       splitArr = domain.split('.'),

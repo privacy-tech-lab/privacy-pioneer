@@ -4,25 +4,13 @@ analyze.js
 - analyze.js analyzes network requests
 */
 
-/*
-For reference, here is a mockup of the Evidence type
-const evidence = new Evidence({
-  timestamp: "10/10/20",
-  permission: "location",
-  type: "zipcode",
-  rooturl: "facebook.com",
-  requesturl: "facebook.com/js"
-  snippet: "blahblah"
-  index: undefined #to mean we don't want to pass an index
-})
-*/
-import { Request, Evidence, typeEnum, permissionEnum } from "./classModels.js"
+import { Request, Evidence, typeEnum, permissionEnum, resourceTypeEnum } from "./classModels.js"
 import { openDB } from 'idb';
 import { evidence } from "../background.js"
 import { evidenceKeyval } from "./openDB.js"
 
 import { RegexSpecialChar, escapeRegExp } from "./regexFunctions.js"
-import { regexSearch, coordinateSearch, urlSearch, locationKeywordSearch, fingerprintSearch, ipSearch } from "./searchFunctions.js"
+import { regexSearch, coordinateSearch, urlSearch, locationKeywordSearch, fingerprintSearch, ipSearch, pixelSearch } from "./searchFunctions.js"
 import { getHostname } from "./util.js";
 
 // Temporary container to hold network requests while properties are being added from listener callbacks
@@ -43,12 +31,14 @@ const onBeforeRequest = (details, data) => {
     request = buffer[details.requestId]
     request.details = details !== undefined ? details : null
     request.requestBody = details.requestBody !== undefined ? details.requestBody : null
+    request.type = details.type !== undefined ? details.type : null
   } else {
     // requestID not seen, create new request, add details and request body as needed
     request = new Request({
       id: details.requestId,
       details: details !== undefined ? details : null,
       requestBody: details.requestBody !== undefined ? details.requestBody : null,
+      type: details.type !== undefined ? details.type : null,
     })
     buffer[details.requestId] = request
   }
@@ -124,7 +114,8 @@ function resolveBuffer(id, data) {
       request.requestHeaders !== undefined &&
       request.responseHeaders !== undefined &&
       request.details !== undefined &&
-      request.responseData !== undefined
+      request.responseData !== undefined &&
+      request.type !== undefined
     ) {
     // if our request is completely valid and we have everything we need to analyze
     // the request, continue. No else statement
@@ -143,6 +134,13 @@ function resolveBuffer(id, data) {
   }
 }
 
+/**
+ * Calls the analysis functions from searchFunctions.js on the appropriate data that we have
+ * 
+ * @param {Request} request 
+ * @param {Array} userData 
+ * @returns {void} calls a number of functions
+ */
 function analyze(request, userData) {
 
     const strRequest = JSON.stringify(request)
@@ -197,9 +195,22 @@ function analyze(request, userData) {
 
     // search to see if any fingerprint data
     fingerprintSearch(strRequest, networkKeywords, rootUrl, reqUrl)
+
+    // if the request is an image and is coming from a different url than the root, we look for our pixel URLs
+    if ( request.type == resourceTypeEnum.image && rootUrl != reqUrl ) {
+      pixelSearch(strRequest, networkKeywords, rootUrl, reqUrl)
+    }
 }
 
-// callback for tab update. Right now used to run analysis on the url
+/**
+ * Callback for when the tab is updated. Calls coordinate search
+ * @callback tabUpdate
+ * @function tabUpdate
+ * @param {number} tabId id of the tab 
+ * @param {object} changeInfo object containing information about the updated 
+ * @param {object} tab The new state of the tab 
+ * @param {Array} data The imported data from importData()
+ */
 const tabUpdate = (tabId, changeInfo, tab, data) => {
 
   if (changeInfo.url) {
