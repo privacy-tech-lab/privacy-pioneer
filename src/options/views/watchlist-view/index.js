@@ -13,7 +13,11 @@ import ListItem from "./components/list-item";
 import EditModal from "./components/edit-modal";
 import { watchlistKeyval } from "../../../libs/indexed-db";
 import { Modal } from "bootstrap";
-import { permissionEnum } from "../../../background/analysis/classModels";
+import {
+  permissionEnum,
+  typeEnum,
+} from "../../../background/analysis/classModels";
+import { saveKeyword } from "../../../libs/indexed-db";
 
 /**
  * Watchlist page view allowing user to add/modify keywords
@@ -30,6 +34,17 @@ const WatchlistView = () => {
     browser.runtime.sendMessage({
       msg: "dataUpdated",
     });
+  };
+
+  const getIP = async () => {
+    await fetch("http://ip-api.com/json/")
+      .then((data) => data.json())
+      .then(async function (data) {
+        const myIP = data.query;
+        if (await saveKeyword(myIP, typeEnum.ipAddress, null)) {
+          await updateList();
+        }
+      });
   };
 
   useEffect(() => {
@@ -81,7 +96,7 @@ const WatchlistView = () => {
                 collected and shared between companies.
               </SSubtitle>
             </div>
-            <div>
+            <div style={{ flexDirection: "row", display: "flex" }}>
               <SAddButton
                 onClick={() => {
                   configModal({ show: true });
@@ -93,6 +108,16 @@ const WatchlistView = () => {
               >
                 <Icons.Plus size="24px" />
                 Add Keyword
+              </SAddButton>
+              <SAddButton
+                onClick={() => {
+                  confirm("We are using a 3rd party bla bla bla")
+                    ? getIP()
+                    : null;
+                }}
+              >
+                <Icons.Plus size="24px" />
+                Add IP
               </SAddButton>
             </div>
           </SHeader>
