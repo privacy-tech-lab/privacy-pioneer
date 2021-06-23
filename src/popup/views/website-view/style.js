@@ -28,6 +28,7 @@ export const STrailing = styled.div`
 `;
 
 export const SIconWrapper = styled.div`
+  align-self: center;
   :hover {
     filter: brightness(0.75);
   }

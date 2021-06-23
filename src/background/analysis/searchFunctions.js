@@ -185,7 +185,7 @@ function regexSearch(strReq, keyword, rootUrl, reqUrl, type, perm = permissionEn
  * Searches a request for the fingerprinting elements populated in the networkKeywords it is passed. These elements can be found in the keywords JSON
  */
 function fingerprintSearch(strReq, networkKeywords, rootUrl, reqUrl) {
-  var fpElems = networkKeywords[permissionEnum.fingerprinting]
+  const fpElems = networkKeywords[permissionEnum.fingerprinting]
   for (const [k, v] of Object.entries(fpElems)) {
     for (const keyword of v){
       const idxKeyword = strReq.indexOf(keyword);
@@ -195,6 +195,35 @@ function fingerprintSearch(strReq, networkKeywords, rootUrl, reqUrl) {
       }
     }
     
+  }
+}
+
+/**
+ * Pixel search looks iterates through our list of pixel URLS from keywords.JSON. This function is only called on requests with type image and different root/req Urls
+ * It will index the evidence as the requestUrl if it can find it in the strReq (which it always should). 
+ * This is because most pixels contain data encoded into the reqUrl
+ * If for some reason this doesn't work, it will choose the index of the url from the list.
+ * 
+ * @param {string} strReq The request as a string
+ * @param {Dict} networkKeywords A dictionary containing the pixel URLs
+ * @param {string} rootUrl The rootUrl as a string
+ * @param {string} reqUrl The requestUrl as a string
+ */
+function pixelSearch(strReq, networkKeywords, rootUrl, reqUrl) {
+  const pixelUrls = networkKeywords[permissionEnum.tracking][typeEnum.trackingPixel]
+  for (let url of pixelUrls) {
+    let searchIndex = strReq.indexOf(url)
+    if (searchIndex != -1) {
+      let reqUrlIndex = strReq.indexOf(reqUrl)
+      // preference to show the reqUrl on the front end
+      if (reqUrlIndex != -1) {
+        addToEvidenceList(permissionEnum.tracking, rootUrl, strReq, reqUrl, typeEnum.trackingPixel, [reqUrlIndex, reqUrlIndex + reqUrl.length])
+      }
+      // otherwise show the url from the pixel list on the front end
+      else {
+        addToEvidenceList(permissionEnum.tracking, rootUrl, strReq, reqUrl, typeEnum.trackingPixel, [searchIndex, searchIndex + url.length])
+      }  
+    }
   }
 }
 
@@ -219,7 +248,6 @@ function ipSearch(strReq, ip, rootUrl, reqUrl) {
   //otherwise just do a standard text search
   return regexSearch(strReq, ip, rootUrl, reqUrl, typeEnum.ipAddress)
   
-
 }
 
-export { regexSearch, coordinateSearch, urlSearch, locationKeywordSearch, fingerprintSearch, ipSearch }
+export { regexSearch, coordinateSearch, urlSearch, locationKeywordSearch, fingerprintSearch, ipSearch, pixelSearch }
