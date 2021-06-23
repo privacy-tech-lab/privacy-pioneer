@@ -106,7 +106,7 @@ const WebsiteView = () => {
                 <Icons.Radar size="24px" />
               </SIconWrapper>
               <SIconWrapper onClick={() => navigate({ urlHash: "#" })}>
-                <Icons.MoreVertical size="24px" />
+                <Icons.Home size="32px" />
               </SIconWrapper>
             </STrailing>
           }

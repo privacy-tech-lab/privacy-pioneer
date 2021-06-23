@@ -16,6 +16,7 @@ the codebase.
  * @property {object} requestBody Contains the HTTP request body data.  https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/API/webRequest/onBeforeRequest#details.
  * @property {object} responseData A StreamFilter object used to monitor the response. https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/API/webRequest/StreamFilter
  * @property {string} error After an error event is fired. This property will contain information about the error.  https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/API/webRequest/StreamFilter/onerror
+ * @property {string} type We set up a filter for types in background.js. We look at types enumerated in resourceTypeEnum
  * @throws Error. Event that fires on error. Usually due to invalid ID to the webRequest.filterResponseData()
  */
 export class Request {
@@ -27,6 +28,7 @@ export class Request {
     requestBody,
     responseData,
     error,
+    type,
   }) {
     this.id = id;
     this.requestHeaders = requestHeaders;
@@ -35,10 +37,23 @@ export class Request {
     this.requestBody = requestBody;
     this.details = details;
     this.error = error;
+    this.type = type;
   }
 }
 
 
+/**
+ * @enum {string} Enum used to reference the types of HTTP requests. This filter is set up in background.js.
+ * https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/API/webRequest/ResourceType
+ */
+export const resourceTypeEnum = Object.freeze( {
+  image: "image",
+  script: "script",
+  xml: "xmlhttprequest",
+  subFrame: "sub_frame",
+  WebSocket: "websocket", 
+  mainFrame: "main_frame"
+})
 
 /**
  * An evidence object created from a request
@@ -51,6 +66,7 @@ export class Request {
  * @property {enum} typ The type of the evdience
  * @property {Array|undefined} index A length 2 array with the indexes of the evidence or undefined if not applicable
  * @property {boolean} firstPartyRoot A boolean indicating if the evidence was generated with a first party root (the rootUrl of the request is the same as the website that generated the request)
+ * @property {string|null} parentCompany If we have identified a parent company for this url, we store it here for the frontend. Else, null.
  */
 export class Evidence {
   constructor({
@@ -62,6 +78,7 @@ export class Evidence {
     typ,
     index,
     firstPartyRoot,
+    parentCompany,
   }) {
     this.timestamp = timestamp;
     this.permission = permission;
@@ -71,6 +88,7 @@ export class Evidence {
     this.typ = typ;
     this.index = index === undefined ? -1 : index;
     this.firstPartyRoot = firstPartyRoot;
+    this.parentCompany = parentCompany;
   }
 }
 
@@ -82,7 +100,7 @@ export const permissionEnum = Object.freeze({
   personalData: "personalData",
   fingerprinting: "fingerprinting",
   advertising: "advertising",
-  content: "content",
+  tracking: "tracking",
 });
 
 /**
@@ -212,10 +230,6 @@ export const privacyLabels = Object.freeze({
     displayName: "Advertising",
     description: "",
     types: {
-      trackingPixel: {
-        displayName: "Tracking Pixel",
-        description: "",
-      },
       analytics: {
         displayName: "Analytics",
         description: "",
@@ -244,10 +258,15 @@ export const privacyLabels = Object.freeze({
         description: "",
       },
     },
-    content: {
-      displayName: "???",
-      description: "",
-      types: {},
+  },
+  tracking: {
+    displayName: "Tracking",
+    description: "",
+    types: {
+      trackingPixel: {
+        displayName: "Tracking Pixel",
+        description: "",
+      },
     },
   },
 });
