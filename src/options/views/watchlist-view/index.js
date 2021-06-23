@@ -111,7 +111,9 @@ const WatchlistView = () => {
               </SAddButton>
               <SAddButton
                 onClick={() => {
-                  confirm("We are using a 3rd party bla bla bla")
+                  confirm(
+                    "We use an external API from ip-api.com that holds your ip address for one minute, and then deletes it from their database. Click 'OK' to add your public IP address to your watchlist. \n\nAlternatively, you can simply look up 'what is my IP?' on the browser, then copy and paste it into our ip address keyword form."
+                  )
                     ? getIP()
                     : null;
                 }}
