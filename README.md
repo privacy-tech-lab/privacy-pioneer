@@ -85,6 +85,7 @@ This project uses the following third party libraries and resources. We thank th
 - [React Spinners](https://www.npmjs.com/package/react-spinners)
 - [Simple Icons](https://github.com/simple-icons/simple-icons)
 - [Styled Components](https://styled-components.com)
+- [JSDoc](https://github.com/jsdoc/jsdoc)
 
 <p align="center">
   <img src="https://github.com/privacy-tech-lab/integrated-privacy-analysis/blob/main/plt_logo.png" width="200px" height="200px" alt="privacy-tech-lab logo">
