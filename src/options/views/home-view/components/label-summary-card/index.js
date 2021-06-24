@@ -15,7 +15,7 @@ const LabelSummaryCard = ({labeltype, website }) => {
           {labeltype.charAt(0).toUpperCase() + labeltype.slice(1)}
         </SLabel>
       </SHeader>
-      <SFooter>Companies collected your {labeltype} data</SFooter>
+      <SFooter>Companies collected {labeltype} data.</SFooter>
     </SContainer>
   )
 }

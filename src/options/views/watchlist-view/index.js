@@ -27,7 +27,7 @@ const WatchlistView = () => {
   const [items, setItems] = useState([]);
 
   /**
-   * Inflates view with keywords from watchlist keystore
+   * Inflates view with keywords from watchlist keystore. Sends message to background script to update data.
    */
   const updateList = () => {
     watchlistKeyval.values().then((values) => setItems(values));
@@ -36,6 +36,11 @@ const WatchlistView = () => {
     });
   };
 
+  /**
+   * Async function to fetch the user's IP and add it to their watchlist
+   * 
+   * @returns Nothing. Updates the watchlist with the fetched IP Address.
+   */
   const getIP = async () => {
     await fetch("http://ip-api.com/json/")
       .then((data) => data.json())
@@ -112,7 +117,7 @@ const WatchlistView = () => {
               <SAddButton
                 onClick={() => {
                   confirm(
-                    "We use an external API from ip-api.com that holds your ip address for one minute, and then deletes it from their database. Click 'OK' to add your public IP address to your watchlist. \n\nAlternatively, you can simply look up 'what is my IP?' on the browser, then copy and paste it into our ip address keyword form."
+                    "We use an external API from ip-api.com that holds your ip address for one minute, and then deletes it from their database. Click 'OK' to add your public IP address to your watchlist. \n\nAlternatively, you can search 'What's my IP?', then copy and paste the result into our IP address keyword form."
                   )
                     ? getIP()
                     : null;
