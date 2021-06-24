@@ -137,6 +137,7 @@ const WebsiteView = () => {
             ) : (
               Object.entries(labels).map(([label, requests]) => (
                 <LabelCard
+                  popup
                   key={label}
                   onTap={() =>
                     history.push({

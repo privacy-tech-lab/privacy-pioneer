@@ -55,7 +55,7 @@ const GlobalStyle = createGlobalStyle`
     --seperatorColor: #c6c6c8;
 
     // Font sizes
-    --title1: 24px;
+    --title1: 32px;
     --title2: 20px;
     --headline: 18px;
     --body1: 16px;

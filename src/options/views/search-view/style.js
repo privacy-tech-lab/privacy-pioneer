@@ -1,17 +1,24 @@
-import styled from "styled-components"
+import { motion } from "framer-motion";
+import styled from "styled-components";
 
 export const SContainer = styled.section`
   ${(props) => (props.marginTop ? "margin-top: 32px;" : "margin-top: 0px;")}
-`
+`;
 
 export const STitle = styled.div`
   font-size: var(--title1);
   font-weight: bold;
-`
+  display: flex;
+`;
+export const STop = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+`;
 
 export const SSubtitle = styled.div`
   color: var(--secondaryTextColor);
-`
+`;
 
 export const SInput = styled.input`
   padding-top: 8px;
@@ -30,7 +37,7 @@ export const SInput = styled.input`
   ::placeholder {
     color: var(--secondaryTextColor);
   }
-`
+`;
 
 export const SInputContainer = styled.div`
   path,
@@ -42,4 +49,10 @@ export const SInputContainer = styled.div`
     margin-left: 8px;
     position: absolute;
   }
-`
+`;
+
+export const SBackButton = styled(motion.div)`
+  padding-right: 8px;
+  cursor: pointer;
+  display: flex;
+`;

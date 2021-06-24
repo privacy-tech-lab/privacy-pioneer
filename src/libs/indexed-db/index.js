@@ -4,7 +4,6 @@ import {
   keywordTypes,
   permissionEnum,
   privacyLabels,
-  typeEnum,
 } from "../../background/analysis/classModels";
 
 /**
@@ -124,6 +123,23 @@ export const getWebsiteLabels = async (website) => {
     return result;
   } catch (error) {
     return {};
+  }
+};
+
+/**
+ * Get identified labels of all websites in an array from indexedDB
+ * result: {..., website: {...,label: {..., requestURL: {..., labelType: requestObject}}}}
+ */
+
+export const getAllWebsiteLabels = async (websites) => {
+  let weblabels = {};
+  try {
+    Object.keys(websites).forEach((website) => {
+      getWebsiteLabels(website).then((res) => (weblabels[website] = res));
+    });
+    return weblabels;
+  } catch (error) {
+    return weblabels;
   }
 };
 

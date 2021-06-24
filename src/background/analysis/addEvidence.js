@@ -21,6 +21,9 @@ const parentJson = require('../../assets/parents.json')
  * given rootUrl and a maximum of 5 pieces of evidence in total for a permission/type.
  */
 async function addToEvidenceList(perm, rootU, snip, requestU, t, i) {
+
+  // We do not want calls to the api we use for getting a user's IP to show up in evidence
+  if (requestU == 'http://ip-api.com/json/'){return;}
   
   var ts = Date.now()
   if (rootU == undefined) {
