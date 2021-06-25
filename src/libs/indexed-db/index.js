@@ -4,7 +4,7 @@ import {
   keywordTypes,
   permissionEnum,
   privacyLabels,
-  idbEnum,
+  storeEnum,
 } from "../../background/analysis/classModels";
 
 /**
@@ -102,8 +102,8 @@ export const deleteKeyword = async (id) => {
  */
 export const getWebsiteLabels = async (website) => {
   try {
-    var evidence = await evidenceIDB.get(website, idbEnum.firstParty); // first try first party DB
-    if (evidence == undefined) { evidence = await evidenceIDB.get(website, idbEnum.thirdParty);} // then try third party DB
+    var evidence = await evidenceIDB.get(website, storeEnum.firstParty); // first try first party DB
+    if (evidence == undefined) { evidence = await evidenceIDB.get(website, storeEnum.thirdParty);} // then try third party DB
     const result = {};
     for (const [label, value] of Object.entries(evidence)) {
       for (const [type, requests] of Object.entries(value)) {
@@ -204,8 +204,8 @@ export const getWebsites = async () => {
   try {
     const result = {};
 
-    await buildLabels(idbEnum.firstParty, result); // first party labels
-    await buildLabels(idbEnum.thirdParty, result); // third party labels
+    await buildLabels(storeEnum.firstParty, result); // first party labels
+    await buildLabels(storeEnum.thirdParty, result); // third party labels
 
     return result;
 

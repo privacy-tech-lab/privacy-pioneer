@@ -1,6 +1,6 @@
 import { getHostname } from "./util.js"
 import { evidenceKeyval } from "./openDB.js"
-import { Evidence, typeEnum, idbEnum } from "./classModels.js"
+import { Evidence, typeEnum, storeEnum } from "./classModels.js"
 import { ipSearch } from "./searchFunctions.js"
 const parentJson = require('../../assets/parents.json')
 
@@ -107,7 +107,7 @@ async function addToEvidenceList(perm, rootU, snip, requestU, t, i) {
      */
     async function setEvidence(firstParty, requestParent) {
 
-      const store = firstParty == true ? idbEnum.firstParty : idbEnum.thirdParty;
+      const store = firstParty == true ? storeEnum.firstParty : storeEnum.thirdParty;
 
       var evidence = await evidenceKeyval.get(rootUrl, store)
     

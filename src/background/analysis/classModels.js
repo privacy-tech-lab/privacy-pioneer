@@ -95,7 +95,7 @@ export class Evidence {
 /**
  * @enum {string} Enum used to reference which evidenceKeyval object store you want
  */
-export const idbEnum = Object.freeze({
+export const storeEnum = Object.freeze({
   firstParty: 'firstPartyEvidence',
   thirdParty: 'thirdPartyEvidence'
 })
