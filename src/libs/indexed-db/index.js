@@ -101,7 +101,8 @@ export const deleteKeyword = async (id) => {
  */
 export const getWebsiteLabels = async (website) => {
   try {
-    const evidence = await evidenceIDB.get(website); // website evidence from indexedDB
+    var evidence = await evidenceIDB.get(website, true); // website evidence from indexedDB
+    if (evidence == undefined) { evidence = await evidenceIDB.get(website, false);}
     const result = {};
     for (const [label, value] of Object.entries(evidence)) {
       for (const [type, requests] of Object.entries(value)) {
@@ -169,6 +170,30 @@ export const getLabels = async (websites) => {
 
 const getNumOfWebsites = (label) => Object.keys(label).length;
 
+
+/**
+ * Builds up dictionary of labels
+ * 
+ * @param {Bool} fP First party
+ * @param {Dict} res Resulting dictionary
+ * @returns Void
+ */
+const buildLabels = async (fP, res) => {
+  try {
+    const websites = await evidenceIDB.keys(fP);
+    for (const website of websites) {
+      const evidence = await evidenceIDB.get(website, fP); // website evidence from indexedDB
+      const labels = Object.keys(evidence).filter(
+        (label) => label in privacyLabels
+      ); // verify label in privacy labels
+      if (labels.length) res[website] = labels;
+    }
+  }
+  catch (error) {
+    return {}
+  }
+}
+
 /**
  * Get all identified websites and thier labels from indexedDB
  * Restucture to display in UI
@@ -176,16 +201,13 @@ const getNumOfWebsites = (label) => Object.keys(label).length;
  */
 export const getWebsites = async () => {
   try {
-    const websites = await evidenceIDB.keys();
     const result = {};
-    for (const website of websites) {
-      const evidence = await evidenceIDB.get(website); // website evidence from indexedDB
-      const labels = Object.keys(evidence).filter(
-        (label) => label in privacyLabels
-      ); // verify label in privacy labels
-      if (labels.length) result[website] = labels;
-    }
+
+    await buildLabels(true, result); // first party labels
+    await buildLabels(false, result); // third party labels
+
     return result;
+
   } catch (error) {
     return {};
   }

@@ -6,31 +6,37 @@ requestModel.js
 
 import { openDB } from 'idb';
 
-const dbPromise = openDB('keyval-store', 1, {
+const dbPromise = openDB('keyval-store', 2, {
   upgrade(db) {
-    db.createObjectStore('network-requests');
+    db.createObjectStore('firstPartyEvidence');
+    db.createObjectStore('thirdPartyEvidence');
   },
 });
 
-// Wrapper functions for CRUD operations of 'evidenceKeyval' indexed-db
-// imported in src/libs/indexed-db/index.js to be displayed in the frontend
+/**
+ * The evidenceKeyval has two object stores. One for first party evidence and another for third party evidence.
+ * Within each store, evidence is stored with the rootUrl as the key.
+ */
 export const evidenceKeyval = {
-  async get(key) {
-    return (await dbPromise).get('network-requests', key);
+  async get(key, fP) {
+    const store = fP == true ? 'firstPartyEvidence' : 'thirdPartyEvidence';
+    return (await dbPromise).get(store, key);
   },
-  async set(key, val) {
-    return (await dbPromise).put('network-requests', val, key);
+  async set(key, val, fP) {
+    const store = fP == true ? 'firstPartyEvidence' : 'thirdPartyEvidence';
+    return (await dbPromise).put(store, val, key);
   },
-  async delete(key) {
-    return (await dbPromise).delete('network-requests', key);
+  async del(key, fP) {
+    const store = fP == true ? 'firstPartyEvidence' : 'thirdPartyEvidence';
+    return (await dbPromise).delete(store, key);
   },
-  async clear() {
-    return (await dbPromise).clear('network-requests');
+  async clear(fP) {
+    const store = fP == true ? 'firstPartyEvidence' : 'thirdPartyEvidence';
+    return (await dbPromise).clear(store);
   },
-  async keys() {
-    return (await dbPromise).getAllKeys('network-requests');
+  async keys(fP) {
+    const store = fP == true ? 'firstPartyEvidence' : 'thirdPartyEvidence';
+    return (await dbPromise).getAllKeys(store);
   },
-  async values() {
-    return (await dbPromise).getAll('network-requests')
-  },
-};
+}
+

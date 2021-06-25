@@ -107,7 +107,7 @@ async function addToEvidenceList(perm, rootU, snip, requestU, t, i) {
      */
     async function setEvidence(firstParty, requestParent) {
 
-      var evidence = await evidenceKeyval.get(rootUrl)
+      var evidence = await evidenceKeyval.get(rootUrl, firstParty)
     
       const e = new Evidence( {
         timestamp: ts,
@@ -134,13 +134,13 @@ async function addToEvidenceList(perm, rootU, snip, requestU, t, i) {
             // if we have less than 5 different reqUrl's for this permission and this is a unique reqUrl, we save the evidence
             if ((Object.keys(evidence[perm][t]).length < 5) && !(reqUrl in evidence[perm][t] )) {
               evidence[perm][t][reqUrl] = e
-              evidenceKeyval.set(rootUrl, evidence)
+              evidenceKeyval.set(rootUrl, evidence, firstParty)
             }
           }
           else { // we don't have this type yet, so we initialize it
             evidence[perm][t] = {}
             evidence[perm][t][reqUrl] = e
-            evidenceKeyval.set(rootUrl, evidence)
+            evidenceKeyval.set(rootUrl, evidence, firstParty)
           }
         }
         else { // we don't have this permission yet so we initialize
@@ -150,7 +150,7 @@ async function addToEvidenceList(perm, rootU, snip, requestU, t, i) {
           evidence[perm][t] = {}
     
           evidence[perm][t][reqUrl] = e
-          evidenceKeyval.set(rootUrl, evidence)
+          evidenceKeyval.set(rootUrl, evidence, firstParty)
         }
     
       }
@@ -159,7 +159,7 @@ async function addToEvidenceList(perm, rootU, snip, requestU, t, i) {
         evidence[perm] = {}
         evidence[perm][t] = {}
         evidence[perm][t][reqUrl] = e
-        evidenceKeyval.set(rootUrl, evidence)
+        evidenceKeyval.set(rootUrl, evidence, firstParty)
       }
     }
   } )
