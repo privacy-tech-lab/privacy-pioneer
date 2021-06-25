@@ -101,8 +101,8 @@ export const deleteKeyword = async (id) => {
  */
 export const getWebsiteLabels = async (website) => {
   try {
-    var evidence = await evidenceIDB.get(website, true); // website evidence from indexedDB
-    if (evidence == undefined) { evidence = await evidenceIDB.get(website, false);}
+    var evidence = await evidenceIDB.get(website, true); // first try first party DB
+    if (evidence == undefined) { evidence = await evidenceIDB.get(website, false);} // then try third party DB
     const result = {};
     for (const [label, value] of Object.entries(evidence)) {
       for (const [type, requests] of Object.entries(value)) {
@@ -186,7 +186,7 @@ const buildLabels = async (fP, res) => {
       const labels = Object.keys(evidence).filter(
         (label) => label in privacyLabels
       ); // verify label in privacy labels
-      if (labels.length) res[website] = labels;
+      if (labels.length && !( website in res ) ) res[website] = labels; // give priority to first party labels if we have the same key in both stores
     }
   }
   catch (error) {
