@@ -4,6 +4,7 @@ import {
   keywordTypes,
   permissionEnum,
   privacyLabels,
+  idbEnum,
 } from "../../background/analysis/classModels";
 
 /**
@@ -101,8 +102,8 @@ export const deleteKeyword = async (id) => {
  */
 export const getWebsiteLabels = async (website) => {
   try {
-    var evidence = await evidenceIDB.get(website, true); // first try first party DB
-    if (evidence == undefined) { evidence = await evidenceIDB.get(website, false);} // then try third party DB
+    var evidence = await evidenceIDB.get(website, idbEnum.firstParty); // first try first party DB
+    if (evidence == undefined) { evidence = await evidenceIDB.get(website, idbEnum.thirdParty);} // then try third party DB
     const result = {};
     for (const [label, value] of Object.entries(evidence)) {
       for (const [type, requests] of Object.entries(value)) {
@@ -174,15 +175,15 @@ const getNumOfWebsites = (label) => Object.keys(label).length;
 /**
  * Builds up dictionary of labels
  * 
- * @param {Bool} fP First party
+ * @param {String} store Which store from the evidenceKeyval you're drawing from
  * @param {Dict} res Resulting dictionary
  * @returns Void
  */
-const buildLabels = async (fP, res) => {
+const buildLabels = async (store, res) => {
   try {
-    const websites = await evidenceIDB.keys(fP);
+    const websites = await evidenceIDB.keys(store);
     for (const website of websites) {
-      const evidence = await evidenceIDB.get(website, fP); // website evidence from indexedDB
+      const evidence = await evidenceIDB.get(website, store); // website evidence from indexedDB
       const labels = Object.keys(evidence).filter(
         (label) => label in privacyLabels
       ); // verify label in privacy labels
@@ -203,8 +204,8 @@ export const getWebsites = async () => {
   try {
     const result = {};
 
-    await buildLabels(true, result); // first party labels
-    await buildLabels(false, result); // third party labels
+    await buildLabels(idbEnum.firstParty, result); // first party labels
+    await buildLabels(idbEnum.thirdParty, result); // third party labels
 
     return result;
 

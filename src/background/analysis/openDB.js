@@ -18,24 +18,19 @@ const dbPromise = openDB('keyval-store', 2, {
  * Within each store, evidence is stored with the rootUrl as the key.
  */
 export const evidenceKeyval = {
-  async get(key, fP) {
-    const store = fP == true ? 'firstPartyEvidence' : 'thirdPartyEvidence';
+  async get(key, store) {
     return (await dbPromise).get(store, key);
   },
-  async set(key, val, fP) {
-    const store = fP == true ? 'firstPartyEvidence' : 'thirdPartyEvidence';
+  async set(key, val, store) {
     return (await dbPromise).put(store, val, key);
   },
-  async del(key, fP) {
-    const store = fP == true ? 'firstPartyEvidence' : 'thirdPartyEvidence';
+  async del(key, store) {
     return (await dbPromise).delete(store, key);
   },
-  async clear(fP) {
-    const store = fP == true ? 'firstPartyEvidence' : 'thirdPartyEvidence';
+  async clear(store) {
     return (await dbPromise).clear(store);
   },
-  async keys(fP) {
-    const store = fP == true ? 'firstPartyEvidence' : 'thirdPartyEvidence';
+  async keys(store) {
     return (await dbPromise).getAllKeys(store);
   },
 }
