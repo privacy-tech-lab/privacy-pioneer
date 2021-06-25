@@ -93,6 +93,14 @@ export class Evidence {
 }
 
 /**
+ * @enum {string} Enum used to reference which evidenceKeyval object store you want
+ */
+export const storeEnum = Object.freeze({
+  firstParty: 'firstPartyEvidence',
+  thirdParty: 'thirdPartyEvidence'
+})
+
+/**
  * @enum {string} Enum used to reference permissions. Type: String
  */
 export const permissionEnum = Object.freeze({
