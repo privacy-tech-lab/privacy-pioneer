@@ -250,4 +250,20 @@ function ipSearch(strReq, ip, rootUrl, reqUrl) {
   
 }
 
-export { regexSearch, coordinateSearch, urlSearch, locationKeywordSearch, fingerprintSearch, ipSearch, pixelSearch }
+function checkDimsPixel(strReq, reqUrl) {
+  let display = strReq.search('display:none')
+  let height = strReq.search('height')
+  let width = strReq.search('width')
+  if (width != -1 && height != -1) {
+    let widthcheck = strReq.substring(width, width+20)
+    let heightcheck = strReq.substring(height, height + 20)
+    let findW = widthcheck.search('0') != -1 ? widthcheck.search('0') : widthcheck.search('1')
+    let findH = heightcheck.search('0') != -1 ? heightcheck.search('0') : heightcheck.search('1')
+    if (findW == -1 || findH == -1) return
+    if (findW != -1 && !parseInt(widthcheck[findW-1]) && findH != -1 && !parseInt(heightcheck[findH-1]) && display != -1 && (reqUrl.indexOf('?') != -1 || reqUrl.indexOf(';') != -1)) {
+      console.log(reqUrl, '\n', widthcheck, '\n', heightcheck, '\n', strReq.substring(display, display+15))
+    }
+  }
+}
+
+export { regexSearch, coordinateSearch, urlSearch, locationKeywordSearch, fingerprintSearch, ipSearch, pixelSearch, checkDimsPixel }
