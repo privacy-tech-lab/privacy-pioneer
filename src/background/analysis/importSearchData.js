@@ -27,9 +27,9 @@ const services = require("../../assets/services.json");
  */
 export async function importData() {
     var networkKeywords = {}
-    // personalData == data entered by the user in our extension
+    // watchlist == data entered by the user in our extension
     // ex phone numbers, emails, etc
-    networkKeywords[permissionEnum.personalData] = {}
+    networkKeywords[permissionEnum.watchlist] = {}
 
     // first let's build up the location info
     var locCoords = await getLocationData();
@@ -54,7 +54,7 @@ export async function importData() {
 
     // if we have a phone we put it in the network keywords dict
     if ( typeof userPhone !== 'undefined' ) { 
-        networkKeywords[permissionEnum.personalData][typeEnum.phone] = userPhone
+        networkKeywords[permissionEnum.watchlist][typeEnum.phone] = userPhone
     }
 
     // build location Elements
@@ -90,17 +90,17 @@ export async function importData() {
     
     // if the user entered an email/s, add it to network keywords (formated as arr)
     if (typeEnum.email in user_store_dict) {
-        networkKeywords[permissionEnum.personalData][typeEnum.email] = user_store_dict[typeEnum.email]
+        networkKeywords[permissionEnum.watchlist][typeEnum.email] = user_store_dict[typeEnum.email]
     }
 
     // if we have user keywords, we add them to the network keywords (formated as arr)
     // we check for general because this is the title they get in the db.
-    if (typeEnum.general in user_store_dict) {
-        networkKeywords[permissionEnum.personalData][typeEnum.userKeyword] = user_store_dict[typeEnum.general]
+    if ("general" in user_store_dict) {
+        networkKeywords[permissionEnum.watchlist][typeEnum.userKeyword] = user_store_dict[typeEnum.general]
     }
 
     if (typeEnum.ipAddress in user_store_dict) {
-        networkKeywords[permissionEnum.personalData][typeEnum.ipAddress] = user_store_dict[typeEnum.ipAddress]
+        networkKeywords[permissionEnum.watchlist][typeEnum.ipAddress] = user_store_dict[typeEnum.ipAddress]
     }
 
     // build fingerprinting info. Adding fingerprinting library keywords, 

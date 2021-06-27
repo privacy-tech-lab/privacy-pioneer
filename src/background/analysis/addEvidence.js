@@ -35,11 +35,6 @@ async function addToEvidenceList(perm, rootU, snip, requestU, t, i) {
     console.log(perm, snip, requestU, t)
     return
   }
-
-   // hacky way to deal with the way we iterate through the disconnect json
-   if (perm.includes("fingerprint")) { perm = "fingerprinting"}
-   if (perm.includes("advertising")) { t = "analytics" }
-   if (perm.includes("analytics")) { perm = "advertising" }
     
   var rootUrl = getHostname(rootU)
   var reqUrl = getHostname(requestU)

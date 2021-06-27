@@ -165,27 +165,27 @@ function analyze(request, userData) {
       locationKeywordSearch(strRequest, networkKeywords[permissionEnum.location], rootUrl, reqUrl)
     }
     // search for personal data from user's watchlist
-    if ( permissionEnum.personalData in networkKeywords) {
-      if ( typeEnum.Phone in networkKeywords[permissionEnum.personalData] ) {
-        networkKeywords[permissionEnum.personalData][typeEnum.phone].forEach( number => {
+    if ( permissionEnum.watchlist in networkKeywords) {
+      if ( typeEnum.Phone in networkKeywords[permissionEnum.watchlist] ) {
+        networkKeywords[permissionEnum.watchlist][typeEnum.phone].forEach( number => {
           regexSearch(strRequest, number, rootUrl, reqUrl, typeEnum.phone)
         })
       }
-      if ( typeEnum.Email in networkKeywords[permissionEnum.personalData] ) {
-        networkKeywords[permissionEnum.personalData][typeEnum.email].forEach( email => {
+      if ( typeEnum.Email in networkKeywords[permissionEnum.watchlist] ) {
+        networkKeywords[permissionEnum.watchlist][typeEnum.email].forEach( email => {
           regexSearch(strRequest, email, rootUrl, reqUrl, typeEnum.email)
         })
       }
 
-      if ( typeEnum.userKeyword in networkKeywords[permissionEnum.personalData] ) {
-        networkKeywords[permissionEnum.personalData][typeEnum.userKeyword].forEach ( keyword => {
+      if ( typeEnum.userKeyword in networkKeywords[permissionEnum.watchlist] ) {
+        networkKeywords[permissionEnum.watchlist][typeEnum.userKeyword].forEach ( keyword => {
           regexSearch(strRequest, keyword, rootUrl, reqUrl, typeEnum.userKeyword)
         })
       }
 
-      if ( typeEnum.ipAddress in networkKeywords[permissionEnum.personalData] ) {
-        networkKeywords[permissionEnum.personalData][typeEnum.ipAddress].forEach( ip => {
-          ipSearch(strRequest, ip, rootUrl, reqUrl, typeEnum.ipAddress)
+      if ( typeEnum.ipAddress in networkKeywords[permissionEnum.watchlist] ) {
+        networkKeywords[permissionEnum.watchlist][typeEnum.ipAddress].forEach( ip => {
+          ipSearch(strRequest, ip, rootUrl, reqUrl)
         })
       }
     }
@@ -196,8 +196,8 @@ function analyze(request, userData) {
     // search to see if any fingerprint data
     fingerprintSearch(strRequest, networkKeywords, rootUrl, reqUrl)
 
-    // if the request is an image and is coming from a different url than the root, we look for our pixel URLs
-    if ( request.type == resourceTypeEnum.image && rootUrl != reqUrl ) {
+    // if the request is an image or subFrame and is coming from a different url than the root, we look for our pixel URLs
+    if ( (request.type == resourceTypeEnum.image || request.type == resourceTypeEnum.subFrame) && rootUrl != reqUrl ) {
       pixelSearch(strRequest, networkKeywords, rootUrl, reqUrl)
     }
 }
