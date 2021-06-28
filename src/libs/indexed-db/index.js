@@ -4,6 +4,7 @@ import {
   keywordTypes,
   permissionEnum,
   privacyLabels,
+  storeEnum,
 } from "../../background/analysis/classModels";
 
 /**
@@ -101,7 +102,8 @@ export const deleteKeyword = async (id) => {
  */
 export const getWebsiteLabels = async (website) => {
   try {
-    const evidence = await evidenceIDB.get(website); // website evidence from indexedDB
+    var evidence = await evidenceIDB.get(website, storeEnum.firstParty); // first try first party DB
+    if (evidence == undefined) { evidence = await evidenceIDB.get(website, storeEnum.thirdParty);} // then try third party DB
     const result = {};
     for (const [label, value] of Object.entries(evidence)) {
       for (const [type, requests] of Object.entries(value)) {
@@ -169,6 +171,30 @@ export const getLabels = async (websites) => {
 
 const getNumOfWebsites = (label) => Object.keys(label).length;
 
+
+/**
+ * Builds up dictionary of labels
+ * 
+ * @param {String} store Which store from the evidenceKeyval you're drawing from
+ * @param {Dict} res Resulting dictionary
+ * @returns Void
+ */
+const buildLabels = async (store, res) => {
+  try {
+    const websites = await evidenceIDB.keys(store);
+    for (const website of websites) {
+      const evidence = await evidenceIDB.get(website, store); // website evidence from indexedDB
+      const labels = Object.keys(evidence).filter(
+        (label) => label in privacyLabels
+      ); // verify label in privacy labels
+      if (labels.length && !( website in res ) ) res[website] = labels; // give priority to first party labels if we have the same key in both stores
+    }
+  }
+  catch (error) {
+    return {}
+  }
+}
+
 /**
  * Get all identified websites and thier labels from indexedDB
  * Restucture to display in UI
@@ -176,16 +202,13 @@ const getNumOfWebsites = (label) => Object.keys(label).length;
  */
 export const getWebsites = async () => {
   try {
-    const websites = await evidenceIDB.keys();
     const result = {};
-    for (const website of websites) {
-      const evidence = await evidenceIDB.get(website); // website evidence from indexedDB
-      const labels = Object.keys(evidence).filter(
-        (label) => label in privacyLabels
-      ); // verify label in privacy labels
-      if (labels.length) result[website] = labels;
-    }
+
+    await buildLabels(storeEnum.firstParty, result); // first party labels
+    await buildLabels(storeEnum.thirdParty, result); // third party labels
+
     return result;
+
   } catch (error) {
     return {};
   }

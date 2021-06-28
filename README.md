@@ -79,10 +79,13 @@ This project uses the following third party libraries and resources. We thank th
 - [Disconnect Tracker Protection lists](https://github.com/disconnectme/disconnect-tracking-protection)
 - [Eva Icons](https://akveo.github.io/eva-icons/#/)
 - [Framer Motion](https://www.framer.com/motion/)
+- [Idb](https://www.npmjs.com/package/idb)
 - [Ion Icons](https://ionicons.com)
+- [JSDoc](https://www.npmjs.com/package/jsdoc)
 - [React](https://reactjs.org)
 - [Radar Icon](https://www.svgrepo.com/svg/167040/radar)
 - [React Spinners](https://www.npmjs.com/package/react-spinners)
+- [Simple Icons](https://github.com/simple-icons/simple-icons)
 - [Styled Components](https://styled-components.com)
 
 <p align="center">

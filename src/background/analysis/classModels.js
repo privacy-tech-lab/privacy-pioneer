@@ -93,40 +93,52 @@ export class Evidence {
 }
 
 /**
+ * @enum {string} Enum used to reference which evidenceKeyval object store you want
+ */
+export const storeEnum = Object.freeze({
+  firstParty: 'firstPartyEvidence',
+  thirdParty: 'thirdPartyEvidence'
+})
+
+/**
+ * permissions are the broader category that types belong to (see typeEnum)
  * @enum {string} Enum used to reference permissions. Type: String
  */
 export const permissionEnum = Object.freeze({
+  monetization: "monetization",
   location: "location",
-  personalData: "personalData",
-  fingerprinting: "fingerprinting",
-  advertising: "advertising",
+  watchlist: "watchlist",
   tracking: "tracking",
 });
 
 /**
+ * All types fall under a permission (see permissionEnum)
  * @enum {string} Enum used to reference types. Type: String
  */
 export const typeEnum = Object.freeze({
+
+  // monetization types
+  advertising: "advertising",
+  analytics: "analytics",
+  social: "social",
+
+  // location types
   coarseLocation: "coarseLocation",
   tightLocation: "tightLocation",
+  zipCode: "zipCode",
+  streetAddress: "streetAddress",
   city: "city",
   state: "state",
-  address: "address",
-  streetAddress: "streetAddress",
-  social: "social",
-  ipAddress: "ipAddress",
+
+  // watchlist types
+  phoneNumber: "phoneNumber",
+  emailAddress: "emailAddress",
   userKeyword: "userKeyword",
-  general: "general",
-  analytics: "analytics",
+
+  // tracking types
   trackingPixel: "trackingPixel",
-  cryptoMining: "cryptoMining",
-  phone: "phoneNumber",
-  email: "emailAddress",
-  zipCode: "zipCode",
-  generalFingerprint: "generalFingerprint",
-  invasiveFingerprint: "invasiveFingerprint",
-  fingerprintLib: "fpLibraryList",
-  fingerprintJSON: "fpJSONList",
+  ipAddress: "ipAddress",
+  fingerprinting: "fingerprinting",
 });
 
 /**
@@ -165,11 +177,30 @@ export const keywordTypes = Object.freeze({
 });
 
 /**
- * An object used by the front end to create labels. The permissions and types should be exactly the same as the enums.
- * @typedef privacyLabels
+ * An object used by the front end to create labels. Before displaying evidence pulled from the DB, the front-end checks that the 
+ * permission and type exist in this object. The permissions and types should be exactly the same as the enums.
+ * 
  * @type {object}
  */
 export const privacyLabels = Object.freeze({
+  monetization: {
+    displayName: "Monetization",
+    description: "Practices used to monetize web traffic.",
+    types: {
+      advertising: {
+        displayName: "Advertising",
+        description: "",
+      },
+      analytics: {
+        displayName: "Analytics",
+        description: "",
+      },
+      social: {
+        displayName: "Social",
+        description: "",
+      }
+    },
+  },
   location: {
     displayName: "Location",
     description: "",
@@ -200,9 +231,9 @@ export const privacyLabels = Object.freeze({
       },
     },
   },
-  personalData: {
-    displayName: "Personal Data",
-    description: "",
+  watchlist: {
+    displayName: "Watchlist",
+    description: "Evidence generated from your custom watchlist inputs.",
     types: {
       phoneNumber: {
         displayName: "Phone Number",
@@ -212,49 +243,8 @@ export const privacyLabels = Object.freeze({
         displayName: "Email Address",
         description: "",
       },
-      social: {
-        displayName: "Social",
-        description: "",
-      },
       userKeyword: {
         displayName: "Keyword",
-        description: "",
-      },
-      ipAddress: {
-        displayName: "IP Address",
-        description: "",
-      },
-    },
-  },
-  advertising: {
-    displayName: "Advertising",
-    description: "",
-    types: {
-      analytics: {
-        displayName: "Analytics",
-        description: "",
-      },
-    },
-  },
-  fingerprinting: {
-    displayName: "Fingerprinting",
-    description: "",
-    types: {
-      fingerprintingGeneral: {
-        displayName: "General Fingerprinting",
-        description: "",
-      },
-      fingerprintingInvasive: {
-        displayName: "Invasive Fingerprinting",
-        description:
-          "Used an API to extract information about a particular user’s computing environment when the API was not designed to expose such information.",
-      },
-      fpLibraryList: {
-        displayName: "fpLibraryList",
-        description: "",
-      },
-      fpJSONList: {
-        displayName: "fpJSONList",
         description: "",
       },
     },
@@ -266,6 +256,14 @@ export const privacyLabels = Object.freeze({
       trackingPixel: {
         displayName: "Tracking Pixel",
         description: "",
+      },
+      ipAddress: {
+        displayName: "IP Address",
+        description: "",
+      },
+      fingerprinting: {
+        displayName: "Browser Fingerprinting",
+        description: "Practices to uniquely identify your browser and track you across sessions.",
       },
     },
   },

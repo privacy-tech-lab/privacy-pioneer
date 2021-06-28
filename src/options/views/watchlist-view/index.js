@@ -13,7 +13,11 @@ import ListItem from "./components/list-item";
 import EditModal from "./components/edit-modal";
 import { watchlistKeyval } from "../../../libs/indexed-db";
 import { Modal } from "bootstrap";
-import { permissionEnum } from "../../../background/analysis/classModels";
+import {
+  permissionEnum,
+  typeEnum,
+} from "../../../background/analysis/classModels";
+import { saveKeyword } from "../../../libs/indexed-db";
 
 /**
  * Watchlist page view allowing user to add/modify keywords
@@ -23,13 +27,29 @@ const WatchlistView = () => {
   const [items, setItems] = useState([]);
 
   /**
-   * Inflates view with keywords from watchlist keystore
+   * Inflates view with keywords from watchlist keystore. Sends message to background script to update data.
    */
   const updateList = () => {
     watchlistKeyval.values().then((values) => setItems(values));
     browser.runtime.sendMessage({
       msg: "dataUpdated",
     });
+  };
+
+  /**
+   * Async function to fetch the user's IP and add it to their watchlist
+   * 
+   * @returns Nothing. Updates the watchlist with the fetched IP Address.
+   */
+  const getIP = async () => {
+    await fetch("http://ip-api.com/json/")
+      .then((data) => data.json())
+      .then(async function (data) {
+        const myIP = data.query;
+        if (await saveKeyword(myIP, typeEnum.ipAddress, null)) {
+          await updateList();
+        }
+      });
   };
 
   useEffect(() => {
@@ -81,7 +101,7 @@ const WatchlistView = () => {
                 collected and shared between companies.
               </SSubtitle>
             </div>
-            <div>
+            <div style={{ flexDirection: "row", display: "flex" }}>
               <SAddButton
                 onClick={() => {
                   configModal({ show: true });
@@ -93,6 +113,18 @@ const WatchlistView = () => {
               >
                 <Icons.Plus size="24px" />
                 Add Keyword
+              </SAddButton>
+              <SAddButton
+                onClick={() => {
+                  confirm(
+                    "We use an external API from ip-api.com that holds your ip address for one minute, and then deletes it from their database. Click 'OK' to add your public IP address to your watchlist. \n\nAlternatively, you can search 'What's my IP?', then copy and paste the result into our IP address keyword form."
+                  )
+                    ? getIP()
+                    : null;
+                }}
+              >
+                <Icons.Plus size="24px" />
+                Add IP
               </SAddButton>
             </div>
           </SHeader>
