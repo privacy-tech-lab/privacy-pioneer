@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import WebsiteBadge from "../../../libs/website-badge";
-import * as Icons from "../../../libs/icons";
 import LabelCard from "../../../libs/label-card";
 import { SContainer, SItem, SLabel, SLabelGroup, SSeperator } from "./style";
 
@@ -21,6 +20,7 @@ const LabelCards = ({ website, handleTap, labels }) => {
           label={label}
           requests={requests}
           website={website}
+          labels={webLabel[label]}
         />
       ))
     : null;

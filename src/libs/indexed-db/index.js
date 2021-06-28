@@ -190,3 +190,17 @@ export const getWebsites = async () => {
     return {};
   }
 };
+
+export const getParents = (labels) => {
+  let parents = [];
+  console.log(labels);
+  if (labels) {
+    Object.keys(labels).forEach((website) => {
+      let evidenceType = Object.keys(labels[website])[0];
+      let parent = labels[website][evidenceType]["parentCompany"];
+      if (parent) !parents.includes(parent) ? parents.push(parent) : null;
+      else parents.push(website);
+    });
+  }
+  return parents;
+};

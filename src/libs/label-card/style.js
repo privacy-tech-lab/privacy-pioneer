@@ -26,6 +26,10 @@ export const SSeperator = styled.div`
   margin-top: ${(prop) => prop.marginTop};
   margin-bottom: ${(prop) => prop.marginBottom};
 `;
+export const SLogo = styled.div`
+  display: flex;
+  flex-direction: row;
+`;
 
 export const SHeader = styled.div`
   display: flex;

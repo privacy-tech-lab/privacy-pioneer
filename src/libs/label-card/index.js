@@ -1,5 +1,4 @@
 import React from "react";
-import WebsiteBadge from "../website-badge";
 import * as Icons from "../icons";
 import {
   SCard,
@@ -10,13 +9,24 @@ import {
   SHeaderTitle,
   SHeaderTrailing,
   SMore,
+  SLogo,
 } from "./style";
 import { privacyLabels } from "../../background/analysis/classModels";
+import { CompanyLogo } from "../website-logo";
+import { getParents } from "../indexed-db";
 
 /**
  * Card that briefly summarizes label and description for website
  */
-const LabelCard = ({ requests, website, label, margin, onTap, popup }) => {
+const LabelCard = ({
+  requests,
+  website,
+  label,
+  margin,
+  onTap,
+  popup,
+  labels,
+}) => {
   const urls = Object.keys(requests); // detected request urls containing identified data
   const collected = urls.includes(website); // Check if website collected data
 
@@ -38,37 +48,21 @@ const LabelCard = ({ requests, website, label, margin, onTap, popup }) => {
    * Render max 2 badges
    */
   const getThirdParties = () => {
-    if ((collected && urls.length > 1) || !collected) {
-      const filtered = urls.filter((url) => url !== website);
-      if (filtered.length > 2) {
-        var count = filtered.length - 2;
-        return (
-          <>
-            <SSeperator marginTop="16px" marginBottom="0px" />
-            {filtered.slice(0, 2).map((url) => (
-              <WebsiteBadge key={url} website={url} />
-            ))}
-            <SMore>
-              <Icons.PlusCircle size="24px" />
-              <span style={{ marginLeft: "8px" }}>
-                {count} {count > 1 ? "others" : "other"}
-              </span>
-            </SMore>
-          </>
-        );
-      } else {
-        return (
-          <>
-            <SSeperator marginTop="16px" marginBottom="0px" />
-            {filtered.map((url) => (
-              <WebsiteBadge key={url} website={url} />
-            ))}
-          </>
-        );
-      }
-    } else {
-      return null;
-    }
+    let parentCompanies = getParents(labels);
+    return (
+      <>
+        <SSeperator marginTop="16px" marginBottom="0px" />
+        <SLogo>
+          {parentCompanies.map((company) => (
+            <CompanyLogo
+              parent={company}
+              key={company}
+              margin={"8px 4px 0px 4px"}
+            />
+          ))}
+        </SLogo>
+      </>
+    );
   };
 
   return (
