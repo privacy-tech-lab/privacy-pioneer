@@ -137,8 +137,8 @@ function resolveBuffer(id, data) {
 /**
  * Calls the analysis functions from searchFunctions.js on the appropriate data that we have
  * 
- * @param {Request} request 
- * @param {Array} userData 
+ * @param {Request} request HTTP request.
+ * @param {Array} userData data from the watchlist to be searched for.
  * @returns {void} calls a number of functions
  */
 function analyze(request, userData) {

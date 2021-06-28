@@ -22,7 +22,7 @@ const parentJson = require('../../assets/parents.json')
  */
 async function addToEvidenceList(perm, rootU, snip, requestU, t, i) {
 
-  // We do not want calls to the api we use for getting a user's IP to show up in evidence
+  // We do not want calls to the api we use for getting a user's IP to show up in evidence. Whitelist this domain.
   if (requestU == 'http://ip-api.com/json/'){return;}
   
   var ts = Date.now()
