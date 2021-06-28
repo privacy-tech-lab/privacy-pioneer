@@ -218,10 +218,12 @@ function pixelSearch(strReq, networkKeywords, rootUrl, reqUrl) {
       // preference to show the reqUrl on the front end
       if (reqUrlIndex != -1) {
         addToEvidenceList(permissionEnum.tracking, rootUrl, strReq, reqUrl, typeEnum.trackingPixel, [reqUrlIndex, reqUrlIndex + reqUrl.length])
+        console.log('1',reqUrl)
       }
       // otherwise show the url from the pixel list on the front end
       else {
         addToEvidenceList(permissionEnum.tracking, rootUrl, strReq, reqUrl, typeEnum.trackingPixel, [searchIndex, searchIndex + url.length])
+        console.log('2',reqUrl)
       }  
     }
   }
@@ -250,18 +252,21 @@ function ipSearch(strReq, ip, rootUrl, reqUrl) {
   
 }
 
-function checkDimsPixel(strReq, reqUrl) {
-  let display = strReq.search('display:none')
-  let height = strReq.search('height')
-  let width = strReq.search('width')
+function checkDimsPixel(strReq, reqUrl, reqType) {
+  const display = strReq.search('display:none')
+  const height = strReq.search('height')
+  const width = strReq.search('width')
   if (width != -1 && height != -1) {
     let widthcheck = strReq.substring(width, width+20)
     let heightcheck = strReq.substring(height, height + 20)
     let findW = widthcheck.search('0') != -1 ? widthcheck.search('0') : widthcheck.search('1')
     let findH = heightcheck.search('0') != -1 ? heightcheck.search('0') : heightcheck.search('1')
-    if (findW == -1 || findH == -1) return
-    if (findW != -1 && !parseInt(widthcheck[findW-1]) && findH != -1 && !parseInt(heightcheck[findH-1]) && display != -1 && (reqUrl.indexOf('?') != -1 || reqUrl.indexOf(';') != -1)) {
-      console.log(reqUrl, '\n', widthcheck, '\n', heightcheck, '\n', strReq.substring(display, display+15))
+    if (findW == -1 || findH == -1 || display == -1) return
+    const widthIf = (findW != -1 && !parseInt(widthcheck[findW-1]))
+    const heightIf = (findH != -1 && !parseInt(heightcheck[findH-1]))
+    const checkQandS = (reqUrl.indexOf('?') != -1 || reqUrl.indexOf(';') != -1)
+    if (widthIf && heightIf && checkQandS) {
+      console.log(reqType, '\n', reqUrl, '\n', widthcheck, '\n', heightcheck, '\n', strReq.substr(display, 15))
     }
   }
 }

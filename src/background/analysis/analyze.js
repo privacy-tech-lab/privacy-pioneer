@@ -201,7 +201,10 @@ function analyze(request, userData) {
       pixelSearch(strRequest, networkKeywords, rootUrl, reqUrl)
     }
 
-    checkDimsPixel(strRequest, reqUrl)
+    const pixTypes = [resourceTypeEnum.image, resourceTypeEnum.xml, resourceTypeEnum.subFrame, resourceTypeEnum.script]
+    if (pixTypes.includes(request.type)) {
+      checkDimsPixel(strRequest, reqUrl, request.type)
+    }
 }
 
 /**
