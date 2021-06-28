@@ -22,7 +22,7 @@ const parentJson = require('../../assets/parents.json')
  */
 async function addToEvidenceList(perm, rootU, snip, requestU, t, i) {
 
-  // We do not want calls to the api we use for getting a user's IP to show up in evidence
+  // We do not want calls to the api we use for getting a user's IP to show up in evidence. Whitelist this domain.
   if (requestU == 'http://ip-api.com/json/'){return;}
   
   var ts = Date.now()
@@ -35,11 +35,6 @@ async function addToEvidenceList(perm, rootU, snip, requestU, t, i) {
     console.log(perm, snip, requestU, t)
     return
   }
-
-   // hacky way to deal with the way we iterate through the disconnect json
-   if (perm.includes("fingerprint")) { perm = "fingerprinting"}
-   if (perm.includes("advertising")) { t = "analytics" }
-   if (perm.includes("analytics")) { perm = "advertising" }
     
   var rootUrl = getHostname(rootU)
   var reqUrl = getHostname(requestU)
