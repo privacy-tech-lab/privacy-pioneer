@@ -3,7 +3,6 @@ import { useHistory } from "react-router";
 import {
   getWebsites,
   getLabels,
-  getWebsiteLabels,
   getAllWebsiteLabels,
 } from "../../../libs/indexed-db";
 import Scaffold from "../../components/scaffold";
