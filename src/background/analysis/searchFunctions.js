@@ -242,12 +242,10 @@ function pixelSearch(strReq, networkKeywords, rootUrl, reqUrl) {
       // preference to show the reqUrl on the front end
       if (reqUrlIndex != -1) {
         addToEvidenceList(permissionEnum.tracking, rootUrl, strReq, reqUrl, typeEnum.trackingPixel, [reqUrlIndex, reqUrlIndex + reqUrl.length])
-        console.log('1',reqUrl)
       }
       // otherwise show the url from the pixel list on the front end
       else {
         addToEvidenceList(permissionEnum.tracking, rootUrl, strReq, reqUrl, typeEnum.trackingPixel, [searchIndex, searchIndex + url.length])
-        console.log('2',reqUrl)
       }  
     }
   }
@@ -276,7 +274,18 @@ function ipSearch(strReq, ip, rootUrl, reqUrl) {
   
 }
 
+
+
+/**
+ * Ad Identifier label??
+ * 
+ * @param {*} strReq 
+ * @param {*} reqUrl 
+ * @param {*} reqType 
+ * @returns 
+ */
 function checkDimsPixel(strReq, reqUrl, reqType) {
+
   const display = strReq.search('display:none')
   const height = strReq.search('height')
   const width = strReq.search('width')
@@ -295,4 +304,32 @@ function checkDimsPixel(strReq, reqUrl, reqType) {
   }
 }
 
-export { regexSearch, coordinateSearch, urlSearch, locationKeywordSearch, fingerprintSearch, ipSearch, pixelSearch, checkDimsPixel }
+
+/**
+ * Regex experiment to find new pixels. If I restrict the resource type to image/sub_frame and then also require a shorter HTTP request, the result becomes pretty good.
+ * On huffpost -> https://ssum-sec.casalemedia.com/usermatch?gdpr=0&gdpr_conse…https%3A%2F%2Fjs-sec.indexww.com%2Fht%2Fhtw-pixel.gif%3F&C=1
+ * nyt -> https://5290727.fls.doubleclick.net/activityi;src=5290727;ty…%2Fwww.nytimes.com%2F;~oref=https%3A%2F%2Fwww.nytimes.com%2F?
+ * gap -> https://bttrack.com/Pixel/Conversion/15341/default
+ * politico -> https://tags.crwdcntrl.net/lt/shared/2/lt.iframe.html?c=2641
+ * 
+ * 
+ * @param {*} strReq 
+ * @param {*} reqUrl 
+ * @param {*} reqType 
+ */
+function pixelExperiment(strReq, reqUrl, reqType) {
+
+  if (strReq.length > 10000) {return}
+  
+  const heightWidth = /height\D{1,8}[0,1]\D{1,20}width\D{1,8}[0,1]\D/g
+  const widthHeight = /width\D{1,8}[0,1]\D{1,20}height\D{1,8}[0,1]\D/g
+
+  let resOne = strReq.search(heightWidth)
+  let resTwo = strReq.search(widthHeight)
+
+  if (resOne != -1) { console.log(reqUrl, strReq) }
+  if (resTwo != -1) { console.log(reqUrl, strReq) }
+
+}
+
+export { regexSearch, coordinateSearch, urlSearch, locationKeywordSearch, fingerprintSearch, ipSearch, pixelSearch, checkDimsPixel, pixelExperiment }
