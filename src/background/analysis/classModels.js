@@ -29,6 +29,7 @@ export class Request {
     responseData,
     error,
     type,
+    urlClassification,
   }) {
     this.id = id;
     this.requestHeaders = requestHeaders;
@@ -38,6 +39,7 @@ export class Request {
     this.details = details;
     this.error = error;
     this.type = type;
+    this.urlClassification = urlClassification;
   }
 }
 

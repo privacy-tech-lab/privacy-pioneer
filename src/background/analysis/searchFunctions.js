@@ -35,11 +35,11 @@ function locationKeywordSearch(strReq, locElems, rootUrl, reqUrl) {
  * used by the addDisconnectEvidence function to translate the disconnect JSON into our permission type schema.
  * Maps strings to array of length 2.
  */
-const disconnectTransformation = { "advertising": [permissionEnum.monetization, typeEnum.advertising], 
-                                    "analytics": [permissionEnum.monetization, typeEnum.analytics],
-                                    "fingerprintingInvasive": [permissionEnum.tracking, typeEnum.fingerprinting],
-                                    "fingerprintingGeneral": [permissionEnum.tracking, typeEnum.fingerprinting],
-                                    "Social": [permissionEnum.monetization, typeEnum.social],
+const classificationTransformation = { "tracking_ad": [permissionEnum.monetization, typeEnum.advertising], 
+                                    "tracking_analytics": [permissionEnum.monetization, typeEnum.analytics],
+                                    "fingerprinting": [permissionEnum.tracking, typeEnum.fingerprinting],
+                                    "fingerprinting_content": [permissionEnum.tracking, typeEnum.fingerprinting],
+                                    "tracking_social": [permissionEnum.monetization, typeEnum.social],
                                   }
                             
 /**
@@ -50,53 +50,23 @@ const disconnectTransformation = { "advertising": [permissionEnum.monetization, 
  * @param {object} urls The disconnect JSON
  * @returns {void} Nothing. Adds to evidence when we find URL's from the disconnect list.
  */
-function urlSearch(request, urls) {
+function urlSearch(strReq, rootUrl, reqUrl, classifications) {
+  let firstPartyArr = classifications.firstParty;
+  let thirdPartyArr = classifications.thirdParty;
 
-/**
- * adds a piece of evidence from the disconnect JSON to allign with our permission type schema.
- * @param {string} cat The category of the
- */
-function addDisconnectEvidence(cat) {
-  let perm, type;
-  [perm, type] = disconnectTransformation[cat];
-  addToEvidenceList(perm, request.details["originUrl"], "null", request.details["url"], type, undefined)
-}
-
-  // First we can iterate through URLs
-  var keys = Object.keys(urls["categories"]);
-  for (var i = 0; i < keys.length; i++) {
-    var cat = keys[i]
-    var indivCats = urls["categories"][cat]
-    for (var j = 0; j < indivCats.length; j++) {
-      var obj = urls["categories"][cat][j]
-      var indivKey = Object.keys(obj)
-      var nextKey = Object.keys(urls["categories"][cat][j][indivKey])
-      for (var k = 0; k < nextKey.length; k++) {
-        var urlLst = urls["categories"][cat][j][indivKey][nextKey[k]]
-        var url = request.details["url"]
-        // if there are multiple URLs on the list we go here
-        if (typeof urlLst === 'object') {
-          for (var u = 0; u < urlLst.length; u++) {
-            if (url.includes(urlLst[u])) {
-              if (cat in disconnectTransformation) {
-                addDisconnectEvidence(cat);
-              }
-            }
-          }
-        }
-        // else we go here
-        else {
-          if (url.includes(urlLst)) {
-            if (cat in disconnectTransformation) {
-              addDisconnectEvidence(cat);
-            }
-            
-          }
-        }
+  function loopThroughClassificationArray(arr) {
+    for (let url of arr) {
+      if (url in classificationTransformation) {
+        let p, t;
+        [p, t] = classificationTransformation[url];
+        addToEvidenceList(p, rootUrl, strReq, reqUrl, t, undefined )
       }
     }
   }
-}
+
+  loopThroughClassificationArray(firstPartyArr);
+  loopThroughClassificationArray(thirdPartyArr);
+  }
 
 
 /**
