@@ -122,14 +122,30 @@ async function addToEvidenceList(perm, rootU, snip, requestU, t, i) {
       if (evidence === undefined) {
         evidence = {}
       }
+
+      function getReqUrlsWithDifferentTypes(d, t) {
+
+        var reqUrlSet = new Set()
+        
+        for ( const [type, reqUrlObject] of Object.entries(d) ) {
+          for ( const reqUrl of Object.keys(reqUrlObject)) {
+            if (t != type) { reqUrlSet.add(reqUrl) }
+          }
+        }
+        return reqUrlSet
+      }
     
       // if we have this rootUrl in evidence already we check if we already have store_label
       if (Object.keys(evidence).length !== 0) {
         if (perm in evidence) { 
+          var pushThrough = false
+          let reqUrlSet = getReqUrlsWithDifferentTypes(evidence[perm], t)
+          if (reqUrlSet.has(reqUrl)) { pushThrough = true }
           // if type is in the permission
           if (t in evidence[perm]) {
+            let belowEvidenceCap = (Object.keys(evidence[perm][t]).length < 5) && !(reqUrl in evidence[perm][t] )
             // if we have less than 5 different reqUrl's for this permission and this is a unique reqUrl, we save the evidence
-            if ((Object.keys(evidence[perm][t]).length < 5) && !(reqUrl in evidence[perm][t] )) {
+            if ( pushThrough || (belowEvidenceCap)) {
               evidence[perm][t][reqUrl] = e
               evidenceKeyval.set(rootUrl, evidence, store)
             }
