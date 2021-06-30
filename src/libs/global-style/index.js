@@ -56,7 +56,7 @@ const GlobalStyle = createGlobalStyle`
 
     // Font sizes
     --title1: 32px;
-    --title2: 20px;
+    --title2: 24px;
     --headline: 18px;
     --body1: 16px;
     --body2: 14px;
