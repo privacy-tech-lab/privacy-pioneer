@@ -4,7 +4,7 @@ analyze.js
 - analyze.js analyzes network requests
 */
 
-import { Request, Evidence, typeEnum, permissionEnum, resourceTypeEnum } from "./classModels.js"
+import { Request, Evidence, typeEnum, permissionEnum, resourceTypeEnum, optOutEnum } from "./classModels.js"
 import { openDB } from 'idb';
 import { evidence } from "../background.js"
 import { evidenceKeyval } from "./openDB.js"
@@ -12,6 +12,7 @@ import { evidenceKeyval } from "./openDB.js"
 import { RegexSpecialChar, escapeRegExp } from "./regexFunctions.js"
 import { regexSearch, coordinateSearch, urlSearch, locationKeywordSearch, fingerprintSearch, ipSearch, pixelSearch } from "./searchFunctions.js"
 import { getHostname } from "./util.js";
+import { tagOptOuts } from "./optOutSignalCheck.js";
 
 // Temporary container to hold network requests while properties are being added from listener callbacks
 const buffer = {}
@@ -122,8 +123,11 @@ function resolveBuffer(id, data) {
     // delete the request from our buffer (we have it stored for this function as request)
     delete buffer[id]
 
+    //tag the request's optOuts
+    const optOuts = tagOptOuts(request);
+
     // run analysis
-    analyze(request, data)
+    analyze(request, data, optOuts);
 
     }
   } 
@@ -139,67 +143,68 @@ function resolveBuffer(id, data) {
  * 
  * @param {Request} request HTTP request.
  * @param {Array} userData data from the watchlist to be searched for.
+ * @param {Dict} optOuts a dictionary mapping privacy schemes to our opt-our finding for that scheme
  * @returns {void} calls a number of functions
  */
-function analyze(request, userData) {
+function analyze(request, userData, optOuts) {
 
-    const strRequest = JSON.stringify(request)
+  const strRequest = JSON.stringify(request)
 
-    // this 0, 1, 2 comes from the structure of the importData function
-    // location we obtained from google maps API
-    var loc = userData[0]
-    // {phone #s, emails, location elements entered by the user, fingerprinting keywords}
-    var networkKeywords = userData[1]
-    // websites that have identification objectives
-    var urls = userData[2]
-    const rootUrl = request.details["originUrl"]
-    const reqUrl = request.details["url"]
+  // this 0, 1, 2 comes from the structure of the importData function
+  // location we obtained from google maps API
+  var loc = userData[0]
+  // {phone #s, emails, location elements entered by the user, fingerprinting keywords}
+  var networkKeywords = userData[1]
+  // websites that have identification objectives
+  var urls = userData[2]
+  const rootUrl = request.details["originUrl"]
+  const reqUrl = request.details["url"]
 
-    // if this value is 0 the client likely denied location permission
-    // or they could be on Null Island in the middle of the Gulf of Guinea
-    if (loc[0] != 0 && loc[1] != 0) {
-      coordinateSearch(strRequest, loc, rootUrl, reqUrl);
+  // if this value is 0 the client likely denied location permission
+  // or they could be on Null Island in the middle of the Gulf of Guinea
+  if (loc[0] != 0 && loc[1] != 0) {
+    coordinateSearch(strRequest, loc, rootUrl, reqUrl, optOuts);
+  }
+  // search for location data if we have it
+  if ( permissionEnum.location in networkKeywords) {
+    locationKeywordSearch(strRequest, networkKeywords[permissionEnum.location], rootUrl, reqUrl, optOuts)
+  }
+  // search for personal data from user's watchlist
+  if ( permissionEnum.watchlist in networkKeywords) {
+    if ( typeEnum.Phone in networkKeywords[permissionEnum.watchlist] ) {
+      networkKeywords[permissionEnum.watchlist][typeEnum.phone].forEach( number => {
+        regexSearch(strRequest, number, rootUrl, reqUrl, typeEnum.phone, optOuts)
+      })
     }
-    // search for location data if we have it
-    if ( permissionEnum.location in networkKeywords) {
-      locationKeywordSearch(strRequest, networkKeywords[permissionEnum.location], rootUrl, reqUrl)
-    }
-    // search for personal data from user's watchlist
-    if ( permissionEnum.watchlist in networkKeywords) {
-      if ( typeEnum.Phone in networkKeywords[permissionEnum.watchlist] ) {
-        networkKeywords[permissionEnum.watchlist][typeEnum.phone].forEach( number => {
-          regexSearch(strRequest, number, rootUrl, reqUrl, typeEnum.phone)
-        })
-      }
-      if ( typeEnum.Email in networkKeywords[permissionEnum.watchlist] ) {
-        networkKeywords[permissionEnum.watchlist][typeEnum.email].forEach( email => {
-          regexSearch(strRequest, email, rootUrl, reqUrl, typeEnum.email)
-        })
-      }
-
-      if ( typeEnum.userKeyword in networkKeywords[permissionEnum.watchlist] ) {
-        networkKeywords[permissionEnum.watchlist][typeEnum.userKeyword].forEach ( keyword => {
-          regexSearch(strRequest, keyword, rootUrl, reqUrl, typeEnum.userKeyword)
-        })
-      }
-
-      if ( typeEnum.ipAddress in networkKeywords[permissionEnum.watchlist] ) {
-        networkKeywords[permissionEnum.watchlist][typeEnum.ipAddress].forEach( ip => {
-          ipSearch(strRequest, ip, rootUrl, reqUrl)
-        })
-      }
+    if ( typeEnum.Email in networkKeywords[permissionEnum.watchlist] ) {
+      networkKeywords[permissionEnum.watchlist][typeEnum.email].forEach( email => {
+        regexSearch(strRequest, email, rootUrl, reqUrl, typeEnum.email, optOuts)
+      })
     }
 
-    // search to see if the url of the root or request comes up in our services list
-    urlSearch(request, urls)
-
-    // search to see if any fingerprint data
-    fingerprintSearch(strRequest, networkKeywords, rootUrl, reqUrl)
-
-    // if the request is an image or subFrame and is coming from a different url than the root, we look for our pixel URLs
-    if ( (request.type == resourceTypeEnum.image || request.type == resourceTypeEnum.subFrame) && rootUrl != reqUrl ) {
-      pixelSearch(strRequest, networkKeywords, rootUrl, reqUrl)
+    if ( typeEnum.userKeyword in networkKeywords[permissionEnum.watchlist] ) {
+      networkKeywords[permissionEnum.watchlist][typeEnum.userKeyword].forEach ( keyword => {
+        regexSearch(strRequest, keyword, rootUrl, reqUrl, typeEnum.userKeyword, optOuts)
+      })
     }
+
+    if ( typeEnum.ipAddress in networkKeywords[permissionEnum.watchlist] ) {
+      networkKeywords[permissionEnum.watchlist][typeEnum.ipAddress].forEach( ip => {
+        ipSearch(strRequest, ip, rootUrl, reqUrl, optOuts)
+      })
+    }
+  }
+
+  // search to see if the url of the root or request comes up in our services list
+  urlSearch(request, urls, optOuts)
+
+  // search to see if any fingerprint data
+  fingerprintSearch(strRequest, networkKeywords, rootUrl, reqUrl, optOuts)
+
+  // if the request is an image or subFrame and is coming from a different url than the root, we look for our pixel URLs
+  if ( (request.type == resourceTypeEnum.image || request.type == resourceTypeEnum.subFrame) && rootUrl != reqUrl ) {
+    pixelSearch(strRequest, networkKeywords, rootUrl, reqUrl, optOuts)
+  }
 }
 
 /**

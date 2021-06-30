@@ -20,21 +20,59 @@ const parentJson = require('../../assets/parents.json')
  * (defined in permissionEnum) and then a further type level (defined in typeEnum). We store only one piece of evidence per permssion/type for a
  * given rootUrl and a maximum of 5 pieces of evidence in total for a permission/type.
  */
-async function addToEvidenceList(perm, rootU, snip, requestU, t, i) {
+async function addToEvidenceList(perm, rootU, snip, requestU, t, i, optOuts) {
+
+  async function placeInStore(e, firstParty) {
+    const store = firstParty == true ? storeEnum.firstParty : storeEnum.thirdParty;
+    var evidence = await evidenceKeyval.get(rootUrl, store)
+    
+    // if we don't have evidence yet, we initialize it as an empty dict
+    if (evidence === undefined) {
+      evidence = {}
+    }
+  
+    // if we have this rootUrl in evidence already we check if we already have store_label
+    if (Object.keys(evidence).length !== 0) {
+      if (perm in evidence) { 
+        // if type is in the permission
+        if (t in evidence[perm]) {
+          // if we have less than 5 different reqUrl's for this permission and this is a unique reqUrl, we save the evidence
+          if ((Object.keys(evidence[perm][t]).length < 5) && !(reqUrl in evidence[perm][t] )) {
+            evidence[perm][t][reqUrl] = e
+            evidenceKeyval.set(rootUrl, evidence, store)
+          }
+        }
+        else { // we don't have this type yet, so we initialize it
+          evidence[perm][t] = {}
+          evidence[perm][t][reqUrl] = e
+          evidenceKeyval.set(rootUrl, evidence, store)
+        }
+      }
+      else { // we don't have this permission yet so we initialize
+        evidence[perm] = {}
+        
+        // init dict for permission type pair
+        evidence[perm][t] = {}
+  
+        evidence[perm][t][reqUrl] = e
+        evidenceKeyval.set(rootUrl, evidence, store)
+      }
+  
+    }
+    // we have don't have this rootUrl yet. So we init evidence at this url
+    else {
+      evidence[perm] = {}
+      evidence[perm][t] = {}
+      evidence[perm][t][reqUrl] = e
+      evidenceKeyval.set(rootUrl, evidence, store)
+    }
+    console.log(evidence)
+  }
 
   // We do not want calls to the api we use for getting a user's IP to show up in evidence. Whitelist this domain.
   if (requestU == 'http://ip-api.com/json/'){return;}
   
   var ts = Date.now()
-  if (rootU == undefined) {
-      // if the root URL is not in the request then let's just not save it
-      // as we cannot be sure what domain it is actually being called from
-      // we should, however, print the request to console for now just to see
-      // how often this is happening
-    console.log("No root URL detected for snippet:")
-    console.log(perm, snip, requestU, t)
-    return
-  }
     
   var rootUrl = getHostname(rootU)
   var reqUrl = getHostname(requestU)
@@ -101,63 +139,22 @@ async function addToEvidenceList(perm, rootU, snip, requestU, t, i) {
      *
      */
     async function setEvidence(firstParty, requestParent) {
-
-      const store = firstParty == true ? storeEnum.firstParty : storeEnum.thirdParty;
-
-      var evidence = await evidenceKeyval.get(rootUrl, store)
-    
-      const e = new Evidence( {
-        timestamp: ts,
-        permission: perm,
-        rootUrl: rootUrl,
-        snippet: snip,
-        requestUrl: requestU,
-        typ: t,
-        index: i,
-        firstPartyRoot: firstParty,
-        parentCompany: requestParent
-      } )
-    
-      // if we don't have evidence yet, we initialize it as an empty dict
-      if (evidence === undefined) {
-        evidence = {}
-      }
-    
-      // if we have this rootUrl in evidence already we check if we already have store_label
-      if (Object.keys(evidence).length !== 0) {
-        if (perm in evidence) { 
-          // if type is in the permission
-          if (t in evidence[perm]) {
-            // if we have less than 5 different reqUrl's for this permission and this is a unique reqUrl, we save the evidence
-            if ((Object.keys(evidence[perm][t]).length < 5) && !(reqUrl in evidence[perm][t] )) {
-              evidence[perm][t][reqUrl] = e
-              evidenceKeyval.set(rootUrl, evidence, store)
-            }
-          }
-          else { // we don't have this type yet, so we initialize it
-            evidence[perm][t] = {}
-            evidence[perm][t][reqUrl] = e
-            evidenceKeyval.set(rootUrl, evidence, store)
-          }
-        }
-        else { // we don't have this permission yet so we initialize
-          evidence[perm] = {}
-          
-          // init dict for permission type pair
-          evidence[perm][t] = {}
-    
-          evidence[perm][t][reqUrl] = e
-          evidenceKeyval.set(rootUrl, evidence, store)
-        }
-    
-      }
-      // we have don't have this rootUrl yet. So we init evidence at this url
-      else {
-        evidence[perm] = {}
-        evidence[perm][t] = {}
-        evidence[perm][t][reqUrl] = e
-        evidenceKeyval.set(rootUrl, evidence, store)
-      }
+      
+      optOuts.then( optOuts => {
+        const e = new Evidence( {
+          timestamp: ts,
+          permission: perm,
+          rootUrl: rootUrl,
+          snippet: snip,
+          requestUrl: requestU,
+          typ: t,
+          index: i,
+          firstPartyRoot: firstParty,
+          parentCompany: requestParent,
+          optOuts: optOuts,
+        } )
+        placeInStore(e, firstParty);
+      })
     }
   } )
 }

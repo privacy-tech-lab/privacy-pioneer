@@ -19,13 +19,13 @@ import { getHostname } from "./util.js"
  * @param {string} rootUrl 
  * @param {string} reqUrl 
  */
-function locationKeywordSearch(strReq, locElems, rootUrl, reqUrl) {
+function locationKeywordSearch(strReq, locElems, rootUrl, reqUrl, optOuts) {
   for (const [k, v] of Object.entries(locElems)) {
     // every entry is an array, so we iterate through it.
     for (let value of v) {
       let result_i = strReq.search(value)
       if (result_i != -1) {
-      addToEvidenceList(permissionEnum.location, rootUrl, strReq, reqUrl, k, [result_i, result_i + value.length])
+      addToEvidenceList(permissionEnum.location, rootUrl, strReq, reqUrl, k, [result_i, result_i + value.length], optOuts)
     }
   }
 }}
@@ -50,7 +50,7 @@ const disconnectTransformation = { "advertising": [permissionEnum.monetization, 
  * @param {object} urls The disconnect JSON
  * @returns {void} Nothing. Adds to evidence when we find URL's from the disconnect list.
  */
-function urlSearch(request, urls) {
+function urlSearch(request, urls, optOuts) {
 
 /**
  * adds a piece of evidence from the disconnect JSON to allign with our permission type schema.
@@ -59,7 +59,7 @@ function urlSearch(request, urls) {
 function addDisconnectEvidence(cat) {
   let perm, type;
   [perm, type] = disconnectTransformation[cat];
-  addToEvidenceList(perm, request.details["originUrl"], "null", request.details["url"], type, undefined)
+  addToEvidenceList(perm, request.details["originUrl"], "null", request.details["url"], type, undefined, optOuts)
 }
 
   // First we can iterate through URLs
@@ -110,7 +110,7 @@ function addDisconnectEvidence(cat) {
  * lattitude and the longitude within 250 characters of each other in the request
  * 
  */
-function coordinateSearch(strReq, locData, rootUrl, reqUrl) {
+function coordinateSearch(strReq, locData, rootUrl, reqUrl, optOuts) {
   const lat = locData[0]
   const lng = locData[1]
   const absLat = Math.abs(lat)
@@ -148,7 +148,7 @@ function coordinateSearch(strReq, locData, rootUrl, reqUrl) {
       let asFloat = parseFloat(potCoor)
       let delta = Math.abs(asFloat - goal)
       if (delta < .1) {
-        addToEvidenceList(permissionEnum.location, rootUrl, strReq, reqUrl, typeEnum.tightLocation, [startIndex, endIndex])
+        addToEvidenceList(permissionEnum.location, rootUrl, strReq, reqUrl, typeEnum.tightLocation, [startIndex, endIndex], optOuts)
         // if we find evidence for this request we return an index that will terminate the loop
         return matchArr.length
       }
@@ -188,13 +188,13 @@ function coordinateSearch(strReq, locData, rootUrl, reqUrl) {
  * @returns {void} Nothing. Adds evidence if found.
  *
  */
-function regexSearch(strReq, keyword, rootUrl, reqUrl, type, perm = permissionEnum.watchlist ) {
+function regexSearch(strReq, keyword, rootUrl, reqUrl, type, perm = permissionEnum.watchlist, optOuts ) {
     let fixed = escapeRegExp(keyword)
     let re = new RegExp(`${fixed}`, "i");
     let result = strReq.search(re)
     if (result != -1) {
       {
-        addToEvidenceList( perm, rootUrl, strReq, reqUrl, type, [result, result + keyword.length])
+        addToEvidenceList( perm, rootUrl, strReq, reqUrl, type, [result, result + keyword.length], optOuts)
       }
     }
 }
@@ -208,13 +208,13 @@ function regexSearch(strReq, keyword, rootUrl, reqUrl, type, perm = permissionEn
  * 
  * Searches a request for the fingerprinting elements populated in the networkKeywords it is passed. These elements can be found in the keywords JSON
  */
-function fingerprintSearch(strReq, networkKeywords, rootUrl, reqUrl) {
+function fingerprintSearch(strReq, networkKeywords, rootUrl, reqUrl, optOuts) {
   const fpElems = networkKeywords[permissionEnum.fingerprinting]
   for (const [k, v] of Object.entries(fpElems)) {
     for (const keyword of v){
       const idxKeyword = strReq.indexOf(keyword);
       if (idxKeyword != -1){
-        addToEvidenceList(permissionEnum.tracking, rootUrl, strReq, reqUrl, typeEnum.fingerprinting, [idxKeyword, idxKeyword + keyword.length]);
+        addToEvidenceList(permissionEnum.tracking, rootUrl, strReq, reqUrl, typeEnum.fingerprinting, [idxKeyword, idxKeyword + keyword.length], optOuts);
         break;
       }
     }
@@ -233,7 +233,7 @@ function fingerprintSearch(strReq, networkKeywords, rootUrl, reqUrl) {
  * @param {string} rootUrl The rootUrl as a string
  * @param {string} reqUrl The requestUrl as a string
  */
-function pixelSearch(strReq, networkKeywords, rootUrl, reqUrl) {
+function pixelSearch(strReq, networkKeywords, rootUrl, reqUrl, optOuts) {
   const pixelUrls = networkKeywords[permissionEnum.tracking][typeEnum.trackingPixel]
   for (let url of pixelUrls) {
     let searchIndex = strReq.indexOf(url)
@@ -241,11 +241,11 @@ function pixelSearch(strReq, networkKeywords, rootUrl, reqUrl) {
       let reqUrlIndex = strReq.indexOf(reqUrl)
       // preference to show the reqUrl on the front end
       if (reqUrlIndex != -1) {
-        addToEvidenceList(permissionEnum.tracking, rootUrl, strReq, reqUrl, typeEnum.trackingPixel, [reqUrlIndex, reqUrlIndex + reqUrl.length])
+        addToEvidenceList(permissionEnum.tracking, rootUrl, strReq, reqUrl, typeEnum.trackingPixel, [reqUrlIndex, reqUrlIndex + reqUrl.length], optOuts)
       }
       // otherwise show the url from the pixel list on the front end
       else {
-        addToEvidenceList(permissionEnum.tracking, rootUrl, strReq, reqUrl, typeEnum.trackingPixel, [searchIndex, searchIndex + url.length])
+        addToEvidenceList(permissionEnum.tracking, rootUrl, strReq, reqUrl, typeEnum.trackingPixel, [searchIndex, searchIndex + url.length], optOuts)
       }  
     }
   }
@@ -261,7 +261,7 @@ function pixelSearch(strReq, networkKeywords, rootUrl, reqUrl) {
  * @returns {void} Nothing. Calls search function
  * 
  */
-function ipSearch(strReq, ip, rootUrl, reqUrl) {
+function ipSearch(strReq, ip, rootUrl, reqUrl, optOuts) {
 
   if ( rootUrl === undefined || reqUrl === undefined ) { return }
   // we're only interested in third party requests
@@ -270,7 +270,7 @@ function ipSearch(strReq, ip, rootUrl, reqUrl) {
   }
 
   //otherwise just do a standard text search
-  return regexSearch(strReq, ip, rootUrl, reqUrl, typeEnum.ipAddress, permissionEnum.tracking)
+  return regexSearch(strReq, ip, rootUrl, reqUrl, typeEnum.ipAddress, permissionEnum.tracking, optOuts)
   
 }
 

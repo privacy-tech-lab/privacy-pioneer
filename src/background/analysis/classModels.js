@@ -67,6 +67,7 @@ export const resourceTypeEnum = Object.freeze( {
  * @property {Array|undefined} index A length 2 array with the indexes of the evidence or undefined if not applicable
  * @property {boolean} firstPartyRoot A boolean indicating if the evidence was generated with a first party root (the rootUrl of the request is the same as the website that generated the request)
  * @property {string|null} parentCompany If we have identified a parent company for this url, we store it here for the frontend. Else, null.
+ * @property {Dict} optOuts A dictionary mapping privacy schemes to our findings for that privacy scheme
  */
 export class Evidence {
   constructor({
@@ -79,6 +80,7 @@ export class Evidence {
     index,
     firstPartyRoot,
     parentCompany,
+    optOuts,
   }) {
     this.timestamp = timestamp;
     this.permission = permission;
@@ -89,6 +91,7 @@ export class Evidence {
     this.index = index === undefined ? -1 : index;
     this.firstPartyRoot = firstPartyRoot;
     this.parentCompany = parentCompany;
+    this.optOuts = optOuts;
   }
 }
 
@@ -99,6 +102,25 @@ export const storeEnum = Object.freeze({
   firstParty: 'firstPartyEvidence',
   thirdParty: 'thirdPartyEvidence'
 })
+
+/**
+ * @enum {string} Enum used to reference different privacy opt-out frameworks
+ */
+ export const privacyFrameworkEnum =  Object.freeze({
+   googleRDP: 'googleRDP',
+   usPrivacy: 'usPrivacy',
+})
+
+/**
+ * @enum {string} Enum used to reference opt-out findings
+ */
+export const optOutEnum = Object.freeze({
+  affirmativeOut: 'optedOut',
+  affirmativeIn: 'optedIn',
+  noSignalFound: 'noSignalFound'
+})
+
+
 
 /**
  * permissions are the broader category that types belong to (see typeEnum)
