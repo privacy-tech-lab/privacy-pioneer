@@ -31,6 +31,18 @@ function locationKeywordSearch(strReq, locElems, rootUrl, reqUrl) {
 }}
 
 /**
+ * @type {Dict}
+ * used by the addDisconnectEvidence function to translate the disconnect JSON into our permission type schema.
+ * Maps strings to array of length 2.
+ */
+const disconnectTransformation = { "advertising": [permissionEnum.monetization, typeEnum.advertising], 
+                                    "analytics": [permissionEnum.monetization, typeEnum.analytics],
+                                    "fingerprintingInvasive": [permissionEnum.tracking, typeEnum.fingerprinting],
+                                    "fingerprintingGeneral": [permissionEnum.tracking, typeEnum.fingerprinting],
+                                    "Social": [permissionEnum.monetization, typeEnum.social],
+                                  }
+                            
+/**
  * Iterates through the disconnect list and adds evidence accordingly. It creates evidence with the category of the disconnect JSON as both the permission
  * and the type.
  * 
@@ -39,6 +51,17 @@ function locationKeywordSearch(strReq, locElems, rootUrl, reqUrl) {
  * @returns {void} Nothing. Adds to evidence when we find URL's from the disconnect list.
  */
 function urlSearch(request, urls) {
+
+/**
+ * adds a piece of evidence from the disconnect JSON to allign with our permission type schema.
+ * @param {string} cat The category of the
+ */
+function addDisconnectEvidence(cat) {
+  let perm, type;
+  [perm, type] = disconnectTransformation[cat];
+  addToEvidenceList(perm, request.details["originUrl"], "null", request.details["url"], type, undefined)
+}
+
   // First we can iterate through URLs
   var keys = Object.keys(urls["categories"]);
   for (var i = 0; i < keys.length; i++) {
@@ -55,18 +78,19 @@ function urlSearch(request, urls) {
         if (typeof urlLst === 'object') {
           for (var u = 0; u < urlLst.length; u++) {
             if (url.includes(urlLst[u])) {
-              // console.log(cat + " URL detected for " + urlLst[u])
-              // here originUrl is not always getting us what we want. For example it will be a google address while I'm on nyt
-              addToEvidenceList(cat, request.details["originUrl"], "null", request.details["url"], cat, undefined)
+              if (cat in disconnectTransformation) {
+                addDisconnectEvidence(cat);
+              }
             }
           }
         }
         // else we go here
         else {
           if (url.includes(urlLst)) {
-            // console.log(cat + " URL detected for " + urlLst)
-            // here originUrl is not always getting us what we want. For example it will be a google address while I'm on nyt
-            addToEvidenceList(cat, request.details["originUrl"], "null", request.details["url"], cat, undefined)
+            if (cat in disconnectTransformation) {
+              addDisconnectEvidence(cat);
+            }
+            
           }
         }
       }
@@ -164,7 +188,7 @@ function coordinateSearch(strReq, locData, rootUrl, reqUrl) {
  * @returns {void} Nothing. Adds evidence if found.
  *
  */
-function regexSearch(strReq, keyword, rootUrl, reqUrl, type, perm = permissionEnum.personalData ) {
+function regexSearch(strReq, keyword, rootUrl, reqUrl, type, perm = permissionEnum.watchlist ) {
     let fixed = escapeRegExp(keyword)
     let re = new RegExp(`${fixed}`, "i");
     let result = strReq.search(re)
@@ -185,16 +209,45 @@ function regexSearch(strReq, keyword, rootUrl, reqUrl, type, perm = permissionEn
  * Searches a request for the fingerprinting elements populated in the networkKeywords it is passed. These elements can be found in the keywords JSON
  */
 function fingerprintSearch(strReq, networkKeywords, rootUrl, reqUrl) {
-  var fpElems = networkKeywords[permissionEnum.fingerprinting]
+  const fpElems = networkKeywords[permissionEnum.fingerprinting]
   for (const [k, v] of Object.entries(fpElems)) {
     for (const keyword of v){
       const idxKeyword = strReq.indexOf(keyword);
       if (idxKeyword != -1){
-        addToEvidenceList(permissionEnum.fingerprinting, rootUrl, strReq, reqUrl, k, [idxKeyword, idxKeyword + keyword.length]);
+        addToEvidenceList(permissionEnum.tracking, rootUrl, strReq, reqUrl, typeEnum.fingerprinting, [idxKeyword, idxKeyword + keyword.length]);
         break;
       }
     }
     
+  }
+}
+
+/**
+ * Pixel search looks iterates through our list of pixel URLS from keywords.JSON. This function is only called on requests with type image and different root/req Urls
+ * It will index the evidence as the requestUrl if it can find it in the strReq (which it always should). 
+ * This is because most pixels contain data encoded into the reqUrl
+ * If for some reason this doesn't work, it will choose the index of the url from the list.
+ * 
+ * @param {string} strReq The request as a string
+ * @param {Dict} networkKeywords A dictionary containing the pixel URLs
+ * @param {string} rootUrl The rootUrl as a string
+ * @param {string} reqUrl The requestUrl as a string
+ */
+function pixelSearch(strReq, networkKeywords, rootUrl, reqUrl) {
+  const pixelUrls = networkKeywords[permissionEnum.tracking][typeEnum.trackingPixel]
+  for (let url of pixelUrls) {
+    let searchIndex = strReq.indexOf(url)
+    if (searchIndex != -1) {
+      let reqUrlIndex = strReq.indexOf(reqUrl)
+      // preference to show the reqUrl on the front end
+      if (reqUrlIndex != -1) {
+        addToEvidenceList(permissionEnum.tracking, rootUrl, strReq, reqUrl, typeEnum.trackingPixel, [reqUrlIndex, reqUrlIndex + reqUrl.length])
+      }
+      // otherwise show the url from the pixel list on the front end
+      else {
+        addToEvidenceList(permissionEnum.tracking, rootUrl, strReq, reqUrl, typeEnum.trackingPixel, [searchIndex, searchIndex + url.length])
+      }  
+    }
   }
 }
 
@@ -217,9 +270,8 @@ function ipSearch(strReq, ip, rootUrl, reqUrl) {
   }
 
   //otherwise just do a standard text search
-  return regexSearch(strReq, ip, rootUrl, reqUrl, typeEnum.ipAddress)
+  return regexSearch(strReq, ip, rootUrl, reqUrl, typeEnum.ipAddress, permissionEnum.tracking)
   
-
 }
 
-export { regexSearch, coordinateSearch, urlSearch, locationKeywordSearch, fingerprintSearch, ipSearch }
+export { regexSearch, coordinateSearch, urlSearch, locationKeywordSearch, fingerprintSearch, ipSearch, pixelSearch }

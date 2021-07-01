@@ -16,6 +16,7 @@ the codebase.
  * @property {object} requestBody Contains the HTTP request body data.  https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/API/webRequest/onBeforeRequest#details.
  * @property {object} responseData A StreamFilter object used to monitor the response. https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/API/webRequest/StreamFilter
  * @property {string} error After an error event is fired. This property will contain information about the error.  https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/API/webRequest/StreamFilter/onerror
+ * @property {string} type We set up a filter for types in background.js. We look at types enumerated in resourceTypeEnum
  * @throws Error. Event that fires on error. Usually due to invalid ID to the webRequest.filterResponseData()
  */
 export class Request {
@@ -27,6 +28,7 @@ export class Request {
     requestBody,
     responseData,
     error,
+    type,
   }) {
     this.id = id;
     this.requestHeaders = requestHeaders;
@@ -35,10 +37,23 @@ export class Request {
     this.requestBody = requestBody;
     this.details = details;
     this.error = error;
+    this.type = type;
   }
 }
 
 
+/**
+ * @enum {string} Enum used to reference the types of HTTP requests. This filter is set up in background.js.
+ * https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/API/webRequest/ResourceType
+ */
+export const resourceTypeEnum = Object.freeze( {
+  image: "image",
+  script: "script",
+  xml: "xmlhttprequest",
+  subFrame: "sub_frame",
+  WebSocket: "websocket", 
+  mainFrame: "main_frame"
+})
 
 /**
  * An evidence object created from a request
@@ -51,6 +66,7 @@ export class Request {
  * @property {enum} typ The type of the evdience
  * @property {Array|undefined} index A length 2 array with the indexes of the evidence or undefined if not applicable
  * @property {boolean} firstPartyRoot A boolean indicating if the evidence was generated with a first party root (the rootUrl of the request is the same as the website that generated the request)
+ * @property {string|null} parentCompany If we have identified a parent company for this url, we store it here for the frontend. Else, null.
  */
 export class Evidence {
   constructor({
@@ -62,6 +78,7 @@ export class Evidence {
     typ,
     index,
     firstPartyRoot,
+    parentCompany,
   }) {
     this.timestamp = timestamp;
     this.permission = permission;
@@ -71,44 +88,57 @@ export class Evidence {
     this.typ = typ;
     this.index = index === undefined ? -1 : index;
     this.firstPartyRoot = firstPartyRoot;
+    this.parentCompany = parentCompany;
   }
 }
 
 /**
+ * @enum {string} Enum used to reference which evidenceKeyval object store you want
+ */
+export const storeEnum = Object.freeze({
+  firstParty: 'firstPartyEvidence',
+  thirdParty: 'thirdPartyEvidence'
+})
+
+/**
+ * permissions are the broader category that types belong to (see typeEnum)
  * @enum {string} Enum used to reference permissions. Type: String
  */
 export const permissionEnum = Object.freeze({
+  monetization: "monetization",
   location: "location",
-  personalData: "personalData",
-  fingerprinting: "fingerprinting",
-  advertising: "advertising",
-  content: "content",
+  watchlist: "watchlist",
+  tracking: "tracking",
 });
 
 /**
+ * All types fall under a permission (see permissionEnum)
  * @enum {string} Enum used to reference types. Type: String
  */
 export const typeEnum = Object.freeze({
+
+  // monetization types
+  advertising: "advertising",
+  analytics: "analytics",
+  social: "social",
+
+  // location types
   coarseLocation: "coarseLocation",
   tightLocation: "tightLocation",
+  zipCode: "zipCode",
+  streetAddress: "streetAddress",
   city: "city",
   state: "state",
-  address: "address",
-  streetAddress: "streetAddress",
-  social: "social",
-  ipAddress: "ipAddress",
+
+  // watchlist types
+  phoneNumber: "phoneNumber",
+  emailAddress: "emailAddress",
   userKeyword: "userKeyword",
-  general: "general",
-  analytics: "analytics",
+
+  // tracking types
   trackingPixel: "trackingPixel",
-  cryptoMining: "cryptoMining",
-  phone: "phoneNumber",
-  email: "emailAddress",
-  zipCode: "zipCode",
-  generalFingerprint: "generalFingerprint",
-  invasiveFingerprint: "invasiveFingerprint",
-  fingerprintLib: "fpLibraryList",
-  fingerprintJSON: "fpJSONList",
+  ipAddress: "ipAddress",
+  fingerprinting: "fingerprinting",
 });
 
 /**
@@ -147,11 +177,30 @@ export const keywordTypes = Object.freeze({
 });
 
 /**
- * An object used by the front end to create labels. The permissions and types should be exactly the same as the enums.
- * @typedef privacyLabels
+ * An object used by the front end to create labels. Before displaying evidence pulled from the DB, the front-end checks that the 
+ * permission and type exist in this object. The permissions and types should be exactly the same as the enums.
+ * 
  * @type {object}
  */
 export const privacyLabels = Object.freeze({
+  monetization: {
+    displayName: "Monetization",
+    description: "Practices used to monetize web traffic.",
+    types: {
+      advertising: {
+        displayName: "Advertising",
+        description: "",
+      },
+      analytics: {
+        displayName: "Analytics",
+        description: "",
+      },
+      social: {
+        displayName: "Social",
+        description: "",
+      }
+    },
+  },
   location: {
     displayName: "Location",
     description: "",
@@ -182,9 +231,9 @@ export const privacyLabels = Object.freeze({
       },
     },
   },
-  personalData: {
-    displayName: "Personal Data",
-    description: "",
+  watchlist: {
+    displayName: "Watchlist",
+    description: "Evidence generated from your custom watchlist inputs.",
     types: {
       phoneNumber: {
         displayName: "Phone Number",
@@ -194,60 +243,28 @@ export const privacyLabels = Object.freeze({
         displayName: "Email Address",
         description: "",
       },
-      social: {
-        displayName: "Social",
-        description: "",
-      },
       userKeyword: {
         displayName: "Keyword",
         description: "",
       },
-      ipAddress: {
-        displayName: "IP Address",
-        description: "",
-      },
     },
   },
-  advertising: {
-    displayName: "Advertising",
+  tracking: {
+    displayName: "Tracking",
     description: "",
     types: {
       trackingPixel: {
         displayName: "Tracking Pixel",
         description: "",
       },
-      analytics: {
-        displayName: "Analytics",
+      ipAddress: {
+        displayName: "IP Address",
         description: "",
       },
-    },
-  },
-  fingerprinting: {
-    displayName: "Fingerprinting",
-    description: "",
-    types: {
-      fingerprintingGeneral: {
-        displayName: "General Fingerprinting",
-        description: "",
+      fingerprinting: {
+        displayName: "Browser Fingerprinting",
+        description: "Practices to uniquely identify your browser and track you across sessions.",
       },
-      fingerprintingInvasive: {
-        displayName: "Invasive Fingerprinting",
-        description:
-          "Used an API to extract information about a particular user’s computing environment when the API was not designed to expose such information.",
-      },
-      fpLibraryList: {
-        displayName: "fpLibraryList",
-        description: "",
-      },
-      fpJSONList: {
-        displayName: "fpJSONList",
-        description: "",
-      },
-    },
-    content: {
-      displayName: "???",
-      description: "",
-      types: {},
     },
   },
 });

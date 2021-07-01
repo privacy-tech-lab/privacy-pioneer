@@ -148,8 +148,6 @@ export const Home = ({ size }) => (
     width={size}
     xmlns="http://www.w3.org/2000/svg"
     version="1.1"
-    width="24"
-    height="24"
     viewBox="0 0 24 24"
   >
     <path d="M12 5.69L17 10.19V18H15V12H9V18H7V10.19L12 5.69M12 3L2 12H5V20H11V14H13V20H19V12H22L12 3Z" />
@@ -280,18 +278,6 @@ export const Fingerprint = ({ size }) => (
   </svg>
 );
 
-export const Social = ({ size }) => (
-  <svg
-    height={size}
-    width={size}
-    xmlns="http://www.w3.org/2000/svg"
-    viewBox="0 0 512 512"
-  >
-    <title>Share Social</title>
-    <path d="M384 336a63.78 63.78 0 00-46.12 19.7l-148-83.27a63.85 63.85 0 000-32.86l148-83.27a63.8 63.8 0 10-15.73-27.87l-148 83.27a64 64 0 100 88.6l148 83.27A64 64 0 10384 336z" />
-  </svg>
-);
-
 export const Tracking = ({ size }) => (
   <svg
     height={size}
@@ -306,13 +292,14 @@ export const Tracking = ({ size }) => (
 
 export const Personal = ({ size }) => (
   <svg
-    viewBox="0 0 20 20"
+    viewBox="0 0 24 24"
     height={size}
     width={size}
     xmlns="http://www.w3.org/2000/svg"
   >
     <title>Personal</title>
-    <path d="M12.075,10.812c1.358-0.853,2.242-2.507,2.242-4.037c0-2.181-1.795-4.618-4.198-4.618S5.921,4.594,5.921,6.775c0,1.53,0.884,3.185,2.242,4.037c-3.222,0.865-5.6,3.807-5.6,7.298c0,0.23,0.189,0.42,0.42,0.42h14.273c0.23,0,0.42-0.189,0.42-0.42C17.676,14.619,15.297,11.677,12.075,10.812 M6.761,6.775c0-2.162,1.773-3.778,3.358-3.778s3.359,1.616,3.359,3.778c0,2.162-1.774,3.778-3.359,3.778S6.761,8.937,6.761,6.775 M3.415,17.69c0.218-3.51,3.142-6.297,6.704-6.297c3.562,0,6.486,2.787,6.705,6.297H3.415z"></path>
+
+    <path d="M19 7.001c0 3.865-3.134 7-7 7s-7-3.135-7-7c0-3.867 3.134-7.001 7-7.001s7 3.134 7 7.001zm-1.598 7.18c-1.506 1.137-3.374 1.82-5.402 1.82-2.03 0-3.899-.685-5.407-1.822-4.072 1.793-6.593 7.376-6.593 9.821h24c0-2.423-2.6-8.006-6.598-9.819z" />
   </svg>
 );
 
@@ -336,6 +323,16 @@ export const QuestionMarkCircle = ({ size }) => (
     </g>
   </svg>
 );
+export const Money = ({ size }) => (
+  <svg
+    height={size}
+    width={size}
+    xmlns="http://www.w3.org/2000/svg"
+    viewBox="0 0 24 24"
+  >
+    <path d="M19 16.166c0-4.289-4.465-5.483-7.887-7.091-2.079-1.079-1.816-3.658 1.162-3.832 1.652-.1 3.351.39 4.886.929l.724-3.295c-1.814-.551-3.437-.803-4.885-.841v-2.036h-2v2.134c-3.89.535-5.968 2.975-5.968 5.7 0 4.876 5.693 5.62 7.556 6.487 2.54 1.136 2.07 3.5-.229 4.021-1.993.451-4.538-.337-6.45-1.079l-.909 3.288c1.787.923 3.931 1.417 6 1.453v1.996h2v-2.105c3.313-.464 6.005-2.293 6-5.729z" />
+  </svg>
+);
 
 export const Arrow = ({ size }) => (
   <svg height={size} viewBox="0 0 44 30" xmlns="http://www.w3.org/2000/svg">
@@ -351,12 +348,12 @@ export const getLabelIcon = (label) => {
   switch (label) {
     case "location":
       return <Location size={size} />;
-    case "advertising":
-      return <Megaphone size={size} />;
-    case "fingerprinting":
-      return <Fingerprint size={size} />;
-    case "personalData":
+    case "tracking":
+      return <Tracking size={size} />;
+    case "watchlist":
       return <Personal size={size} />;
+    case "monetization":
+      return <Money size={size} />;
     default:
       return <QuestionMarkCircle size={size} />;
   }

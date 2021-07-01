@@ -75,14 +75,19 @@ An overview of the architecture of our extension is available [separately](https
 
 This project uses the following third party libraries and resources. We thank the developers.
 
-- [React](https://reactjs.org)
 - [Bootstrap](https://getbootstrap.com)
-- [Styled Components](https://styled-components.com)
-- [Framer Motion](https://www.framer.com/motion/)
-- [Ion Icons](https://ionicons.com)
+- [Disconnect Tracker Protection lists](https://github.com/disconnectme/disconnect-tracking-protection)
 - [Eva Icons](https://akveo.github.io/eva-icons/#/)
+- [iconmonstr](https://iconmonstr.com/)
+- [Simple Icons](https://github.com/simple-icons/simple-icons)
+- [Framer Motion](https://www.framer.com/motion/)
+- [Idb](https://www.npmjs.com/package/idb)
+- [Ion Icons](https://ionicons.com)
+- [JSDoc](https://www.npmjs.com/package/jsdoc)
+- [React](https://reactjs.org)
 - [Radar Icon](https://www.svgrepo.com/svg/167040/radar)
 - [React Spinners](https://www.npmjs.com/package/react-spinners)
+- [Styled Components](https://styled-components.com)
 
 <p align="center">
   <img src="https://github.com/privacy-tech-lab/integrated-privacy-analysis/blob/main/plt_logo.png" width="200px" height="200px" alt="privacy-tech-lab logo">

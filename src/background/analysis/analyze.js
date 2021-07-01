@@ -4,13 +4,13 @@ analyze.js
 - analyze.js analyzes network requests
 */
 
-import { Request, Evidence, typeEnum, permissionEnum } from "./classModels.js"
+import { Request, Evidence, typeEnum, permissionEnum, resourceTypeEnum } from "./classModels.js"
 import { openDB } from 'idb';
 import { evidence } from "../background.js"
 import { evidenceKeyval } from "./openDB.js"
 
 import { RegexSpecialChar, escapeRegExp } from "./regexFunctions.js"
-import { regexSearch, coordinateSearch, urlSearch, locationKeywordSearch, fingerprintSearch, ipSearch } from "./searchFunctions.js"
+import { regexSearch, coordinateSearch, urlSearch, locationKeywordSearch, fingerprintSearch, ipSearch, pixelSearch } from "./searchFunctions.js"
 import { getHostname } from "./util.js";
 
 // Temporary container to hold network requests while properties are being added from listener callbacks
@@ -31,12 +31,14 @@ const onBeforeRequest = (details, data) => {
     request = buffer[details.requestId]
     request.details = details !== undefined ? details : null
     request.requestBody = details.requestBody !== undefined ? details.requestBody : null
+    request.type = details.type !== undefined ? details.type : null
   } else {
     // requestID not seen, create new request, add details and request body as needed
     request = new Request({
       id: details.requestId,
       details: details !== undefined ? details : null,
       requestBody: details.requestBody !== undefined ? details.requestBody : null,
+      type: details.type !== undefined ? details.type : null,
     })
     buffer[details.requestId] = request
   }
@@ -112,7 +114,8 @@ function resolveBuffer(id, data) {
       request.requestHeaders !== undefined &&
       request.responseHeaders !== undefined &&
       request.details !== undefined &&
-      request.responseData !== undefined
+      request.responseData !== undefined &&
+      request.type !== undefined
     ) {
     // if our request is completely valid and we have everything we need to analyze
     // the request, continue. No else statement
@@ -134,8 +137,8 @@ function resolveBuffer(id, data) {
 /**
  * Calls the analysis functions from searchFunctions.js on the appropriate data that we have
  * 
- * @param {Request} request 
- * @param {Array} userData 
+ * @param {Request} request HTTP request.
+ * @param {Array} userData data from the watchlist to be searched for.
  * @returns {void} calls a number of functions
  */
 function analyze(request, userData) {
@@ -162,27 +165,27 @@ function analyze(request, userData) {
       locationKeywordSearch(strRequest, networkKeywords[permissionEnum.location], rootUrl, reqUrl)
     }
     // search for personal data from user's watchlist
-    if ( permissionEnum.personalData in networkKeywords) {
-      if ( typeEnum.Phone in networkKeywords[permissionEnum.personalData] ) {
-        networkKeywords[permissionEnum.personalData][typeEnum.phone].forEach( number => {
+    if ( permissionEnum.watchlist in networkKeywords) {
+      if ( typeEnum.Phone in networkKeywords[permissionEnum.watchlist] ) {
+        networkKeywords[permissionEnum.watchlist][typeEnum.phone].forEach( number => {
           regexSearch(strRequest, number, rootUrl, reqUrl, typeEnum.phone)
         })
       }
-      if ( typeEnum.Email in networkKeywords[permissionEnum.personalData] ) {
-        networkKeywords[permissionEnum.personalData][typeEnum.email].forEach( email => {
+      if ( typeEnum.Email in networkKeywords[permissionEnum.watchlist] ) {
+        networkKeywords[permissionEnum.watchlist][typeEnum.email].forEach( email => {
           regexSearch(strRequest, email, rootUrl, reqUrl, typeEnum.email)
         })
       }
 
-      if ( typeEnum.userKeyword in networkKeywords[permissionEnum.personalData] ) {
-        networkKeywords[permissionEnum.personalData][typeEnum.userKeyword].forEach ( keyword => {
+      if ( typeEnum.userKeyword in networkKeywords[permissionEnum.watchlist] ) {
+        networkKeywords[permissionEnum.watchlist][typeEnum.userKeyword].forEach ( keyword => {
           regexSearch(strRequest, keyword, rootUrl, reqUrl, typeEnum.userKeyword)
         })
       }
 
-      if ( typeEnum.ipAddress in networkKeywords[permissionEnum.personalData] ) {
-        networkKeywords[permissionEnum.personalData][typeEnum.ipAddress].forEach( ip => {
-          ipSearch(strRequest, ip, rootUrl, reqUrl, typeEnum.ipAddress)
+      if ( typeEnum.ipAddress in networkKeywords[permissionEnum.watchlist] ) {
+        networkKeywords[permissionEnum.watchlist][typeEnum.ipAddress].forEach( ip => {
+          ipSearch(strRequest, ip, rootUrl, reqUrl)
         })
       }
     }
@@ -192,6 +195,11 @@ function analyze(request, userData) {
 
     // search to see if any fingerprint data
     fingerprintSearch(strRequest, networkKeywords, rootUrl, reqUrl)
+
+    // if the request is an image or subFrame and is coming from a different url than the root, we look for our pixel URLs
+    if ( (request.type == resourceTypeEnum.image || request.type == resourceTypeEnum.subFrame) && rootUrl != reqUrl ) {
+      pixelSearch(strRequest, networkKeywords, rootUrl, reqUrl)
+    }
 }
 
 /**

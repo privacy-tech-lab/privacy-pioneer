@@ -1,7 +1,8 @@
 import { getHostname } from "./util.js"
 import { evidenceKeyval } from "./openDB.js"
-import { Evidence, typeEnum } from "./classModels.js"
+import { Evidence, typeEnum, storeEnum } from "./classModels.js"
 import { ipSearch } from "./searchFunctions.js"
+const parentJson = require('../../assets/parents.json')
 
 /**
  * 
@@ -20,6 +21,9 @@ import { ipSearch } from "./searchFunctions.js"
  * given rootUrl and a maximum of 5 pieces of evidence in total for a permission/type.
  */
 async function addToEvidenceList(perm, rootU, snip, requestU, t, i) {
+
+  // We do not want calls to the api we use for getting a user's IP to show up in evidence. Whitelist this domain.
+  if (requestU == 'http://ip-api.com/json/'){return;}
   
   var ts = Date.now()
   if (rootU == undefined) {
@@ -31,16 +35,14 @@ async function addToEvidenceList(perm, rootU, snip, requestU, t, i) {
     console.log(perm, snip, requestU, t)
     return
   }
-
-   // hacky way to deal with the way we iterate through the disconnect json
-   if (perm.includes("fingerprint")) { perm = "fingerprinting"}
-   if (perm.includes("advertising")) { t = "analytics" }
-   if (perm.includes("analytics")) { perm = "advertising" }
     
   var rootUrl = getHostname(rootU)
   var reqUrl = getHostname(requestU)
 
   // gets the ten most recently visited websites
+  /**
+   * @var historyQuery Searches most recent sites opened in the browser
+   */
   var historyQuery = browser.history.search({text: "", maxResults: 10})
 
   /**
@@ -56,24 +58,53 @@ async function addToEvidenceList(perm, rootU, snip, requestU, t, i) {
     
     return recentlyVisited.has(rootUrl)
   }
+ 
+  /**
+   * Identifies if the request url hostname is in our list of parent companies, modified from Disconnect's entities.json, 
+   * found here (https://github.com/disconnectme/disconnect-tracking-protection/blob/master/entities.json). 
+   * Changes were made to compile the properties and resources lists from that json into one list, then filtered so that 
+   * only companies with 5 or more related websites are searched for
+   * 
+   * @param {string} reqHost The request host name
+   * @param {object} parents The parents json from src/assets/parents.json
+   * @returns {string|null} The parent company of the website making the request
+   */
+  function getParent(reqHost, parents = parentJson){
+    for (const [entry, relationList] of Object.entries(parents)){
+      if (entry!="__comment"){
+        for (const [parent, urlLst] of Object.entries(relationList)){
+          for (const url of urlLst) {
+            if (reqHost.includes(url)){
+              return parent
+            }
+          }
+        }
+      }
+    }
+    return null
+  }
 
   // after we queried the browser history, we can proceed with updating evidence
   historyQuery.then( queryData => {
 
     let isFirstParty = firstPartyCheck(queryData)
-    setEvidence(isFirstParty)
+    let requestParent = getParent(reqUrl)
+    setEvidence(isFirstParty, requestParent)
 
     /**
      * Takes the parameters from the outer addToEvidenceList function, queries what's currently in the database at
      * the given rootUrl and updates the DB accordingly. 
      * 
      * @param {boolean} firstParty Whether or not the evidence has a rootUrl that the user visited
+     * @param {string} requestParent Parent company of site making the request, if possible
      * @returns {void} Nothing. Populates the DB with the new evidence.
      *
      */
-    async function setEvidence(firstParty) {
+    async function setEvidence(firstParty, requestParent) {
 
-      var evidence = await evidenceKeyval.get(rootUrl)
+      const store = firstParty == true ? storeEnum.firstParty : storeEnum.thirdParty;
+
+      var evidence = await evidenceKeyval.get(rootUrl, store)
     
       const e = new Evidence( {
         timestamp: ts,
@@ -83,7 +114,8 @@ async function addToEvidenceList(perm, rootU, snip, requestU, t, i) {
         requestUrl: requestU,
         typ: t,
         index: i,
-        firstPartyRoot: firstParty
+        firstPartyRoot: firstParty,
+        parentCompany: requestParent
       } )
     
       // if we don't have evidence yet, we initialize it as an empty dict
@@ -99,13 +131,13 @@ async function addToEvidenceList(perm, rootU, snip, requestU, t, i) {
             // if we have less than 5 different reqUrl's for this permission and this is a unique reqUrl, we save the evidence
             if ((Object.keys(evidence[perm][t]).length < 5) && !(reqUrl in evidence[perm][t] )) {
               evidence[perm][t][reqUrl] = e
-              evidenceKeyval.set(rootUrl, evidence)
+              evidenceKeyval.set(rootUrl, evidence, store)
             }
           }
           else { // we don't have this type yet, so we initialize it
             evidence[perm][t] = {}
             evidence[perm][t][reqUrl] = e
-            evidenceKeyval.set(rootUrl, evidence)
+            evidenceKeyval.set(rootUrl, evidence, store)
           }
         }
         else { // we don't have this permission yet so we initialize
@@ -115,7 +147,7 @@ async function addToEvidenceList(perm, rootU, snip, requestU, t, i) {
           evidence[perm][t] = {}
     
           evidence[perm][t][reqUrl] = e
-          evidenceKeyval.set(rootUrl, evidence)
+          evidenceKeyval.set(rootUrl, evidence, store)
         }
     
       }
@@ -124,7 +156,7 @@ async function addToEvidenceList(perm, rootU, snip, requestU, t, i) {
         evidence[perm] = {}
         evidence[perm][t] = {}
         evidence[perm][t][reqUrl] = e
-        evidenceKeyval.set(rootUrl, evidence)
+        evidenceKeyval.set(rootUrl, evidence, store)
       }
     }
   } )
