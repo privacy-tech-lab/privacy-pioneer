@@ -22,6 +22,8 @@ const parentJson = require('../../assets/parents.json')
  */
 async function addToEvidenceList(perm, rootU, snip, requestU, t, i, optOuts) {
 
+  if (rootU == undefined || reqUrl == undefined) { return }
+
   async function placeInStore(e, firstParty) {
     const store = firstParty == true ? storeEnum.firstParty : storeEnum.thirdParty;
     var evidence = await evidenceKeyval.get(rootUrl, store)
@@ -66,7 +68,6 @@ async function addToEvidenceList(perm, rootU, snip, requestU, t, i, optOuts) {
       evidence[perm][t][reqUrl] = e
       evidenceKeyval.set(rootUrl, evidence, store)
     }
-    console.log(evidence)
   }
 
   // We do not want calls to the api we use for getting a user's IP to show up in evidence. Whitelist this domain.

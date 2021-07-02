@@ -102,7 +102,6 @@ const onHeadersReceived = (details, data) => {
     })
     buffer[details.requestId] = request
   }
-
   // below
   resolveBuffer(request.id, data)
 }
@@ -123,11 +122,14 @@ function resolveBuffer(id, data) {
     // delete the request from our buffer (we have it stored for this function as request)
     delete buffer[id]
 
+    // this should be done only once. it's result can be passed throughout the extension.
+    const strRequest = JSON.stringify(request);
+
     //tag the request's optOuts
-    const optOuts = tagOptOuts(request);
+    const optOuts = tagOptOuts(request, strRequest);
 
     // run analysis
-    analyze(request, data, optOuts);
+    analyze(request, data, optOuts, strRequest);
 
     }
   } 
@@ -146,9 +148,10 @@ function resolveBuffer(id, data) {
  * @param {Dict} optOuts a dictionary mapping privacy schemes to our opt-our finding for that scheme
  * @returns {void} calls a number of functions
  */
-function analyze(request, userData, optOuts) {
+function analyze(request, userData, optOuts, strRequest) {
 
-  const strRequest = JSON.stringify(request)
+  
+  
 
   // this 0, 1, 2 comes from the structure of the importData function
   // location we obtained from google maps API
