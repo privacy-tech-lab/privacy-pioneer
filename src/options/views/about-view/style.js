@@ -6,6 +6,7 @@ export const SContainer = styled.section`
 
 export const STitle = styled.div`
   font-size: var(--title1);
+  margin-bottom: 8px;
   font-weight: bold;
 `;
 
@@ -20,13 +21,35 @@ export const SBody = styled.div`
 export const SAnswer = styled.div`
   margin-top: 8px;
   text-align: justify;
-  font-size: var(--body1);
+  font-size: 16px;
   margin-right: 48px;
 `;
 
 export const SQuestion = styled.div`
-  margin-top: 16px;
   color: var(--secondaryTextColor);
   font-size: var(--title2);
   font-weight: bold;
+  display: flex;
+  justify-content: space-between;
+`;
+
+export const SQuestionCard = styled.div`
+  background-color: var(--cardColor);
+  justify-self: stretch;
+  margin-left: 16px;
+  margin-right: 16px;
+  cursor: pointer;
+  padding: 8px 0px 8px 8px;
+  margin-bottom: 12px;
+  border-radius: 8px;
+  :hover {
+    filter: brightness(0.95);
+  }
+  :active {
+    filter: brightness(1.05);
+  }
+`;
+
+export const SArrow = styled.div`
+  margin-right: 8px;
 `;

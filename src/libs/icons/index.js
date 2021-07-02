@@ -340,6 +340,17 @@ export const Arrow = ({ size }) => (
   </svg>
 );
 
+export const ArrowDown = ({ size }) => (
+  <svg
+    width={size}
+    viewBox="0 0 24 24"
+    fill="none"
+    xmlns="http://www.w3.org/2000/svg"
+  >
+    <path d="M21 5L24 8.057L12 20L-1.33626e-07 8.057L3 5L12 14L21 5Z" />
+  </svg>
+);
+
 /**
  * Mappings of icons to privacy labels
  */
