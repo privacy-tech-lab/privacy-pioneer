@@ -11,7 +11,7 @@ import {
   SQuestionCard,
   SArrow,
 } from "./style";
-import Questions from "./faq.json";
+import { FAQ } from "./faq";
 import { ArrowDown } from "../../../libs/icons";
 /**
  * About page view
@@ -53,9 +53,11 @@ const AboutView = () => {
           data they collect.
         </SBody>
         <STitle>FAQ</STitle>
-        {Object.entries(Questions.FAQ).map(([question, answer], index) => (
-          <QuestionCard question={question} answer={answer} key={index} />
-        ))}
+        <SBody>
+          {Object.entries(FAQ).map(([question, answer], index) => (
+            <QuestionCard question={question} answer={answer} key={index} />
+          ))}
+        </SBody>
       </SContainer>
     </Scaffold>
   );

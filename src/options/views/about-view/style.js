@@ -6,7 +6,6 @@ export const SContainer = styled.section`
 
 export const STitle = styled.div`
   font-size: var(--title1);
-  margin-bottom: 8px;
   font-weight: bold;
 `;
 
@@ -14,7 +13,8 @@ export const SSubtitle = styled.div`
   color: var(--secondaryTextColor);
 `;
 export const SBody = styled.div`
-  margin-top: 12px;
+  margin-top: 8px;
+  margin-bottom: 12px;
   font-size: var(--headline);
 `;
 
@@ -23,6 +23,7 @@ export const SAnswer = styled.div`
   text-align: left;
   font-size: 18px;
   margin-right: 8px;
+  cursor: text;
 `;
 
 export const SQuestion = styled.div`
