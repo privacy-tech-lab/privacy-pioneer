@@ -1,7 +1,7 @@
 import React from "react";
 
 export const FAQ = {
-  "Do you collect any of my data?": (
+  "Does ___ collect any of my data?": (
     <text>
       Absolutely not! Our extension is entirely local to your computer—we do not 
       store any data outside of your browser. Feel free to check the source code 

@@ -27,9 +27,9 @@ export const SAnswer = styled.div`
 `;
 
 export const SQuestion = styled.div`
-  color: var(--secondaryTextColor);
+  color: var(--primaryTextColor);
   font-size: var(--title2);
-  font-weight: bold;
+  font-weight: 600;
   display: flex;
   justify-content: space-between;
 `;
@@ -43,12 +43,6 @@ export const SQuestionCard = styled.div`
   padding: 12px 0px 12px 8px;
   margin-bottom: 12px;
   border-radius: 8px;
-  :hover {
-    filter: brightness(0.95);
-  }
-  :active {
-    filter: brightness(1.05);
-  }
 `;
 
 export const SArrow = styled.div`
