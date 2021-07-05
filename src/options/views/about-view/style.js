@@ -19,10 +19,10 @@ export const SBody = styled.div`
 `;
 
 export const SAnswer = styled.div`
-  margin-top: 8px;
-  text-align: justify;
-  font-size: 16px;
-  margin-right: 48px;
+  margin-top: 12px;
+  text-align: left;
+  font-size: 18px;
+  margin-right: 8px;
 `;
 
 export const SQuestion = styled.div`
@@ -39,7 +39,7 @@ export const SQuestionCard = styled.div`
   margin-left: 16px;
   margin-right: 16px;
   cursor: pointer;
-  padding: 8px 0px 8px 8px;
+  padding: 12px 0px 12px 8px;
   margin-bottom: 12px;
   border-radius: 8px;
   :hover {
