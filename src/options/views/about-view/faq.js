@@ -3,16 +3,16 @@ import React from "react";
 export const FAQ = {
   "Do you collect any of my data?": (
     <text>
-      Absolutely not! We will not store any data outside of your browser.Feel
-      free to check the source code of ___ at ___.
+      Absolutely not! Our extension is entirely local to your computer—we do not 
+      store any data outside of your browser. Feel free to check the source code 
+      of ___ at ___.
     </text>
   ),
   "How does ___ process my data?": (
     <text>
       ___ stores all of its data in your browser’s storage. That means that all
       data which ____ collects and displays to you within its popup or options
-      page stays on your computer and is never seen by us or anyone other than
-      yourself.
+      page stays on your computer and is never seen by us or anyone else.
     </text>
   ),
   "Do I need an account to use ___?": <text>Nope, just go ahead. :).</text>,
@@ -36,23 +36,26 @@ export const FAQ = {
   ),
   "How can a website track me without my knowledge?": (
     <text>
-      Using just a few lines of code, buried among functionality that make the
-      website work, a site can send your browsing history, location, and other
-      information to third party sites they integrate, for example, ad networks.
-      Technically, this works through a process called redirection. When you
-      visit a website, it can tell your browser to also visit other sites to
-      fetch an ad. Through this ad it can then track you.
+      Every time you load a web page, up to hundreds of requests between 
+      your computer and the website you loaded take place. These requests
+      can pass all kinds of data, including your location, IP address, or 
+      an identifier to track your activity across browsing sessions. 
+      Such requests could be initiated by the server you intended, say abc.com, 
+      but can also be initiated by third parties: abc.com initiates a request 
+      from def.com.
     </text>
   ),
   "What is ___ actually doing?": (
     <text>
-      ____ analyzes HTTP requests, responses, and related data, and stores
+      ____ analyzes HTTP requests, responses, and related data, and stores 
       tracking information in a textual format in your browser’s secure storage.
-      ___ then informs you when privacy-invasive procedures have occurred. Note
-      that ____ does not stop these procedures; ____ is an informative browser
-      extension intending to give you greater understanding of these processes
-      on the web. If you want to block tracking you will need an ad or tracking
-      blocker extension.
+       ___ then informs you when privacy-invasive procedures have occurred with 
+       the appropriate labels. Note that ____ does not block or intervene with 
+       these procedures; ____ is an information-focused browser extension 
+       intending to give you greater understanding of the web. If you want to 
+       block tracking in the first place, consider tools like Privacy Badger, 
+       uBlockOrigin, or a proxy service.
+
     </text>
   ),
   "What are first and third party websites?": (
