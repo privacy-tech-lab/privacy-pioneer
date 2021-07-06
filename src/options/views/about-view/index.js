@@ -17,7 +17,6 @@ import { ArrowDown } from "../../../libs/icons";
  * About page view
  */
 const AboutView = () => {
-  console.log();
   const QuestionCard = ({ question, answer }) => {
     const [open, setOpen] = useState(false);
 
@@ -49,8 +48,8 @@ const AboutView = () => {
         <STitle>About</STitle>
         <SSubtitle>Learn more about our extension</SSubtitle>
         <SBody>
-          ____ makes it transparent which websites are tracking you and which
-          data they collect.
+          _____ will inform you which websites are tracking you and what data
+          they collect.
         </SBody>
         <STitle>FAQ</STitle>
         <SBody>

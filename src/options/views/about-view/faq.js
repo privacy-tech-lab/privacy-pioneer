@@ -3,8 +3,8 @@ import React from "react";
 export const FAQ = {
   "Does ___ collect any of my data?": (
     <text>
-      Absolutely not! Our extension is entirely local to your computer—we do not 
-      store any data outside of your browser. Feel free to check the source code 
+      Absolutely not! Our extension is entirely local to your computer—we do not
+      store any data outside of your browser. Feel free to check the source code
       of ___ at ___.
     </text>
   ),
@@ -36,26 +36,24 @@ export const FAQ = {
   ),
   "How can a website track me without my knowledge?": (
     <text>
-      Every time you load a web page, up to hundreds of requests between 
-      your computer and the website you loaded take place. These requests
-      can pass all kinds of data, including your location, IP address, or 
-      an identifier to track your activity across browsing sessions. 
-      Such requests could be initiated by the server you intended, say abc.com, 
-      but can also be initiated by third parties: abc.com initiates a request 
-      from def.com.
+      Every time you load a web page, up to hundreds of requests between your
+      computer and the website you loaded take place. These requests can pass
+      all kinds of data, including your location, IP address, or an identifier
+      to track your activity across browsing sessions. Such requests could be
+      initiated by the server you intended, say abc.com, but can also be
+      initiated by third parties: abc.com initiates a request from def.com.
     </text>
   ),
   "What is ___ actually doing?": (
     <text>
-      ____ analyzes HTTP requests, responses, and related data, and stores 
+      ____ analyzes HTTP requests, responses, and related data, and stores
       tracking information in a textual format in your browser’s secure storage.
-       ___ then informs you when privacy-invasive procedures have occurred with 
-       the appropriate labels. Note that ____ does not block or intervene with 
-       these procedures; ____ is an information-focused browser extension 
-       intending to give you greater understanding of the web. If you want to 
-       block tracking in the first place, consider tools like Privacy Badger, 
-       uBlockOrigin, or a proxy service.
-
+      ___ then informs you when privacy-invasive procedures have occurred with
+      the appropriate labels. Note that ____ does not block or intervene with
+      these procedures; ____ is an information-focused browser extension
+      intending to give you greater understanding of the web. If you want to
+      block tracking in the first place, consider tools like Privacy Badger,
+      uBlockOrigin, or a proxy service.
     </text>
   ),
   "What are first and third party websites?": (
@@ -78,8 +76,11 @@ export const FAQ = {
   "What is the ____ license? Where can I find the ____ source code?": (
     <text>
       ___ is licensed under the{" "}
-      <a href="https://mit-license.org/">MIT license</a>. The ___ source code
-      can be found on the{" "}
+      <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/">
+        Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International
+        license
+      </a>
+      . The ___ source code can be found on the{" "}
       <a href="https://github.com/privacy-tech-lab/integrated-privacy-analysis">
         {" "}
         privacy-tech-lab’s ____ GitHub
