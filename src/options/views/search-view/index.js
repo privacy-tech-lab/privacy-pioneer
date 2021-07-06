@@ -14,7 +14,6 @@ import { useHistory, useLocation } from "react-router";
  */
 const SearchView = () => {
   const location = useLocation();
-  console.log(location.state);
   const [allWebsites, setAllWebsites] = useState({});
   const [filteredSites, setFilter] = useState(typeof(location.state) != "undefined" ? location.state[0] : {}); // all websites in DB (passed from previous page)
   const [webLabels, setWebLabels] = useState(typeof(location.state) != "undefined" ? location.state[1] : {});  // all labels in DB (passed from previous page)
