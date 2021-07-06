@@ -6,16 +6,18 @@ import * as Icons from "../../../libs/icons";
 import { Modal } from "bootstrap";
 import LabelModal from "../home-view/components/detail-modal";
 import WebsiteLabelList from "../../components/website-label-list";
-import { getAllWebsiteLabels, getWebsites } from "../../../libs/indexed-db";
-import { useHistory } from "react-router";
+import { getAllWebsiteLabels, getWebsiteLabels, getWebsites } from "../../../libs/indexed-db";
+import { useHistory, useLocation } from "react-router";
 
 /**
  * Search view allowing user to search from identified labels
  */
 const SearchView = () => {
+  const location = useLocation();
+  console.log(location.state);
   const [allWebsites, setAllWebsites] = useState({});
-  const [filteredSites, setFilter] = useState({});
-  const [webLabels, setWebLabels] = useState({});
+  const [filteredSites, setFilter] = useState(typeof(location.state) != "undefined" ? location.state[0] : {}); // all websites in DB (passed from previous page)
+  const [webLabels, setWebLabels] = useState(typeof(location.state) != "undefined" ? location.state[1] : {});  // all labels in DB (passed from previous page)
   const [modal, setModal] = useState({ show: false });
   const history = useHistory();
 
@@ -43,8 +45,15 @@ const SearchView = () => {
   useEffect(() => {
     getWebsites().then((websites) => {
       setAllWebsites(websites);
-      setFilter(websites);
-      getAllWebsiteLabels(websites).then((res) => setWebLabels(res));
+
+      // we only call the setFilter and setWebLabels hooks if we weren't passed the data
+      // from the previous page
+      if (typeof(location.state) == "undefined") {
+        setFilter(websites);
+      }
+      if (typeof(location.state) == "undefined") {
+        getAllWebsiteLabels(websites).then((res) => {setWebLabels(res);});
+      }
     });
   }, []);
 
