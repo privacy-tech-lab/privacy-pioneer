@@ -17,6 +17,7 @@ the codebase.
  * @property {object} responseData A StreamFilter object used to monitor the response. https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/API/webRequest/StreamFilter
  * @property {string} error After an error event is fired. This property will contain information about the error.  https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/API/webRequest/StreamFilter/onerror
  * @property {string} type We set up a filter for types in background.js. We look at types enumerated in resourceTypeEnum
+ * @property {Object} urlClassification The urlClassification flags given by firefox in the onHeadersReceived callback. These come from the disconnect.me list. https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/API/webRequest/onHeadersReceived
  * @throws Error. Event that fires on error. Usually due to invalid ID to the webRequest.filterResponseData()
  */
 export class Request {
