@@ -103,15 +103,13 @@ export async function importData() {
         networkKeywords[permissionEnum.watchlist][typeEnum.ipAddress] = user_store_dict[typeEnum.ipAddress]
     }
 
-    // build fingerprinting info. Adding fingerprinting library keywords, 
-    // JSON list methods 
-    networkKeywords[permissionEnum.fingerprinting] = {}
-    networkKeywords[permissionEnum.fingerprinting][typeEnum.fingerprintLib] = keywords["FINGERPRINT"]["fpLibraryList"]
-    networkKeywords[permissionEnum.fingerprinting][typeEnum.fingerprintJSON] =  keywords["FINGERPRINT"]["fpJSONList"]
-
-    // build pixel info.
+    // build tracking info
     networkKeywords[permissionEnum.tracking] = {}
     networkKeywords[permissionEnum.tracking][typeEnum.trackingPixel] = keywords["PIXEL"]["URLs"]
+
+    // build fingerprinting info. Adding fingerprinting library keywords, 
+    // JSON list methods 
+    networkKeywords[permissionEnum.tracking][typeEnum.fingerprinting] = keywords["FINGERPRINT"]
 
     // returns [location we obtained from google maps API, {phone #s, emails, 
     // location elements entered by the user, fingerprinting keywords}, websites 

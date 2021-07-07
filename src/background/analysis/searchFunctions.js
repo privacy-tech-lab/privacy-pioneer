@@ -35,12 +35,14 @@ function locationKeywordSearch(strReq, locElems, rootUrl, reqUrl) {
  * used by the addDisconnectEvidence function to translate the disconnect JSON into our permission type schema.
  * Maps strings to array of length 2.
  */
-const classificationTransformation = { "tracking_ad": [permissionEnum.monetization, typeEnum.advertising], 
-                                    "tracking_analytics": [permissionEnum.monetization, typeEnum.analytics],
-                                    "fingerprinting": [permissionEnum.tracking, typeEnum.fingerprinting],
-                                    "fingerprinting_content": [permissionEnum.tracking, typeEnum.fingerprinting],
-                                    "tracking_social": [permissionEnum.monetization, typeEnum.social],
-                                  }
+const classificationTransformation = { 
+  "tracking": [permissionEnum.tracking, typeEnum.analytics],
+  "tracking_ad": [permissionEnum.monetization, typeEnum.advertising], 
+  "tracking_analytics": [permissionEnum.monetization, typeEnum.analytics],
+  "fingerprinting": [permissionEnum.tracking, typeEnum.fingerprinting],
+  "fingerprinting_content": [permissionEnum.tracking, typeEnum.fingerprinting],
+  "tracking_social": [permissionEnum.monetization, typeEnum.social],
+  }
                             
 /**
  * Iterates through the disconnect list and adds evidence accordingly. It creates evidence with the category of the disconnect JSON as both the permission
@@ -69,8 +71,8 @@ function urlSearch(strReq, rootUrl, reqUrl, classifications) {
   }
 
 /**
- * Iterates through the disconnect list and adds evidence accordingly. It creates evidence with the category of the disconnect JSON as both the permission
- * and the type.
+ * Iterates through the disconnect list and adds evidence accordingly. 
+ * Only iterating through the fingerprintingInvasive category right now.
  * 
  * @param {Request} request An HTTP request
  * @param {object} urls The disconnect JSON
@@ -80,14 +82,15 @@ function urlSearch(strReq, rootUrl, reqUrl, classifications) {
 
   /**
    * adds a piece of evidence from the disconnect JSON to allign with our permission type schema.
+   * @param {string} perm permission from permissionEnum
+   * @param {string} type type from typeEnum
    * @returns {void} Nothing. Adds to evidence list
    */
-  function addDisconnectEvidence() {
-    let perm = permissionEnum.trackin
+  function addDisconnectEvidence(perm, type) {
     addToEvidenceList(perm, request.details["originUrl"], "null", request.details["url"], type, undefined)
   }
   
-  // First we can iterate through URLs
+  // The fingerprintingInvasive category is the only one we are traversing.
   const cat = 'fingerprintingInvasive'
   var fpInv = urls["categories"][cat]
   for (var j = 0; j < fpInv.length; j++) {
@@ -100,7 +103,7 @@ function urlSearch(strReq, rootUrl, reqUrl, classifications) {
       // if there are multiple URLs on the list we go here
       for (var u = 0; u < urlLst.length; u++) {
         if (url.includes(urlLst[u])) {
-            addDisconnectEvidence(cat);
+            addDisconnectEvidence(permissionEnum.tracking, typeEnum.fingerprinting);
         }
       }
     }
@@ -218,7 +221,7 @@ function regexSearch(strReq, keyword, rootUrl, reqUrl, type, perm = permissionEn
  * Searches a request for the fingerprinting elements populated in the networkKeywords it is passed. These elements can be found in the keywords JSON
  */
 function fingerprintSearch(strReq, networkKeywords, rootUrl, reqUrl) {
-  const fpElems = networkKeywords[permissionEnum.fingerprinting]
+  const fpElems = networkKeywords[permissionEnum.tracking][typeEnum.fingerprinting]
   for (const [k, v] of Object.entries(fpElems)) {
     for (const keyword of v){
       const idxKeyword = strReq.indexOf(keyword);
