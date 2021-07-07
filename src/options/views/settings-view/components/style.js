@@ -63,7 +63,7 @@ export const SThemeIcon = styled(motion.div)`
   padding: 8px;
   margin: 8px;
   cursor: pointer;
-  border: ${(props) =>
+  outline: ${(props) =>
     props.theme == props.selTheme
       ? "5px solid var(--primaryBrandColor)"
       : null};

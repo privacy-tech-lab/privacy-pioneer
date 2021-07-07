@@ -24,6 +24,14 @@ export const toggleLabel = async (label) => {
   }
 };
 
+export const getLabelStatus = async () => {
+  let labelStatus = {};
+  for (const label of Object.values(permissionEnum)) {
+    labelStatus[label] = await settingsKeyval.get(label);
+  }
+  return labelStatus;
+};
+
 export const setTheme = async (theme) => {
   await settingsKeyval.set("theme", theme);
   console.log(theme);

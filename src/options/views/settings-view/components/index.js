@@ -1,6 +1,13 @@
 import React, { useEffect, useState } from "react";
+import { permissionEnum } from "../../../../background/analysis/classModels";
 import * as Icons from "../../../../libs/icons";
-import { getTheme, setTheme, settingsEnum } from "../../../../libs/settings";
+import {
+  getLabelStatus,
+  getTheme,
+  setTheme,
+  settingsEnum,
+  toggleLabel,
+} from "../../../../libs/settings";
 import {
   SSubtitle,
   SSettingHeader,
@@ -40,27 +47,38 @@ export const ToggleSwitch = ({ isActive, label, onClick, spaceBetween }) => (
 );
 
 export const LabelToggle = () => {
-  const [active, SetActive] = useState(true);
+  const [labelStatus, SetLabelStatus] = useState({
+    [permissionEnum.monetization]: true,
+    [permissionEnum.tracking]: true,
+    [permissionEnum.location]: true,
+    [permissionEnum.watchlist]: true,
+  });
+
+  useEffect(
+    () =>
+      getLabelStatus().then((res) => {
+        if (res != {}) SetLabelStatus(res);
+      }),
+    []
+  );
+  const toggle = (label) => {
+    toggleLabel(label);
+    let newLabelStatus = labelStatus;
+    let previousStatus = newLabelStatus[label];
+    newLabelStatus[label] = !previousStatus;
+    SetLabelStatus(newLabelStatus);
+  };
   return (
     <SLabelToggle>
-      <ToggleSwitch
-        isActive={active}
-        onClick={() => SetActive(!active)}
-        label="Monetization"
-        spaceBetween
-      />
-      <ToggleSwitch
-        isActive={active}
-        onClick={() => SetActive(!active)}
-        label="Tracking"
-        spaceBetween
-      />
-      <ToggleSwitch
-        isActive={active}
-        onClick={() => SetActive(!active)}
-        label="Personal Data"
-        spaceBetween
-      />
+      {Object.values(permissionEnum).map((label) => (
+        <ToggleSwitch
+          isActive={labelStatus[label]}
+          onClick={() => toggle(label)}
+          label={label.charAt(0).toUpperCase() + label.slice(1)}
+          key={label}
+          spaceBetween
+        />
+      ))}
     </SLabelToggle>
   );
 };
@@ -80,7 +98,9 @@ export const ThemeSelection = () => {
         selTheme={selTheme}
         theme={settingsEnum.light}
         whileHover={{ scale: 1.1 }}
-        onTap={async () => await setTheme(settingsEnum.light)}
+        onTap={async () => {
+          await setTheme(settingsEnum.light), setSelTheme(settingsEnum.light);
+        }}
       >
         <Icons.Sun size={48} />
       </SThemeIcon>
@@ -88,7 +108,9 @@ export const ThemeSelection = () => {
         selTheme={selTheme}
         theme={settingsEnum.dark}
         whileHover={{ scale: 1.1 }}
-        onTap={async () => await setTheme(settingsEnum.dark)}
+        onTap={async () => {
+          await setTheme(settingsEnum.dark), setSelTheme(settingsEnum.dark);
+        }}
       >
         <Icons.Sun size={48} />
       </SThemeIcon>
@@ -96,7 +118,10 @@ export const ThemeSelection = () => {
         theme={settingsEnum.sameAsSystem}
         selTheme={selTheme}
         whileHover={{ scale: 1.1 }}
-        onTap={async () => await setTheme(settingsEnum.sameAsSystem)}
+        onTap={async () => {
+          await setTheme(settingsEnum.sameAsSystem),
+            setSelTheme(settingsEnum.sameAsSystem);
+        }}
       >
         <Icons.Settings size={48} />
       </SThemeIcon>
