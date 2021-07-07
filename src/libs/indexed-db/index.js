@@ -6,13 +6,15 @@ import {
   privacyLabels,
   storeEnum,
 } from "../../background/analysis/classModels";
+import { setDefault } from "../settings";
 
 /**
  * Create/open indexed-db to store keywords for watchlist
  */
-const dbPromise = openDB("watchlist-store", 1, {
+const dbPromise = openDB("UserData-store", 1, {
   upgrade(db) {
     db.createObjectStore("watchlist");
+    db.createObjectStore("userSettings");
   },
 });
 
@@ -37,6 +39,27 @@ export const watchlistKeyval = {
   },
   async values() {
     return (await dbPromise).getAll("watchlist");
+  },
+};
+
+export const settingsKeyval = {
+  async get(key) {
+    return (await dbPromise).get("userSettings", key);
+  },
+  async set(key, val) {
+    return (await dbPromise).put("userSettings", val, key);
+  },
+  async delete(key) {
+    return (await dbPromise).delete("userSettings", key);
+  },
+  async clear() {
+    return (await dbPromise).clear("userSettings");
+  },
+  async keys() {
+    return (await dbPromise).getAllKeys("userSettings");
+  },
+  async values() {
+    return (await dbPromise).getAll("userSettings");
   },
 };
 
@@ -103,7 +126,9 @@ export const deleteKeyword = async (id) => {
 export const getWebsiteLabels = async (website) => {
   try {
     var evidence = await evidenceIDB.get(website, storeEnum.firstParty); // first try first party DB
-    if (evidence == undefined) { evidence = await evidenceIDB.get(website, storeEnum.thirdParty);} // then try third party DB
+    if (evidence == undefined) {
+      evidence = await evidenceIDB.get(website, storeEnum.thirdParty);
+    } // then try third party DB
     const result = {};
     for (const [label, value] of Object.entries(evidence)) {
       for (const [type, requests] of Object.entries(value)) {
@@ -171,10 +196,9 @@ export const getLabels = async (websites) => {
 
 const getNumOfWebsites = (label) => Object.keys(label).length;
 
-
 /**
  * Builds up dictionary of labels
- * 
+ *
  * @param {String} store Which store from the evidenceKeyval you're drawing from
  * @param {Dict} res Resulting dictionary
  * @returns Void
@@ -187,13 +211,12 @@ const buildLabels = async (store, res) => {
       const labels = Object.keys(evidence).filter(
         (label) => label in privacyLabels
       ); // verify label in privacy labels
-      if (labels.length && !( website in res ) ) res[website] = labels; // give priority to first party labels if we have the same key in both stores
+      if (labels.length && !(website in res)) res[website] = labels; // give priority to first party labels if we have the same key in both stores
     }
+  } catch (error) {
+    return {};
   }
-  catch (error) {
-    return {}
-  }
-}
+};
 
 /**
  * Get all identified websites and thier labels from indexedDB
@@ -208,7 +231,6 @@ export const getWebsites = async () => {
     await buildLabels(storeEnum.thirdParty, result); // third party labels
 
     return result;
-
   } catch (error) {
     return {};
   }

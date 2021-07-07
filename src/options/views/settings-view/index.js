@@ -8,34 +8,19 @@ import {
   SBody,
   SSection,
   SSeperator,
-  SSwitch,
-  SKnob,
-  SSwitchLabel,
-  SLabelToggle,
 } from "./style";
-
-const ToggleSwitch = ({ isActive, label, onClick, margin }) => (
-  <div style={{ display: "flex", flexDirection: "row", margin: "12px 0px" }}>
-    <SSwitchLabel>{label}</SSwitchLabel>
-    <SSwitch active={isActive} onClick={onClick}>
-      <SKnob
-        variants={{
-          off: { x: 0 },
-          on: { x: 28 },
-        }}
-        transition={{ type: "tween" }}
-        initial={isActive ? "on" : "off"}
-        animate={isActive ? "on" : "off"}
-      />
-    </SSwitch>
-  </div>
-);
+import {
+  ToggleSwitch,
+  ThemeSelection,
+  ExportData,
+  DangerZone,
+  LabelToggle,
+} from "./components";
 
 /**
  * Settings page view
  */
 const SettingsView = () => {
-  const [active, SetActive] = useState(true);
   return (
     <Scaffold>
       <SContainer>
@@ -43,35 +28,23 @@ const SettingsView = () => {
         <SSubtitle>Manage the extension</SSubtitle>
         <SBody>
           <SSection>
-            <ToggleSwitch
-              isActive={active}
-              onClick={() => SetActive(!active)}
-              label="Enabled"
-            />
+            <ToggleSwitch label="Enabled" />
             <SSettingHeader>Labels</SSettingHeader>
             <SSubtitle>Toggle which labels you want to track</SSubtitle>
-            <SLabelToggle>
-              <ToggleSwitch
-                isActive={active}
-                onClick={() => SetActive(!active)}
-                label="Monetization"
-              />
-              <ToggleSwitch
-                isActive={active}
-                onClick={() => SetActive(!active)}
-                label="Tracking"
-              />
-              <ToggleSwitch
-                isActive={active}
-                onClick={() => SetActive(!active)}
-                label="Personal Data"
-              />
-            </SLabelToggle>
+            <LabelToggle />
             <SSettingHeader>Theme</SSettingHeader>
             <SSubtitle>Choose the theme of the extension</SSubtitle>
+            <ThemeSelection />
           </SSection>
-          <SSeperator marginLeft="4px" marginRight="4px" />
-          <SSection>TEST</SSection>
+          <SSeperator marginLeft="32px" marginRight="32px" />
+          <SSection>
+            <SSettingHeader>Export Data</SSettingHeader>
+            <SSubtitle>
+              Export all of the data and evidence accumulated through extension
+            </SSubtitle>
+            <ExportData />
+            <DangerZone />
+          </SSection>
         </SBody>
       </SContainer>
     </Scaffold>
