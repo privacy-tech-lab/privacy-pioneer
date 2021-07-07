@@ -68,12 +68,6 @@ function urlSearch(strReq, rootUrl, reqUrl, classifications) {
   loopThroughClassificationArray(thirdPartyArr);
   }
 
-
-  const disconnectTransformation = {
-  "fingerprintingInvasive": [permissionEnum.tracking, typeEnum.fingerprinting],
-  "fingerprintingGeneral": [permissionEnum.tracking, typeEnum.fingerprinting],
-}
-
 /**
  * Iterates through the disconnect list and adds evidence accordingly. It creates evidence with the category of the disconnect JSON as both the permission
  * and the type.
@@ -86,46 +80,27 @@ function urlSearch(strReq, rootUrl, reqUrl, classifications) {
 
   /**
    * adds a piece of evidence from the disconnect JSON to allign with our permission type schema.
-   * @param {string} cat The category of the
+   * @returns {void} Nothing. Adds to evidence list
    */
-  function addDisconnectEvidence(cat) {
-    let perm, type;
-    [perm, type] = disconnectTransformation[cat];
+  function addDisconnectEvidence() {
+    let perm = permissionEnum.trackin
     addToEvidenceList(perm, request.details["originUrl"], "null", request.details["url"], type, undefined)
   }
   
-    // First we can iterate through URLs
-    var keys = Object.keys(urls["categories"]);
-    for (var i = 0; i < keys.length; i++) {
-      var cat = keys[i]
-      if (cat == "fingerprintingInvasive" || cat == "fingerprintingGeneral") {
-      var indivCats = urls["categories"][cat]
-      for (var j = 0; j < indivCats.length; j++) {
-        var obj = urls["categories"][cat][j]
-        var indivKey = Object.keys(obj)
-        var nextKey = Object.keys(urls["categories"][cat][j][indivKey])
-        for (var k = 0; k < nextKey.length; k++) {
-          var urlLst = urls["categories"][cat][j][indivKey][nextKey[k]]
-          var url = request.details["url"]
-          // if there are multiple URLs on the list we go here
-          if (typeof urlLst === 'object') {
-            for (var u = 0; u < urlLst.length; u++) {
-              if (url.includes(urlLst[u])) {
-                if (cat in disconnectTransformation) {
-                  addDisconnectEvidence(cat);
-                }
-              }
-            }
-          }
-          // else we go here
-          else {
-            if (url.includes(urlLst)) {
-              if (cat in disconnectTransformation) {
-                addDisconnectEvidence(cat);
-              }
-              
-            }
-          }
+  // First we can iterate through URLs
+  const cat = 'fingerprintingInvasive'
+  var fpInv = urls["categories"][cat]
+  for (var j = 0; j < fpInv.length; j++) {
+    var obj = urls["categories"][cat][j]
+    var indivKey = Object.keys(obj)
+    var nextKey = Object.keys(urls["categories"][cat][j][indivKey])
+    for (var k = 0; k < nextKey.length; k++) {
+      var urlLst = urls["categories"][cat][j][indivKey][nextKey[k]]
+      var url = request.details["url"]
+      // if there are multiple URLs on the list we go here
+      for (var u = 0; u < urlLst.length; u++) {
+        if (url.includes(urlLst[u])) {
+            addDisconnectEvidence(cat);
         }
       }
     }
