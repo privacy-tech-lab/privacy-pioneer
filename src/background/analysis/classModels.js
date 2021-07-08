@@ -136,6 +136,7 @@ export const typeEnum = Object.freeze({
   // watchlist types
   phoneNumber: "phoneNumber",
   emailAddress: "emailAddress",
+  encodedEmail: "encodedEmail",
   userKeyword: "userKeyword",
 
   // tracking types
@@ -171,6 +172,10 @@ export const keywordTypes = Object.freeze({
   emailAddress: {
     displayName: "Email Address",
     placeholder: "jdoe@wesleyan.edu",
+  },
+  encodedEmail: {
+    displayName: "Encoded Email",
+    placeholder: '',
   },
   ipAddress: {
     displayName: "IP Address",

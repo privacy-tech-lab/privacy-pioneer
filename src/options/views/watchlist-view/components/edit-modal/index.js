@@ -28,6 +28,7 @@ import {
 import { Modal } from "bootstrap";
 import Form from "./components/forms";
 import inputValidator from "./components/input-validators";
+import { setEmail, digestMessage, hexToBase64 } from './components/encodedEmail'
 
 /**
  * Popup modal to create/edit keyword
@@ -106,6 +107,19 @@ const EditModal = ({ keywordType, keyword, edit, id, updateList }) => {
     } else return true;
   };
 
+  const emailEncode = async (key, id) => {
+    const digestHex = await digestMessage(setEmail(key));
+    const base64Encoded = hexToBase64(digestHex);
+    const urlBase64Encoded = encodeURIComponent(base64Encoded);
+    if (await saveKeyword(key, typeEnum.emailAddress, id)) await updateList()
+    if (await saveKeyword(base64Encoded, typeEnum.encodedEmail, null)) await updateList()
+    if (await saveKeyword(urlBase64Encoded, typeEnum.encodedEmail, null)) await updateList()
+    const modal = Modal.getInstance(
+      document.getElementById("edit-modal")
+    );
+    modal.hide();
+  }
+
   return (
     <>
       <SContent className="modal-content">
@@ -128,7 +142,7 @@ const EditModal = ({ keywordType, keyword, edit, id, updateList }) => {
               onClick={() => setDropdown((state) => !state)}
             >
               <SDropdownOptions show={showDropdown}>
-                {Object.keys(keywordTypes).map((key, index) => (
+                {Object.keys(keywordTypes).filter(key=>key!='encodedEmail').map((key, index) => (
                   <SDropdownItem
                     onClick={() => {
                       setKeywordType(key);
@@ -172,7 +186,9 @@ const EditModal = ({ keywordType, keyword, edit, id, updateList }) => {
                     : _keyword;
                 // check if user input is valid
                 if (validate()) {
-                  if (await saveKeyword(key, _keywordType, id)) {
+                  if (_keywordType == typeEnum.emailAddress){
+                    emailEncode(key, id)
+                  } else if (await saveKeyword(key, _keywordType, id)) {
                     await updateList();
                     const modal = Modal.getInstance(
                       document.getElementById("edit-modal")
