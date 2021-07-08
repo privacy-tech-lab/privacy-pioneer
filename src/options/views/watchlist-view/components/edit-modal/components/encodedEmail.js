@@ -12,8 +12,6 @@ function setEmail(email) {
   return newS2 + foot;
 }
 
-// console.log(setEmail(text));
-
 /**
  * 
  * @param {string} email Email after setEmail()
@@ -29,9 +27,6 @@ async function digestMessage(email) {
   return hashHex;
 }
 
-// const digestHex = await digestMessage(setEmail(text));
-// console.log(digestHex);
-
 /**
  * 
  * @param {string} hexStr String of the hexed email from digestMessage()
@@ -46,14 +41,5 @@ function hexToBase64(hexStr) {
   }
   return btoa(base64);
 }
-
-// const base64String = hexToBase64(digestHex);
-// console.log(base64String);
-
-// /**
-//  * @const b64Encoded Encoded base 64 SHA-256 email as string
-//  */
-// const b64Encoded = encodeURIComponent(base64String);
-// console.log(b64Encoded);
 
 export {setEmail, digestMessage, hexToBase64}

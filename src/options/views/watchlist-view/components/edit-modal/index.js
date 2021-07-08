@@ -28,7 +28,7 @@ import {
 import { Modal } from "bootstrap";
 import Form from "./components/forms";
 import inputValidator from "./components/input-validators";
-import { setEmail, digestMessage, hexToBase64 } from '../../../../../background/analysis/encodedEmail'
+import { setEmail, digestMessage, hexToBase64 } from './components/encodedEmail'
 
 /**
  * Popup modal to create/edit keyword
