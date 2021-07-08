@@ -1,6 +1,6 @@
 import React from "react"
 import { privacyLabels } from "../../../../background/analysis/classModels"
-import { SContainer, SHeader, SCollapse, SCodeBlock, SBody } from "./style"
+import { SContainer, SHeader, SCollapse, SCodeBlock, SBody, SEvidenceDescription } from "./style"
 
 /**
  * 'Collapse' containing evidence/extra info about identified label type
@@ -46,28 +46,85 @@ const Evidence = ({ collapseId, request, label, type }) => {
   }
 
   /**
-   * Get sub label description
+   * Get sub label general description
    */
-  const getDescription = (request) => {
+  const getGeneralDescription = (request) => {
     if (request != null) {
-      const description = privacyLabels[label]["types"][type]["description"]
-      if (description.length) {
-        return description
+      const generalDescription = privacyLabels[label]["types"][type]["description"]
+      if (generalDescription.length) {
+        return "➜ ".concat(generalDescription);
       } else {
-        return "None"
+        return ""
       }
     }
     return ""
   }
 
-  const description = getDescription(request)
-  const data = getSnippet(request)
+  /**
+   * return a random hand from choice of all hands
+   * @returns {string}
+   */
+  const shufflePointDownEmoji = () => {
+    const allHands = [`👇`, `👇🏽`, `👇🏼`, `👇🏿`, `👇🏻`, `👇🏾`];
+    return allHands[Math.floor(Math.random()*allHands.length)];
+  }
+
+  /**
+   * Get sub label specific description
+   */
+  const getSpecificDescription = (request) => {
+    if (request != null) {
+      let specificDescription = {leading: "", highlight: "", trailing: "", signOff: ""}
+      const displayType = privacyLabels[label]["types"][type]["displayName"];
+
+      // description for when evidence came from a list of URL's (disconnect or urlClassification header)
+      if (request.index == -1) {
+        specificDescription.leading = `➜ The URL that initiated this HTTP request is known to practice `;
+        specificDescription.highlight = `${displayType}`;
+        specificDescription.trailing = `.`;
+        specificDescription.signOff = "";
+      }
+      // description for when the evidence came with an index in the strReq
+      // (this could mean body but could also be a requeust URL that came up from one of the search routines)
+      else {
+        let keywordFlagged = request.snippet.slice(request.index[0], request.index[1]);
+        // cut down the keyword if it's lengthy.
+        if (keywordFlagged.length > 25) {
+          let trailingPeriods = keywordFlagged.charAt(24) == `.` ? `..` : `...`; // to avoid ....
+          keywordFlagged = keywordFlagged.slice(0,25).concat(trailingPeriods);
+        }
+        specificDescription.leading = `➜ We found`;
+        specificDescription.highlight = ` ${keywordFlagged}`
+        specificDescription.trailing =  ` in this HTTP request, so we gave it the ${displayType} label.`;
+
+        const handEmoji = shufflePointDownEmoji();
+        specificDescription.signOff = `${handEmoji} Context below`;
+      }
+      return specificDescription
+    }
+    return ""
+  }
+
+
+  const specificDescription = getSpecificDescription(request);
+  const generalDescription = getGeneralDescription(request);
+  const data = getSnippet(request);
 
   return (
     <SCollapse className="collapse" id={collapseId}>
       <SContainer className="card card-body">
         <SHeader marginTop="16px">◉ Description</SHeader>
-        <SBody>{description}</SBody>
+            <SEvidenceDescription>
+              <pre>
+              {generalDescription}
+              <br></br>
+              {specificDescription.leading}
+              <span>{specificDescription.highlight}</span>
+              {specificDescription.trailing}
+              <br></br>
+              <span>{specificDescription.signOff}</span>
+              </pre>
+            </SEvidenceDescription>
         <SHeader marginTop="16px">◉ Request URL </SHeader>
         <SBody>
           <pre>
@@ -94,5 +151,5 @@ const Evidence = ({ collapseId, request, label, type }) => {
     </SCollapse>
   )
 }
-
+ 
 export default Evidence

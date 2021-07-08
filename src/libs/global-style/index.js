@@ -51,7 +51,7 @@ const GlobalStyle = createGlobalStyle`
     --primaryTextColor: #000000;
     --secondaryTextColor: #3c3c43;
     --cardColor: #f2f2f7;
-    --textFieldColor: #d1d1d6;
+    --textFieldColor: #ebebff;
     --seperatorColor: #c6c6c8;
 
     // Font sizes

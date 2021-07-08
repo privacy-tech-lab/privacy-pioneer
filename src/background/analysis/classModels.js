@@ -192,21 +192,21 @@ export const privacyLabels = Object.freeze({
     types: {
       advertising: {
         displayName: "Advertising",
-        description: "",
+        description: "An advertising company sent or received your data.",
       },
       analytics: {
         displayName: "Analytics",
-        description: "",
+        description: "An analytics company sent or received your data.",
       },
       social: {
         displayName: "Social",
-        description: "",
+        description: "A social media company sent or received your data.",
       }
     },
   },
   location: {
     displayName: "Location",
-    description: "",
+    description: "An element of your location was found in your web traffic.",
     types: {
       coarseLocation: {
         displayName: "Coarse Location",
@@ -214,23 +214,23 @@ export const privacyLabels = Object.freeze({
       },
       tightLocation: {
         displayName: "Tight Location",
-        description: "",
+        description: "Your lattitude and longitude were found in a request.",
       },
       zipCode: {
         displayName: "Zip Code",
-        description: "",
+        description: "Your zip code was found in a request.",
       },
       streetAddress: {
         displayName: "Street Address",
-        description: "",
+        description: "Your street address was found in a request.",
       },
       city: {
         displayName: "City",
-        description: "",
+        description: "Your city was found in a request.",
       },
       state: {
         displayName: "State",
-        description: "",
+        description: "Your state was found in a request.",
       },
     },
   },
@@ -240,33 +240,33 @@ export const privacyLabels = Object.freeze({
     types: {
       phoneNumber: {
         displayName: "Phone Number",
-        description: "",
+        description: "The phone number from your watchlist was found in a request.",
       },
       emailAddress: {
         displayName: "Email Address",
-        description: "",
+        description: "The email address from your watchlist was found in a request.",
       },
       userKeyword: {
         displayName: "Keyword",
-        description: "",
+        description: "A keyword was found that you included in your watchlist.",
       },
     },
   },
   tracking: {
     displayName: "Tracking",
-    description: "",
+    description: "A tracking practice was flagged in your web traffic.",
     types: {
       trackingPixel: {
         displayName: "Tracking Pixel",
-        description: "",
+        description: "A Tracking Pixel is code that silently pings a third-party to track your internet activity.",
       },
       ipAddress: {
         displayName: "IP Address",
-        description: "",
+        description: "Your IP Address identifies your device and can be used to fetch your location.",
       },
       fingerprinting: {
         displayName: "Browser Fingerprinting",
-        description: "Practices to uniquely identify your browser and track you across sessions.",
+        description: "Browswer Fingerprinting are practices that uniquely identify your browser to track activity across sessions.",
       },
     },
   },

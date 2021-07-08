@@ -35,6 +35,7 @@ export const SCodeBlock = styled(motion.div)`
     border-radius: 8px;
   }
   span {
+    font-weight: bold;
     color: #f44336;
   }
 `
@@ -54,6 +55,28 @@ export const SBody = styled.div`
   }
   code {
     white-space: nowrap !important;
+  }
+`
+
+export const SEvidenceDescription = styled.div`
+  pre {
+    margin: 0px;
+    font-size: 12px;
+    line-height: 150%;
+    font-family: monospace;
+    white-space: pre;
+    white-space: pre-wrap;
+    white-space: -moz-pre-wrap;
+    white-space: -o-pre-wrap;
+    width: 100%;
+    display: block;
+    padding: 8px;
+    background: var(--textFieldColor);
+    border-radius: 8px;
+  }
+  span {
+    font-weight: bold;
+    color: var(--secondaryTextColor);
   }
 `
 
