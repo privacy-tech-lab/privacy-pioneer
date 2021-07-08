@@ -152,7 +152,7 @@ export const typeEnum = Object.freeze({
  *
  */
 export const keywordTypes = Object.freeze({
-  general: {
+  userKeyword: {
     displayName: "General",
     placeholder: "Keyword",
   },

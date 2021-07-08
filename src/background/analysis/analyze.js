@@ -168,14 +168,14 @@ function analyze(request, userData) {
     }
     // search for personal data from user's watchlist
     if ( permissionEnum.watchlist in networkKeywords) {
-      if ( typeEnum.Phone in networkKeywords[permissionEnum.watchlist] ) {
-        networkKeywords[permissionEnum.watchlist][typeEnum.phone].forEach( number => {
-          regexSearch(strRequest, number, rootUrl, reqUrl, typeEnum.phone)
+      if ( typeEnum.phoneNumber in networkKeywords[permissionEnum.watchlist] ) {
+        networkKeywords[permissionEnum.watchlist][typeEnum.phoneNumber].forEach( number => {
+          regexSearch(strRequest, number, rootUrl, reqUrl, typeEnum.phoneNumber)
         })
       }
-      if ( typeEnum.Email in networkKeywords[permissionEnum.watchlist] ) {
-        networkKeywords[permissionEnum.watchlist][typeEnum.email].forEach( email => {
-          regexSearch(strRequest, email, rootUrl, reqUrl, typeEnum.email)
+      if ( typeEnum.emailAddress in networkKeywords[permissionEnum.watchlist] ) {
+        networkKeywords[permissionEnum.watchlist][typeEnum.emailAddress].forEach( email => {
+          regexSearch(strRequest, email, rootUrl, reqUrl, typeEnum.emailAddress)
         })
       }
 
