@@ -10,7 +10,7 @@ import { evidence } from "../background.js"
 import { evidenceKeyval } from "./openDB.js"
 
 import { RegexSpecialChar, escapeRegExp } from "./regexFunctions.js"
-import { regexSearch, coordinateSearch, urlSearch, locationKeywordSearch, fingerprintSearch, ipSearch, pixelSearch } from "./searchFunctions.js"
+import { regexSearch, coordinateSearch, urlSearch, disconnectFingerprintSearch, locationKeywordSearch, fingerprintSearch, ipSearch, pixelSearch } from "./searchFunctions.js"
 import { getHostname } from "./util.js";
 
 // Temporary container to hold network requests while properties are being added from listener callbacks
@@ -93,11 +93,13 @@ const onHeadersReceived = (details, data) => {
     // if the requestID has already been added, update request headers as needed
     request = buffer[details.requestId]
     request.responseHeaders = details.responseHeaders !== undefined ? details.responseHeaders : null
+    request.urlClassification = (details.urlClassification)
   } else {
     // requestID not seen, create new request, add response headers as needed
     request = new Request({
       id: details.requestId,
       responseHeaders: details.responseHeaders !== undefined ? details.responseHeaders : null,
+      urlClassification: (details.urlClassification),
     })
     buffer[details.requestId] = request
   }
@@ -191,7 +193,9 @@ function analyze(request, userData) {
     }
 
     // search to see if the url of the root or request comes up in our services list
-    urlSearch(request, urls)
+    urlSearch(strRequest, rootUrl, reqUrl, request.urlClassification)
+
+    disconnectFingerprintSearch(request, urls)
 
     // search to see if any fingerprint data
     fingerprintSearch(strRequest, networkKeywords, rootUrl, reqUrl)

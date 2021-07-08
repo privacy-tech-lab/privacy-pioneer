@@ -35,12 +35,14 @@ function locationKeywordSearch(strReq, locElems, rootUrl, reqUrl) {
  * used by the addDisconnectEvidence function to translate the disconnect JSON into our permission type schema.
  * Maps strings to array of length 2.
  */
-const disconnectTransformation = { "advertising": [permissionEnum.monetization, typeEnum.advertising], 
-                                    "analytics": [permissionEnum.monetization, typeEnum.analytics],
-                                    "fingerprintingInvasive": [permissionEnum.tracking, typeEnum.fingerprinting],
-                                    "fingerprintingGeneral": [permissionEnum.tracking, typeEnum.fingerprinting],
-                                    "Social": [permissionEnum.monetization, typeEnum.social],
-                                  }
+const classificationTransformation = { 
+  "tracking": [permissionEnum.tracking, typeEnum.analytics],
+  "tracking_ad": [permissionEnum.monetization, typeEnum.advertising], 
+  "tracking_analytics": [permissionEnum.monetization, typeEnum.analytics],
+  "fingerprinting": [permissionEnum.tracking, typeEnum.fingerprinting],
+  "fingerprinting_content": [permissionEnum.tracking, typeEnum.fingerprinting],
+  "tracking_social": [permissionEnum.monetization, typeEnum.social],
+  }
                             
 /**
  * Iterates through the disconnect list and adds evidence accordingly. It creates evidence with the category of the disconnect JSON as both the permission
@@ -50,48 +52,58 @@ const disconnectTransformation = { "advertising": [permissionEnum.monetization, 
  * @param {object} urls The disconnect JSON
  * @returns {void} Nothing. Adds to evidence when we find URL's from the disconnect list.
  */
-function urlSearch(request, urls) {
+function urlSearch(strReq, rootUrl, reqUrl, classifications) {
+  let firstPartyArr = classifications.firstParty;
+  let thirdPartyArr = classifications.thirdParty;
+
+  function loopThroughClassificationArray(arr) {
+    for (let url of arr) {
+      if (url in classificationTransformation) {
+        let p, t;
+        [p, t] = classificationTransformation[url];
+        addToEvidenceList(p, rootUrl, strReq, reqUrl, t, undefined )
+      }
+    }
+  }
+
+  loopThroughClassificationArray(firstPartyArr);
+  loopThroughClassificationArray(thirdPartyArr);
+  }
 
 /**
- * adds a piece of evidence from the disconnect JSON to allign with our permission type schema.
- * @param {string} cat The category of the
+ * Iterates through the disconnect list and adds evidence accordingly. 
+ * Only iterating through the fingerprintingInvasive category right now.
+ * 
+ * @param {Request} request An HTTP request
+ * @param {object} urls The disconnect JSON
+ * @returns {void} Nothing. Adds to evidence when we find URL's from the disconnect list.
  */
-function addDisconnectEvidence(cat) {
-  let perm, type;
-  [perm, type] = disconnectTransformation[cat];
-  addToEvidenceList(perm, request.details["originUrl"], "null", request.details["url"], type, undefined)
-}
+ function disconnectFingerprintSearch(request, urls) {
 
-  // First we can iterate through URLs
-  var keys = Object.keys(urls["categories"]);
-  for (var i = 0; i < keys.length; i++) {
-    var cat = keys[i]
-    var indivCats = urls["categories"][cat]
-    for (var j = 0; j < indivCats.length; j++) {
-      var obj = urls["categories"][cat][j]
-      var indivKey = Object.keys(obj)
-      var nextKey = Object.keys(urls["categories"][cat][j][indivKey])
-      for (var k = 0; k < nextKey.length; k++) {
-        var urlLst = urls["categories"][cat][j][indivKey][nextKey[k]]
-        var url = request.details["url"]
-        // if there are multiple URLs on the list we go here
-        if (typeof urlLst === 'object') {
-          for (var u = 0; u < urlLst.length; u++) {
-            if (url.includes(urlLst[u])) {
-              if (cat in disconnectTransformation) {
-                addDisconnectEvidence(cat);
-              }
-            }
-          }
-        }
-        // else we go here
-        else {
-          if (url.includes(urlLst)) {
-            if (cat in disconnectTransformation) {
-              addDisconnectEvidence(cat);
-            }
-            
-          }
+  /**
+   * adds a piece of evidence from the disconnect JSON to allign with our permission type schema.
+   * @param {string} perm permission from permissionEnum
+   * @param {string} type type from typeEnum
+   * @returns {void} Nothing. Adds to evidence list
+   */
+  function addDisconnectEvidence(perm, type) {
+    addToEvidenceList(perm, request.details["originUrl"], "null", request.details["url"], type, undefined)
+  }
+  
+  // The fingerprintingInvasive category is the only one we are traversing.
+  const cat = 'fingerprintingInvasive'
+  var fpInv = urls["categories"][cat]
+  for (var j = 0; j < fpInv.length; j++) {
+    var obj = urls["categories"][cat][j]
+    var indivKey = Object.keys(obj)
+    var nextKey = Object.keys(urls["categories"][cat][j][indivKey])
+    for (var k = 0; k < nextKey.length; k++) {
+      var urlLst = urls["categories"][cat][j][indivKey][nextKey[k]]
+      var url = request.details["url"]
+      // if there are multiple URLs on the list we go here
+      for (var u = 0; u < urlLst.length; u++) {
+        if (url.includes(urlLst[u])) {
+            addDisconnectEvidence(permissionEnum.tracking, typeEnum.fingerprinting);
         }
       }
     }
@@ -209,7 +221,7 @@ function regexSearch(strReq, keyword, rootUrl, reqUrl, type, perm = permissionEn
  * Searches a request for the fingerprinting elements populated in the networkKeywords it is passed. These elements can be found in the keywords JSON
  */
 function fingerprintSearch(strReq, networkKeywords, rootUrl, reqUrl) {
-  const fpElems = networkKeywords[permissionEnum.fingerprinting]
+  const fpElems = networkKeywords[permissionEnum.tracking][typeEnum.fingerprinting]
   for (const [k, v] of Object.entries(fpElems)) {
     for (const keyword of v){
       const idxKeyword = strReq.indexOf(keyword);
@@ -274,4 +286,4 @@ function ipSearch(strReq, ip, rootUrl, reqUrl) {
   
 }
 
-export { regexSearch, coordinateSearch, urlSearch, locationKeywordSearch, fingerprintSearch, ipSearch, pixelSearch }
+export { regexSearch, coordinateSearch, urlSearch, locationKeywordSearch, fingerprintSearch, ipSearch, pixelSearch, disconnectFingerprintSearch }
