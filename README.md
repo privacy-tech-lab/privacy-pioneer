@@ -82,6 +82,7 @@ This project uses the following third party libraries and resources. We thank th
 - [Simple Icons](https://github.com/simple-icons/simple-icons)
 - [Framer Motion](https://www.framer.com/motion/)
 - [Idb](https://www.npmjs.com/package/idb)
+- [React Tooltip](https://www.npmjs.com/package/react-tooltip)
 - [Ion Icons](https://ionicons.com)
 - [JSDoc](https://www.npmjs.com/package/jsdoc)
 - [React](https://reactjs.org)

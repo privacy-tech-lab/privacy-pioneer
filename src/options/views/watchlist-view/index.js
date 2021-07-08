@@ -18,6 +18,7 @@ import {
   typeEnum,
 } from "../../../background/analysis/classModels";
 import { saveKeyword } from "../../../libs/indexed-db";
+import ReactTooltip from "react-tooltip";
 
 /**
  * Watchlist page view allowing user to add/modify keywords
@@ -38,7 +39,7 @@ const WatchlistView = () => {
 
   /**
    * Async function to fetch the user's IP and add it to their watchlist
-   * 
+   *
    * @returns Nothing. Updates the watchlist with the fetched IP Address.
    */
   const getIP = async () => {
@@ -103,6 +104,7 @@ const WatchlistView = () => {
             </div>
             <div style={{ flexDirection: "row", display: "flex" }}>
               <SAddButton
+                data-tip="keyword"
                 onClick={() => {
                   configModal({ show: true });
                   const modal = new Modal(
@@ -111,10 +113,14 @@ const WatchlistView = () => {
                   modal.show();
                 }}
               >
+                <ReactTooltip place="bottom" type="dark" effect="solid" />
                 <Icons.Plus size="24px" />
                 Add Keyword
               </SAddButton>
+
               <SAddButton
+                data-tip
+                data-for="addip"
                 onClick={() => {
                   confirm(
                     "We use an external API from ip-api.com that holds your ip address for one minute, and then deletes it from their database. Click 'OK' to add your public IP address to your watchlist. \n\nAlternatively, you can search 'What's my IP?', then copy and paste the result into our IP address keyword form."
