@@ -28,6 +28,7 @@ import {
 import { Modal } from "bootstrap";
 import Form from "./components/forms";
 import inputValidator from "./components/input-validators";
+import { setEmail, digestMessage, hexToBase64 } from '../../../../../background/analysis/encodedEmail'
 
 /**
  * Popup modal to create/edit keyword
@@ -128,7 +129,7 @@ const EditModal = ({ keywordType, keyword, edit, id, updateList }) => {
               onClick={() => setDropdown((state) => !state)}
             >
               <SDropdownOptions show={showDropdown}>
-                {Object.keys(keywordTypes).map((key, index) => (
+                {Object.keys(keywordTypes).filter(key=>key!='encodedEmail').map((key, index) => (
                   <SDropdownItem
                     onClick={() => {
                       setKeywordType(key);
@@ -172,7 +173,25 @@ const EditModal = ({ keywordType, keyword, edit, id, updateList }) => {
                     : _keyword;
                 // check if user input is valid
                 if (validate()) {
-                  if (await saveKeyword(key, _keywordType, id)) {
+                  if (_keywordType == typeEnum.emailAddress){
+                    console.log('inIf')
+                    console.log('key', key)
+                    const digestHex = await digestMessage(setEmail(key));
+                    console.log('digestHex', digestHex)
+                    const base64String = hexToBase64(digestHex);
+                    console.log('base64', base64String)
+                    const b64Encoded = encodeURIComponent(base64String);
+                    console.log('encoded', b64Encoded)
+                    if (await saveKeyword(key, _keywordType, id)) await updateList()
+                    if (await saveKeyword(digestHex, typeEnum.encodedEmail, null)) await updateList()
+                    if (await saveKeyword(base64String, typeEnum.encodedEmail, null)) await updateList()
+                    if (await saveKeyword(b64Encoded, typeEnum.encodedEmail, null)) await updateList()
+                    const modal = Modal.getInstance(
+                      document.getElementById("edit-modal")
+                    );
+                    modal.hide();
+                  } else if (await saveKeyword(key, _keywordType, id)) {
+                    console.log('inElse')
                     await updateList();
                     const modal = Modal.getInstance(
                       document.getElementById("edit-modal")
