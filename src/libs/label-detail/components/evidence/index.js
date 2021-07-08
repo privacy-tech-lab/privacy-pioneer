@@ -1,4 +1,4 @@
-import React from "react"
+import React, { useEffect, useState } from "react"
 import { privacyLabels } from "../../../../background/analysis/classModels"
 import { SContainer, SHeader, SCollapse, SCodeBlock, SBody, SEvidenceDescription } from "./style"
 
@@ -60,11 +60,18 @@ const Evidence = ({ collapseId, request, label, type }) => {
     return ""
   }
 
+  const [handEmoji, setHandEmoji] = useState('');
+
+  useEffect(() => {
+    let choice = pickPointDownEmoji();
+    setHandEmoji(choice);
+  }, []);
+
   /**
    * return a random hand from choice of all hands
    * @returns {string}
    */
-  const shufflePointDownEmoji = () => {
+  const pickPointDownEmoji = () => {
     const allHands = [`👇`, `👇🏽`, `👇🏼`, `👇🏿`, `👇🏻`, `👇🏾`];
     return allHands[Math.floor(Math.random()*allHands.length)];
   }
@@ -96,15 +103,12 @@ const Evidence = ({ collapseId, request, label, type }) => {
         specificDescription.leading = `➜ We found`;
         specificDescription.highlight = ` ${keywordFlagged}`
         specificDescription.trailing =  ` in this HTTP request, so we gave it the ${displayType} label.`;
-
-        const handEmoji = shufflePointDownEmoji();
         specificDescription.signOff = `${handEmoji} Context below`;
       }
       return specificDescription
     }
     return ""
   }
-
 
   const specificDescription = getSpecificDescription(request);
   const generalDescription = getGeneralDescription(request);
