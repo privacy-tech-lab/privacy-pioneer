@@ -52,6 +52,7 @@ const GlobalStyle = createGlobalStyle`
     --secondaryTextColor: #3c3c43;
     --cardColor: #f2f2f7;
     --textFieldColor: #d1d1d6;
+    --textFieldColorModal: #ebebff;
     --seperatorColor: #c6c6c8;
 
     // Font sizes
@@ -70,6 +71,7 @@ const GlobalStyle = createGlobalStyle`
       --secondaryTextColor: #ebebf5;
       --cardColor: #2c2c2e;
       --textFieldColor: #3a3a3c;
+      --textFieldColorModal: #3a3a3c;
       --seperatorColor: #38383a;
     }
   }

@@ -10,7 +10,7 @@ import { evidence } from "../background.js"
 import { evidenceKeyval } from "./openDB.js"
 
 import { RegexSpecialChar, escapeRegExp } from "./regexFunctions.js"
-import { regexSearch, coordinateSearch, urlSearch, locationKeywordSearch, fingerprintSearch, ipSearch, pixelSearch } from "./searchFunctions.js"
+import { regexSearch, coordinateSearch, urlSearch, disconnectFingerprintSearch, locationKeywordSearch, fingerprintSearch, ipSearch, pixelSearch } from "./searchFunctions.js"
 import { getHostname } from "./util.js";
 
 // Temporary container to hold network requests while properties are being added from listener callbacks
@@ -93,11 +93,13 @@ const onHeadersReceived = (details, data) => {
     // if the requestID has already been added, update request headers as needed
     request = buffer[details.requestId]
     request.responseHeaders = details.responseHeaders !== undefined ? details.responseHeaders : null
+    request.urlClassification = (details.urlClassification)
   } else {
     // requestID not seen, create new request, add response headers as needed
     request = new Request({
       id: details.requestId,
       responseHeaders: details.responseHeaders !== undefined ? details.responseHeaders : null,
+      urlClassification: (details.urlClassification),
     })
     buffer[details.requestId] = request
   }
@@ -166,14 +168,14 @@ function analyze(request, userData) {
     }
     // search for personal data from user's watchlist
     if ( permissionEnum.watchlist in networkKeywords) {
-      if ( typeEnum.Phone in networkKeywords[permissionEnum.watchlist] ) {
-        networkKeywords[permissionEnum.watchlist][typeEnum.phone].forEach( number => {
-          regexSearch(strRequest, number, rootUrl, reqUrl, typeEnum.phone)
+      if ( typeEnum.phoneNumber in networkKeywords[permissionEnum.watchlist] ) {
+        networkKeywords[permissionEnum.watchlist][typeEnum.phoneNumber].forEach( number => {
+          regexSearch(strRequest, number, rootUrl, reqUrl, typeEnum.phoneNumber)
         })
       }
-      if ( typeEnum.Email in networkKeywords[permissionEnum.watchlist] ) {
-        networkKeywords[permissionEnum.watchlist][typeEnum.email].forEach( email => {
-          regexSearch(strRequest, email, rootUrl, reqUrl, typeEnum.email)
+      if ( typeEnum.emailAddress in networkKeywords[permissionEnum.watchlist] ) {
+        networkKeywords[permissionEnum.watchlist][typeEnum.emailAddress].forEach( email => {
+          regexSearch(strRequest, email, rootUrl, reqUrl, typeEnum.emailAddress)
         })
       }
 
@@ -191,7 +193,9 @@ function analyze(request, userData) {
     }
 
     // search to see if the url of the root or request comes up in our services list
-    urlSearch(request, urls)
+    urlSearch(strRequest, rootUrl, reqUrl, request.urlClassification)
+
+    disconnectFingerprintSearch(request, urls)
 
     // search to see if any fingerprint data
     fingerprintSearch(strRequest, networkKeywords, rootUrl, reqUrl)

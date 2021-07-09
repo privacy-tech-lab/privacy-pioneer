@@ -17,6 +17,7 @@ the codebase.
  * @property {object} responseData A StreamFilter object used to monitor the response. https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/API/webRequest/StreamFilter
  * @property {string} error After an error event is fired. This property will contain information about the error.  https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/API/webRequest/StreamFilter/onerror
  * @property {string} type We set up a filter for types in background.js. We look at types enumerated in resourceTypeEnum
+ * @property {Object} urlClassification The urlClassification flags given by firefox in the onHeadersReceived callback. These come from the disconnect.me list. https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/API/webRequest/onHeadersReceived
  * @throws Error. Event that fires on error. Usually due to invalid ID to the webRequest.filterResponseData()
  */
 export class Request {
@@ -29,6 +30,7 @@ export class Request {
     responseData,
     error,
     type,
+    urlClassification,
   }) {
     this.id = id;
     this.requestHeaders = requestHeaders;
@@ -38,6 +40,7 @@ export class Request {
     this.details = details;
     this.error = error;
     this.type = type;
+    this.urlClassification = urlClassification;
   }
 }
 
@@ -133,6 +136,7 @@ export const typeEnum = Object.freeze({
   // watchlist types
   phoneNumber: "phoneNumber",
   emailAddress: "emailAddress",
+  encodedEmail: "encodedEmail",
   userKeyword: "userKeyword",
 
   // tracking types
@@ -148,7 +152,7 @@ export const typeEnum = Object.freeze({
  *
  */
 export const keywordTypes = Object.freeze({
-  general: {
+  userKeyword: {
     displayName: "General",
     placeholder: "Keyword",
   },
@@ -168,6 +172,10 @@ export const keywordTypes = Object.freeze({
   emailAddress: {
     displayName: "Email Address",
     placeholder: "jdoe@wesleyan.edu",
+  },
+  encodedEmail: {
+    displayName: "Encoded Email",
+    placeholder: '',
   },
   ipAddress: {
     displayName: "IP Address",
@@ -189,21 +197,21 @@ export const privacyLabels = Object.freeze({
     types: {
       advertising: {
         displayName: "Advertising",
-        description: "",
+        description: "An Advertising company sent or received your data.",
       },
       analytics: {
         displayName: "Analytics",
-        description: "",
+        description: "An Analytics company sent or received your data.",
       },
       social: {
         displayName: "Social",
-        description: "",
+        description: "A Social media company sent or received your data.",
       }
     },
   },
   location: {
     displayName: "Location",
-    description: "",
+    description: "An element of your location was found in your web traffic.",
     types: {
       coarseLocation: {
         displayName: "Coarse Location",
@@ -211,23 +219,23 @@ export const privacyLabels = Object.freeze({
       },
       tightLocation: {
         displayName: "Tight Location",
-        description: "",
+        description: "Your Tight Location (lattitude and longitude coordinates) were found in a request.",
       },
       zipCode: {
         displayName: "Zip Code",
-        description: "",
+        description: "Your Zip Code was found in a request.",
       },
       streetAddress: {
         displayName: "Street Address",
-        description: "",
+        description: "Your Street Address was found in a request.",
       },
       city: {
         displayName: "City",
-        description: "",
+        description: "Your City was found in a request.",
       },
       state: {
         displayName: "State",
-        description: "",
+        description: "Your State was found in a request.",
       },
     },
   },
@@ -237,33 +245,37 @@ export const privacyLabels = Object.freeze({
     types: {
       phoneNumber: {
         displayName: "Phone Number",
-        description: "",
+        description: "The Phone Number from your watchlist was found in a request.",
       },
       emailAddress: {
         displayName: "Email Address",
-        description: "",
+        description: "The Email Address from your watchlist was found in a request.",
+      },
+      encodedEmail: {
+        displayName: "Encoded Email",
+        description: "The email address from your watchlist was found in an alternate representation (The Trade Desk's UID)" // this should be updated with a link or different wording
       },
       userKeyword: {
         displayName: "Keyword",
-        description: "",
+        description: "A Keyword was found that you included in your watchlist.",
       },
     },
   },
   tracking: {
     displayName: "Tracking",
-    description: "",
+    description: "A tracking practice was flagged in your web traffic.",
     types: {
       trackingPixel: {
         displayName: "Tracking Pixel",
-        description: "",
+        description: "A Tracking Pixel is code that silently pings a third-party to track your internet activity.",
       },
       ipAddress: {
         displayName: "IP Address",
-        description: "",
+        description: "Your IP Address identifies your device and can be used to fetch your location.",
       },
       fingerprinting: {
         displayName: "Browser Fingerprinting",
-        description: "Practices to uniquely identify your browser and track you across sessions.",
+        description: "Browser Fingerprinting are practices that uniquely identify your browser to track activity across sessions.",
       },
     },
   },
