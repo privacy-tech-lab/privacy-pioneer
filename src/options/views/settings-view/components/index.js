@@ -48,10 +48,10 @@ export const ToggleSwitch = ({ isActive, label, onClick, spaceBetween }) => (
 
 export const LabelToggle = () => {
   const [labelStatus, SetLabelStatus] = useState({
-    [permissionEnum.monetization]: true,
-    [permissionEnum.tracking]: true,
     [permissionEnum.location]: true,
+    [permissionEnum.monetization]: true,
     [permissionEnum.watchlist]: true,
+    [permissionEnum.tracking]: true,
   });
 
   useEffect(
@@ -59,15 +59,17 @@ export const LabelToggle = () => {
       getLabelStatus().then((res) => {
         if (res != {}) SetLabelStatus(res);
       }),
-    []
+    [labelStatus]
   );
+
   const toggle = (label) => {
     toggleLabel(label);
-    let newLabelStatus = labelStatus;
+    const newLabelStatus = labelStatus;
     let previousStatus = newLabelStatus[label];
     newLabelStatus[label] = !previousStatus;
     SetLabelStatus(newLabelStatus);
   };
+
   return (
     <SLabelToggle>
       {Object.values(permissionEnum).map((label) => (
@@ -88,9 +90,12 @@ export const ThemeSelection = () => {
   useEffect(
     () =>
       getTheme().then((res) => {
-        setSelTheme(res), console.log(res);
+        if (res) setSelTheme(res);
+        else {
+          setTheme(settingsEnum.sameAsSystem), setSelTheme(sameAsSystem);
+        }
       }),
-    []
+    [selTheme]
   );
   return (
     <SThemeSection>
