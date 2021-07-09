@@ -57,7 +57,7 @@ function urlSearch(strReq, rootUrl, reqUrl, classifications) {
   let firstPartyArr = classifications.firstParty;
   let thirdPartyArr = classifications.thirdParty;
 
-  async function loopThroughClassificationArray(arr) {
+  function loopThroughClassificationArray(arr) {
     for (let url of arr) {
       if (url in classificationTransformation) {
         let p, t;
@@ -87,7 +87,7 @@ function urlSearch(strReq, rootUrl, reqUrl, classifications) {
    * @param {string} type type from typeEnum
    * @returns {void} Nothing. Adds to evidence list
    */
-  async function addDisconnectEvidence(perm, type) {
+  function addDisconnectEvidence(perm, type) {
     addToEvidenceList(perm, request.details["originUrl"], "null", request.details["url"], type, undefined)
   }
   
