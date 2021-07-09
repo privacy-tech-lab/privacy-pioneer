@@ -38,8 +38,6 @@ export async function importData() {
     // at bottom of file
     let user_store_dict = await getWatchlistDict();
 
-    console.log(user_store_dict);
-
     // format every phone stored
     var userPhone
     if ( typeEnum.phoneNumber in user_store_dict) {
@@ -160,6 +158,7 @@ async function getWatchlistDict() {
         let ktype, keyword
         // get the keyword associated with the key
         let keywordObject = await watchlistKeyval.get(key)
+        console.log(keywordObject);
         for (let [t, val] of Object.entries(keywordObject) ) {
             // we have either a type of key or an actual key
             // the multi-line input gets parsed with its own function

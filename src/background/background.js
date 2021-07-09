@@ -8,7 +8,7 @@ background.js
 
 import { onBeforeRequest, onBeforeSendHeaders, onHeadersReceived, tabUpdate } from "./analysis/analyze.js"
 import { importData } from "./analysis/importSearchData.js"
-import { openDB } from "idb"
+import { watchlistKeyval } from "../libs/indexed-db/index.js"
 
 // A filter that restricts the events that will be sent to a listener.
 // You can play around with the urls and types.
@@ -83,3 +83,27 @@ importData().then((data) => {
     ["responseHeaders"]
   )
 })
+
+
+/**
+ * Initializes a list of items on extension start
+ * @param {Array<Array>} initArr 
+ */
+async function initDB(initArr) {
+  for (let initItem of initArr) {
+    let key, keyword, type, id
+    [key, keyword, type, id] = initItem
+    watchlistKeyval.set(key, {
+      keyword: keyword,
+      type: type,
+      id: id,
+    });
+  }
+}
+
+// each array is one item to be set in the DB
+let initArr = [ 
+  ['exampleKey', 'exampleKeyword', 'exampleType', 'exampleID'],
+]
+
+initDB(initArr);
