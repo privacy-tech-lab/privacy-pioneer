@@ -50,12 +50,21 @@ const Evidence = ({ collapseId, request, label, type }) => {
    */
   const getGeneralDescription = (request) => {
     if (request != null) {
-      const generalDescription = privacyLabels[label]["types"][type]["description"]
-      if (generalDescription.length) {
-        return "➜ ".concat(generalDescription);
-      } else {
-        return ""
+      let generalDescriptionParsed = {leading: "", highlight: "", trailing: ""};
+      const displayType = privacyLabels[label]["types"][type]["displayName"];
+      const generalDescription = privacyLabels[label]["types"][type]["description"];
+
+      // we want to highlight the label type in the description
+      let highlight = generalDescription.indexOf(displayType);
+      if (highlight == -1) {
+        generalDescriptionParsed.leading = "‣ ".concat(generalDescription);
       }
+      else {
+        generalDescriptionParsed.leading = "‣ ".concat(generalDescription.slice(0, highlight));
+        generalDescriptionParsed.highlight = displayType;
+        generalDescriptionParsed.trailing = generalDescription.slice(highlight + displayType.length, generalDescription.length);
+      }
+      return generalDescriptionParsed;
     }
     return ""
   }
@@ -86,10 +95,10 @@ const Evidence = ({ collapseId, request, label, type }) => {
 
       // description for when evidence came from a list of URL's (disconnect or urlClassification header)
       if (request.index == -1) {
-        specificDescription.leading = `➜ The URL that initiated this HTTP request is known to practice `;
+        specificDescription.leading = `‣ The URL that initiated this HTTP request is known to practice `;
         specificDescription.highlight = `${displayType}`;
         specificDescription.trailing = `.`;
-        specificDescription.signOff = "";
+        specificDescription.signOff = `${handEmoji} Request URL below`;
       }
       // description for when the evidence came with an index in the strReq
       // (this could mean body but could also be a requeust URL that came up from one of the search routines)
@@ -100,7 +109,7 @@ const Evidence = ({ collapseId, request, label, type }) => {
           let trailingPeriods = keywordFlagged.charAt(24) == `.` ? `..` : `...`; // to avoid ....
           keywordFlagged = keywordFlagged.slice(0,25).concat(trailingPeriods);
         }
-        specificDescription.leading = `➜ We found`;
+        specificDescription.leading = `‣ We found`;
         specificDescription.highlight = ` ${keywordFlagged}`
         specificDescription.trailing =  ` in this HTTP request, so we gave it the ${displayType} label.`;
         specificDescription.signOff = `${handEmoji} Context below`;
@@ -120,12 +129,14 @@ const Evidence = ({ collapseId, request, label, type }) => {
         <SHeader marginTop="16px">◉ Description</SHeader>
             <SEvidenceDescription>
               <pre>
-              {generalDescription}
+              {generalDescription.leading}
+              <span>{generalDescription.highlight}</span>
+              {generalDescription.trailing}
               <br></br>
               {specificDescription.leading}
               <span>{specificDescription.highlight}</span>
               {specificDescription.trailing}
-              <br></br>
+              <br></br><br></br>
               <span>{specificDescription.signOff}</span>
               </pre>
             </SEvidenceDescription>
