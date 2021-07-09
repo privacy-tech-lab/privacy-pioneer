@@ -140,10 +140,7 @@ async function addToEvidenceList(perm, rootU, snip, requestU, t, i) {
         if (perm in evidence) {
           var pushThrough = false
           let reqUrlSet = getReqUrlsWithDifferentTypes(evidence[perm], t)
-          if (reqUrlSet.has(reqUrl)) { 
-            pushThrough = true;
-            console.log(reqUrl, t);
-           }
+          if (reqUrlSet.has(reqUrl)) { pushThrough = true; }
 
           // if type is in the permission
           if (t in evidence[perm]) {
