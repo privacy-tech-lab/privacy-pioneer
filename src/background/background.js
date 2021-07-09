@@ -93,16 +93,19 @@ async function initDB(initArr) {
 
   // only init values on the very first time the extension loads.
   let keys = await watchlistKeyval.keys()
-  if (keys.length != 0) {return}
-  
-  for (let initItem of initArr) {
-    let key, keyword, type, id
-    [key, keyword, type, id] = initItem
-    watchlistKeyval.set(key, {
-      keyword: keyword,
-      type: type,
-      id: id,
-    });
+  if (keys.length != 0) {
+    return
+  }
+  else {
+    for (let initItem of initArr) {
+      let key, keyword, type, id
+      [key, keyword, type, id] = initItem
+      watchlistKeyval.set(key, {
+        keyword: keyword,
+        type: type,
+        id: id,
+      });
+    }
   }
 }
 
