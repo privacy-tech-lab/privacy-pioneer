@@ -15,7 +15,7 @@ function setEmail(email) {
 /**
  * 
  * @param {string} email Email after setEmail()
- * @returns {string} Hex of the email, SHA-256
+ * @returns {Promise<string>} Hex of the email, SHA-256
  */
 async function digestMessage(email) {
   const msgUint8 = new TextEncoder().encode(email);

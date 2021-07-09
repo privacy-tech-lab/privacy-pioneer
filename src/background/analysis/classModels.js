@@ -251,6 +251,10 @@ export const privacyLabels = Object.freeze({
         displayName: "Email Address",
         description: "",
       },
+      encodedEmail: {
+        displayName: "Encoded Email",
+        description: "The email address from your watchlist was found in an alternate representation (The Trade Desk's UID)" // this should be updated with a link or different wording
+      },
       userKeyword: {
         displayName: "Keyword",
         description: "",

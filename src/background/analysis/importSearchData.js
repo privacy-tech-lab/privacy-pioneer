@@ -17,7 +17,7 @@ const services = require("../../assets/services.json");
 /**
  * Used to build all the data we search for in our analysis. This includes data in the watchlist DB and the JSON lists.
  * 
- * @returns {Array} [locCoords, networkKeywords, services] 
+ * @returns {Promise<Array>} [locCoords, networkKeywords, services] 
  * 
  * locCoords: Length 2 array of [lat, lng]
  * 
@@ -36,7 +36,9 @@ export async function importData() {
 
     // get formatted data from the watchlist store
     // at bottom of file
-    let user_store_dict = await getWatchlistDict()
+    let user_store_dict = await getWatchlistDict();
+
+    console.log(user_store_dict);
 
     // format every phone stored
     var userPhone
@@ -145,7 +147,7 @@ function parseLocationObject(locObj, user_dict) {
 
 /**
  * Iterates through all elements in the watchlistKeyval and returns a dictionary
- * @returns {Dict<permissionEnum<typeEnum>>} A dictionary with first key level permission and second key level type. All values are stored as Arrays
+ * @returns {Promise<Dict<permissionEnum<typeEnum>>}  A dictionary with first key level permission and second key level type. All values are stored as Arrays
  */
 async function getWatchlistDict() {
 
