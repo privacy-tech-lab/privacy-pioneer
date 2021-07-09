@@ -19,16 +19,17 @@ import { getHostname } from "./util.js"
  * @param {string} rootUrl 
  * @param {string} reqUrl 
  */
-function locationKeywordSearch(strReq, locElems, rootUrl, reqUrl) {
+async function locationKeywordSearch(strReq, locElems, rootUrl, reqUrl) {
   for (const [k, v] of Object.entries(locElems)) {
     // every entry is an array, so we iterate through it.
     for (let value of v) {
       let result_i = strReq.search(value)
       if (result_i != -1) {
-      addToEvidenceList(permissionEnum.location, rootUrl, strReq, reqUrl, k, [result_i, result_i + value.length])
+        await addToEvidenceList(permissionEnum.location, rootUrl, strReq, reqUrl, k, [result_i, result_i + value.length]);
     }
   }
-}}
+}
+}
 
 /**
  * @type {Dict}
@@ -56,7 +57,7 @@ function urlSearch(strReq, rootUrl, reqUrl, classifications) {
   let firstPartyArr = classifications.firstParty;
   let thirdPartyArr = classifications.thirdParty;
 
-  function loopThroughClassificationArray(arr) {
+  async function loopThroughClassificationArray(arr) {
     for (let url of arr) {
       if (url in classificationTransformation) {
         let p, t;
@@ -86,7 +87,7 @@ function urlSearch(strReq, rootUrl, reqUrl, classifications) {
    * @param {string} type type from typeEnum
    * @returns {void} Nothing. Adds to evidence list
    */
-  function addDisconnectEvidence(perm, type) {
+  async function addDisconnectEvidence(perm, type) {
     addToEvidenceList(perm, request.details["originUrl"], "null", request.details["url"], type, undefined)
   }
   
@@ -128,8 +129,8 @@ function coordinateSearch(strReq, locData, rootUrl, reqUrl) {
   const absLat = Math.abs(lat)
   const absLng = Math.abs(lng)
 
-  // floating point regex non-digit, then 2-3 digits (should think about 1 digit starts later, this reduces matches a lot and helps speed), then a ".", then 4 to 10 digits, g is global flag
-  let floatReg = /\D\d{2,3}\.\d{4,10}/g
+  // floating point regex non-digit, then 2-3 digits (should think about 1 digit starts later, this reduces matches a lot and helps speed), then a ".", then 2 to 10 digits, g is global flag
+  let floatReg = /\D\d{2,3}\.\d{2,10}/g
   const matches = strReq.matchAll(floatReg)
   const matchArr = Array.from(matches)
   // not possible to have pair without at least 2 matches
@@ -285,5 +286,6 @@ function ipSearch(strReq, ip, rootUrl, reqUrl) {
   return regexSearch(strReq, ip, rootUrl, reqUrl, typeEnum.ipAddress, permissionEnum.tracking)
   
 }
+
 
 export { regexSearch, coordinateSearch, urlSearch, locationKeywordSearch, fingerprintSearch, ipSearch, pixelSearch, disconnectFingerprintSearch }
