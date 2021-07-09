@@ -56,7 +56,12 @@ const Evidence = ({ collapseId, request, label, type }) => {
 
       // we want to highlight the label type in the description
       let highlight = generalDescription.indexOf(displayType);
-      if (highlight == -1) {
+      if (displayType == "Encoded Email") {
+        generalDescriptionParsed.leading = "‣ ".concat(generalDescription.slice(0,3));
+        generalDescriptionParsed.highlight = "Email Address";
+        generalDescriptionParsed.trailing = generalDescription.slice(16, generalDescription.length)
+      }
+      else if (highlight == -1) {
         generalDescriptionParsed.leading = "‣ ".concat(generalDescription);
       }
       else {
@@ -90,7 +95,7 @@ const Evidence = ({ collapseId, request, label, type }) => {
    */
   const getSpecificDescription = (request) => {
     if (request != null) {
-      let specificDescription = {leading: "", highlight: "", trailing: "", signOff: ""}
+      let specificDescription = {leading: "", highlight: "", trailing: "", trail1: "", email: "", trail2: "", encodedEmail: "", trail3: "", signOff: ""}
       const displayType = privacyLabels[label]["types"][type]["displayName"];
 
       // description for when evidence came from a list of URL's (disconnect or urlClassification header)
@@ -102,7 +107,24 @@ const Evidence = ({ collapseId, request, label, type }) => {
       }
       // description for when the evidence came with an index in the strReq
       // (this could mean body but could also be a requeust URL that came up from one of the search routines)
+      else if (request.extraDetail != undefined){
+        let keywordFlagged = request.snippet.slice(request.index[0], request.index[1]);
+        // cut down the keyword if it's lengthy.
+        if (keywordFlagged.length > 25) {
+          let trailingPeriods = keywordFlagged.charAt(24) == `.` ? `..` : `...`; // to avoid ....
+          keywordFlagged = keywordFlagged.slice(0,25).concat(trailingPeriods);
+        }
+        specificDescription.leading = `‣ We found`;
+        specificDescription.highlight = ` ${keywordFlagged}`;
+        specificDescription.trail1 =  ` in this HTTP request, which is the encoded form of `;
+        specificDescription.email = `${request.extraDetail}`;
+        specificDescription.trail2 = ` from your watchlist, so we gave it the `
+        specificDescription.encodedEmail = `${displayType}`
+        specificDescription.trail3 = ` label.`;
+        specificDescription.signOff = `${handEmoji} Context below`;
+      }
       else {
+        let specificDescription = {leading: "", highlight: "", trailing: "", signOff: ""}
         let keywordFlagged = request.snippet.slice(request.index[0], request.index[1]);
         // cut down the keyword if it's lengthy.
         if (keywordFlagged.length > 25) {
@@ -136,6 +158,11 @@ const Evidence = ({ collapseId, request, label, type }) => {
               {specificDescription.leading}
               <span>{specificDescription.highlight}</span>
               {specificDescription.trailing}
+              {specificDescription.trail1}
+              <span>{specificDescription.email}</span>
+              {specificDescription.trail2}
+              <span>{specificDescription.encodedEmail}</span>
+              {specificDescription.trail3}
               <br></br><br></br>
               <span>{specificDescription.signOff}</span>
               </pre>

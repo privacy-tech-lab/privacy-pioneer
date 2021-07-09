@@ -244,19 +244,19 @@ export const privacyLabels = Object.freeze({
     types: {
       phoneNumber: {
         displayName: "Phone Number",
-        description: "The Phone Number from your watchlist was found in a request.",
+        description: "An Phone Number from your watchlist was found in a request.",
       },
       emailAddress: {
         displayName: "Email Address",
-        description: "The Email Address from your watchlist was found in a request.",
+        description: "An Email Address from your watchlist was found in a request.",
       },
       encodedEmail: {
         displayName: "Encoded Email",
-        description: "The email address from your watchlist was found in an alternate representation (The Trade Desk's UID)" // this should be updated with a link or different wording
+        description: "An Email Address from your watchlist was found in an alternate representation (The Trade Desk's UID)" // this should be updated with a link or different wording
       },
       userKeyword: {
         displayName: "Keyword",
-        description: "A Keyword was found that you included in your watchlist.",
+        description: "A Keyword from your watchlist was found in a request.",
       },
     },
   },
