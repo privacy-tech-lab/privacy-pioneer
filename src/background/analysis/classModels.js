@@ -152,7 +152,7 @@ export const typeEnum = Object.freeze({
  *
  */
 export const keywordTypes = Object.freeze({
-  general: {
+  userKeyword: {
     displayName: "General",
     placeholder: "Keyword",
   },
@@ -250,6 +250,10 @@ export const privacyLabels = Object.freeze({
       emailAddress: {
         displayName: "Email Address",
         description: "",
+      },
+      encodedEmail: {
+        displayName: "Encoded Email",
+        description: "The email address from your watchlist was found in an alternate representation (The Trade Desk's UID)" // this should be updated with a link or different wording
       },
       userKeyword: {
         displayName: "Keyword",

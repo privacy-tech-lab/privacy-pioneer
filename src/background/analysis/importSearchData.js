@@ -17,7 +17,7 @@ const services = require("../../assets/services.json");
 /**
  * Used to build all the data we search for in our analysis. This includes data in the watchlist DB and the JSON lists.
  * 
- * @returns {Array} [locCoords, networkKeywords, services] 
+ * @returns {Promise<Array>} [locCoords, networkKeywords, services] 
  * 
  * locCoords: Length 2 array of [lat, lng]
  * 
@@ -36,13 +36,15 @@ export async function importData() {
 
     // get formatted data from the watchlist store
     // at bottom of file
-    let user_store_dict = await getWatchlistDict()
+    let user_store_dict = await getWatchlistDict();
+
+    console.log(user_store_dict);
 
     // format every phone stored
     var userPhone
-    if ( typeEnum.phone in user_store_dict) {
+    if ( typeEnum.phoneNumber in user_store_dict) {
         userPhone = []
-        let phone_arr = user_store_dict[typeEnum.phone]
+        let phone_arr = user_store_dict[typeEnum.phoneNumber]
         phone_arr.forEach( phone => {
             // creates an array of possible re-configurations for each number
             let format_arr = buildPhone(phone)
@@ -54,7 +56,7 @@ export async function importData() {
 
     // if we have a phone we put it in the network keywords dict
     if ( typeof userPhone !== 'undefined' ) { 
-        networkKeywords[permissionEnum.watchlist][typeEnum.phone] = userPhone
+        networkKeywords[permissionEnum.watchlist][typeEnum.phoneNumber] = userPhone
     }
 
     // build location Elements
@@ -89,14 +91,13 @@ export async function importData() {
     networkKeywords[permissionEnum.location] = locElems
     
     // if the user entered an email/s, add it to network keywords (formated as arr)
-    if (typeEnum.email in user_store_dict) {
-        networkKeywords[permissionEnum.watchlist][typeEnum.email] = user_store_dict[typeEnum.email]
+    if (typeEnum.emailAddress in user_store_dict) {
+        networkKeywords[permissionEnum.watchlist][typeEnum.emailAddress] = user_store_dict[typeEnum.emailAddress]
     }
 
     // if we have user keywords, we add them to the network keywords (formated as arr)
-    // we check for general because this is the title they get in the db.
-    if ("general" in user_store_dict) {
-        networkKeywords[permissionEnum.watchlist][typeEnum.userKeyword] = user_store_dict[typeEnum.general]
+    if (typeEnum.userKeyword in user_store_dict) {
+        networkKeywords[permissionEnum.watchlist][typeEnum.userKeyword] = user_store_dict[typeEnum.userKeyword]
     }
 
     if (typeEnum.ipAddress in user_store_dict) {
@@ -146,7 +147,7 @@ function parseLocationObject(locObj, user_dict) {
 
 /**
  * Iterates through all elements in the watchlistKeyval and returns a dictionary
- * @returns {Dict<permissionEnum<typeEnum>>} A dictionary with first key level permission and second key level type. All values are stored as Arrays
+ * @returns {Promise<Dict<permissionEnum<typeEnum>>}  A dictionary with first key level permission and second key level type. All values are stored as Arrays
  */
 async function getWatchlistDict() {
 
