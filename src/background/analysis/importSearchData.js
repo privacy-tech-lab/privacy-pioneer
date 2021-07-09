@@ -6,7 +6,7 @@ both the URL and the keyword list for words and URLs to look for in the
 network requests
 */
 import { getLocationData, filterGeocodeResponse } from "./getLocationData.js"
-import { buildPhone, getState, buildSsnRegex } from "./structuredRoutines.js"
+import { buildPhone, getState } from "./structuredRoutines.js"
 import { watchlistKeyval } from "../../libs/indexed-db/index.js"
 import { typeEnum, permissionEnum } from "./classModels.js"
 
@@ -16,13 +16,13 @@ const services = require("../../assets/services.json");
 
 /**
  * Used to build all the data we search for in our analysis. This includes data in the watchlist DB and the JSON lists.
- * 
- * @returns {Promise<Array>} [locCoords, networkKeywords, services] 
- * 
+ *
+ * @returns {Promise<Array>} [locCoords, networkKeywords, services]
+ *
  * locCoords: Length 2 array of [lat, lng]
- * 
+ *
  * networkKeywods: Dictionary with permissionEnum outer keys and typeEnum inner keys. Values are stored as arrays
- * 
+ *
  * services: Object with data from the JSON files in assets
  */
 export async function importData() {
@@ -37,8 +37,6 @@ export async function importData() {
     // get formatted data from the watchlist store
     // at bottom of file
     let user_store_dict = await getWatchlistDict();
-
-    console.log(user_store_dict);
 
     // format every phone stored
     var userPhone
@@ -55,7 +53,7 @@ export async function importData() {
     }
 
     // if we have a phone we put it in the network keywords dict
-    if ( typeof userPhone !== 'undefined' ) { 
+    if ( typeof userPhone !== 'undefined' ) {
         networkKeywords[permissionEnum.watchlist][typeEnum.phoneNumber] = userPhone
     }
 
@@ -67,12 +65,12 @@ export async function importData() {
         locElems[typeEnum.zipCode] = userZip
         var userState = []
 
-        userZip.forEach( zip => { 
+        userZip.forEach( zip => {
             let abrev, state;
             [abrev, state] = getState(zip)
             if (typeof state !== 'undefined') { userState.push(state) }
         } )
-        if ( userState === undefined || userState.length == 0 ) {  
+        if ( userState === undefined || userState.length == 0 ) {
             // invalid zip input
         }
         else { locElems[typeEnum.state] = userState }
@@ -89,7 +87,7 @@ export async function importData() {
     }
 
     networkKeywords[permissionEnum.location] = locElems
-    
+
     // if the user entered an email/s, add it to network keywords (formated as arr)
     if (typeEnum.emailAddress in user_store_dict) {
         networkKeywords[permissionEnum.watchlist][typeEnum.emailAddress] = user_store_dict[typeEnum.emailAddress]
@@ -108,12 +106,12 @@ export async function importData() {
     networkKeywords[permissionEnum.tracking] = {}
     networkKeywords[permissionEnum.tracking][typeEnum.trackingPixel] = keywords["PIXEL"]["URLs"]
 
-    // build fingerprinting info. Adding fingerprinting library keywords, 
-    // JSON list methods 
+    // build fingerprinting info. Adding fingerprinting library keywords,
+    // JSON list methods
     networkKeywords[permissionEnum.tracking][typeEnum.fingerprinting] = keywords["FINGERPRINT"]
 
-    // returns [location we obtained from google maps API, {phone #s, emails, 
-    // location elements entered by the user, fingerprinting keywords}, websites 
+    // returns [location we obtained from google maps API, {phone #s, emails,
+    // location elements entered by the user, fingerprinting keywords}, websites
     // that have identification objectives as services]
     return [locCoords, networkKeywords, services]
 }
@@ -121,11 +119,11 @@ export async function importData() {
 
 
 /**
- * this function takes a location object that is created when a user puts their street-address in the multi-line input and 
+ * this function takes a location object that is created when a user puts their street-address in the multi-line input and
  * updates the dictionary being built in the getWatchlistDict() function. It ignores the state entry
  * because we will take this from the zip.
- * @param {object} locObj The object containing the location elements of the user 
- * @param {Dict<permissionEnum<typeEnum>>} user_dict The dictionary being built by getWatchlistDict() 
+ * @param {object} locObj The object containing the location elements of the user
+ * @param {Dict<permissionEnum<typeEnum>>} user_dict The dictionary being built by getWatchlistDict()
  * @returns {void} Nothing. Updates the user_dict paramter
  */
 function parseLocationObject(locObj, user_dict) {
@@ -153,7 +151,7 @@ async function getWatchlistDict() {
 
     var user_store_dict = {}
 
-    // iterate through the stored keywords in the watchlist store and add them to 
+    // iterate through the stored keywords in the watchlist store and add them to
     // a dict that maps keywordtype -> array of keywords for that type
     let keyarr = await watchlistKeyval.keys()
     for (let key of keyarr) {
