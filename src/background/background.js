@@ -90,6 +90,11 @@ importData().then((data) => {
  * @param {Array<Array>} initArr 
  */
 async function initDB(initArr) {
+
+  // only init values on the very first time the extension loads.
+  let keys = await watchlistKeyval.keys()
+  if (keys.length != 0) {return}
+  
   for (let initItem of initArr) {
     let key, keyword, type, id
     [key, keyword, type, id] = initItem
