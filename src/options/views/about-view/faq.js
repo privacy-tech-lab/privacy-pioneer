@@ -11,7 +11,7 @@ export const FAQ = {
   "How does ___ process my data?": (
     <text>
       ___ stores all of its data in your browser’s storage. That means that all
-      data which ____ collects and displays to you within its popup or options
+      data which ___ collects and displays to you within its popup or options
       page stays on your computer and is never seen by us or anyone else.
     </text>
   ),
@@ -19,7 +19,7 @@ export const FAQ = {
   "Who are you?": (
     <text>
       We are academic researchers at Wesleyan University’s{" "}
-      <a href="https://www.privacytechlab.org/">privacy-tech-lab</a>. We believe
+      <a href="https://www.privacytechlab.org/" target="_blank">privacy-tech-lab</a>. We believe
       in privacy as a fundamental right. Our motivation is to provide new
       directions in privacy technologies, and we do not have any commercial
       interests.
@@ -46,11 +46,11 @@ export const FAQ = {
   ),
   "What is ___ actually doing?": (
     <text>
-      ____ analyzes HTTP requests, responses, and related data, and stores
+      ___ analyzes HTTP requests, responses, and related data, and stores
       tracking information in a textual format in your browser’s secure storage.
       ___ then informs you when privacy-invasive procedures have occurred with
-      the appropriate labels. Note that ____ does not block or intervene with
-      these procedures; ____ is an information-focused browser extension
+      the appropriate labels. Note that ___ does not block or intervene with
+      these procedures; ___ is an information-focused browser extension
       intending to give you greater understanding of the web. If you want to
       block tracking in the first place, consider tools like Privacy Badger,
       uBlockOrigin, or a proxy service.
@@ -66,24 +66,24 @@ export const FAQ = {
       data may be sent without your knowledge.
     </text>
   ),
-  "Is ____ compatible with Firefox’s built-in blocking technologies?": (
+  "Is ___ compatible with Firefox’s built-in blocking technologies?": (
     <text>
       Yes, ___ is completely compatible with Firefox’s built-in blocking
       technologies. ___ analyzes the HTTP requests that are made, no matter what
       other blocking you have enabled.
     </text>
   ),
-  "What is the ____ license? Where can I find the ____ source code?": (
+  "What is the ___ license? Where can I find the ___ source code?": (
     <text>
       ___ is licensed under the{" "}
-      <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/">
+      <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">
         Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International
         license
       </a>
       . The ___ source code can be found on the{" "}
-      <a href="https://github.com/privacy-tech-lab/integrated-privacy-analysis">
+      <a href="https://github.com/privacy-tech-lab/integrated-privacy-analysis" target="_blank">
         {" "}
-        privacy-tech-lab’s ____ GitHub
+        privacy-tech-lab’s ___ GitHub
       </a>
       .
     </text>
@@ -92,7 +92,7 @@ export const FAQ = {
     <text>
       Send us an email at [email address]. We would love to hear from you! You
       can also learn more about our work at{" "}
-      <a href="https://www.privacytechlab.org/"> privacy-tech-lab</a>.
+      <a href="https://www.privacytechlab.org/" target="_blank"> privacy-tech-lab</a>.
     </text>
   ),
 };
