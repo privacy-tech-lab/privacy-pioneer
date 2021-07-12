@@ -286,4 +286,28 @@ function ipSearch(strReq, ip, rootUrl, reqUrl) {
   
 }
 
-export { regexSearch, coordinateSearch, urlSearch, locationKeywordSearch, fingerprintSearch, ipSearch, pixelSearch, disconnectFingerprintSearch }
+
+/**
+ * 
+ * @param {string} strReq The request as a string
+ * @param {Dict} networkKeywords A dictionary containing the encoded email object
+ * @param {string} rootUrl Root url as a string
+ * @param {string} reqUrl The request url as a string
+ */
+function encodedEmailSearch(strReq, networkKeywords, rootUrl, reqUrl) {
+  const encodedObj = networkKeywords[permissionEnum.watchlist][typeEnum.encodedEmail]
+  const emails = Object.keys(encodedObj)
+  emails.forEach(email => {
+    let encodeLst = encodedObj[email]
+    encodeLst.forEach(encodedEmail => {
+      let fixed = escapeRegExp(encodedEmail)
+      let re = new RegExp(`${fixed}`, "i");
+      let result = strReq.search(re)
+      if (result != -1) {
+        addToEvidenceList(permissionEnum.watchlist, rootUrl, strReq, reqUrl, typeEnum.encodedEmail, [result, result+encodedEmail.length], email)
+      }
+    })
+  })
+}
+
+export { regexSearch, coordinateSearch, urlSearch, locationKeywordSearch, fingerprintSearch, ipSearch, pixelSearch, disconnectFingerprintSearch, encodedEmailSearch }

@@ -56,7 +56,12 @@ const Evidence = ({ collapseId, request, label, type }) => {
 
       // we want to highlight the label type in the description
       let highlight = generalDescription.indexOf(displayType);
-      if (highlight == -1) {
+      if (displayType == "Encoded Email") {
+        generalDescriptionParsed.leading = "‣ ".concat(generalDescription.slice(0,3));
+        generalDescriptionParsed.highlight = "Email Address";
+        generalDescriptionParsed.trailing = generalDescription.slice(16, generalDescription.length)
+      }
+      else if (highlight == -1) {
         generalDescriptionParsed.leading = "‣ ".concat(generalDescription);
       }
       else {
@@ -90,7 +95,7 @@ const Evidence = ({ collapseId, request, label, type }) => {
    */
   const getSpecificDescription = (request) => {
     if (request != null) {
-      let specificDescription = {leading: "", highlight: "", trailing: "", signOff: ""}
+      let specificDescription = {leading: "", highlight: "", trailing: "", email: "", trail1: "", encodedEmail: "", trail2: "", signOff: ""}
       const displayType = privacyLabels[label]["types"][type]["displayName"];
 
       // description for when evidence came from a list of URL's (disconnect or urlClassification header)
@@ -100,6 +105,7 @@ const Evidence = ({ collapseId, request, label, type }) => {
         specificDescription.trailing = `.`;
         specificDescription.signOff = `${handEmoji} Request URL below`;
       }
+
       // description for when the evidence came with an index in the strReq
       // (this could mean body but could also be a requeust URL that came up from one of the search routines)
       else {
@@ -110,9 +116,22 @@ const Evidence = ({ collapseId, request, label, type }) => {
           keywordFlagged = keywordFlagged.slice(0,25).concat(trailingPeriods);
         }
         specificDescription.leading = `‣ We found`;
-        specificDescription.highlight = ` ${keywordFlagged}`
-        specificDescription.trailing =  ` in this HTTP request, so we gave it the ${displayType} label.`;
-        specificDescription.signOff = `${handEmoji} Context below`;
+        specificDescription.highlight = ` ${keywordFlagged}`;
+
+        // general case
+        if (request.extraDetail == undefined){
+          specificDescription.trailing =  ` in this HTTP request, so we gave it the ${displayType} label.`;
+          specificDescription.signOff = `${handEmoji} Context below`;
+        }
+        // specific encoded email case
+        else {
+          specificDescription.trailing =  ` in this HTTP request, which is the encoded form of `;
+          specificDescription.email = `${request.extraDetail}`;
+          specificDescription.trail1 = ` from your watchlist, so we gave it the `
+          specificDescription.encodedEmail = `${displayType}`
+          specificDescription.trail2 = ` label.`;
+          specificDescription.signOff = `${handEmoji} Context below`;
+        }
       }
       return specificDescription
     }
@@ -136,6 +155,10 @@ const Evidence = ({ collapseId, request, label, type }) => {
               {specificDescription.leading}
               <span>{specificDescription.highlight}</span>
               {specificDescription.trailing}
+              <span>{specificDescription.email}</span>
+              {specificDescription.trail1}
+              <span>{specificDescription.encodedEmail}</span>
+              {specificDescription.trail2}
               <br></br><br></br>
               <span>{specificDescription.signOff}</span>
               </pre>
