@@ -244,7 +244,7 @@ export const privacyLabels = Object.freeze({
     types: {
       phoneNumber: {
         displayName: "Phone Number",
-        description: "An Phone Number from your watchlist was found in a request.",
+        description: "A Phone Number from your watchlist was found in a request.",
       },
       emailAddress: {
         displayName: "Email Address",
