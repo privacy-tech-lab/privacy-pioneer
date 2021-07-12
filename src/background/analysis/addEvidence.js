@@ -20,7 +20,7 @@ const parentJson = require('../../assets/parents.json')
  * (defined in permissionEnum) and then a further type level (defined in typeEnum). We store only one piece of evidence per permssion/type for a
  * given rootUrl and a maximum of 5 pieces of evidence in total for a permission/type.
  */
-async function addToEvidenceList(perm, rootU, snip, requestU, t, i) {
+async function addToEvidenceList(perm, rootU, snip, requestU, t, i, extraDetail = undefined) {
 
   // We do not want calls to the api we use for getting a user's IP to show up in evidence. Whitelist this domain.
   if (requestU == 'http://ip-api.com/json/'){return;}
@@ -107,7 +107,8 @@ async function addToEvidenceList(perm, rootU, snip, requestU, t, i) {
         typ: t,
         index: i,
         firstPartyRoot: firstParty,
-        parentCompany: requestParent
+        parentCompany: requestParent,
+        extraDetail: extraDetail
       } )
 
       // if we don't have evidence yet, we initialize it as an empty dict

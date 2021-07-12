@@ -70,6 +70,7 @@ export const resourceTypeEnum = Object.freeze( {
  * @property {Array|undefined} index A length 2 array with the indexes of the evidence or undefined if not applicable
  * @property {boolean} firstPartyRoot A boolean indicating if the evidence was generated with a first party root (the rootUrl of the request is the same as the website that generated the request)
  * @property {string|null} parentCompany If we have identified a parent company for this url, we store it here for the frontend. Else, null.
+ * @property {string|undefined} extraDetail Extra details as needed. Currently only used for encoded email's original email
  */
 export class Evidence {
   constructor({
@@ -82,6 +83,7 @@ export class Evidence {
     index,
     firstPartyRoot,
     parentCompany,
+    extraDetail,
   }) {
     this.timestamp = timestamp;
     this.permission = permission;
@@ -92,6 +94,7 @@ export class Evidence {
     this.index = index === undefined ? -1 : index;
     this.firstPartyRoot = firstPartyRoot;
     this.parentCompany = parentCompany;
+    this.extraDetail = extraDetail;
   }
 }
 
@@ -173,10 +176,6 @@ export const keywordTypes = Object.freeze({
     displayName: "Email Address",
     placeholder: "jdoe@wesleyan.edu",
   },
-  encodedEmail: {
-    displayName: "Encoded Email",
-    placeholder: '',
-  },
   ipAddress: {
     displayName: "IP Address",
     placeholder: "999.99.999.999",
@@ -245,19 +244,19 @@ export const privacyLabels = Object.freeze({
     types: {
       phoneNumber: {
         displayName: "Phone Number",
-        description: "The Phone Number from your watchlist was found in a request.",
+        description: "A Phone Number from your watchlist was found in a request.",
       },
       emailAddress: {
         displayName: "Email Address",
-        description: "The Email Address from your watchlist was found in a request.",
+        description: "An Email Address from your watchlist was found in a request.",
       },
       encodedEmail: {
         displayName: "Encoded Email",
-        description: "The email address from your watchlist was found in an alternate representation (The Trade Desk's UID)" // this should be updated with a link or different wording
+        description: "An Email Address from your watchlist was found in an alternate representation (The Trade Desk's UID)" // this should be updated with a link or different wording
       },
       userKeyword: {
         displayName: "Keyword",
-        description: "A Keyword was found that you included in your watchlist.",
+        description: "A Keyword from your watchlist was found in a request.",
       },
     },
   },

@@ -9,6 +9,7 @@ import { getLocationData, filterGeocodeResponse } from "./getLocationData.js"
 import { buildPhone, getState } from "./structuredRoutines.js"
 import { watchlistKeyval } from "../../libs/indexed-db/index.js"
 import { typeEnum, permissionEnum } from "./classModels.js"
+import {setEmail, digestMessage, hexToBase64} from './encodedEmail'
 
 // import keywords, services JSONs
 const keywords = require("../../assets/keywords.json");
@@ -91,6 +92,14 @@ export async function importData() {
     // if the user entered an email/s, add it to network keywords (formated as arr)
     if (typeEnum.emailAddress in user_store_dict) {
         networkKeywords[permissionEnum.watchlist][typeEnum.emailAddress] = user_store_dict[typeEnum.emailAddress]
+        var encodedEmails = {}
+        user_store_dict[typeEnum.emailAddress].forEach(async (email) => {
+            const digestHex = await digestMessage(setEmail(email));
+            const base64Encoded = hexToBase64(digestHex);
+            const urlBase64Encoded = encodeURIComponent(base64Encoded);
+            encodedEmails[email] = [base64Encoded, urlBase64Encoded]
+        })
+        networkKeywords[permissionEnum.watchlist][typeEnum.encodedEmail] = encodedEmails
     }
 
     // if we have user keywords, we add them to the network keywords (formated as arr)
