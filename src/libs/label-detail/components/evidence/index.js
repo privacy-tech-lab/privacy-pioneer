@@ -105,6 +105,9 @@ const Evidence = ({ collapseId, request, label, type }) => {
         specificDescription.trailing = `.`;
         specificDescription.signOff = `${handEmoji} Request URL below`;
       }
+
+      // description for when the evidence came with an index in the strReq
+      // (this could mean body but could also be a requeust URL that came up from one of the search routines)
       else {
         let keywordFlagged = request.snippet.slice(request.index[0], request.index[1]);
         // cut down the keyword if it's lengthy.
@@ -114,24 +117,21 @@ const Evidence = ({ collapseId, request, label, type }) => {
         }
         specificDescription.leading = `‣ We found`;
         specificDescription.highlight = ` ${keywordFlagged}`;
-      }
 
-      // description for when the evidence came with an index in the strReq
-      // (this could mean body but could also be a requeust URL that came up from one of the search routines)
-
-      // specific encoded email case
-      if (request.extraDetail != undefined){
-        specificDescription.trailing =  ` in this HTTP request, which is the encoded form of `;
-        specificDescription.email = `${request.extraDetail}`;
-        specificDescription.trail1 = ` from your watchlist, so we gave it the `
-        specificDescription.encodedEmail = `${displayType}`
-        specificDescription.trail2 = ` label.`;
-        specificDescription.signOff = `${handEmoji} Context below`;
-      }
-      // general case
-      else {
-        specificDescription.trailing =  ` in this HTTP request, so we gave it the ${displayType} label.`;
-        specificDescription.signOff = `${handEmoji} Context below`;
+        // general case
+        if (request.extraDetail == undefined){
+          specificDescription.trailing =  ` in this HTTP request, so we gave it the ${displayType} label.`;
+          specificDescription.signOff = `${handEmoji} Context below`;
+        }
+        // specific encoded email case
+        else {
+          specificDescription.trailing =  ` in this HTTP request, which is the encoded form of `;
+          specificDescription.email = `${request.extraDetail}`;
+          specificDescription.trail1 = ` from your watchlist, so we gave it the `
+          specificDescription.encodedEmail = `${displayType}`
+          specificDescription.trail2 = ` label.`;
+          specificDescription.signOff = `${handEmoji} Context below`;
+        }
       }
       return specificDescription
     }
