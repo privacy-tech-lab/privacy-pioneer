@@ -174,6 +174,7 @@ function analyze(request, userData) {
         })
       }
       if ( typeEnum.emailAddress in networkKeywords[permissionEnum.watchlist] ) {
+        encodedEmailSearch(strRequest, networkKeywords, rootUrl, reqUrl);
         networkKeywords[permissionEnum.watchlist][typeEnum.emailAddress].forEach( email => {
           regexSearch(strRequest, email, rootUrl, reqUrl, typeEnum.emailAddress)
         })
@@ -204,8 +205,6 @@ function analyze(request, userData) {
     if ( (request.type == resourceTypeEnum.image || request.type == resourceTypeEnum.subFrame) && rootUrl != reqUrl ) {
       pixelSearch(strRequest, networkKeywords, rootUrl, reqUrl)
     }
-
-    encodedEmailSearch(strRequest, networkKeywords, rootUrl, reqUrl)
 }
 
 /**
