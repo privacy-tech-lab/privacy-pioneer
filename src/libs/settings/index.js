@@ -1,5 +1,9 @@
-import { settingsKeyval } from "../indexed-db";
-import { permissionEnum } from "../../background/analysis/classModels";
+import { settingsKeyval, watchlistKeyval } from "../indexed-db";
+import {
+  permissionEnum,
+  storeEnum,
+} from "../../background/analysis/classModels";
+import { evidenceKeyval } from "../../background/analysis/openDB";
 
 export const settingsEnum = Object.freeze({
   sameAsSystem: "sameAsSystem",
@@ -10,11 +14,13 @@ export const settingsEnum = Object.freeze({
 });
 
 export const setDefault = async () => {
-  await settingsKeyval.set(permissionEnum.location, true);
-  await settingsKeyval.set(permissionEnum.monetization, true);
-  await settingsKeyval.set(permissionEnum.tracking, true);
-  await settingsKeyval.set(permissionEnum.watchlist, true);
-  await settingsKeyval.set("theme", settingsEnum.sameAsSystem);
+  if ((await settingsKeyval.values()).length == 0) {
+    await settingsKeyval.set(permissionEnum.location, true);
+    await settingsKeyval.set(permissionEnum.monetization, true);
+    await settingsKeyval.set(permissionEnum.tracking, true);
+    await settingsKeyval.set(permissionEnum.watchlist, true);
+    await settingsKeyval.set("theme", settingsEnum.sameAsSystem);
+  }
 };
 
 export const toggleLabel = async (label) => {
@@ -34,9 +40,29 @@ export const getLabelStatus = async () => {
 
 export const setTheme = async (theme) => {
   await settingsKeyval.set("theme", theme);
-  console.log(theme);
 };
 
 export const getTheme = async () => {
   return await settingsKeyval.get("theme");
+};
+
+export const deleteEvidenceDB = async () => {
+  await evidenceKeyval.clear(storeEnum.firstParty);
+  await evidenceKeyval.clear(storeEnum.thirdParty);
+};
+
+export const deleteKeywordDB = async () => {
+  await watchlistKeyval.clear();
+};
+
+export const getExcludedLabels = async () => {
+  let excludedLabels = [];
+  let labels = Object.values(permissionEnum);
+  for (const label of labels) {
+    let include = await settingsKeyval.get(label);
+    if (!include) {
+      excludedLabels.push(label);
+    }
+  }
+  return excludedLabels;
 };

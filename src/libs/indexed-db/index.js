@@ -6,7 +6,7 @@ import {
   privacyLabels,
   storeEnum,
 } from "../../background/analysis/classModels";
-import { setDefault } from "../settings";
+import { getExcludedLabels, setDefault } from "../settings";
 
 /**
  * Create/open indexed-db to store keywords for watchlist
@@ -124,6 +124,7 @@ export const deleteKeyword = async (id) => {
  * result: {..., label: {..., requestURL: {..., labelType: requestObject}}}
  */
 export const getWebsiteLabels = async (website) => {
+  const excludedLabels = await getExcludedLabels();
   try {
     var evidence = await evidenceIDB.get(website, storeEnum.firstParty); // first try first party DB
     if (evidence == undefined) {
@@ -134,7 +135,11 @@ export const getWebsiteLabels = async (website) => {
       for (const [type, requests] of Object.entries(value)) {
         for (const [url, e] of Object.entries(requests)) {
           // Verify label and type are in privacyLabels
-          if (label in privacyLabels && type in privacyLabels[label]["types"]) {
+          if (
+            label in privacyLabels &&
+            type in privacyLabels[label]["types"] &&
+            !excludedLabels.includes(label)
+          ) {
             // Add label in data to object
             if (!(label in result)) {
               result[label] = { [url]: { [type]: e } };
@@ -154,12 +159,13 @@ export const getWebsiteLabels = async (website) => {
 };
 
 /**
- * Get identified labels of all websites in an array from indexedDB
+ * Get identified labels of all websites stored in indexedDB
  * result: {..., website: {...,label: {..., requestURL: {..., labelType: requestObject}}}}
  */
 
-export const getAllWebsiteLabels = async (websites) => {
+const getAllWebsiteLabels = async () => {
   let weblabels = {};
+  const websites = await getWebsites();
   try {
     Object.keys(websites).forEach((website) => {
       getWebsiteLabels(website).then((res) => (weblabels[website] = res));
@@ -171,20 +177,27 @@ export const getAllWebsiteLabels = async (websites) => {
 };
 
 /**
- * Uses above function to iterate through websites
- * Made for UI implementation
- * result: {label : number of websites that uses label }
+ *
+ *
+ * @returns Number of websites that have collected each label
  */
 
-export const getLabels = async (websites) => {
+const getLabelNumbers = async () => {
   let labels = {};
+  const getNumOfWebsites = (label) => Object.keys(label).length;
+  const excludedLabels = await getExcludedLabels();
+  Object.values(permissionEnum).forEach((label) => {
+    if (!excludedLabels.includes(label)) labels[label] = 0;
+  });
+  const websites = await getWebsites();
   try {
     for (const website of Object.keys(websites)) {
       await getWebsiteLabels(website).then((res) => {
         Object.keys(res).forEach((label) => {
-          Object.keys(labels).includes(label)
-            ? (labels[label] += getNumOfWebsites(res[label]))
-            : (labels[label] = getNumOfWebsites(res[label]));
+          if (!excludedLabels.includes(label))
+            Object.keys(labels).includes(label)
+              ? (labels[label] += getNumOfWebsites(res[label]))
+              : (labels[label] = getNumOfWebsites(res[label]));
         });
       });
     }
@@ -194,7 +207,43 @@ export const getLabels = async (websites) => {
   }
 };
 
-const getNumOfWebsites = (label) => Object.keys(label).length;
+/**
+ *
+ * @param {Dict} labels Labels sorted by websites with excluded labels removed if applicable
+ * @returns Object with the key of each label and values of website that collect said label
+ */
+
+const getLabelsbyLabel = async (labels) => {
+  let res = {};
+  Object.keys(labels).forEach((website) => {
+    Object.keys(labels[website]).forEach((label) => {
+      res[label] = {};
+      res[label][website] = labels[website][label];
+    });
+  });
+  return res;
+};
+
+/**
+ *
+ * @returns Object of labels with the key being each website and values being the labels it collects excluding
+ * labels toggled off in settigs
+ */
+
+const excludeLabels = async () => {
+  let labels = await getAllWebsiteLabels();
+  const excludedLabels = await getExcludedLabels();
+  let newLabels = {};
+  Object.keys(labels).forEach((website) => {
+    Object.keys(labels[website]).forEach((label) => {
+      if (!excludedLabels.includes(label)) {
+        newLabels[website] = {};
+        newLabels[website][label] = labels[website][label];
+      }
+    });
+  });
+  return newLabels;
+};
 
 /**
  * Builds up dictionary of labels
@@ -234,4 +283,19 @@ export const getWebsites = async () => {
   } catch (error) {
     return {};
   }
+};
+
+/**
+ * Uses above function to iterate through websites
+ * Made for UI implementation
+ * @returns Labels sorted in various ways
+ */
+
+export const getLabels = async () => {
+  const allLabels = await excludeLabels();
+  const labels = {};
+  labels["byWebsite"] = allLabels; // {...website: {labels}}
+  labels["byLabel"] = await getLabelsbyLabel(allLabels); //{...label:{websites}}
+  labels["numOfEachLabel"] = await getLabelNumbers(); //{...label:number of websites collecting label}
+  return labels;
 };

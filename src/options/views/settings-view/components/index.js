@@ -2,6 +2,8 @@ import React, { useEffect, useState } from "react";
 import { permissionEnum } from "../../../../background/analysis/classModels";
 import * as Icons from "../../../../libs/icons";
 import {
+  deleteEvidenceDB,
+  deleteKeywordDB,
   getLabelStatus,
   getTheme,
   setTheme,
@@ -20,6 +22,7 @@ import {
   SExportSection,
   SDangerSection,
   SLabelToggle,
+  SDangerButton,
 } from "./style";
 
 export const ToggleSwitch = ({ isActive, label, onClick, spaceBetween }) => (
@@ -85,27 +88,28 @@ export const LabelToggle = () => {
   );
 };
 
-export const ThemeSelection = () => {
+export const ThemeSelection = ({ changeTheme }) => {
   const [selTheme, setSelTheme] = useState("");
   useEffect(
     () =>
       getTheme().then((res) => {
         if (res) setSelTheme(res);
-        else {
-          setTheme(settingsEnum.sameAsSystem), setSelTheme(sameAsSystem);
-        }
       }),
     [selTheme]
   );
+
+  const setETheme = async (theme) => {
+    await setTheme(theme);
+    setSelTheme(theme);
+    changeTheme(theme);
+  };
   return (
     <SThemeSection>
       <SThemeIcon
         selTheme={selTheme}
         theme={settingsEnum.light}
         whileHover={{ scale: 1.1 }}
-        onTap={async () => {
-          await setTheme(settingsEnum.light), setSelTheme(settingsEnum.light);
-        }}
+        onTap={() => setETheme(settingsEnum.light)}
       >
         <Icons.Sun size={48} />
       </SThemeIcon>
@@ -113,20 +117,15 @@ export const ThemeSelection = () => {
         selTheme={selTheme}
         theme={settingsEnum.dark}
         whileHover={{ scale: 1.1 }}
-        onTap={async () => {
-          await setTheme(settingsEnum.dark), setSelTheme(settingsEnum.dark);
-        }}
+        onTap={() => setETheme(settingsEnum.dark)}
       >
-        <Icons.Sun size={48} />
+        <Icons.Moon size={48} />
       </SThemeIcon>
       <SThemeIcon
         theme={settingsEnum.sameAsSystem}
         selTheme={selTheme}
         whileHover={{ scale: 1.1 }}
-        onTap={async () => {
-          await setTheme(settingsEnum.sameAsSystem),
-            setSelTheme(settingsEnum.sameAsSystem);
-        }}
+        onTap={() => setETheme(settingsEnum.sameAsSystem)}
       >
         <Icons.Settings size={48} />
       </SThemeIcon>
@@ -140,9 +139,36 @@ export const ExportData = () => (
     <SExportButton>YAML</SExportButton>
   </SExportSection>
 );
-export const DangerZone = () => (
-  <SDangerSection>
-    <SSettingHeader>Danger Zone</SSettingHeader>
-    <SSubtitle>Permenantly clear your stored data</SSubtitle>
-  </SDangerSection>
-);
+export const DangerZone = () => {
+  const handleEvidence = () => {
+    if (
+      confirm(
+        "Are you sure you want to delete all of the evidence we've collected?"
+      )
+    ) {
+      deleteEvidenceDB();
+    }
+  };
+
+  const handleWatchlist = () => {
+    if (
+      confirm(
+        "Are you sure you want to delete all of the keywords you've asked us to track?"
+      )
+    ) {
+      deleteKeywordDB();
+    }
+  };
+  return (
+    <SDangerSection>
+      <SSettingHeader>Danger Zone</SSettingHeader>
+      <SSubtitle>Permenantly clear your stored data</SSubtitle>
+      <div style={{ display: "flex", flexDirection: "row", marginTop: "12px" }}>
+        <SDangerButton onClick={handleEvidence}>Delete Evidence</SDangerButton>
+        <SDangerButton onClick={handleWatchlist}>
+          Delete Watchlist
+        </SDangerButton>
+      </div>
+    </SDangerSection>
+  );
+};

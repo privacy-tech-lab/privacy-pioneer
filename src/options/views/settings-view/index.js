@@ -20,7 +20,7 @@ import {
 /**
  * Settings page view
  */
-const SettingsView = () => {
+const SettingsView = ({ changeTheme }) => {
   return (
     <Scaffold>
       <SContainer>
@@ -28,13 +28,13 @@ const SettingsView = () => {
         <SSubtitle>Manage the extension</SSubtitle>
         <SBody>
           <SSection>
-            <ToggleSwitch label="Enabled" />
+            {/* <ToggleSwitch label="Enabled" /> */}
             <SSettingHeader>Labels</SSettingHeader>
             <SSubtitle>Toggle which labels you want to track</SSubtitle>
             <LabelToggle />
             <SSettingHeader>Theme</SSettingHeader>
             <SSubtitle>Choose the theme of the extension</SSubtitle>
-            <ThemeSelection />
+            <ThemeSelection changeTheme={changeTheme} />
           </SSection>
           <SSeperator marginLeft="32px" marginRight="32px" />
           <SSection>

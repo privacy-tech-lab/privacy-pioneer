@@ -1,4 +1,5 @@
 import { createGlobalStyle, css } from "styled-components";
+import { getTheme, settingsEnum } from "../settings";
 
 /**
  * Global style targeted for popup
@@ -42,36 +43,53 @@ const Options = css`
  * Styled components are automatically scoped to a local CSS class, therefore isolated from other components.
  * The limitation is removed here and things like CSS resets or base stylesheets can be applied.
  */
-const GlobalStyle = createGlobalStyle`
+
+const defaultTheme = css`
   :root {
     // Colors
-    --primaryBrandColor: #6B219F;
-    --primaryBrandTintColor: #F2E8F9;
+    --primaryBrandColor: #6b219f;
+    --primaryBrandTintColor: #f2e8f9;
     --backgroundColor: #ffffff;
     --primaryTextColor: #000000;
     --secondaryTextColor: #3c3c43;
     --cardColor: #f2f2f7;
     --textFieldColor: #d1d1d6;
     --seperatorColor: #c6c6c8;
+  }
+`;
 
+const darkTheme = css`
+  :root {
+    --primaryBrandColor: #6b219f;
+    --primaryBrandTintColor: #f2e8f9;
+    --backgroundColor: #1c1c1e;
+    --primaryTextColor: #ffffff;
+    --secondaryTextColor: #ebebf5;
+    --cardColor: #2c2c2e;
+    --textFieldColor: #3a3a3c;
+    --seperatorColor: #38383a;
+  }
+`;
+
+const systemTheme = css`
+  ${defaultTheme}
+  @media (prefers-color-scheme: dark) {
+    ${darkTheme}
+  }
+`;
+const GlobalStyle = createGlobalStyle`
+  ${(props) => {
+    if (props.theme == settingsEnum.light) return defaultTheme;
+    else if (props.theme == settingsEnum.dark) return darkTheme;
+    else return systemTheme;
+  }}
+  :root{
     // Font sizes
     --title1: 32px;
     --title2: 24px;
     --headline: 18px;
     --body1: 16px;
     --body2: 14px;
-  }
-
-  // Dark Mode
-  @media (prefers-color-scheme: dark) {
-    :root {
-      --backgroundColor: #1c1c1e;
-      --primaryTextColor: #ffffff;
-      --secondaryTextColor: #ebebf5;
-      --cardColor: #2c2c2e;
-      --textFieldColor: #3a3a3c;
-      --seperatorColor: #38383a;
-    }
   }
 
   ${(props) => (props.popup ? Popup : Options)}

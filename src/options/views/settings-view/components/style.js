@@ -89,7 +89,23 @@ export const SExportButton = styled.div`
 export const SDangerSection = styled.div`
   display: flex;
   flex-direction: column;
+  margin-top: 8px;
   border: 5px solid crimson;
-  padding: 4px;
+  padding: 8px;
   border-radius: 4px;
+  align-self: flex-start;
+`;
+
+export const SDangerButton = styled.div`
+  display: flex;
+  min-width: 100px;
+  padding: 8px 4px;
+  justify-content: center;
+  margin: 12px 4px;
+  border: 5px solid crimson;
+  border-radius: 8px;
+  cursor: pointer;
+  :hover {
+    background-color: crimson;
+  }
 `;
