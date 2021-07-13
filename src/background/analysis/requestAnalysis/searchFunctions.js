@@ -4,11 +4,9 @@ searchFunctions.js
 - searchFunctions.js contains all functions used to search through network
 requests
 */
-import { Request, typeEnum, permissionEnum, Evidence } from "./classModels.js"
-import { addToEvidenceList } from "./addEvidence.js"
-import { regexSpecialChar, escapeRegExp } from "./regexFunctions.js"
-import { getHostname } from "./util.js"
-
+import { Request, typeEnum, permissionEnum, Evidence } from "../classModels.js"
+import { regexSpecialChar, escapeRegExp } from "../utility/regexFunctions.js"
+import { getHostname } from "../utility/util.js"
 
 /**
  * Iterates through the user's location elements and adds exact text matches to evidence. 
@@ -18,17 +16,18 @@ import { getHostname } from "./util.js"
  * @param {Dict<typeEnum>} locElems 
  * @param {string} rootUrl 
  * @param {string} reqUrl 
+ * @returns {Array<Array>|Array} An array of arrays with the search results [] if no result 
  */
-async function locationKeywordSearch(strReq, locElems, rootUrl, reqUrl) {
+function locationKeywordSearch(strReq, locElems, rootUrl, reqUrl) {
+  var output = []
   for (const [k, v] of Object.entries(locElems)) {
     // every entry is an array, so we iterate through it.
     for (let value of v) {
-      let result_i = strReq.search(value)
-      if (result_i != -1) {
-        await addToEvidenceList(permissionEnum.location, rootUrl, strReq, reqUrl, k, [result_i, result_i + value.length]);
+      let res = regexSearch(strReq, value, rootUrl, reqUrl, k, permissionEnum.location)
+      if (res.length != 0) output.push(res[0]);
+      }
     }
-  }
-}
+  return output
 }
 
 /**
@@ -51,9 +50,10 @@ const classificationTransformation = {
  * 
  * @param {Request} request An HTTP request
  * @param {object} urls The disconnect JSON
- * @returns {void} Nothing. Adds to evidence when we find URL's from the disconnect list.
+ * @returns {Array<Array>|Array} An array of arrays with the search results [] if no result 
  */
 function urlSearch(strReq, rootUrl, reqUrl, classifications) {
+  var output = []
   let firstPartyArr = classifications.firstParty;
   let thirdPartyArr = classifications.thirdParty;
 
@@ -62,13 +62,14 @@ function urlSearch(strReq, rootUrl, reqUrl, classifications) {
       if (url in classificationTransformation) {
         let p, t;
         [p, t] = classificationTransformation[url];
-        addToEvidenceList(p, rootUrl, strReq, reqUrl, t, undefined )
+        output.push([p, rootUrl, strReq, reqUrl, t, undefined])
       }
     }
   }
 
   loopThroughClassificationArray(firstPartyArr);
   loopThroughClassificationArray(thirdPartyArr);
+  return output
   }
 
 /**
@@ -77,9 +78,11 @@ function urlSearch(strReq, rootUrl, reqUrl, classifications) {
  * 
  * @param {Request} request An HTTP request
  * @param {object} urls The disconnect JSON
- * @returns {void} Nothing. Adds to evidence when we find URL's from the disconnect list.
+ * @returns {Array<Array>|Array} An array of arrays with the search results [] if no result 
  */
  function disconnectFingerprintSearch(request, urls) {
+
+  var output = []
 
   /**
    * adds a piece of evidence from the disconnect JSON to allign with our permission type schema.
@@ -88,7 +91,7 @@ function urlSearch(strReq, rootUrl, reqUrl, classifications) {
    * @returns {void} Nothing. Adds to evidence list
    */
   function addDisconnectEvidence(perm, type) {
-    addToEvidenceList(perm, request.details["originUrl"], "null", request.details["url"], type, undefined)
+    output.push([perm, request.details["originUrl"], "null", request.details["url"], type, undefined])
   }
   
   // The fingerprintingInvasive category is the only one we are traversing.
@@ -109,21 +112,24 @@ function urlSearch(strReq, rootUrl, reqUrl, classifications) {
       }
     }
   }
+  return output
 }
 
 
 /**
  * Searches an HTTP request for a users lattitude and longitude. Uses regular expression patterns to look for floating point patterns.
+ * We only add evidence if we find a .1 distance from both the 
+ * lattitude and the longitude within 250 characters of each other in the request
  * 
  * @param {string} strReq The HTTP request as a string 
  * @param {Array<number>} locData The coordinates of the user
  * @param {string} rootUrl The rootUrl as a string
  * @param {string} reqUrl The requestUrl as a string
- * @returns {void} Populates the DB if a match is found. We only add evidence if we find a .1 distance from both the 
- * lattitude and the longitude within 250 characters of each other in the request
+ * @returns {Array<Array>|Array} An array of arrays with the search results [] if no result 
  * 
  */
 function coordinateSearch(strReq, locData, rootUrl, reqUrl) {
+  var output = []
   const lat = locData[0]
   const lng = locData[1]
   const absLat = Math.abs(lat)
@@ -134,7 +140,7 @@ function coordinateSearch(strReq, locData, rootUrl, reqUrl) {
   const matches = strReq.matchAll(floatReg)
   const matchArr = Array.from(matches)
   // not possible to have pair without at least 2 matches
-  if ( matchArr.length < 2 ) { return }
+  if ( matchArr.length < 2 ) { return output }
 
   /**
    * If we find lattitude, we search for longitude and vice versa
@@ -161,7 +167,7 @@ function coordinateSearch(strReq, locData, rootUrl, reqUrl) {
       let asFloat = parseFloat(potCoor)
       let delta = Math.abs(asFloat - goal)
       if (delta < .1) {
-        addToEvidenceList(permissionEnum.location, rootUrl, strReq, reqUrl, typeEnum.tightLocation, [startIndex, endIndex])
+        output.push([permissionEnum.location, rootUrl, strReq, reqUrl, typeEnum.tightLocation, [startIndex, endIndex]])
         // if we find evidence for this request we return an index that will terminate the loop
         return matchArr.length
       }
@@ -185,6 +191,7 @@ function coordinateSearch(strReq, locData, rootUrl, reqUrl) {
     else if (deltaLng < .1 ) { i = findPair(matchArr, absLat, i, startIndex) }
     else { i += 1}
   }
+  return output
 }
 
 
@@ -198,18 +205,16 @@ function coordinateSearch(strReq, locData, rootUrl, reqUrl) {
  * @param {string} reqUrl The requestUrl as a string
  * @param {string} type From typeEnum
  * @param {string} perm From permissionEnum
- * @returns {void} Nothing. Adds evidence if found.
+ * @returns {Array<Array>|Array} An array of arrays with the search results [] if no result 
  *
  */
 function regexSearch(strReq, keyword, rootUrl, reqUrl, type, perm = permissionEnum.watchlist ) {
-    let fixed = escapeRegExp(keyword)
-    let re = new RegExp(`${fixed}`, "i");
-    let result = strReq.search(re)
-    if (result != -1) {
-      {
-        addToEvidenceList( perm, rootUrl, strReq, reqUrl, type, [result, result + keyword.length])
-      }
-    }
+  var output = []
+  let fixed = escapeRegExp(keyword)
+  let re = new RegExp(`${fixed}`, "i");
+  let res = strReq.search(re)
+  if (res != -1) { output.push([perm, rootUrl, strReq, reqUrl, type, [res, res + keyword.length]]) }
+  return output
 }
 
 /**
@@ -218,21 +223,22 @@ function regexSearch(strReq, keyword, rootUrl, reqUrl, type, perm = permissionEn
  * @param {Dict} networkKeywords A dictionary containing fingerprinting keywords
  * @param {string} rootUrl The rootUrl as a string
  * @param {string} reqUrl The requestUrl as a string
- * 
+ * @returns {Array<Array>|Array} An array of arrays with the search results [] if no result 
  * Searches a request for the fingerprinting elements populated in the networkKeywords it is passed. These elements can be found in the keywords JSON
  */
 function fingerprintSearch(strReq, networkKeywords, rootUrl, reqUrl) {
+  var output = []
   const fpElems = networkKeywords[permissionEnum.tracking][typeEnum.fingerprinting]
   for (const [k, v] of Object.entries(fpElems)) {
     for (const keyword of v){
       const idxKeyword = strReq.indexOf(keyword);
       if (idxKeyword != -1){
-        addToEvidenceList(permissionEnum.tracking, rootUrl, strReq, reqUrl, typeEnum.fingerprinting, [idxKeyword, idxKeyword + keyword.length]);
+        output.push([permissionEnum.tracking, rootUrl, strReq, reqUrl, typeEnum.fingerprinting, [idxKeyword, idxKeyword + keyword.length]]);
         break;
       }
     }
-    
   }
+  return output
 }
 
 /**
@@ -245,8 +251,10 @@ function fingerprintSearch(strReq, networkKeywords, rootUrl, reqUrl) {
  * @param {Dict} networkKeywords A dictionary containing the pixel URLs
  * @param {string} rootUrl The rootUrl as a string
  * @param {string} reqUrl The requestUrl as a string
+ * @returns {Array<Array>|Array} An array of arrays with the search results [] if no result 
  */
 function pixelSearch(strReq, networkKeywords, rootUrl, reqUrl) {
+  var output = []
   const pixelUrls = networkKeywords[permissionEnum.tracking][typeEnum.trackingPixel]
   for (let url of pixelUrls) {
     let searchIndex = strReq.indexOf(url)
@@ -254,14 +262,15 @@ function pixelSearch(strReq, networkKeywords, rootUrl, reqUrl) {
       let reqUrlIndex = strReq.indexOf(reqUrl)
       // preference to show the reqUrl on the front end
       if (reqUrlIndex != -1) {
-        addToEvidenceList(permissionEnum.tracking, rootUrl, strReq, reqUrl, typeEnum.trackingPixel, [reqUrlIndex, reqUrlIndex + reqUrl.length])
+        output.push([permissionEnum.tracking, rootUrl, strReq, reqUrl, typeEnum.trackingPixel, [reqUrlIndex, reqUrlIndex + reqUrl.length]])
       }
       // otherwise show the url from the pixel list on the front end
       else {
-        addToEvidenceList(permissionEnum.tracking, rootUrl, strReq, reqUrl, typeEnum.trackingPixel, [searchIndex, searchIndex + url.length])
+        output.push([permissionEnum.tracking, rootUrl, strReq, reqUrl, typeEnum.trackingPixel, [searchIndex, searchIndex + url.length]])
       }  
     }
   }
+  return output
 }
 
 /**
@@ -271,8 +280,7 @@ function pixelSearch(strReq, networkKeywords, rootUrl, reqUrl) {
  * @param {string} ip An ip address as a string
  * @param {string} rootUrl Root url as a string
  * @param {string} reqUrl The request url as a string
- * @returns {void} Nothing. Calls search function
- * 
+ * @returns {Array<Array>|Array} An array of arrays with the search results [] if no result 
  */
 function ipSearch(strReq, ip, rootUrl, reqUrl) {
 
@@ -283,8 +291,7 @@ function ipSearch(strReq, ip, rootUrl, reqUrl) {
   }
 
   //otherwise just do a standard text search
-  return regexSearch(strReq, ip, rootUrl, reqUrl, typeEnum.ipAddress, permissionEnum.tracking)
-  
+  return regexSearch(strReq, ip, rootUrl, reqUrl, typeEnum.ipAddress, permissionEnum.tracking) 
 }
 
 
@@ -294,8 +301,10 @@ function ipSearch(strReq, ip, rootUrl, reqUrl) {
  * @param {Dict} networkKeywords A dictionary containing the encoded email object
  * @param {string} rootUrl Root url as a string
  * @param {string} reqUrl The request url as a string
+ * @returns {Array<Array>|Array} An array of arrays with the search results [] if no result 
  */
 function encodedEmailSearch(strReq, networkKeywords, rootUrl, reqUrl) {
+  var output = []
   const encodedObj = networkKeywords[permissionEnum.watchlist][typeEnum.encodedEmail]
   const emails = Object.keys(encodedObj)
   emails.forEach(email => {
@@ -303,12 +312,13 @@ function encodedEmailSearch(strReq, networkKeywords, rootUrl, reqUrl) {
     encodeLst.forEach(encodedEmail => {
       let fixed = escapeRegExp(encodedEmail)
       let re = new RegExp(`${fixed}`, "i");
-      let result = strReq.search(re)
-      if (result != -1) {
-        addToEvidenceList(permissionEnum.watchlist, rootUrl, strReq, reqUrl, typeEnum.encodedEmail, [result, result+encodedEmail.length], email)
+      let output = strReq.search(re)
+      if (output != -1) {
+       output.push([permissionEnum.watchlist, rootUrl, strReq, reqUrl, typeEnum.encodedEmail, [output, output+encodedEmail.length], email])
       }
     })
   })
+  return output
 }
 
 export { regexSearch, coordinateSearch, urlSearch, locationKeywordSearch, fingerprintSearch, ipSearch, pixelSearch, disconnectFingerprintSearch, encodedEmailSearch }
