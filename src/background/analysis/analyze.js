@@ -10,7 +10,7 @@ import { evidence } from "../background.js"
 import { evidenceKeyval } from "./openDB.js"
 
 import { RegexSpecialChar, escapeRegExp } from "./regexFunctions.js"
-import { regexSearch, coordinateSearch, urlSearch, disconnectFingerprintSearch, locationKeywordSearch, fingerprintSearch, ipSearch, pixelSearch, encodedEmailSearch } from "./searchFunctions.js"
+import { regexSearch, coordinateSearch, urlSearch, disconnectFingerprintSearch, locationKeywordSearch, fingerprintSearch, ipSearch, pixelSearch, encodedEmailSearch, dynamicPixelSearch } from "./searchFunctions.js"
 import { getHostname } from "./util.js";
 
 // Temporary container to hold network requests while properties are being added from listener callbacks
@@ -204,6 +204,7 @@ function analyze(request, userData) {
     // if the request is an image or subFrame and is coming from a different url than the root, we look for our pixel URLs
     if ( (request.type == resourceTypeEnum.image || request.type == resourceTypeEnum.subFrame) && rootUrl != reqUrl ) {
       pixelSearch(strRequest, networkKeywords, rootUrl, reqUrl)
+      dynamicPixelSearch(strRequest, reqUrl, rootUrl)
     }
 }
 
