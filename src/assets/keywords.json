@@ -39,9 +39,9 @@
  
           "fingerprintID",
  
-          "https: //github.com/Valve/fingerprintjs2",
+          "https://github.com/Valve/fingerprintjs2",
  
-          "http: //valve.github.io",
+          "http://valve.github.io",
  
           "getFPParams",
  
@@ -61,7 +61,7 @@
  
           "window._sift",
  
-          "https: //cdn.sift.com/s.js",
+          "https://cdn.sift.com/s.js",
  
           "_castle('setAppId'",
  
@@ -73,11 +73,12 @@
  
           "c.prototype.getCanvas",
  
-          "http: //admicro.vn/",
+          "http://admicro.vn/",
  
           "visitorFingerprint",
  
           "payload.push(btoa(gl.getParameter(debugInfo.UNMASKED_RENDERER_WEBGL)))"
+
         ],
         "fpJSONList": [
           "OfflineAudioContext.createOscillator",

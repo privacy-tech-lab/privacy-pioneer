@@ -79,7 +79,10 @@ const HomeView = () => {
                 information
               </SSubtitle>
             </div>
-            <SButtonText onClick={() => history.push({ pathname: "/search" })}>
+            <SButtonText onClick={() => history.push({ 
+              pathname: "/search", 
+              state: [websites, webLabels], //fixes race condition bug by passing this information to next page
+            })}>
               See All
             </SButtonText>
           </SSectionContainer>
