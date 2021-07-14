@@ -23,6 +23,7 @@
     "framer-motion": "^4.0.3",
     "google-libphonenumber": "^3.2.19",
     "idb": "^6.0.0",
+    "queue": "^6.0.2",
     "react": "^17.0.1",
     "react-dom": "^17.0.1",
     "react-router-dom": "^5.2.0",

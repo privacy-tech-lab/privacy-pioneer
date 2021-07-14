@@ -1,5 +1,5 @@
 import { openDB } from "idb";
-import { evidenceKeyval as evidenceIDB } from "../../background/analysis/openDB";
+import { evidenceKeyval as evidenceIDB } from "../../background/analysis/interactDB/openDB.js"
 import {
   keywordTypes,
   permissionEnum,
