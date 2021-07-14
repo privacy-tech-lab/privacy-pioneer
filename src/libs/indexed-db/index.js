@@ -7,7 +7,6 @@ import {
   storeEnum,
 } from "../../background/analysis/classModels";
 import Parents from "../../assets/parents.json";
-import { CompanyLogoSVG } from "../company-icons";
 
 /**
  * Create/open indexed-db to store keywords for watchlist
@@ -237,6 +236,9 @@ export const getParents = (labels) => {
   return parents;
 };
 
+
+const companiesWithSVG = new Set(['AddThis', 'Adobe', 'Amazon', "AT&T", 'Fox', 'Ibm', 'Ocacle',
+'Ebay', 'Facebook', 'Google', 'Microsoft', 'Salesforce', 'Twitter', 'Verizon', 'Yandex']);
 /**
  * Returns parent company from website name
  *
@@ -248,7 +250,7 @@ export const getParent = (website) => {
   )) {
     if (
       childrenSites.includes(website) &&
-      Object.keys(CompanyLogoSVG).includes(parentSite)
+      companiesWithSVG.has(parentSite)
     ) {
       return parentSite;
     }
@@ -258,7 +260,7 @@ export const getParent = (website) => {
   )) {
     if (
       childrenSites.includes(website) &&
-      Object.keys(CompanyLogoSVG).includes(parentSite)
+      companiesWithSVG.has(parentSite)
     ) {
       return parentSite;
     }
