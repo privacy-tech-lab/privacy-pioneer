@@ -57,13 +57,16 @@ export const LabelToggle = () => {
     [permissionEnum.tracking]: true,
   });
 
-  useEffect(
-    () =>
-      getLabelStatus().then((res) => {
-        if (res != {}) SetLabelStatus(res);
-      }),
-    [labelStatus]
-  );
+  useEffect(() => {
+    let componentMounted = true;
+
+    getLabelStatus().then((res) => {
+      if (componentMounted) SetLabelStatus(res);
+    });
+    return () => {
+      componentMounted = false;
+    };
+  }, [labelStatus]);
 
   const toggle = (label) => {
     toggleLabel(label);
