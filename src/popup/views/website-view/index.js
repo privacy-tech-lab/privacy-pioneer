@@ -63,13 +63,21 @@ const WebsiteView = () => {
     }
   };
 
+  /**
+   * Checks if current site is the extension's options page
+   * @param {String} hostName
+   */
+
   const checkOurOptions = (hostName) => {
-    if (hostName.search(/moz-extension/) != -1 && hostName.search(/options.html#/) != -1) {
-      setOurOptions(true)
+    if (
+      hostName.search(/moz-extension/) != -1 &&
+      hostName.search(/options.html#/) != -1
+    ) {
+      setOurOptions(true);
     } else {
-      setOurOptions(false)
+      setOurOptions(false);
     }
-  }
+  };
 
   useEffect(() => {
     /**
@@ -139,17 +147,19 @@ const WebsiteView = () => {
               <SSubtitle>{getCount()}</SSubtitle>
             </SHeader>
             {empty ? (
-              ourOptions ? 
-              <SEmpty>
-                <SEmptyText>
-                  Nothing here ... Check elsewhere or come back later!
-                </SEmptyText>
-              </SEmpty> :
-              <SEmpty>
-                <SEmptyText>
-                  Nothing yet... Keep browsing and check back later!
-                </SEmptyText>
-              </SEmpty>
+              ourOptions ? (
+                <SEmpty>
+                  <SEmptyText>
+                    Nothing here ... Check elsewhere or come back later!
+                  </SEmptyText>
+                </SEmpty>
+              ) : (
+                <SEmpty>
+                  <SEmptyText>
+                    Nothing yet... Keep browsing and check back later!
+                  </SEmptyText>
+                </SEmpty>
+              )
             ) : (
               Object.entries(labels).map(([label, requests]) => (
                 <LabelCard
