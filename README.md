@@ -16,7 +16,7 @@ Currently, we only support Firefox.
 
 Ensure that you have [node and npm](https://www.npmjs.com/get-npm) installed.
 
-In the root directory of the project, start by installing the dependencies by runnning:
+In the root directory of the project, start by installing the dependencies by running:
 
 ```bash
 npm install --production=false
@@ -63,11 +63,35 @@ The `web-ext` cli is included in the project. Learn more about packaging and sig
 └── ...
 ```
 
-The options and popup directories are similarly stuctured. Like many react projects they have an `index.html` file and `index.js` file which serve as the entry points. These directories also have a `components` directory, which contains resuable components to be used within it's parent diretory, and a `views` directory, which contains page views (which are just more react components). Each component has an `index.js` file as an entry point to that component, and they may also contain a `style.js` file for scoped styling. For styling, we use a popular technique called CSS in JS to apply styles using the third party library, [styled components](https://styled-components.com). Styled components are prefixed with a `S`, e.g. `SContainer`. For more complex components or views, there may be an additonal `components` directory. For transitions and animations, we use the third party library [framer motion](https://www.framer.com/motion/).
+The options and popup directories are similarly structured. Like many react projects they have an `index.html` file and `index.js` file which serve as the entry points. These directories also have a `components` directory, which contains reusable components to be used within it's parent directory, and a `views` directory, which contains page views (which are just more react components). Each component has an `index.js` file as an entry point to that component, and they may also contain a `style.js` file for scoped styling. For styling, we use a popular technique called CSS in JS to apply styles using the third party library, [styled components](https://styled-components.com). Styled components are prefixed with a `S`, e.g. `SContainer`. For more complex components or views, there may be an additional `components` directory. For transitions and animations, we use the third party library [framer motion](https://www.framer.com/motion/).
 
 The `src/libs/indexed-db` directory, contains functions that communicate to the database.
 
-## Architecture
+## Privacy Practice Analysis
+
+Our extension is analyzing the following privacy practices for each first and third party website.
+
+- Monetization
+  - Advertising (from Disconnect)
+  - Analytics (from Disconnect)
+  - Social Networking (Social from Disconnect)
+- Location
+  - Coarse Location
+  - Tight Location
+  - ZIP Code
+  - Street Address
+  - City
+  - State
+- Tracking
+  - Tracking Pixel
+  - IP Address
+  - Browser Fingerprinting (FingerprintingInvasive from Disconnect, our own list)
+- Watchlist
+  - Phone Number
+  - Email Address
+  - Custom Keywords
+
+## Extension Architecture
 
 An overview of the architecture of our extension is available [separately](https://github.com/privacy-tech-lab/integrated-privacy-analysis/blob/main/architecture_overview.md).
 
@@ -78,15 +102,15 @@ This project uses the following third party libraries and resources. We thank th
 - [Bootstrap](https://getbootstrap.com)
 - [Disconnect Tracker Protection lists](https://github.com/disconnectme/disconnect-tracking-protection)
 - [Eva Icons](https://akveo.github.io/eva-icons/#/)
-- [iconmonstr](https://iconmonstr.com/)
-- [Simple Icons](https://github.com/simple-icons/simple-icons)
 - [Framer Motion](https://www.framer.com/motion/)
+- [iconmonstr](https://iconmonstr.com/)
 - [Idb](https://www.npmjs.com/package/idb)
 - [Ion Icons](https://ionicons.com)
 - [JSDoc](https://www.npmjs.com/package/jsdoc)
 - [React](https://reactjs.org)
 - [Radar Icon](https://www.svgrepo.com/svg/167040/radar)
 - [React Spinners](https://www.npmjs.com/package/react-spinners)
+- [Simple Icons](https://github.com/simple-icons/simple-icons)
 - [Styled Components](https://styled-components.com)
 
 <p align="center">

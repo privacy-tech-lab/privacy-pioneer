@@ -54,6 +54,7 @@ const defaultTheme = css`
     --secondaryTextColor: #3c3c43;
     --cardColor: #f2f2f7;
     --textFieldColor: #d1d1d6;
+    --textFieldColorModal: #ebebff;
     --seperatorColor: #c6c6c8;
   }
 `;

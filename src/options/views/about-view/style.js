@@ -16,6 +16,9 @@ export const SBody = styled.div`
   margin-top: 8px;
   margin-bottom: 12px;
   font-size: var(--headline);
+  a {
+  color: var(--primaryBrandColor);
+  }
 `;
 
 export const SAnswer = styled.div`

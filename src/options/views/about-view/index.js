@@ -48,7 +48,7 @@ const AboutView = () => {
         <STitle>About</STitle>
         <SSubtitle>Learn more about our extension</SSubtitle>
         <SBody>
-          _____ will inform you which websites are tracking you and what data
+          ___ will inform you which websites are tracking you and what data
           they collect.
         </SBody>
         <STitle>FAQ</STitle>

@@ -25,7 +25,7 @@ const getCoords = async () => {
 
 /**
  * Calls getCoords to return an array containing [lat, long]. Returns [0,0] on error
- * @returns {Array<number>} The coordinates of the user
+ * @returns {Promise<Array<number>>} The coordinates of the user
  */
 export async function getLocationData() {
   try {
