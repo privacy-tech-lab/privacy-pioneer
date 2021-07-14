@@ -27,22 +27,24 @@ function hashTypeAndPermission(str) {
  */
 function extractHostname(url) {
 
-    var hostname;
-    //find & remove protocol (http, ftp, etc.) and get hostname
+  if (typeof url == 'undefined') return ''
 
-    if (url.indexOf("//") > -1) {
-        hostname = url.split('/')[2];
-    }
-    else {
-        hostname = url.split('/')[0];
-    }
+  var hostname;
+  //find & remove protocol (http, ftp, etc.) and get hostname
 
-    //find & remove port number
-    hostname = hostname.split(':')[0];
-    //find & remove "?"
-    hostname = hostname.split('?')[0];
+  if (url.indexOf("//") > -1) {
+      hostname = url.split('/')[2];
+  }
+  else {
+      hostname = url.split('/')[0];
+  }
 
-    return hostname;
+  //find & remove port number
+  hostname = hostname.split(':')[0];
+  //find & remove "?"
+  hostname = hostname.split('?')[0];
+
+  return hostname;
 }
 
 /**
@@ -51,6 +53,7 @@ function extractHostname(url) {
  * @returns {string} The domain of a the inputted url https://stackoverflow.com/questions/8498592/extract-hostname-name-from-string
  */
 function getHostname(url) {
+  if (typeof url == 'undefined') return ''
   var domain = extractHostname(url),
       splitArr = domain.split('.'),
       arrLen = splitArr.length;

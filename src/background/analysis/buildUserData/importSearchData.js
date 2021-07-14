@@ -6,14 +6,14 @@ both the URL and the keyword list for words and URLs to look for in the
 network requests
 */
 import { getLocationData, filterGeocodeResponse } from "./getLocationData.js"
-import { buildPhone, getState } from "./structuredRoutines.js"
-import { watchlistKeyval } from "../../libs/indexed-db/index.js"
-import { typeEnum, permissionEnum } from "./classModels.js"
-import {setEmail, digestMessage, hexToBase64} from './encodedEmail'
+import { buildPhone, getState } from '../buildUserData/structuredRoutines.js'
+import { watchlistKeyval } from '../../../libs/indexed-db/index.js'
+import { typeEnum, permissionEnum } from "../classModels.js"
+import {setEmail, digestMessage, hexToBase64} from '../requestAnalysis/encodedEmail.js';
 
 // import keywords, services JSONs
-const keywords = require("../../assets/keywords.json");
-const services = require("../../assets/services.json");
+const keywords = require("../../../assets/keywords.json");
+const services = require("../../../assets/services.json");
 
 /**
  * Used to build all the data we search for in our analysis. This includes data in the watchlist DB and the JSON lists.

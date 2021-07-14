@@ -6,9 +6,10 @@ background.js
 - https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/API/webRequest
 */
 
-import { onBeforeRequest, onBeforeSendHeaders, onHeadersReceived, tabUpdate } from "./analysis/analyze.js"
-import { importData } from "./analysis/importSearchData.js"
-import { openDB } from "idb"
+import { onBeforeRequest, onBeforeSendHeaders, onHeadersReceived } from "./analysis/analyze.js"
+import { importData } from './analysis/buildUserData/importSearchData.js';
+import Queue from "queue"
+
 
 // A filter that restricts the events that will be sent to a listener.
 // You can play around with the urls and types.
@@ -17,6 +18,8 @@ import { openDB } from "idb"
 // https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/API/webRequest/ResourceType
 const filter = { urls: ["<all_urls>"], types: ["script", "xmlhttprequest", "sub_frame", "websocket", "main_frame", "image" ] }
 
+// initialize the evidenceQ that will add evidence to the DB as we get it.
+export var evidenceQ = Queue({ results: [], concurrency: 1, autostart: true });
 
 // Get url of active tab for popup
 browser.runtime.onMessage.addListener((request, sender, sendResponse) => {
@@ -42,15 +45,6 @@ importData().then((data) => {
       data = await importData();
     }
   })
-  /**
-   * calls tabUpdate callback on tabChange
-   * @listens tabUpdateEvent
-   */
-  browser.tabs.onUpdated.addListener(
-    function (tabId, changeInfo, tab) {
-      tabUpdate(tabId, changeInfo, tab, data)
-    }
-  )
 
   // Listener to get response data, request body, and details about request
   browser.webRequest.onBeforeRequest.addListener(
