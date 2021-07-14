@@ -20,7 +20,7 @@ import {
 } from "./style";
 import NavBar from "../../components/nav-bar";
 import { getWebsiteLabels } from "../../../libs/indexed-db";
-import { getHostname } from "../../../background/analysis/util.js";
+import { getHostname } from "../../../background/analysis/utility/util.js";
 import { useHistory } from "react-router";
 import RiseLoader from "react-spinners/RiseLoader";
 
@@ -33,6 +33,7 @@ const WebsiteView = () => {
   const [labels, setLabels] = useState({});
   const [loading, setLoading] = useState(true);
   const [empty, setEmpty] = useState(true);
+  const [ourOptions, setOurOptions] = useState(false);
 
   /**
    * Navigate to route in options page based on urlHash
@@ -62,6 +63,22 @@ const WebsiteView = () => {
     }
   };
 
+  /**
+   * Checks if current site is the extension's options page
+   * @param {String} hostName
+   */
+
+  const checkOurOptions = (hostName) => {
+    if (
+      hostName.search(/moz-extension/) != -1 &&
+      hostName.search(/options.html#/) != -1
+    ) {
+      setOurOptions(true);
+    } else {
+      setOurOptions(false);
+    }
+  };
+
   useEffect(() => {
     /**
      * Send message to background page to get url of active tab
@@ -70,6 +87,7 @@ const WebsiteView = () => {
     const message = (request, sender, sendResponse) => {
       if (request.msg === "popup.currentTab") {
         const host = getHostname(request.data);
+        checkOurOptions(request.data);
         getWebsiteLabels(host).then((labels) => {
           setLabels(labels);
           if (Object.keys(labels).length > 0) {
@@ -129,11 +147,19 @@ const WebsiteView = () => {
               <SSubtitle>{getCount()}</SSubtitle>
             </SHeader>
             {empty ? (
-              <SEmpty>
-                <SEmptyText>
-                  Nothing yet... Keep browsing and check back later!
-                </SEmptyText>
-              </SEmpty>
+              ourOptions ? (
+                <SEmpty>
+                  <SEmptyText>
+                    Nothing here ... Check elsewhere or come back later!
+                  </SEmptyText>
+                </SEmpty>
+              ) : (
+                <SEmpty>
+                  <SEmptyText>
+                    Nothing yet... Keep browsing and check back later!
+                  </SEmptyText>
+                </SEmpty>
+              )
             ) : (
               Object.entries(labels).map(([label, requests]) => (
                 <LabelCard

@@ -4,14 +4,11 @@ analyze.js
 - analyze.js analyzes network requests
 */
 
-import { Request, Evidence, typeEnum, permissionEnum, resourceTypeEnum } from "./classModels.js"
-import { openDB } from 'idb';
-import { evidence } from "../background.js"
-import { evidenceKeyval } from "./openDB.js"
-
-import { RegexSpecialChar, escapeRegExp } from "./regexFunctions.js"
-import { regexSearch, coordinateSearch, urlSearch, disconnectFingerprintSearch, locationKeywordSearch, fingerprintSearch, ipSearch, pixelSearch, encodedEmailSearch, dynamicPixelSearch } from "./searchFunctions.js"
-import { getHostname } from "./util.js";
+import { Request } from "./classModels.js";
+import { evidenceQ } from "../background.js";
+import { tagParty, tagParent } from "./requestAnalysis/tagRequests.js";
+import { addToEvidenceStore } from "./interactDB/addEvidence.js";
+import { getAllEvidenceForRequest } from "./requestAnalysis/scanHTTP.js";
 
 // Temporary container to hold network requests while properties are being added from listener callbacks
 const buffer = {}
@@ -143,87 +140,21 @@ function resolveBuffer(id, data) {
  * @param {Array} userData data from the watchlist to be searched for.
  * @returns {void} calls a number of functions
  */
-function analyze(request, userData) {
+async function analyze(request, userData) {
 
-    const strRequest = JSON.stringify(request)
-
-    // this 0, 1, 2 comes from the structure of the importData function
-    // location we obtained from google maps API
-    var loc = userData[0]
-    // {phone #s, emails, location elements entered by the user, fingerprinting keywords}
-    var networkKeywords = userData[1]
-    // websites that have identification objectives
-    var urls = userData[2]
+  const allEvidence = getAllEvidenceForRequest(request, userData);
+  
+  // if we found evidence for the request
+  if (allEvidence.length != 0) {
     const rootUrl = request.details["originUrl"]
     const reqUrl = request.details["url"]
-
-    // if this value is 0 the client likely denied location permission
-    // or they could be on Null Island in the middle of the Gulf of Guinea
-    if (loc[0] != 0 && loc[1] != 0) {
-      coordinateSearch(strRequest, loc, rootUrl, reqUrl);
-    }
-    // search for location data if we have it
-    if ( permissionEnum.location in networkKeywords) {
-      locationKeywordSearch(strRequest, networkKeywords[permissionEnum.location], rootUrl, reqUrl)
-    }
-    // search for personal data from user's watchlist
-    if ( permissionEnum.watchlist in networkKeywords) {
-      if ( typeEnum.phoneNumber in networkKeywords[permissionEnum.watchlist] ) {
-        networkKeywords[permissionEnum.watchlist][typeEnum.phoneNumber].forEach( number => {
-          regexSearch(strRequest, number, rootUrl, reqUrl, typeEnum.phoneNumber)
-        })
-      }
-      if ( typeEnum.emailAddress in networkKeywords[permissionEnum.watchlist] ) {
-        encodedEmailSearch(strRequest, networkKeywords, rootUrl, reqUrl);
-        networkKeywords[permissionEnum.watchlist][typeEnum.emailAddress].forEach( email => {
-          regexSearch(strRequest, email, rootUrl, reqUrl, typeEnum.emailAddress)
-        })
-      }
-
-      if ( typeEnum.userKeyword in networkKeywords[permissionEnum.watchlist] ) {
-        networkKeywords[permissionEnum.watchlist][typeEnum.userKeyword].forEach ( keyword => {
-          regexSearch(strRequest, keyword, rootUrl, reqUrl, typeEnum.userKeyword)
-        })
-      }
-
-      if ( typeEnum.ipAddress in networkKeywords[permissionEnum.watchlist] ) {
-        networkKeywords[permissionEnum.watchlist][typeEnum.ipAddress].forEach( ip => {
-          ipSearch(strRequest, ip, rootUrl, reqUrl)
-        })
-      }
-    }
-
-    // search to see if the url of the root or request comes up in our services list
-    urlSearch(strRequest, rootUrl, reqUrl, request.urlClassification)
-
-    disconnectFingerprintSearch(request, urls)
-
-    // search to see if any fingerprint data
-    fingerprintSearch(strRequest, networkKeywords, rootUrl, reqUrl)
-
-    // if the request is an image or subFrame and is coming from a different url than the root, we look for our pixel URLs
-    if ( (request.type == resourceTypeEnum.image || request.type == resourceTypeEnum.subFrame) && rootUrl != reqUrl ) {
-      pixelSearch(strRequest, networkKeywords, rootUrl, reqUrl)
-      dynamicPixelSearch(strRequest, reqUrl, rootUrl)
-    }
-}
-
-/**
- * Callback for when the tab is updated. Calls coordinate search
- * @callback tabUpdate
- * @function tabUpdate
- * @param {number} tabId id of the tab 
- * @param {object} changeInfo object containing information about the updated 
- * @param {object} tab The new state of the tab 
- * @param {Array} data The imported data from importData()
- */
-const tabUpdate = (tabId, changeInfo, tab, data) => {
-
-  if (changeInfo.url) {
-    let loc = data[0]
-    let root = getHostname(changeInfo.url)
-    coordinateSearch(changeInfo.url, loc, root, root)
+    // tag the parent and the store
+    const partyBool = await tagParty(rootUrl)
+    const parent = tagParent(reqUrl)
+    
+    // push the job to the Queue (will add the evidence for one HTTP request at a time)
+    evidenceQ.push(function(cb) { cb(null, addToEvidenceStore(allEvidence, partyBool, parent, rootUrl))});
   }
 }
 
-export { onBeforeRequest, onHeadersReceived, onBeforeSendHeaders, tabUpdate }
+export { onBeforeRequest, onHeadersReceived, onBeforeSendHeaders }
