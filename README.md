@@ -107,6 +107,7 @@ This project uses the following third party libraries and resources. We thank th
 - [Idb](https://www.npmjs.com/package/idb)
 - [Ion Icons](https://ionicons.com)
 - [JSDoc](https://www.npmjs.com/package/jsdoc)
+- [Queue](https://www.npmjs.com/package/queue)
 - [React](https://reactjs.org)
 - [Radar Icon](https://www.svgrepo.com/svg/167040/radar)
 - [React Spinners](https://www.npmjs.com/package/react-spinners)
