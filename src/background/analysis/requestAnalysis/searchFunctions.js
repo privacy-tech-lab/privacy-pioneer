@@ -280,6 +280,7 @@ function pixelSearch(strReq, networkKeywords, rootUrl, reqUrl) {
  * @param {string} strReq The request as a string
  * @param {string} reqUrl The requestUrl as a string
  * @param {string} rootUrl The rootUrl as a string
+ * @returns {Array<Array>|Array} An array of arrays with the search results [] if no result 
  */
  function dynamicPixelSearch(strReq, reqUrl, rootUrl) {
   if (strReq.length > 10000) {return}
@@ -297,8 +298,9 @@ function pixelSearch(strReq, networkKeywords, rootUrl, reqUrl) {
 
   if (resOne + resTwo != -2 && pix != -1 && qSearch != -1){
     let reqUrlIndex = strReq.indexOf(reqUrl)
-    output.push([permissionEnum.tracking, rootUrl, strReq, reqUrl, typeEnum.trackingPixel, [reqUrlIndex, reqUrlIndex + reqUrl.length]])
+    output.push([permissionEnum.tracking, rootUrl, strReq, reqUrl, typeEnum.possiblePixel, [reqUrlIndex, reqUrlIndex + reqUrl.length]])
   }
+  return output
 }
 
 /**
