@@ -38,11 +38,14 @@ const SettingsView = ({ changeTheme }) => {
           </SSection>
           <SSeperator marginLeft="32px" marginRight="32px" />
           <SSection>
-            <SSettingHeader>Export Data</SSettingHeader>
-            <SSubtitle>
-              Export all of the data and evidence accumulated through extension
-            </SSubtitle>
-            <ExportData />
+            <div>
+              <SSettingHeader>Export Data</SSettingHeader>
+              <SSubtitle>
+                Export all of the data and evidence accumulated through
+                extension
+              </SSubtitle>
+              <ExportData />
+            </div>
             <DangerZone />
           </SSection>
         </SBody>

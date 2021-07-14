@@ -74,6 +74,7 @@ export const SExportSection = styled.div`
   display: flex;
   flex-direction: row;
   margin-left: 12px;
+  margin-top: 8px;
 `;
 export const SExportButton = styled.div`
   display: flex;
@@ -82,7 +83,7 @@ export const SExportButton = styled.div`
   padding: 8px 0px;
   justify-content: center;
   color: black;
-  margin: 12px 4px;
+  margin: 12px 8px;
   border-radius: 8px;
 `;
 
@@ -101,7 +102,7 @@ export const SDangerButton = styled.div`
   min-width: 100px;
   padding: 8px 4px;
   justify-content: center;
-  margin: 12px 4px;
+  margin: 12px 8px;
   border: 5px solid crimson;
   border-radius: 8px;
   cursor: pointer;

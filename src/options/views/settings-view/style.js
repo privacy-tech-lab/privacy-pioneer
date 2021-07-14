@@ -12,6 +12,7 @@ export const STitle = styled.div`
 
 export const SSubtitle = styled.div`
   color: var(--secondaryTextColor);
+  justify-self: flex-start;
 `;
 
 export const SBody = styled.div`
@@ -25,6 +26,7 @@ export const SSection = styled.div`
   margin-top: 8px;
   flex: 1;
   flex-direction: column;
+  justify-content: space-evenly;
 `;
 export const SSeperator = styled.div`
   display: flex;
