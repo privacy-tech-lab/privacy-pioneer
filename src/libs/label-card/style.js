@@ -4,6 +4,7 @@ export const SCard = styled.div`
   cursor: pointer;
   display: flex;
   flex-direction: column;
+  justify-content: space-between;
   background-color: var(--cardColor);
   max-width: ${(props) => (props.popup ? "340px" : "250px")};
   margin: ${(props) => props.margin};

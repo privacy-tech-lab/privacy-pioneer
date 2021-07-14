@@ -6,6 +6,8 @@ import {
   privacyLabels,
   storeEnum,
 } from "../../background/analysis/classModels";
+import Parents from "../../assets/parents.json";
+import { CompanyLogoSVG } from "../company-icons";
 
 /**
  * Create/open indexed-db to store keywords for watchlist
@@ -233,4 +235,32 @@ export const getParents = (labels) => {
     });
   }
   return parents;
+};
+
+/**
+ * Returns parent company from website name
+ *
+ * @param {string} website
+ */
+export const getParent = (website) => {
+  for (const [parentSite, childrenSites] of Object.entries(
+    Parents.entriesOurs
+  )) {
+    if (
+      childrenSites.includes(website) &&
+      Object.keys(CompanyLogoSVG).includes(parentSite)
+    ) {
+      return parentSite;
+    }
+  }
+  for (const [parentSite, childrenSites] of Object.entries(
+    Parents.entriesDisconnect
+  )) {
+    if (
+      childrenSites.includes(website) &&
+      Object.keys(CompanyLogoSVG).includes(parentSite)
+    ) {
+      return parentSite;
+    }
+  }
 };

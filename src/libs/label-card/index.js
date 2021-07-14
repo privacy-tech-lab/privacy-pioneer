@@ -35,11 +35,11 @@ const LabelCard = ({
    */
   const getDescription = () => {
     if (collected && urls.length > 1) {
-      return `${website} collected and shared ${label} data`;
+      return `${website} collected and shared ${label} data with the following companies`;
     } else if (collected) {
       return `${website} collected ${label} data.`;
     } else {
-      return `${website} shared ${label} data`;
+      return `${website} shared ${label} data with the following companies`;
     }
   };
 

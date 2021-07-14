@@ -1,6 +1,7 @@
 import React from "react";
 import styled from "styled-components";
-import WebsiteLogo from "../website-logo";
+import { getParent, getParents } from "../indexed-db";
+import WebsiteLogo, { CompanyLogo } from "../website-logo";
 
 /**
  * Generally this would be in a style.js file
@@ -17,9 +18,15 @@ const SBadge = styled.div`
  * Displays website logo (which is the first letter of website) and title of website
  */
 const WebsiteBadge = ({ website }) => {
+  const parent = getParent(website);
+  const logo = parent ? (
+    <CompanyLogo parent={parent} />
+  ) : (
+    <WebsiteLogo website={website} />
+  );
   return (
     <SBadge>
-      <WebsiteLogo website={website} />
+      {logo}
       <span style={{ marginLeft: "8px", fontSize: "18px" }}>{website}</span>
     </SBadge>
   );
