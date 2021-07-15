@@ -208,7 +208,7 @@ function coordinateSearch(strReq, locData, rootUrl, reqUrl) {
  * @returns {Array<Array>|Array} An array of arrays with the search results [] if no result 
  *
  */
- function regexSearch(strReq, keyword, rootUrl, reqUrl, type, perm = permissionEnum.watchlist ) {
+function regexSearch(strReq, keyword, rootUrl, reqUrl, type, perm = permissionEnum.watchlist ) {
   var output = []
   if (typeof keyword == 'string'){
     let fixed = escapeRegExp(keyword)
