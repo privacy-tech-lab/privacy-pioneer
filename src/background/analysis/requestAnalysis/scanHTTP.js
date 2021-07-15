@@ -1,4 +1,4 @@
-import { regexSearch, coordinateSearch, urlSearch, disconnectFingerprintSearch, locationKeywordSearch, fingerprintSearch, ipSearch, pixelSearch, encodedEmailSearch } from "./searchFunctions.js"
+import { regexSearch, coordinateSearch, urlSearch, disconnectFingerprintSearch, locationKeywordSearch, fingerprintSearch, ipSearch, pixelSearch, encodedEmailSearch, dynamicPixelSearch } from "./searchFunctions.js"
 import { permissionEnum, typeEnum, resourceTypeEnum } from '../classModels.js'
 
 
@@ -91,6 +91,7 @@ function getAllEvidenceForRequest(request, userData) {
     // if the request is an image or subFrame and is coming from a different url than the root, we look for our pixel URLs
     if ( (request.type == resourceTypeEnum.image || request.type == resourceTypeEnum.subFrame) && rootUrl != reqUrl ) {
         executeAndPush(pixelSearch(strRequest, networkKeywords, rootUrl, reqUrl))
+        executeAndPush(dynamicPixelSearch(strRequest, reqUrl, rootUrl))
     }
 
     return evidenceArr
