@@ -54,7 +54,7 @@ function buildPhone(userNumber) {
  * @param {string} zipString
  * @returns {Array<string>|Array<undefined>} An array containing [undefined, undefined] if invalid input, or the state abreviation and name if valid input
  */
-function getState(zipString) {
+ function getState(zipString) {
 
     /* Ensure param is a string to prevent unpredictable parsing results */
     if (typeof zipString !== 'string') {
@@ -153,10 +153,10 @@ function getState(zipString) {
         state = 'Montana';
     } else if (zipcode >= 27000 && zipcode <= 28999) {
         st = 'NC';
-        state = 'North Carolina';
+        state = /North.?Carolina/;
     } else if (zipcode >= 58000 && zipcode <= 58999) {
         st = 'ND';
-        state = 'North Dakota';
+        state = /North.?Dakota/;
     } else if (zipcode >= 68000 && zipcode <= 69999) {
         st = 'NE';
         state = 'Nebraska';
@@ -165,16 +165,16 @@ function getState(zipString) {
         state = 'Nevada';
     } else if (zipcode >= 3000 && zipcode <= 3899) {
         st = 'NH';
-        state = 'New Hampshire';
+        state = /New.?Hampshire/;
     } else if (zipcode >= 7000 && zipcode <= 8999) {
         st = 'NJ';
-        state = 'New Jersey';
+        state = /New.?Jersey/;
     } else if (zipcode >= 87000 && zipcode <= 88499) {
         st = 'NM';
-        state = 'New Mexico';
+        state = /New.?Mexico/;
     } else if ( (zipcode >= 10000 && zipcode <= 14999) || (zipcode == 6390) || (zipcode == 501) || (zipcode == 544) ) {
         st = 'NY';
-        state = 'New York';
+        state = /New.?York/;
     } else if (zipcode >= 43000 && zipcode <= 45999) {
         st = 'OH';
         state = 'Ohio';
@@ -189,16 +189,16 @@ function getState(zipString) {
         state = 'Pennsylvania';
     } else if (zipcode >= 300 && zipcode <= 999) {
         st = 'PR';
-        state = 'Puerto Rico';
+        state = /Puerto.?Rico/;
     } else if (zipcode >= 2800 && zipcode <= 2999) {
         st = 'RI';
-        state = 'Rhode Island';
+        state = /Rhode.?Island/;
     } else if (zipcode >= 29000 && zipcode <= 29999) {
         st = 'SC';
-        state = 'South Carolina';
+        state = /South.?Carolina/;
     } else if (zipcode >= 57000 && zipcode <= 57999) {
         st = 'SD';
-        state = 'South Dakota';
+        state = /South.?Dakota/;
     } else if (zipcode >= 37000 && zipcode <= 38599) {
         st = 'TN';
         state = 'Tennessee';
@@ -216,13 +216,13 @@ function getState(zipString) {
         state = 'Virgina';
     } else if ( (zipcode >= 20000 && zipcode <= 20099) || (zipcode >= 20200 && zipcode <= 20599) || (zipcode >= 56900 && zipcode <= 56999) ) {
         st = 'DC';
-        state = 'Washington DC';
+        state = /Washington.?DC/;
     } else if (zipcode >= 98000 && zipcode <= 99499) {
         st = 'WA';
         state = 'Washington';
     } else if (zipcode >= 24700 && zipcode <= 26999) {
         st = 'WV';
-        state = 'West Virginia';
+        state = /West.?Virginia/;
     } else if (zipcode >= 53000 && zipcode <= 54999) {
         st = 'WI';
         state = 'Wisconsin';
@@ -236,5 +236,6 @@ function getState(zipString) {
 
     return [st, state];
   }
+
 
 export { buildPhone, getState }
