@@ -17,17 +17,23 @@ const SBadge = styled.div`
 /**
  * Displays website logo (which is the first letter of website) and title of website
  */
-const WebsiteBadge = ({ website }) => {
+const WebsiteBadge = ({ website, showParent }) => {
   const parent = getParent(website);
-  const logo = parent ? (
-    <CompanyLogo parent={parent} />
-  ) : (
-    <WebsiteLogo website={website} />
-  );
+  const logo = parent ? <CompanyLogo parent={parent} /> : null;
   return (
     <SBadge>
-      {logo}
-      <span style={{ marginLeft: "8px", fontSize: "18px" }}>{website}</span>
+      <WebsiteLogo website={website} />
+      <span
+        style={{
+          marginLeft: "8px",
+          marginRight: "16px",
+          fontSize: "18px",
+          justifyContent: "flex-start",
+        }}
+      >
+        {website}
+      </span>
+      {showParent ? logo : null}
     </SBadge>
   );
 };

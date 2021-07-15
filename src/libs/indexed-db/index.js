@@ -1,5 +1,5 @@
 import { openDB } from "idb";
-import { evidenceKeyval as evidenceIDB } from "../../background/analysis/interactDB/openDB.js"
+import { evidenceKeyval as evidenceIDB } from "../../background/analysis/interactDB/openDB.js";
 import {
   keywordTypes,
   permissionEnum,
@@ -236,9 +236,23 @@ export const getParents = (labels) => {
   return parents;
 };
 
-
-const companiesWithSVG = new Set(['AddThis', 'Adobe', 'Amazon', "AT&T", 'Fox', 'Ibm', 'Ocacle',
-'Ebay', 'Facebook', 'Google', 'Microsoft', 'Salesforce', 'Twitter', 'Verizon', 'Yandex']);
+const companiesWithSVG = new Set([
+  "AddThis",
+  "Adobe",
+  "Amazon",
+  "AT&T",
+  "Fox",
+  "Ibm",
+  "Ocacle",
+  "Ebay",
+  "Facebook",
+  "Google",
+  "Microsoft",
+  "Salesforce",
+  "Twitter",
+  "Verizon",
+  "Yandex",
+]);
 /**
  * Returns parent company from website name
  *
@@ -248,20 +262,14 @@ export const getParent = (website) => {
   for (const [parentSite, childrenSites] of Object.entries(
     Parents.entriesOurs
   )) {
-    if (
-      childrenSites.includes(website) &&
-      companiesWithSVG.has(parentSite)
-    ) {
+    if (childrenSites.includes(website) && companiesWithSVG.has(parentSite)) {
       return parentSite;
     }
   }
   for (const [parentSite, childrenSites] of Object.entries(
     Parents.entriesDisconnect
   )) {
-    if (
-      childrenSites.includes(website) &&
-      companiesWithSVG.has(parentSite)
-    ) {
+    if (childrenSites.includes(website) && companiesWithSVG.has(parentSite)) {
       return parentSite;
     }
   }

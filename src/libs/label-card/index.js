@@ -10,6 +10,7 @@ import {
   SHeaderTrailing,
   SMore,
   SLogo,
+  SBadge,
 } from "./style";
 import { privacyLabels } from "../../background/analysis/classModels";
 import { CompanyLogo } from "../website-logo";
@@ -35,11 +36,35 @@ const LabelCard = ({
    */
   const getDescription = () => {
     if (collected && urls.length > 1) {
-      return `${website} collected and shared ${label} data with the following companies`;
+      return (
+        // `${website} collected and shared ${label} data with ${urls.length - 1}{" "}
+        //   companies`
+        <div
+          style={{
+            display: "flex",
+            flexDirection: "row",
+            justifyContent: "space-evenly",
+          }}
+        >
+          <SBadge>Collected</SBadge>{" "}
+          <SBadge>
+            Shared with {urls.length - 1}{" "}
+            {urls.length - 1 > 1 ? "sites" : "site"}
+          </SBadge>{" "}
+        </div>
+      );
     } else if (collected) {
-      return `${website} collected ${label} data.`;
+      // return `${website} collected ${label} data.`;
+      return <SBadge>Collected</SBadge>;
     } else {
-      return `${website} shared ${label} data with the following companies`;
+      return (
+        // `${website} shared ${label} data with ${urls.length} ${
+        //   urls.length == 1 ? "company" : "companies"
+        // }`;
+        <SBadge>
+          Shared with {urls.length} {urls.length > 1 ? "sites" : "site"}
+        </SBadge>
+      );
     }
   };
 

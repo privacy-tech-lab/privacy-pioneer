@@ -6,7 +6,7 @@ export const SCard = styled.div`
   flex-direction: column;
   justify-content: space-between;
   background-color: var(--cardColor);
-  max-width: ${(props) => (props.popup ? "340px" : "250px")};
+  width: ${(props) => (props.popup ? "340px" : "250px")};
   margin: ${(props) => props.margin};
   padding: 16px;
   border-radius: 16px;
@@ -58,6 +58,20 @@ export const SDescription = styled.div`
   color: var(--secondaryTextColor);
   font-size: var(--body2);
   margin-top: 8px;
+`;
+
+export const SBadge = styled.div`
+  /* border: 2px solid white; */
+  background-color: var(--primaryBrandTintColor);
+  color: black;
+  border-radius: 1em;
+  text-align: center;
+  justify-self: center;
+  align-self: center;
+  padding: 4px 8px;
+  margin: 2px 0px;
+  width: fit-content;
+  font-weight: 600;
 `;
 
 export const SMore = styled.div`
