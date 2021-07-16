@@ -274,6 +274,36 @@ function pixelSearch(strReq, networkKeywords, rootUrl, reqUrl) {
 }
 
 /**
+ * Dynamic Pixel search function.
+ * Looks for height, width = 1, 'pixel' and '?' in request URL
+ * 
+ * @param {string} strReq The request as a string
+ * @param {string} reqUrl The requestUrl as a string
+ * @param {string} rootUrl The rootUrl as a string
+ * @returns {Array<Array>|Array} An array of arrays with the search results [] if no result 
+ */
+ function dynamicPixelSearch(strReq, reqUrl, rootUrl) {
+  if (strReq.length > 10000) {return}
+  
+  const heightWidth = /height\D{1,8}[0,1]\D{1,20}width\D{1,8}[0,1]\D/g
+  const widthHeight = /width\D{1,8}[0,1]\D{1,20}height\D{1,8}[0,1]\D/g
+
+  let resOne = strReq.search(heightWidth)
+  let resTwo = strReq.search(widthHeight)
+
+  let pix = reqUrl.search(/pixel/)
+  let qSearch = reqUrl.search(/\?/)
+
+  var output = []
+
+  if (resOne + resTwo != -2 && pix != -1 && qSearch != -1){
+    let reqUrlIndex = strReq.indexOf(reqUrl)
+    output.push([permissionEnum.tracking, rootUrl, strReq, reqUrl, typeEnum.possiblePixel, [reqUrlIndex, reqUrlIndex + reqUrl.length]])
+  }
+  return output
+}
+
+/**
  * ipSearch first checks if we have a different rootUrl and reqUrl. If we do, it does a standard text search for the given ip.
  * 
  * @param {string} strReq The request as a string
@@ -321,4 +351,4 @@ function encodedEmailSearch(strReq, networkKeywords, rootUrl, reqUrl) {
   return output
 }
 
-export { regexSearch, coordinateSearch, urlSearch, locationKeywordSearch, fingerprintSearch, ipSearch, pixelSearch, disconnectFingerprintSearch, encodedEmailSearch }
+export { regexSearch, coordinateSearch, urlSearch, locationKeywordSearch, fingerprintSearch, ipSearch, pixelSearch, disconnectFingerprintSearch, encodedEmailSearch, dynamicPixelSearch }
