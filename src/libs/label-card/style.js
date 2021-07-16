@@ -4,6 +4,7 @@ export const SCard = styled.div`
   cursor: pointer;
   display: flex;
   flex-direction: column;
+  align-self: center;
   justify-content: space-between;
   background-color: var(--cardColor);
   width: ${(props) => (props.popup ? "340px" : "250px")};
@@ -69,7 +70,7 @@ export const SBadge = styled.div`
   justify-self: center;
   align-self: center;
   padding: 4px 8px;
-  margin: 2px 0px;
+  margin: 2px 4px;
   width: fit-content;
   font-weight: 600;
 `;

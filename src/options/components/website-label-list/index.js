@@ -20,7 +20,6 @@ const LabelCards = ({ website, handleTap, labels }) => {
           label={label}
           requests={requests}
           website={website}
-          labels={webLabel[label]}
         />
       ))
     : null;

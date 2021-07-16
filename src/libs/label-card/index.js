@@ -19,15 +19,7 @@ import { getParents } from "../indexed-db";
 /**
  * Card that briefly summarizes label and description for website
  */
-const LabelCard = ({
-  requests,
-  website,
-  label,
-  margin,
-  onTap,
-  popup,
-  labels,
-}) => {
+const LabelCard = ({ requests, website, label, margin, onTap, popup }) => {
   const urls = Object.keys(requests); // detected request urls containing identified data
   const collected = urls.includes(website); // Check if website collected data
 
@@ -43,14 +35,13 @@ const LabelCard = ({
           style={{
             display: "flex",
             flexDirection: "row",
-            justifyContent: "space-evenly",
           }}
         >
-          <SBadge>Collected</SBadge>{" "}
+          <SBadge>Collected</SBadge>
           <SBadge>
-            Shared with {urls.length - 1}{" "}
-            {urls.length - 1 > 1 ? "sites" : "site"}
-          </SBadge>{" "}
+            Shared with {urls.length - 1}
+            {urls.length - 1 > 1 ? " sites" : " site"}
+          </SBadge>
         </div>
       );
     } else if (collected) {
@@ -73,7 +64,7 @@ const LabelCard = ({
    * Render max 2 badges
    */
   const getThirdParties = () => {
-    let parentCompanies = getParents(labels);
+    let parentCompanies = getParents(requests);
     return (
       <>
         <SSeperator marginTop="16px" marginBottom="0px" />

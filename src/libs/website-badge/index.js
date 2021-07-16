@@ -10,6 +10,7 @@ import WebsiteLogo, { CompanyLogo } from "../website-logo";
 const SBadge = styled.div`
   display: flex;
   flex-direction: row;
+  justify-content: space-between;
   align-items: center;
   margin-top: 16px;
 `;
@@ -22,16 +23,18 @@ const WebsiteBadge = ({ website, showParent }) => {
   const logo = parent ? <CompanyLogo parent={parent} /> : null;
   return (
     <SBadge>
-      <WebsiteLogo website={website} />
-      <span
-        style={{
-          marginLeft: "8px",
-          marginRight: "16px",
-          fontSize: "18px",
-          justifyContent: "flex-start",
-        }}
-      >
-        {website}
+      <span style={{ display: "flex" }}>
+        <WebsiteLogo website={website} />
+        <span
+          style={{
+            marginLeft: "8px",
+            marginRight: "16px",
+            fontSize: "18px",
+            justifyContent: "flex-start",
+          }}
+        >
+          {website}
+        </span>
       </span>
       {showParent ? logo : null}
     </SBadge>
