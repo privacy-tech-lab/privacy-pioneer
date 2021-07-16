@@ -1,15 +1,15 @@
-import { storeEnum } from "../background/analysis/classModels";
-import { evidenceKeyval } from "../background/analysis/interactDB/openDB";
+import { storeEnum, exportTypeEnum } from "../background/analysis/classModels";
+import { evidenceKeyval } from "../background/analysis/interactDB/openDB.js";
 
 /**
  * Gets all evidence and returns an array of Evidence objects. No params. 
- * @returns {Array<Evidence>} An array of all the evidence objects in the IndexedDB
+ * @returns {Promise<Array<Evidence>>} An array of all the evidence objects in the IndexedDB
  */
-function buildEvidenceAsArray() {
+async function buildEvidenceAsArray() {
 
     var evidenceArr = []
 
-    // update the arr we will turn into a blob
+    // update the arr with the evidences in both stores
     evidenceArr = await walkStoreAndBuildArr(storeEnum.firstParty, evidenceArr)
     evidenceArr = await walkStoreAndBuildArr(storeEnum.thirdParty, evidenceArr)
 
@@ -25,13 +25,16 @@ function buildEvidenceAsArray() {
  */
 async function walkStoreAndBuildArr(store, evidenceObjectArr) {
 
-    const allKeys = await evidenceKeyval.keys(store)
+    const allKeys = await evidenceKeyval.keys(store);
 
+    // iterate through all the rootUrls we have in the store
     for (const key of allKeys) {
-        const evidenceDict = await evidenceKeyval.get(key);
+        const evidenceDict = await evidenceKeyval.get(key, store);
         for (const [permLevel, typeLevel] of Object.entries(evidenceDict)) {
-            for (const [reqUrl, evidenceObject] of Object.entries(typeLevel)){
-                evidenceObjectArr.push(evidenceObject)
+            for (const [type, reqUrlLevel] of Object.entries(typeLevel)){
+                for (const [reqUrl, evidenceObject] of Object.entries(reqUrlLevel)){
+                    evidenceObjectArr.push(evidenceObject)
+                }
             }
         }
     }
@@ -39,15 +42,87 @@ async function walkStoreAndBuildArr(store, evidenceObjectArr) {
     return evidenceObjectArr
 }
 
+/**
+ * Takes an array of Evidence and returns a JSON blob.
+ * 
+ * @param {Array<Evidence>} arr 
+ * @returns {Blob} A JSON Blob
+ */
+function createJsonBlob(arr) {
+
+    const jsonData = JSON.stringify(arr)
+
+    return new Blob([jsonData],
+        {type: "application/json"});
+}
 
 /**
- * Creates the blob to be downloaded by the user
- * @returns {Blob}
+ * Converts an array of Evidence Objects into a csv string.
+ * Only adds snippets for Evidence with indexes, and replaces all commas with '.' 
+ * (I was having trouble finding a simpler solution for escaping commas).
+ * 
+ * @param {Array<Evidence>} objArray 
+ * @returns {string} A csv ready string
  */
-function createBlob() {
+function buildCsvString(objArray) {
 
-    const dataArr = buildEvidenceAsArray()
-    return new Blob(dataArr)
+    // initiate column titles
+    var strArray = ['Timestamp,Permission,rootURL,httpSnippet,reqUrl,Type,Index,FirstParty?,Parent'];
+
+    for (const evidenceObj of objArray) {
+        let rowArr = []
+        for (const [header, value] of Object.entries(evidenceObj) ) {
+            if (header != 'snippet') {
+                rowArr.push( String(value).replace(/,/g, ".") ) // add entry as string and escape commas as .
+            }
+            else {
+                if (evidenceObj.index != -1) {
+                    // if we have a snippet for this evidence object, we add 150 characters around the evidence to the csv
+                    let start, finish
+                    [start, finish] = evidenceObj.index
+                    rowArr.push( value.substring(start - 150, finish + 150).replace(/,/g, ".") )
+                }
+                else {
+                    rowArr.push('');
+                }
+            } 
+        }
+        // add a row of values
+        strArray.push(rowArr.join(','));
+    }
+    strArray.push('NOTE: Commas have been replaced with \'.\'. Use the JSON export for the raw data (including the full HTTP requests)')
+
+    // add all rows. separate rows.
+    return strArray.join('\r');
+}
+
+function createCSV(arr) {
+
+    const blobString = buildCsvString(arr);
+    
+    return new Blob([blobString],
+        {type: "application/vnd.ms-excel"});
+}
+
+
+/**
+ * Creates the blob to be downloaded by the user. Defaults to CSV because output is much smaller.
+ * @param {string} blobType A string specifying what kind of blob to create
+ * @returns {Promise<Blob>}
+ */
+async function createBlob(blobType = exportTypeEnum.CSV) {
+
+    const dataArr = await buildEvidenceAsArray()
+    
+    switch (blobType) {
+        case exportTypeEnum.JSON:
+            return createJsonBlob(dataArr)
+        case exportTypeEnum.CSV:
+            return createCSV(dataArr)
+        default:
+            return createCSV(dataArr);
+    }
+
 }
 
 
