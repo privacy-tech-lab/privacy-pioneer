@@ -35,7 +35,7 @@ async function walkStoreAndBuildArr(store, evidenceObjectArr) {
             }
         }
     }
-    
+
     return evidenceObjectArr
 }
 
@@ -49,5 +49,6 @@ function createBlob() {
     const dataArr = buildEvidenceAsArray()
     return new Blob(dataArr)
 }
+
 
 export { createBlob }
