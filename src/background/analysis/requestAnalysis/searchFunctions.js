@@ -214,14 +214,15 @@ function regexSearch(strReq, keyword, rootUrl, reqUrl, type, perm = permissionEn
     let fixed = escapeRegExp(keyword)
     let re = new RegExp(`${fixed}`, "i");
     let res = strReq.search(re)
-    console.log(strReq.substring(res, res + keyword.length))
-    console.log([perm, rootUrl, reqUrl, type, [res, res + keyword.length]])
     if (res != -1) { output.push([perm, rootUrl, strReq, reqUrl, type, [res, res + keyword.length]]) }
-  } else if (typeof keyword == 'object'){
+  } else if (keyword instanceof RegExp){
     let res = strReq.search(keyword)
-    console.log(strReq.substring(res, res + keyword.toString().length - 3))
-    console.log([perm, rootUrl, reqUrl, type, [res, res + keyword.toString().length - 3]])
-    if (res != -1 && rootUrl) { output.push([perm, rootUrl, strReq, reqUrl, type, [res, res + keyword.toString().length - 3]]) }
+    // The length of the keyword is relative to the length of the regex, so we need to eliminate the extra characters used by the regex
+    let len = keyword.toString().length - 3;
+    if (keyword.toString().search(/\?/) != -1) {
+      len -= 1;
+    }
+    if (res != -1 && rootUrl) { output.push([perm, rootUrl, strReq, reqUrl, type, [res, res + len]]) }
   }
   return output
 }
