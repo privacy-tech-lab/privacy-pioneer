@@ -48,8 +48,7 @@ const LabelDetail = ({ label, website, requests }) => {
     <SBody>
       <SHeader>
         <SHeaderBadge>
-          <WebsiteLogo website={website} />
-          <STitle style={{ marginLeft: "8px" }}>{website}</STitle>
+          <WebsiteBadge website={website} showParent />
         </SHeaderBadge>
         <SSpacer />
         <SContent>
