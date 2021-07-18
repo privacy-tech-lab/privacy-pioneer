@@ -1,13 +1,16 @@
 import styled from "styled-components";
+import { permissionEnum } from "../../../../../background/analysis/classModels";
 
 const getColor = (labeltype) => {
   switch (labeltype) {
-    case "fingerprinting":
+    case permissionEnum.location:
       return "linear-gradient(180deg, #efa493 0%, #e77f7e 100%)";
-    case "location":
+    case permissionEnum.monetization:
       return "linear-gradient(180deg, #B7AFF2 0%, #5C7ADD 100%)";
-    case "advertising":
+    case permissionEnum.tracking:
       return "linear-gradient(180deg, #0BD0EA 0%, #0892a5 100%)";
+    case permissionEnum.watchlist:
+      return "linear-gradient(180deg, #F6D579 0%, #F5CB5C 100%)";
     default:
       return "linear-gradient(180deg, #FE486A 0%, #f2022e 100%)";
   }

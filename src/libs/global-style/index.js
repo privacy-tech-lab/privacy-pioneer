@@ -47,12 +47,12 @@ const Options = css`
 const defaultTheme = css`
   :root {
     // Colors
-    --primaryBrandColor: #6b219f;
-    --primaryBrandTintColor: #f2e8f9;
-    --backgroundColor: #ffffff;
+    --primaryBrandColor: #f2e8f9;
+    --primaryBrandTintColor: #6b219f;
+    --backgroundColor: #eaece9;
     --primaryTextColor: #000000;
     --secondaryTextColor: #3c3c43;
-    --cardColor: #f2f2f7;
+    --cardColor: #d5d9d3;
     --textFieldColor: #d1d1d6;
     --textFieldColorModal: #ebebff;
     --seperatorColor: #c6c6c8;

@@ -21,8 +21,7 @@ export const SSwitch = styled.div`
   width: 60px;
   height: 30px;
   border-radius: 16px;
-  background-color: ${(prop) =>
-    prop.active ? "var(--primaryBrandColor)" : "#949494"};
+  background-color: ${(prop) => (prop.active ? "#6b219f" : "#949494")};
 `;
 
 export const SKnob = styled(motion.div)`
@@ -64,9 +63,7 @@ export const SThemeIcon = styled(motion.div)`
   margin: 8px;
   cursor: pointer;
   outline: ${(props) =>
-    props.theme == props.selTheme
-      ? "5px solid var(--primaryBrandColor)"
-      : null};
+    props.theme == props.selTheme ? "5px solid #6b219f" : null};
   border-radius: 50%;
 `;
 
@@ -79,6 +76,7 @@ export const SExportSection = styled.div`
 export const SExportButton = styled.div`
   display: flex;
   background-color: #cbcbcb;
+  cursor: pointer;
   min-width: 100px;
   padding: 8px 0px;
   justify-content: center;

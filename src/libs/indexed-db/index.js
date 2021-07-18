@@ -234,14 +234,14 @@ const excludeLabels = async () => {
   let labels = await getAllWebsiteLabels();
   const excludedLabels = await getExcludedLabels();
   let newLabels = {};
-  Object.keys(labels).forEach((website) => {
-    Object.keys(labels[website]).forEach((label) => {
+  Object.entries(labels).forEach(([website, allLabels]) =>
+    Object.keys(allLabels).forEach((label) => {
       if (!excludedLabels.includes(label)) {
         newLabels[website] = {};
         newLabels[website][label] = labels[website][label];
       }
-    });
-  });
+    })
+  );
   return newLabels;
 };
 

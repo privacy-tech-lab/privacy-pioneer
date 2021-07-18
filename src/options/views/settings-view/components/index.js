@@ -139,7 +139,6 @@ export const ExportData = () => (
   <SExportSection>
     <SExportButton>CSV</SExportButton>
     <SExportButton>JSON</SExportButton>
-    <SExportButton>YAML</SExportButton>
   </SExportSection>
 );
 export const DangerZone = () => {
