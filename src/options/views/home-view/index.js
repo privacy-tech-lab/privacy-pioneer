@@ -1,6 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { useHistory } from "react-router";
 import { getWebsites, getLabels } from "../../../libs/indexed-db";
+import {
+  getWebsites,
+  getLabels,
+  getAllWebsiteLabels,
+} from "../../../libs/indexed-db";
 import Scaffold from "../../components/scaffold";
 import WebsiteLabelList from "../../components/website-label-list";
 import LabelSummaryCardList from "./components/label-summary-card";

@@ -16,6 +16,13 @@ import { importData } from "./analysis/importSearchData.js";
 import { openDB } from "idb";
 import { settingsKeyval } from "../libs/indexed-db/index.js";
 import { setDefault } from "../libs/settings/index.js";
+import {
+  onBeforeRequest,
+  onBeforeSendHeaders,
+  onHeadersReceived,
+} from "./analysis/analyze.js";
+import { importData } from "./analysis/buildUserData/importSearchData.js";
+import Queue from "queue";
 
 // A filter that restricts the events that will be sent to a listener.
 // You can play around with the urls and types.
@@ -33,6 +40,9 @@ const filter = {
     "image",
   ],
 };
+
+// initialize the evidenceQ that will add evidence to the DB as we get it.
+export var evidenceQ = Queue({ results: [], concurrency: 1, autostart: true });
 
 // Get url of active tab for popup
 browser.runtime.onMessage.addListener((request, sender, sendResponse) => {

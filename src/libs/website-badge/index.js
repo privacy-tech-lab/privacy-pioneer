@@ -1,6 +1,7 @@
 import React from "react";
 import styled from "styled-components";
-import WebsiteLogo from "../website-logo";
+import { getParent, getParents } from "../indexed-db";
+import WebsiteLogo, { CompanyLogo } from "../website-logo";
 
 /**
  * Generally this would be in a style.js file
@@ -9,6 +10,7 @@ import WebsiteLogo from "../website-logo";
 const SBadge = styled.div`
   display: flex;
   flex-direction: row;
+  justify-content: space-between;
   align-items: center;
   margin-top: 16px;
 `;
@@ -16,11 +18,25 @@ const SBadge = styled.div`
 /**
  * Displays website logo (which is the first letter of website) and title of website
  */
-const WebsiteBadge = ({ website }) => {
+const WebsiteBadge = ({ website, showParent }) => {
+  const parent = getParent(website);
+  const logo = parent ? <CompanyLogo parent={parent} /> : null;
   return (
     <SBadge>
-      <WebsiteLogo website={website} />
-      <span style={{ marginLeft: "8px", fontSize: "18px" }}>{website}</span>
+      <span style={{ display: "flex" }}>
+        <WebsiteLogo website={website} />
+        <span
+          style={{
+            marginLeft: "8px",
+            marginRight: "16px",
+            fontSize: "18px",
+            justifyContent: "flex-start",
+          }}
+        >
+          {website}
+        </span>
+      </span>
+      {showParent ? logo : null}
     </SBadge>
   );
 };

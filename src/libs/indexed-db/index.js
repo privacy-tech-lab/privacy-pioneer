@@ -1,5 +1,5 @@
 import { openDB } from "idb";
-import { evidenceKeyval as evidenceIDB } from "../../background/analysis/openDB";
+import { evidenceKeyval as evidenceIDB } from "../../background/analysis/interactDB/openDB.js";
 import {
   keywordTypes,
   permissionEnum,
@@ -7,6 +7,7 @@ import {
   storeEnum,
 } from "../../background/analysis/classModels";
 import { getExcludedLabels, setDefault } from "../settings";
+import Parents from "../../assets/parents.json";
 
 /**
  * Create/open indexed-db to store keywords for watchlist
@@ -269,9 +270,9 @@ const buildLabels = async (store, res) => {
 
 /**
  * Get all identified websites and thier labels from indexedDB
- * Restucture to display in UI
- * result: {..., websiteURL: [..., label]}
+ * @returns {Object} result: {..., websiteURL: [..., label]}
  */
+
 export const getWebsites = async () => {
   try {
     const result = {};
@@ -298,4 +299,65 @@ export const getLabels = async () => {
   labels["byLabel"] = await getLabelsbyLabel(allLabels); //{...label:{websites}}
   labels["numOfEachLabel"] = await getLabelNumbers(); //{...label:number of websites collecting label}
   return labels;
+};
+
+/**
+ * Takes a given label Object and returns an array of
+ * all parent companies for that
+ * label to be displayed in the UI
+ *
+ * @param {Object} labels
+ * @returns {Array} Returns array of parent companies
+ */
+
+export const getParents = (labels) => {
+  let parents = [];
+  if (labels) {
+    Object.keys(labels).forEach((website) => {
+      let evidenceType = Object.keys(labels[website])[0];
+      let parent = labels[website][evidenceType]["parentCompany"];
+      if (parent) !parents.includes(parent) ? parents.push(parent) : null;
+      else parents.push(website);
+    });
+  }
+  return parents;
+};
+
+const companiesWithSVG = new Set([
+  "AddThis",
+  "Adobe",
+  "Amazon",
+  "AT&T",
+  "Fox",
+  "Ibm",
+  "Ocacle",
+  "Ebay",
+  "Facebook",
+  "Google",
+  "Microsoft",
+  "Salesforce",
+  "Twitter",
+  "Verizon",
+  "Yandex",
+]);
+/**
+ * Returns parent company from website name
+ *
+ * @param {string} website
+ */
+export const getParent = (website) => {
+  for (const [parentSite, childrenSites] of Object.entries(
+    Parents.entriesOurs
+  )) {
+    if (childrenSites.includes(website) && companiesWithSVG.has(parentSite)) {
+      return parentSite;
+    }
+  }
+  for (const [parentSite, childrenSites] of Object.entries(
+    Parents.entriesDisconnect
+  )) {
+    if (childrenSites.includes(website) && companiesWithSVG.has(parentSite)) {
+      return parentSite;
+    }
+  }
 };
