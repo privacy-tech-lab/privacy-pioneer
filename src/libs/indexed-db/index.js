@@ -1,11 +1,12 @@
 import { openDB } from "idb";
-import { evidenceKeyval as evidenceIDB } from "../../background/analysis/interactDB/openDB.js"
+import { evidenceKeyval as evidenceIDB } from "../../background/analysis/interactDB/openDB.js";
 import {
   keywordTypes,
   permissionEnum,
   privacyLabels,
   storeEnum,
 } from "../../background/analysis/classModels";
+import Parents from "../../assets/parents.json";
 
 /**
  * Create/open indexed-db to store keywords for watchlist
@@ -103,7 +104,9 @@ export const deleteKeyword = async (id) => {
 export const getWebsiteLabels = async (website) => {
   try {
     var evidence = await evidenceIDB.get(website, storeEnum.firstParty); // first try first party DB
-    if (evidence == undefined) { evidence = await evidenceIDB.get(website, storeEnum.thirdParty);} // then try third party DB
+    if (evidence == undefined) {
+      evidence = await evidenceIDB.get(website, storeEnum.thirdParty);
+    } // then try third party DB
     const result = {};
     for (const [label, value] of Object.entries(evidence)) {
       for (const [type, requests] of Object.entries(value)) {
@@ -171,10 +174,9 @@ export const getLabels = async (websites) => {
 
 const getNumOfWebsites = (label) => Object.keys(label).length;
 
-
 /**
  * Builds up dictionary of labels
- * 
+ *
  * @param {String} store Which store from the evidenceKeyval you're drawing from
  * @param {Dict} res Resulting dictionary
  * @returns Void
@@ -187,19 +189,18 @@ const buildLabels = async (store, res) => {
       const labels = Object.keys(evidence).filter(
         (label) => label in privacyLabels
       ); // verify label in privacy labels
-      if (labels.length && !( website in res ) ) res[website] = labels; // give priority to first party labels if we have the same key in both stores
+      if (labels.length && !(website in res)) res[website] = labels; // give priority to first party labels if we have the same key in both stores
     }
+  } catch (error) {
+    return {};
   }
-  catch (error) {
-    return {}
-  }
-}
+};
 
 /**
  * Get all identified websites and thier labels from indexedDB
- * Restucture to display in UI
- * result: {..., websiteURL: [..., label]}
+ * @returns {Object} result: {..., websiteURL: [..., label]}
  */
+
 export const getWebsites = async () => {
   try {
     const result = {};
@@ -208,8 +209,68 @@ export const getWebsites = async () => {
     await buildLabels(storeEnum.thirdParty, result); // third party labels
 
     return result;
-
   } catch (error) {
     return {};
+  }
+};
+
+/**
+ * Takes a given label Object and returns an array of
+ * all parent companies for that
+ * label to be displayed in the UI
+ *
+ * @param {Object} labels
+ * @returns {Array} Returns array of parent companies
+ */
+
+export const getParents = (labels) => {
+  let parents = [];
+  if (labels) {
+    Object.keys(labels).forEach((website) => {
+      let evidenceType = Object.keys(labels[website])[0];
+      let parent = labels[website][evidenceType]["parentCompany"];
+      if (parent) !parents.includes(parent) ? parents.push(parent) : null;
+      else parents.push(website);
+    });
+  }
+  return parents;
+};
+
+const companiesWithSVG = new Set([
+  "AddThis",
+  "Adobe",
+  "Amazon",
+  "AT&T",
+  "Fox",
+  "Ibm",
+  "Ocacle",
+  "Ebay",
+  "Facebook",
+  "Google",
+  "Microsoft",
+  "Salesforce",
+  "Twitter",
+  "Verizon",
+  "Yandex",
+]);
+/**
+ * Returns parent company from website name
+ *
+ * @param {string} website
+ */
+export const getParent = (website) => {
+  for (const [parentSite, childrenSites] of Object.entries(
+    Parents.entriesOurs
+  )) {
+    if (childrenSites.includes(website) && companiesWithSVG.has(parentSite)) {
+      return parentSite;
+    }
+  }
+  for (const [parentSite, childrenSites] of Object.entries(
+    Parents.entriesDisconnect
+  )) {
+    if (childrenSites.includes(website) && companiesWithSVG.has(parentSite)) {
+      return parentSite;
+    }
   }
 };
