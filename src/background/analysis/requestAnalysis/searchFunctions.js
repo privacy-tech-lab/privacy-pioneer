@@ -210,10 +210,20 @@ function coordinateSearch(strReq, locData, rootUrl, reqUrl) {
  */
 function regexSearch(strReq, keyword, rootUrl, reqUrl, type, perm = permissionEnum.watchlist ) {
   var output = []
-  let fixed = escapeRegExp(keyword)
-  let re = new RegExp(`${fixed}`, "i");
-  let res = strReq.search(re)
-  if (res != -1) { output.push([perm, rootUrl, strReq, reqUrl, type, [res, res + keyword.length]]) }
+  if (typeof keyword == 'string'){
+    let fixed = escapeRegExp(keyword)
+    let re = new RegExp(`${fixed}`, "i");
+    let res = strReq.search(re)
+    if (res != -1) { output.push([perm, rootUrl, strReq, reqUrl, type, [res, res + keyword.length]]) }
+  } else if (keyword instanceof RegExp){
+    let res = strReq.search(keyword)
+    // The length of the keyword is relative to the length of the regex, so we need to eliminate the extra characters used by the regex
+    let len = keyword.toString().length - 3;
+    if (keyword.toString().search(/\?/) != -1) {
+      len -= 1;
+    }
+    if (res != -1 && rootUrl) { output.push([perm, rootUrl, strReq, reqUrl, type, [res, res + len]]) }
+  }
   return output
 }
 
