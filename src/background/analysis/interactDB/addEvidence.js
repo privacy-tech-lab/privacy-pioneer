@@ -23,8 +23,18 @@ import { Evidence, typeEnum, storeEnum } from "../classModels.js"
 // perm, rootU, snip, requestU, t, i, extraDetail = undefined)
 async function addToEvidenceStore(evidenceToAdd, firstParty, parent, rootU, requestU) {
 
-  const ts = Date.now()
+  /**
+   * This is a known bug where certain websites intiate requests where the rootURL 
+   * is undefined. rootURL comes from request.details["originUrl"] which is a property 
+   * of the onBeforeRequest callback:
+   * https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/API/webRequest/onBeforeRequest#details
+   * In this case, we do not add evidence and return.
+   */
+  if (rootU == undefined) { return new Promise( function(resolve, reject) {
+    resolve('undefined rootU');
+  }) }; 
 
+  const ts = Date.now()
   const rootUrl = getHostname(rootU)
   const store = firstParty ? storeEnum.firstParty : storeEnum.thirdParty
 
@@ -46,7 +56,9 @@ async function addToEvidenceStore(evidenceToAdd, firstParty, parent, rootU, requ
     rootU = rootUrl
   
     // whitelist our IP API
-    if (requestU == 'http://ip-api.com/json/'){return;}
+    if (requestU == 'http://ip-api.com/json/'){ return new Promise( function(resolve, reject) {
+      resolve('whitelist IP API');
+    }) };
   
     const e = new Evidence( {
       timestamp: ts,
@@ -65,9 +77,11 @@ async function addToEvidenceStore(evidenceToAdd, firstParty, parent, rootU, requ
     evidence = updateFetchedDict(evidence, e)
   }
 
+  // update the fetched evidence dict with each piece of evidence we have for this request
   for ( const evidenceList of evidenceToAdd) {
     unpackAndUpdate(evidenceList)
     }
+
   //final return statement
   return new Promise( function(resolve, reject) {
     evidenceKeyval.set(rootUrl, evidence, store)
@@ -76,15 +90,23 @@ async function addToEvidenceStore(evidenceToAdd, firstParty, parent, rootU, requ
 }
 
 
+/**
+ * Function used to update an already fetched evidence dictionary with a piece of evidence, e.
+ * 
+ * @param {Dict} evidenceDict The dictionary we are updating 
+ * @param {Evidence} e An evidence object
+ * @returns {Dict} The param evidenceDict, but updated with Evidence, e, appropriately
+ */
 function updateFetchedDict(evidenceDict, e) {
-  /**
-      * Used to push evidence through (override evidence cap of 4 per type)
-      * that will create multiple labels for one request URL
-      *
-      * @param {Object} currDict object with the dexisting evidence for a permission
-      * @param {string} typ the type that we're currently trying to add
-      * @returns {Set} The urls that already have evidence within this permission
-      */
+    
+    /**
+    * Used to push evidence through (override evidence cap of 4 per type)
+    * that will create multiple labels for one request URL
+    *
+    * @param {Object} currDict object with the dexisting evidence for a permission
+    * @param {string} typ the type that we're currently trying to add
+    * @returns {Set} The urls that already have evidence within this permission
+    */
    function getReqUrlsWithDifferentTypes(currDict, typ) {
 
     var reqUrlSet = new Set()

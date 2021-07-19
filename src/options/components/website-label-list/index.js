@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import WebsiteBadge from "../../../libs/website-badge";
-import * as Icons from "../../../libs/icons";
 import LabelCard from "../../../libs/label-card";
 import { SContainer, SItem, SLabel, SLabelGroup, SSeperator } from "./style";
 

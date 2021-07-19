@@ -23,7 +23,7 @@ function hashTypeAndPermission(str) {
 /**
  * Returns only the hostnames from a url. code from https://stackoverflow.com/questions/8498592/extract-hostname-name-from-string
  * @param {string} url 
- * @returns {string} The hostname of the given URL.
+ * @returns {string} The hostname of the given URL. '' if URL undefined
  */
 function extractHostname(url) {
 
@@ -49,8 +49,9 @@ function extractHostname(url) {
 
 /**
  * Takes a url and returns its domain.
+ * https://stackoverflow.com/questions/8498592/extract-hostname-name-from-string
  * @param {string} url 
- * @returns {string} The domain of a the inputted url https://stackoverflow.com/questions/8498592/extract-hostname-name-from-string
+ * @returns {string} The domain of a the inputted url, '' if input undefined
  */
 function getHostname(url) {
   if (typeof url == 'undefined') return ''

@@ -147,6 +147,7 @@ export const typeEnum = Object.freeze({
 
   // tracking types
   trackingPixel: "trackingPixel",
+  possiblePixel: "possiblePixel",
   ipAddress: "ipAddress",
   fingerprinting: "fingerprinting",
 });
@@ -270,6 +271,10 @@ export const privacyLabels = Object.freeze({
       trackingPixel: {
         displayName: "Tracking Pixel",
         description: "A Tracking Pixel is code that silently pings a third-party to track your internet activity.",
+      },
+      possiblePixel: {
+        displayName: "Possible Pixel",
+        description: "A Tracking Pixel is code that silently pings a third-party to track your internet activity."
       },
       ipAddress: {
         displayName: "IP Address",
