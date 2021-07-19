@@ -8,6 +8,25 @@ import { Request, typeEnum, permissionEnum, Evidence } from "../classModels.js"
 import { regexSpecialChar, escapeRegExp } from "../utility/regexFunctions.js"
 import { getHostname } from "../utility/util.js"
 
+
+/**
+ * Utility function to create hash for watchlist key based on keyword and type
+ * This will overwrite keywords in the watchlist store that have the same keyword and type
+ * Which is okay
+ * from: https://werxltd.com/wp/2010/05/13/javascript-implementation-of-javas-string-hashcode-method/
+ */
+ function hash (str) {
+  var hash = 0,
+    i,
+    chr;
+  for (i = 0; i < str.length; i++) {
+    chr = str.charCodeAt(i);
+    hash = (hash << 5) - hash + chr;
+    hash |= 0;
+  }
+  return hash;
+};
+
 /**
  * Iterates through the user's location elements and adds exact text matches to evidence. 
  * Evidence will be added with permission location and the type of the found evidence (city or zip for example)
@@ -209,11 +228,12 @@ function coordinateSearch(strReq, locData, rootUrl, reqUrl) {
  *
  */
 function regexSearch(strReq, keyword, rootUrl, reqUrl, type, perm = permissionEnum.watchlist ) {
+  let keywordIDWatch = hash(type.concat(keyword)).toString()
   var output = []
   let fixed = escapeRegExp(keyword)
   let re = new RegExp(`${fixed}`, "i");
   let res = strReq.search(re)
-  if (res != -1) { output.push([perm, rootUrl, strReq, reqUrl, type, [res, res + keyword.length]]) }
+  if (res != -1) { output.push([perm, rootUrl, strReq, reqUrl, type, [res, res + keyword.length], keywordIDWatch]) }
   return output
 }
 
@@ -308,13 +328,14 @@ function encodedEmailSearch(strReq, networkKeywords, rootUrl, reqUrl) {
   const encodedObj = networkKeywords[permissionEnum.watchlist][typeEnum.encodedEmail]
   const emails = Object.keys(encodedObj)
   emails.forEach(email => {
+    let emailIDWatch = hash((typeEnum.emailAddress).concat(email)).toString()
     let encodeLst = encodedObj[email]
     encodeLst.forEach(encodedEmail => {
       let fixed = escapeRegExp(encodedEmail)
       let re = new RegExp(`${fixed}`, "i");
       let output = strReq.search(re)
       if (output != -1) {
-       output.push([permissionEnum.watchlist, rootUrl, strReq, reqUrl, typeEnum.encodedEmail, [output, output+encodedEmail.length], email])
+       output.push([permissionEnum.watchlist, rootUrl, strReq, reqUrl, typeEnum.encodedEmail, [output, output+encodedEmail.length], emailIDWatch, email])
       }
     })
   })

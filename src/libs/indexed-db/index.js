@@ -71,6 +71,7 @@ export const saveKeyword = async (keyword, type, id) => {
       key = id;
     } else {
       key = hash(type.concat(keyword)).toString();
+      console.log(key)
     }
     type != permissionEnum.location
       ? await watchlistKeyval.set(key, {
@@ -93,6 +94,41 @@ export const saveKeyword = async (keyword, type, id) => {
  */
 export const deleteKeyword = async (id) => {
   await watchlistKeyval.delete(id);
+  let firstEv = await evidenceIDB.keys(storeEnum.firstParty)
+  let thirdEv = await evidenceIDB.keys(storeEnum.thirdParty)
+  firstEv.forEach(async (website) => {
+    let a = await evidenceIDB.get(website, storeEnum.firstParty)
+    let ev = {}
+    for (const [perm, type] of Object.entries(a)){
+      ev[perm] = {}
+      for (const [type, evUrls] of Object.entries(type)){
+        ev[perm][type] = {}
+        for (const [evUrl, evidence] of Object.entries(evUrls)){
+          if (evidence["watchlistNum"] != id){
+            ev[perm][type][evUrl] = evidence
+          }
+        }
+      }
+    }
+    await evidenceIDB.set(website, ev, storeEnum.firstParty)
+  })
+
+  thirdEv.forEach(async (website) => {
+    let a = await evidenceIDB.get(website, storeEnum.thirdParty)
+    let ev = {}
+    for (const [perm, type] of Object.entries(a)){
+      ev[perm] = {}
+      for (const [type, evUrls] of Object.entries(type)){
+        ev[perm][type] = {}
+        for (const [evUrl, evidence] of Object.entries(evUrls)){
+          if (evidence["watchlistNum"] != id){
+            ev[perm][type][evUrl] = evidence
+          }
+        }
+      }
+    }
+    await evidenceIDB.set(website, ev, storeEnum.thirdParty)
+  })
 };
 
 /**

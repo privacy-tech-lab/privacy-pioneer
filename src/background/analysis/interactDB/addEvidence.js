@@ -33,12 +33,15 @@ async function addToEvidenceStore(evidenceToAdd, firstParty, parent, rootU, requ
 
   function unpackAndUpdate(evidenceListObject) {
     // unpack the list we are passed
-    let perm, rootU, snip, requestU, t, i, extraDetail
+    let perm, rootU, snip, requestU, t, i, watchlistNum, extraDetail
     if (evidenceListObject.length == 6) {
       [perm, rootU, snip, requestU, t, i] = evidenceListObject
+      watchlistNum = undefined
       extraDetail = undefined
-    }
-    else { [perm, rootU, snip, requestU, t, i, extraDetail] = evidenceListObject}
+    } else if (evidenceListObject.length == 7){
+      [perm, rootU, snip, requestU, t, i, watchlistNum] = evidenceListObject
+      extraDetail = undefined
+    } else { [perm, rootU, snip, requestU, t, i, watchlistNum, extraDetail] = evidenceListObject}
   
     rootU = rootUrl
   
@@ -55,6 +58,7 @@ async function addToEvidenceStore(evidenceToAdd, firstParty, parent, rootU, requ
       index: i,
       firstPartyRoot: firstParty,
       parentCompany: parent,
+      watchlistNum: watchlistNum,
       extraDetail: extraDetail
     } )
   
