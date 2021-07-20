@@ -144,6 +144,9 @@ function coordinateSearch(strReq, locData, rootUrl, reqUrl) {
   if ( matchArr.length < 2 ) { return output }
 
   /**
+   * Takes in a match from the regular expression and keeps only the parts which can be parsed
+   * by parseFloat. Returns a float.
+   * 
    * @param {string} match
    * @returns {float} the match as a float
    */
@@ -194,6 +197,7 @@ function coordinateSearch(strReq, locData, rootUrl, reqUrl) {
   }
 
   /**
+   * Goes through the match array and searches for matches within a delta bound.
    * 
    * @param {number} deltaBound Bound for finding matches
    * @param {string} typ What typeEnum maps to the passed bound
