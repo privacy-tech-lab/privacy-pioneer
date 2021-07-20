@@ -7,6 +7,8 @@ requests
 import { Request, typeEnum, permissionEnum, Evidence } from "../classModels.js"
 import { regexSpecialChar, escapeRegExp } from "../utility/regexFunctions.js"
 import { getHostname } from "../utility/util.js"
+import { watchlistKeyval } from "../../../libs/indexed-db/index.js"
+import { getState } from "../buildUserData/structuredRoutines.js";
 
 
 /**
@@ -43,7 +45,29 @@ function locationKeywordSearch(strReq, locElems, rootUrl, reqUrl) {
     // every entry is an array, so we iterate through it.
     for (let value of v) {
       let res = regexSearch(strReq, value, rootUrl, reqUrl, k, permissionEnum.location)
-      if (res.length != 0) output.push(res[0]);
+      if (res.length != 0) {
+        async function getVals(){
+          var watchlistVals = await watchlistKeyval.values()
+          if (k==typeEnum.state){
+            watchlistVals.forEach(el => {
+              let stZips = getState(el[permissionEnum.location][typeEnum.zipCode])
+              let st0 = stZips[0].toString()
+              let st1 = stZips[1].toString()
+              if (st0 == value.toString() || st1 == value.toString()){
+                res[0][6] = el['id']
+                return
+              }
+            });
+          }
+          watchlistVals.forEach(el => {
+            if (el[permissionEnum.location][k] == value){
+              res[0][6] = el['id']
+            }
+          });
+        }
+        getVals()
+        output.push(res[0]);
+      }
       }
     }
   return output

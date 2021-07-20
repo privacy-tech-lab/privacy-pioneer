@@ -71,9 +71,17 @@ export const saveKeyword = async (keyword, type, id) => {
     let key;
     if (id != null) {
       key = id;
+    } else if (type == permissionEnum.location) {
+      let watchlist = await watchlistKeyval.values()
+      var locNum = 0
+      watchlist.forEach(el => {
+        if (el['type'] == 'location'){
+          locNum = el['locNum'] + 1
+        }
+      });
+      key = hash(type.concat(locNum))
     } else {
       key = hash(type.concat(keyword)).toString();
-      console.log(key)
     }
     type != permissionEnum.location
       ? await watchlistKeyval.set(key, {
@@ -85,6 +93,7 @@ export const saveKeyword = async (keyword, type, id) => {
           location: keyword,
           type: type,
           id: key,
+          locNum: locNum,
         });
     return true;
   }
@@ -96,13 +105,6 @@ export const saveKeyword = async (keyword, type, id) => {
  */
 export const deleteKeyword = async (id) => {
   await watchlistKeyval.delete(id);
-  let watchlistLeft = await watchlistKeyval.values()
-  let locThere = false
-  watchlistLeft.forEach(el => {
-    if (el['type'] == 'location'){
-      locThere = true
-    }
-  });
   let firstEv = await evidenceIDB.keys(storeEnum.firstParty)
   let thirdEv = await evidenceIDB.keys(storeEnum.thirdParty)
 
@@ -114,9 +116,6 @@ export const deleteKeyword = async (id) => {
         ev[perm] = {}
         for (const [type, evUrls] of Object.entries(type)){
           ev[perm][type] = {}
-          if (locThere === false && ([typeEnum.state, typeEnum.city, typeEnum.streetAddress, typeEnum.zipCode].includes(type))){
-            continue
-          }
           for (const [evUrl, evidence] of Object.entries(evUrls)){
             if (evidence["watchlistNum"] != id){
               ev[perm][type][evUrl] = evidence
@@ -140,6 +139,7 @@ export const deleteKeyword = async (id) => {
 export const getWebsiteLabels = async (website) => {
   try {
     var evidence = await evidenceIDB.get(website, storeEnum.firstParty); // first try first party DB
+    console.log(evidence)
     if (evidence == undefined) {
       evidence = await evidenceIDB.get(website, storeEnum.thirdParty);
     } // then try third party DB
