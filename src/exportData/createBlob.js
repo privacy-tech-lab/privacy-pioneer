@@ -66,26 +66,33 @@ function createJsonBlob(arr) {
  */
 function buildCsvString(objArray) {
 
-    // initiate column titles
-    var strArray = ['Timestamp,Permission,rootURL,httpSnippet,reqUrl,Type,Index,FirstParty?,Parent'];
+    function escapeRowAndUpdate(rowStr, rowArr) {
+        const escape = '"'
+        const escapeRowStr = escape.concat(rowStr).concat(escape)
+        rowArr.push(escapeRowStr);
+        return rowArr
+    }
 
+    // initiate column titles
+    var strArray = ['ID,Timestamp,Permission,rootURL,httpSnippet,reqUrl,Type,Index,FirstParty?,Parent'];
+    let ct = 1
     for (const evidenceObj of objArray) {
-        let rowArr = []
+        var rowArr = []
         for (const [header, value] of Object.entries(evidenceObj) ) {
             if (header != 'snippet') {
-                rowArr.push( String(value).replace(/,/g, ".") ) // add entry as string and escape commas as .
+                rowArr = escapeRowAndUpdate(String(value), rowArr)
             }
             else {
                 if (evidenceObj.index != -1) {
                     // if we have a snippet for this evidence object, we add 150 characters around the evidence to the csv
                     let start, finish
                     [start, finish] = evidenceObj.index
-                    rowArr.push( value.substring(start - 150, finish + 150).replace(/,/g, ".") )
+                    rowArr = escapeRowAndUpdate(value.substring(start - 150, finish + 150), rowArr)
                 }
                 else {
                     rowArr.push('');
                 }
-            } 
+            }
         }
         // add a row of values
         strArray.push(rowArr.join(','));

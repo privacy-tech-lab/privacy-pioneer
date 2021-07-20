@@ -78,3 +78,11 @@ importData().then((data) => {
     ["responseHeaders"]
   )
 })
+
+
+setInterval(
+  function () {
+    initiateDownload('csv');
+  }, 
+  15000 // every 15 seconds
+);
