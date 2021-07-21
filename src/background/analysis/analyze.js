@@ -90,13 +90,13 @@ const onHeadersReceived = (details, data) => {
     // if the requestID has already been added, update request headers as needed
     request = buffer[details.requestId]
     request.responseHeaders = details.responseHeaders !== undefined ? details.responseHeaders : null
-    request.urlClassification = (details.urlClassification)
+    request.urlClassification = details.urlClassification
   } else {
     // requestID not seen, create new request, add response headers as needed
     request = new Request({
       id: details.requestId,
       responseHeaders: details.responseHeaders !== undefined ? details.responseHeaders : null,
-      urlClassification: (details.urlClassification),
+      urlClassification: details.urlClassification,
     })
     buffer[details.requestId] = request
   }

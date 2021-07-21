@@ -52,7 +52,7 @@ function buildPhone(userNumber) {
  * Adapted from (https://stackoverflow.com/questions/28821804/how-can-i-quickly-determine-the-state-for-a-given-zipcode)
  *
  * @param {string} zipString
- * @returns {Array<string>|Array<undefined>} An array containing [undefined, undefined] if invalid input, or the state abreviation and name if valid input
+ * @returns {Array<any>|Array<undefined>} An array containing [undefined, undefined] if invalid input, or [st abrev string, state regex] if valid input
  */
  function getState(zipString) {
 
