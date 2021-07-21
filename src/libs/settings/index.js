@@ -3,7 +3,7 @@ import {
   permissionEnum,
   storeEnum,
 } from "../../background/analysis/classModels";
-import { evidenceKeyval } from "../../background/analysis/openDB";
+import { evidenceKeyval } from "../../background/analysis/interactDB/openDB";
 
 export const settingsEnum = Object.freeze({
   sameAsSystem: "sameAsSystem",

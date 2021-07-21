@@ -1,15 +1,15 @@
-import React from "react"
-import * as Icons from "../../../../../libs/icons"
-import { SContainer, SFooter, SHeader, SLabel, STotal } from "./style"
+import React from "react";
+import * as Icons from "../../../../../libs/icons";
+import { SContainer, SFooter, SHeader, SLabel, STotal } from "./style";
 
 /**
  * Summary card that highlights notable stat from identified label
  */
-const LabelSummaryCard = ({labeltype, website }) => {
+const LabelSummaryCard = ({ labeltype, websiteTotal }) => {
   return (
     <SContainer labeltype={labeltype}>
       <SHeader>
-        <STotal>{website}</STotal>
+        <STotal>{websiteTotal}</STotal>
         <SLabel>
           {Icons.getLabelIcon(labeltype)}
           {labeltype.charAt(0).toUpperCase() + labeltype.slice(1)}
@@ -17,18 +17,28 @@ const LabelSummaryCard = ({labeltype, website }) => {
       </SHeader>
       <SFooter>Companies collected {labeltype} data.</SFooter>
     </SContainer>
-  )
-}
+  );
+};
 
 /**
  * List of Summary cards given label and stat {label:stat}
  */
 
 const LabelSummaryCardList = ({ labels }) => {
-  const entries = Object.entries(labels)
-  return (
-    entries.map(([labeltype, numOfWebsites]) =>
-      <LabelSummaryCard key={labeltype} labeltype={labeltype} website={numOfWebsites} />))
-      }
+  const entries = Object.entries(labels);
+  return entries.map(([labeltype, evidence]) => {
+    let numOfWebsites = 0;
+    Object.values(evidence).forEach(
+      (website) => (numOfWebsites += Object.keys(website).length)
+    );
+    return (
+      <LabelSummaryCard
+        key={labeltype}
+        labeltype={labeltype}
+        websiteTotal={numOfWebsites}
+      />
+    );
+  });
+};
 
-      export default LabelSummaryCardList
+export default LabelSummaryCardList;

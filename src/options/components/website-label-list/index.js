@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import WebsiteBadge from "../../../libs/website-badge";
 import LabelCard from "../../../libs/label-card";
 import { SContainer, SItem, SLabel, SLabelGroup, SSeperator } from "./style";
@@ -7,12 +7,13 @@ import { SContainer, SItem, SLabel, SLabelGroup, SSeperator } from "./style";
  * Makes label cards for a given website
  */
 
-const LabelCards = ({ website, handleTap, labels }) => {
-  let webLabel = labels[website];
-  return webLabel
-    ? Object.entries(webLabel).map(([label, requests]) => (
+const LabelCards = ({ website, handleTap, allLabels, webLabels }) => {
+  return webLabels.map((label, index) => {
+    try {
+      const requests = allLabels[label][website];
+      return (
         <LabelCard
-          key={label}
+          key={index}
           onTap={() => {
             handleTap({ label, requests, website, show: true });
           }}
@@ -21,31 +22,38 @@ const LabelCards = ({ website, handleTap, labels }) => {
           requests={requests}
           website={website}
         />
-      ))
-    : null;
+      );
+    } catch {
+      return null;
+    }
+  });
 };
 
 /**
  * Displays a list of websites and a quick summary of their privacy labels
  */
 
-const WebsiteLabelList = ({ websites, maxLength, handleTap, labels }) => {
+const WebsiteLabelList = ({ websites, maxLength, handleTap, allLabels }) => {
   const entries = Object.entries(websites);
+
   return (
     <SContainer>
-      {entries.slice(0, maxLength ?? entries.length).map(([website, label]) => (
-        <SItem key={website}>
-          <WebsiteBadge website={website} />
-          <SLabelGroup>
-            <LabelCards
-              website={website}
-              handleTap={handleTap}
-              labels={labels}
-            />
-          </SLabelGroup>
-          <SSeperator marginTop="16px" />
-        </SItem>
-      ))}
+      {entries
+        .slice(0, maxLength ?? entries.length)
+        .map(([website, webLabels]) => (
+          <SItem key={website}>
+            <WebsiteBadge website={website} />
+            <SLabelGroup>
+              <LabelCards
+                website={website}
+                handleTap={handleTap}
+                allLabels={allLabels}
+                webLabels={webLabels}
+              />
+            </SLabelGroup>
+            <SSeperator marginTop="16px" />
+          </SItem>
+        ))}
     </SContainer>
   );
 };

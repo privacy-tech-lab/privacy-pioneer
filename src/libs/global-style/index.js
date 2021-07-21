@@ -56,6 +56,7 @@ const defaultTheme = css`
     --textFieldColor: #d1d1d6;
     --textFieldColorModal: #ebebff;
     --seperatorColor: #c6c6c8;
+    --tintTextColor: white;
   }
 `;
 
@@ -69,6 +70,7 @@ const darkTheme = css`
     --cardColor: #2c2c2e;
     --textFieldColor: #3a3a3c;
     --seperatorColor: #38383a;
+    --tintTextColor: black;
   }
 `;
 

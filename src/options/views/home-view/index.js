@@ -1,11 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useHistory } from "react-router";
 import { getWebsites, getLabels } from "../../../libs/indexed-db";
-import {
-  getWebsites,
-  getLabels,
-  getAllWebsiteLabels,
-} from "../../../libs/indexed-db";
 import Scaffold from "../../components/scaffold";
 import WebsiteLabelList from "../../components/website-label-list";
 import LabelSummaryCardList from "./components/label-summary-card";
@@ -27,7 +22,6 @@ import {
 const HomeView = () => {
   const history = useHistory();
   const [websites, setWebsites] = useState({});
-  const [labelsCard, setLabelsCard] = useState({});
   const [labels, setLabels] = useState({});
   const [modal, setModal] = useState({ show: false });
   const entries = Object.entries(websites);
@@ -37,8 +31,7 @@ const HomeView = () => {
       getWebsites().then((websites) => {
         setWebsites(websites);
         getLabels().then((labels) => {
-          setLabels(labels.byWebsite);
-          setLabelsCard(labels.numOfEachLabel);
+          setLabels(labels);
         }),
           document
             .getElementById("detail-modal")
@@ -68,7 +61,7 @@ const HomeView = () => {
           <STitle>Overview</STitle>
           <SSubtitle>A summary of your privacy labels</SSubtitle>
           <SCardGroup>
-            <LabelSummaryCardList labels={labelsCard} />
+            <LabelSummaryCardList labels={labels} />
           </SCardGroup>
         </SContainer>
         <SContainer marginTop>
@@ -92,7 +85,7 @@ const HomeView = () => {
             </SButtonText>
           </SSectionContainer>
           <WebsiteLabelList
-            labels={labels}
+            allLabels={labels}
             websites={websites}
             maxLength={entries.length > 6 ? 5 : entries.length}
             handleTap={handleTap}

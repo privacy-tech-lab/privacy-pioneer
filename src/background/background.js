@@ -10,17 +10,10 @@ import {
   onBeforeRequest,
   onBeforeSendHeaders,
   onHeadersReceived,
-  tabUpdate,
 } from "./analysis/analyze.js";
-import { importData } from "./analysis/importSearchData.js";
 import { openDB } from "idb";
 import { settingsKeyval } from "../libs/indexed-db/index.js";
 import { setDefault } from "../libs/settings/index.js";
-import {
-  onBeforeRequest,
-  onBeforeSendHeaders,
-  onHeadersReceived,
-} from "./analysis/analyze.js";
 import { importData } from "./analysis/buildUserData/importSearchData.js";
 import Queue from "queue";
 
