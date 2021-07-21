@@ -108,22 +108,24 @@ export const deleteKeyword = async (id) => {
   let firstEv = await evidenceIDB.keys(storeEnum.firstParty)
   let thirdEv = await evidenceIDB.keys(storeEnum.thirdParty)
 
-  function runDeletion (storeKeys, store) {
-    storeKeys.forEach(async (website) => {
+  /**
+   * Deletes evidence if watchlistHash of the evidence is the same as the id we are deleting from the watchlist
+   * @param {Object} evidenceStoreKeys All keys from the related store, taken from the above lines
+   * @param {String} store Store name from storeEnum
+   */
+  function runDeletion (evidenceStoreKeys, store) {
+    evidenceStoreKeys.forEach(async (website) => {
       let a = await evidenceIDB.get(website, store)
-      let ev = {}
       for (const [perm, type] of Object.entries(a)){
-        ev[perm] = {}
         for (const [type, evUrls] of Object.entries(type)){
-          ev[perm][type] = {}
           for (const [evUrl, evidence] of Object.entries(evUrls)){
-            if (evidence["watchlistHash"] != id){
-              ev[perm][type][evUrl] = evidence
+            if (evidence["watchlistHash"] == id){
+              delete a[perm][type][evUrl]
             } 
           }
         }
       }
-      await evidenceIDB.set(website, ev, store)
+      await evidenceIDB.set(website, a, store)
     })
   }
 
