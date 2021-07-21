@@ -139,7 +139,6 @@ export const deleteKeyword = async (id) => {
 export const getWebsiteLabels = async (website) => {
   try {
     var evidence = await evidenceIDB.get(website, storeEnum.firstParty); // first try first party DB
-    console.log(evidence)
     if (evidence == undefined) {
       evidence = await evidenceIDB.get(website, storeEnum.thirdParty);
     } // then try third party DB

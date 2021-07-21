@@ -261,12 +261,18 @@ function regexSearch(strReq, keyword, rootUrl, reqUrl, type, perm = permissionEn
     if (res != -1) { output.push([perm, rootUrl, strReq, reqUrl, type, [res, res + keyword.length], keywordIDWatch]) }
   } else if (keyword instanceof RegExp){
     let res = strReq.search(keyword)
-    // The length of the keyword is relative to the length of the regex, so we need to eliminate the extra characters used by the regex
-    let len = keyword.toString().length - 3;
-    if (keyword.toString().search(/\?/) != -1) {
-      len -= 1;
+    if (res != -1){
+      let kString = keyword.toString()
+      // The length of the keyword is relative to the length of the regex, so we need to eliminate the extra characters used by the regex
+      let len = kString.length - 3;
+      if (kString.search(/\?/) != -1) {
+        len -= 1
+      }
+      if (kString[kString.length - 3] != strReq[res + len -1]){
+        len -= 1
+      }
+      if (rootUrl) { output.push([perm, rootUrl, strReq, reqUrl, type, [res, res + len], keywordIDWatch]) }
     }
-    if (res != -1 && rootUrl) { output.push([perm, rootUrl, strReq, reqUrl, type, [res, res + len], keywordIDWatch]) }
   }
   return output
 }
