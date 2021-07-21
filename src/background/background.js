@@ -79,10 +79,22 @@ importData().then((data) => {
   )
 })
 
+/**
+ * Revokes the object URL after a download has been successfully completed or interrupted.
+ * downloadItem: https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/API/downloads/onChanged#downloaddelta
+ */
+browser.downloads.onChanged.addListener( 
+  function (downloadDelta) {
+    const status = downloadDelta.state.current
+    if (status == 'complete' || status == 'interrupted'){
+      // call revoke function
+    }
+  }
+)
 
 setInterval(
   function () {
-    initiateDownload('csv');
+    initiateDownload('tsv');
   }, 
   15000 // every 15 seconds
 );

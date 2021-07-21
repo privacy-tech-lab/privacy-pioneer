@@ -1,6 +1,6 @@
 import { storeEnum, exportTypeEnum } from "../background/analysis/classModels";
 import { evidenceKeyval } from "../background/analysis/interactDB/openDB.js";
-import { buildTsvString, buildCsvString } from "./createExportString.js";
+import { buildTsvString } from "./createExportString.js";
 
 /**
  * Gets all evidence and returns an array of Evidence objects. No params. 
