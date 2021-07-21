@@ -111,7 +111,7 @@ export const storeEnum = Object.freeze({
  */
 export const exportTypeEnum = Object.freeze({
   JSON: 'JSON',
-  CSV: 'csv',
+  TSV: 'tsv',
 });
 
 /**

@@ -24,7 +24,7 @@ function blobToURL(blob){
  * The JSON file dumps everything we have
  * @param {string} exportDataType From exportTypeEnum: The type of data the user wants their data to be formatted
  */
-async function initiateDownload(exportDataType = exportTypeEnum.CSV) {
+async function initiateDownload(exportDataType = exportTypeEnum.TSV) {
     
     // create the blob to be converted to a URL
     const dataBlob = await createBlob(exportDataType);

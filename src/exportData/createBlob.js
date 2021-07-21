@@ -1,5 +1,6 @@
 import { storeEnum, exportTypeEnum } from "../background/analysis/classModels";
 import { evidenceKeyval } from "../background/analysis/interactDB/openDB.js";
+import { buildTsvString, buildCsvString } from "./createExportString.js";
 
 /**
  * Gets all evidence and returns an array of Evidence objects. No params. 
@@ -46,7 +47,7 @@ async function walkStoreAndBuildArr(store, evidenceObjectArr) {
  * Takes an array of Evidence and returns a JSON blob.
  * 
  * @param {Array<Evidence>} arr 
- * @returns {Blob} A JSON Blob
+ * @returns {Blob} A mime-type JSON Blob
  */
 function createJsonBlob(arr) {
 
@@ -57,58 +58,17 @@ function createJsonBlob(arr) {
 }
 
 /**
- * Converts an array of Evidence Objects into a csv string.
- * Only adds snippets for Evidence with indexes, and replaces all commas with '.' 
- * (I was having trouble finding a simpler solution for escaping commas).
+ * Takes an array of Evidence and returns a .tsv blob
  * 
- * @param {Array<Evidence>} objArray 
- * @returns {string} A csv ready string
+ * @param {Array<Evidence>} arr 
+ * @returns {Blob} A mime-type tsv Blob
  */
-function buildCsvString(objArray) {
+function createTsvBlob(arr) {
 
-    function escapeRowAndUpdate(rowStr, rowArr) {
-        const escape = '"'
-        const escapeRowStr = escape.concat(rowStr).concat(escape)
-        rowArr.push(escapeRowStr);
-        return rowArr
-    }
-
-    // initiate column titles
-    var strArray = ['ID,Timestamp,Permission,rootURL,httpSnippet,reqUrl,Type,Index,FirstParty?,Parent'];
-    let ct = 1
-    for (const evidenceObj of objArray) {
-        var rowArr = []
-        for (const [header, value] of Object.entries(evidenceObj) ) {
-            if (header != 'snippet') {
-                rowArr = escapeRowAndUpdate(String(value), rowArr)
-            }
-            else {
-                if (evidenceObj.index != -1) {
-                    // if we have a snippet for this evidence object, we add 150 characters around the evidence to the csv
-                    let start, finish
-                    [start, finish] = evidenceObj.index
-                    rowArr = escapeRowAndUpdate(value.substring(start - 150, finish + 150), rowArr)
-                }
-                else {
-                    rowArr.push('');
-                }
-            }
-        }
-        // add a row of values
-        strArray.push(rowArr.join(','));
-    }
-    strArray.push('NOTE: Commas have been replaced with \'.\'. Use the JSON export for the raw data (including the full HTTP requests)')
-
-    // add all rows. separate rows.
-    return strArray.join('\r');
-}
-
-function createCSV(arr) {
-
-    const blobString = buildCsvString(arr);
+    const blobString = buildTsvString(arr);
     
     return new Blob([blobString],
-        {type: "application/vnd.ms-excel"});
+        {type: "text/tab-separated-values"});
 }
 
 
@@ -117,17 +77,17 @@ function createCSV(arr) {
  * @param {string} blobType A string specifying what kind of blob to create
  * @returns {Promise<Blob>}
  */
-async function createBlob(blobType = exportTypeEnum.CSV) {
+async function createBlob(blobType = exportTypeEnum.TSV) {
 
     const dataArr = await buildEvidenceAsArray()
     
     switch (blobType) {
         case exportTypeEnum.JSON:
             return createJsonBlob(dataArr)
-        case exportTypeEnum.CSV:
-            return createCSV(dataArr)
+        case exportTypeEnum.TSV:
+            return createTsvBlob(dataArr)
         default:
-            return createCSV(dataArr);
+            return createTsvBlob(dataArr);
     }
 
 }
