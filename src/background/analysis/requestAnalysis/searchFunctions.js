@@ -287,8 +287,15 @@ function regexSearch(strReq, keyword, rootUrl, reqUrl, type, perm = permissionEn
   var output = []
   if (typeof keyword == 'string'){
     let fixed = escapeRegExp(keyword)
-    let re = new RegExp(`${fixed}`, "i");
-    let res = strReq.search(re)
+    let re, res;
+    if (type == typeEnum.zipCode){
+      re = new RegExp(`[^0-9]${fixed}[^0-9]`)
+      let zipSearch = strReq.search(re)
+      res = zipSearch != -1 ? zipSearch+1 : -1
+    } else {
+      re = new RegExp(`${fixed}`, "i");
+      res = strReq.search(re)
+    }
     if (res != -1) { output.push([perm, rootUrl, strReq, reqUrl, type, [res, res + keyword.length], keywordIDWatch]) }
   } else if (keyword instanceof RegExp){
     let res = strReq.search(keyword)
