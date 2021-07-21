@@ -75,11 +75,11 @@ export const saveKeyword = async (keyword, type, id) => {
       let watchlist = await watchlistKeyval.values()
       var locNum = 0
       watchlist.forEach(el => {
-        if (el['type'] == 'location'){
+        if (el['type'] == typeEnum.location){
           locNum = el['locNum'] + 1
         }
       });
-      key = hash(type.concat(locNum))
+      key = hash(type.concat(locNum)).toString();
     } else {
       key = hash(type.concat(keyword)).toString();
     }
@@ -117,7 +117,7 @@ export const deleteKeyword = async (id) => {
         for (const [type, evUrls] of Object.entries(type)){
           ev[perm][type] = {}
           for (const [evUrl, evidence] of Object.entries(evUrls)){
-            if (evidence["watchlistNum"] != id){
+            if (evidence["watchlistHash"] != id){
               ev[perm][type][evUrl] = evidence
             } 
           }

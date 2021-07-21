@@ -70,7 +70,7 @@ export const resourceTypeEnum = Object.freeze( {
  * @property {Array|undefined} index A length 2 array with the indexes of the evidence or undefined if not applicable
  * @property {boolean} firstPartyRoot A boolean indicating if the evidence was generated with a first party root (the rootUrl of the request is the same as the website that generated the request)
  * @property {string|null} parentCompany If we have identified a parent company for this url, we store it here for the frontend. Else, null.
- * @property {string|undefined} watchlistNum If the evidence is from our watchlist, this is the id of that item. Used for deletion of evidence on deletion of watchlist item
+ * @property {string|undefined} watchlistHash If the evidence is from our watchlist, this is the id of that item. Used for deletion of evidence on deletion of watchlist item
  * @property {string|undefined} extraDetail Extra details as needed. Currently only used for encoded email's original email
  */
 export class Evidence {
@@ -84,7 +84,7 @@ export class Evidence {
     index,
     firstPartyRoot,
     parentCompany,
-    watchlistNum,
+    watchlistHash,
     extraDetail,
   }) {
     this.timestamp = timestamp;
@@ -96,7 +96,7 @@ export class Evidence {
     this.index = index === undefined ? -1 : index;
     this.firstPartyRoot = firstPartyRoot;
     this.parentCompany = parentCompany;
-    this.watchlistNum = watchlistNum;
+    this.watchlistHash = watchlistHash;
     this.extraDetail = extraDetail;
   }
 }

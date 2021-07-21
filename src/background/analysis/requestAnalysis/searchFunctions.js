@@ -10,24 +10,29 @@ import { getHostname } from "../utility/util.js"
 import { watchlistKeyval } from "../../../libs/indexed-db/index.js"
 import { getState } from "../buildUserData/structuredRoutines.js";
 
+function watchlistHashGen (type, keyword) {
 
-/**
- * Utility function to create hash for watchlist key based on keyword and type
- * This will overwrite keywords in the watchlist store that have the same keyword and type
- * Which is okay
- * from: https://werxltd.com/wp/2010/05/13/javascript-implementation-of-javas-string-hashcode-method/
- */
- function hash (str) {
-  var hash = 0,
-    i,
-    chr;
-  for (i = 0; i < str.length; i++) {
-    chr = str.charCodeAt(i);
-    hash = (hash << 5) - hash + chr;
-    hash |= 0;
-  }
-  return hash;
-};
+  /**
+   * Utility function to create hash for watchlist key based on keyword and type
+   * This will overwrite keywords in the watchlist store that have the same keyword and type
+   * Which is okay
+   * from: https://werxltd.com/wp/2010/05/13/javascript-implementation-of-javas-string-hashcode-method/
+   */
+  function hash (str) {
+    var hash = 0,
+      i,
+      chr;
+    for (i = 0; i < str.length; i++) {
+      chr = str.charCodeAt(i);
+      hash = (hash << 5) - hash + chr;
+      hash |= 0;
+    }
+    return hash;
+  };
+
+  return hash(type.concat(keyword)).toString()
+}
+
 
 /**
  * Iterates through the user's location elements and adds exact text matches to evidence. 
@@ -40,32 +45,42 @@ import { getState } from "../buildUserData/structuredRoutines.js";
  * @returns {Array<Array>|Array} An array of arrays with the search results [] if no result 
  */
 function locationKeywordSearch(strReq, locElems, rootUrl, reqUrl) {
+
+  /**
+   * 
+   * @param {string} k The type of the evidence, as defined by typeEnum
+   * @param {string|regex} value The value we searched for
+   * @param {Array} res The array we are considering to be added to evidence
+   * @returns The corrected array to be added to evidence
+   */
+  async function getVals(k, value, res){
+    res = res[0]
+    var watchlistVals = await watchlistKeyval.values()
+    if (k==typeEnum.state){
+      watchlistVals.forEach(el => {
+        let stZips = getState(el[permissionEnum.location][typeEnum.zipCode])
+        let st0 = stZips[0].toString()
+        let st1 = stZips[1].toString()
+        if (st0 == value.toString() || st1 == value.toString()){
+          res[6] = el['id']
+        }
+      });
+    }
+    watchlistVals.forEach(el => {
+      if (el[permissionEnum.location][k] == value){
+        res[6] = el['id']
+      }
+    });
+    return res
+  }
+
   var output = []
   for (const [k, v] of Object.entries(locElems)) {
     // every entry is an array, so we iterate through it.
     for (let value of v) {
-      let res = regexSearch(strReq, value, rootUrl, reqUrl, k, permissionEnum.location)
+      var res = regexSearch(strReq, value, rootUrl, reqUrl, k, permissionEnum.location)
       if (res.length != 0) {
-        async function getVals(){
-          var watchlistVals = await watchlistKeyval.values()
-          if (k==typeEnum.state){
-            watchlistVals.forEach(el => {
-              let stZips = getState(el[permissionEnum.location][typeEnum.zipCode])
-              let st0 = stZips[0].toString()
-              let st1 = stZips[1].toString()
-              if (st0 == value.toString() || st1 == value.toString()){
-                res[0][6] = el['id']
-                return
-              }
-            });
-          }
-          watchlistVals.forEach(el => {
-            if (el[permissionEnum.location][k] == value){
-              res[0][6] = el['id']
-            }
-          });
-        }
-        getVals()
+        getVals(k, value, res).then(fufilled => res = fufilled)
         output.push(res[0]);
       }
       }
@@ -283,11 +298,12 @@ function coordinateSearch(strReq, locData, rootUrl, reqUrl) {
  *
  */
 function regexSearch(strReq, keyword, rootUrl, reqUrl, type, perm = permissionEnum.watchlist ) {
-  let keywordIDWatch = hash(type.concat(keyword)).toString()
+  let keywordIDWatch = watchlistHashGen(type, keyword)
   var output = []
   if (typeof keyword == 'string'){
     let fixed = escapeRegExp(keyword)
-    let re, res;
+    let re;
+    let res = 0;
     if (type == typeEnum.zipCode){
       re = new RegExp(`[^0-9]${fixed}[^0-9]`)
       let zipSearch = strReq.search(re)
@@ -303,9 +319,11 @@ function regexSearch(strReq, keyword, rootUrl, reqUrl, type, perm = permissionEn
       let kString = keyword.toString()
       // The length of the keyword is relative to the length of the regex, so we need to eliminate the extra characters used by the regex
       let len = kString.length - 3;
+      // If we are conditionally searching for special chars due to spaces in the state (eg. 'New York' as /New.?York/i), we should decrement length by 1
       if (kString.search(/\?/) != -1) {
         len -= 1
       }
+      // If the last char in the string is not matching up with what it should be due to a lack of special char (eg. "NEWYORK/" ends with '/' instead of 'K'), decrement length by 1
       if (kString[kString.length - 3] != strReq[res + len -1]){
         len -= 1
       }
@@ -436,7 +454,7 @@ function encodedEmailSearch(strReq, networkKeywords, rootUrl, reqUrl) {
   const encodedObj = networkKeywords[permissionEnum.watchlist][typeEnum.encodedEmail]
   const emails = Object.keys(encodedObj)
   emails.forEach(email => {
-    let emailIDWatch = hash((typeEnum.emailAddress).concat(email)).toString()
+    let emailIDWatch = watchlistHashGen(typeEnum.emailAddress, email)
     let encodeLst = encodedObj[email]
     encodeLst.forEach(encodedEmail => {
       let fixed = escapeRegExp(encodedEmail)
