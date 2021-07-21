@@ -136,11 +136,7 @@ export const getWebsiteLabels = async (website) => {
       for (const [type, requests] of Object.entries(value)) {
         for (const [url, e] of Object.entries(requests)) {
           // Verify label and type are in privacyLabels
-          if (
-            label in privacyLabels &&
-            type in privacyLabels[label]["types"] &&
-            !excludedLabels.includes(label)
-          ) {
+          if (label in privacyLabels && type in privacyLabels[label]["types"]) {
             // Add label in data to object
             if (!(label in result)) {
               result[label] = { [url]: { [type]: e } };
@@ -233,10 +229,11 @@ export const getLabels = async () => {
   let res = {};
   const excludedLabels = await getExcludedLabels();
   const labels = await getAllWebsiteLabels();
+  res["excludedLabels"] = excludedLabels;
   const websites = Object.keys(await getWebsites());
 
   Object.values(permissionEnum).forEach((label) => {
-    if (!excludedLabels.includes(label)) res[label] = {};
+    res[label] = {};
   });
 
   websites.forEach((website) => {

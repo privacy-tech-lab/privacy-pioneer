@@ -23,6 +23,7 @@ import { getWebsiteLabels } from "../../../libs/indexed-db";
 import { getHostname } from "../../../background/analysis/utility/util.js";
 import { useHistory } from "react-router";
 import RiseLoader from "react-spinners/RiseLoader";
+import { getExcludedLabels } from "../../../libs/settings";
 
 /**
  * Page view containing current website and identified label cards
@@ -31,6 +32,7 @@ const WebsiteView = () => {
   const history = useHistory();
   const [website, setWebsite] = useState("...");
   const [labels, setLabels] = useState({});
+  const [excludedLabels, setExcludedLabels] = useState([]);
   const [loading, setLoading] = useState(true);
   const [empty, setEmpty] = useState(true);
   const [ourOptions, setOurOptions] = useState(false);
@@ -88,6 +90,7 @@ const WebsiteView = () => {
       if (request.msg === "popup.currentTab") {
         const host = getHostname(request.data);
         checkOurOptions(request.data);
+        getExcludedLabels().then((res) => setExcludedLabels(res));
         getWebsiteLabels(host).then((labels) => {
           setLabels(labels);
           if (Object.keys(labels).length > 0) {
@@ -174,6 +177,7 @@ const WebsiteView = () => {
                   label={label}
                   requests={requests}
                   website={website}
+                  excludedLabels={excludedLabels}
                 />
               ))
             )}

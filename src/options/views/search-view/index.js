@@ -93,7 +93,7 @@ const SearchView = () => {
           </SInputContainer>
           <WebsiteLabelList
             websites={filteredSites}
-            labels={webLabels}
+            allLabels={webLabels}
             handleTap={handleTap}
           />
         </SContainer>

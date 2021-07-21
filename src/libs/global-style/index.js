@@ -53,8 +53,8 @@ const defaultTheme = css`
     --primaryTextColor: #000000;
     --secondaryTextColor: #3c3c43;
     --cardColor: #d5d9d3;
-    --textFieldColor: #d1d1d6;
-    --textFieldColorModal: #ebebff;
+    --textFieldColor: #c6cdd2;
+    --textFieldColorModal: #c6cdd2;
     --seperatorColor: #c6c6c8;
     --tintTextColor: white;
   }

@@ -41,8 +41,7 @@ const SettingsView = ({ changeTheme }) => {
             <div>
               <SSettingHeader>Export Data</SSettingHeader>
               <SSubtitle>
-                Export all of the data and evidence accumulated through
-                extension
+                Export all of the data and evidence from the extension
               </SSubtitle>
               <ExportData />
             </div>

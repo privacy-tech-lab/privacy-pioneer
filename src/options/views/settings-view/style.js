@@ -19,6 +19,7 @@ export const SBody = styled.div`
   display: flex;
   flex-direction: row;
   margin-top: 24px;
+  justify-content: center;
 `;
 
 export const SSection = styled.div`

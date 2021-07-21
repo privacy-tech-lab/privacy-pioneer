@@ -70,7 +70,7 @@ export const SThemeIcon = styled(motion.div)`
 export const SExportSection = styled.div`
   display: flex;
   flex-direction: row;
-  margin-left: 12px;
+  margin-left: 8px;
   margin-top: 8px;
 `;
 export const SExportButton = styled.div`
@@ -81,7 +81,8 @@ export const SExportButton = styled.div`
   padding: 8px 0px;
   justify-content: center;
   color: black;
-  margin: 12px 8px;
+  margin-top: 12px;
+  margin-right: 12px;
   border-radius: 8px;
 `;
 

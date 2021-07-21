@@ -26,18 +26,21 @@ const LabelSummaryCard = ({ labeltype, websiteTotal }) => {
 
 const LabelSummaryCardList = ({ labels }) => {
   const entries = Object.entries(labels);
+  const excludedLabels = labels.excludedLabels;
   return entries.map(([labeltype, evidence]) => {
-    let numOfWebsites = 0;
-    Object.values(evidence).forEach(
-      (website) => (numOfWebsites += Object.keys(website).length)
-    );
-    return (
-      <LabelSummaryCard
-        key={labeltype}
-        labeltype={labeltype}
-        websiteTotal={numOfWebsites}
-      />
-    );
+    if (!excludedLabels.includes(labeltype) && labeltype != "excludedLabels") {
+      let numOfWebsites = 0;
+      Object.values(evidence).forEach(
+        (website) => (numOfWebsites += Object.keys(website).length)
+      );
+      return (
+        <LabelSummaryCard
+          key={labeltype}
+          labeltype={labeltype}
+          websiteTotal={numOfWebsites}
+        />
+      );
+    }
   });
 };
 

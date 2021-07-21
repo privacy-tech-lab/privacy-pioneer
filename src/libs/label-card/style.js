@@ -8,6 +8,7 @@ export const SCard = styled.div`
   justify-content: space-between;
   background-color: var(--cardColor);
   width: ${(props) => (props.popup ? "340px" : "250px")};
+  height: 140px;
   margin: ${(props) => props.margin};
   padding: 16px;
   border-radius: 16px;

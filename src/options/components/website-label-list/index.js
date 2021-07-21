@@ -21,6 +21,7 @@ const LabelCards = ({ website, handleTap, allLabels, webLabels }) => {
           label={label}
           requests={requests}
           website={website}
+          excludedLabels={allLabels["excludedLabels"]}
         />
       );
     } catch {
