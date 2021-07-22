@@ -65,6 +65,7 @@ const WatchlistView = () => {
 
   return (
     <React.Fragment>
+      <ReactTooltip place="bottom" type="dark" effect="solid" />
       <div
         className="modal fade"
         data-bs-backdrop="static"
@@ -113,7 +114,6 @@ const WatchlistView = () => {
                   modal.show();
                 }}
               >
-                <ReactTooltip place="bottom" type="dark" effect="solid" />
                 <Icons.Plus size="24px" />
                 Add Keyword
               </SAddButton>

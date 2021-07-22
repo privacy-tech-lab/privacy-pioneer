@@ -7,10 +7,10 @@ the codebase.
 
 /**
  * Represents an HTTP request.
- * 
+ *
  * @class Request
  * @property {string} id The ID of the request to filter.
- * @property {object} details Contains details about the request https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/API/webRequest/onBeforeRequest#details 
+ * @property {object} details Contains details about the request https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/API/webRequest/onBeforeRequest#details
  * @property {object} requestHeaders Contains the request headers of the request https://developer.mozilla.org/en-US/docs/Glossary/Request_header
  * @property {object} responseHeaders Contains the response headers of the request. https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/API/webRequest/HttpHeaders
  * @property {object} requestBody Contains the HTTP request body data.  https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/API/webRequest/onBeforeRequest#details.
@@ -44,19 +44,18 @@ export class Request {
   }
 }
 
-
 /**
  * @enum {string} Enum used to reference the types of HTTP requests. This filter is set up in background.js.
  * https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/API/webRequest/ResourceType
  */
-export const resourceTypeEnum = Object.freeze( {
+export const resourceTypeEnum = Object.freeze({
   image: "image",
   script: "script",
   xml: "xmlhttprequest",
   subFrame: "sub_frame",
-  WebSocket: "websocket", 
-  mainFrame: "main_frame"
-})
+  WebSocket: "websocket",
+  mainFrame: "main_frame",
+});
 
 /**
  * An evidence object created from a request
@@ -102,9 +101,9 @@ export class Evidence {
  * @enum {string} Enum used to reference which evidenceKeyval object store you want
  */
 export const storeEnum = Object.freeze({
-  firstParty: 'firstPartyEvidence',
-  thirdParty: 'thirdPartyEvidence'
-})
+  firstParty: "firstPartyEvidence",
+  thirdParty: "thirdPartyEvidence",
+});
 
 /**
  * permissions are the broader category that types belong to (see typeEnum)
@@ -122,7 +121,6 @@ export const permissionEnum = Object.freeze({
  * @enum {string} Enum used to reference types. Type: String
  */
 export const typeEnum = Object.freeze({
-
   // monetization types
   advertising: "advertising",
   analytics: "analytics",
@@ -180,14 +178,15 @@ export const keywordTypes = Object.freeze({
   ipAddress: {
     displayName: "IP Address",
     placeholder: "999.99.999.999",
-    toolTip: "Google: What\'s my IP?. We will only flag instances where your IP is shared with a 3rd party. All websites you connect to have access to your IP address."
+    toolTip:
+      "Google: What's my IP?. <br/> We will only flag instances where your IP is shared with a 3rd party.<br/> All websites you connect to have access to your IP address.",
   },
 });
 
 /**
- * An object used by the front end to create labels. Before displaying evidence pulled from the DB, the front-end checks that the 
+ * An object used by the front end to create labels. Before displaying evidence pulled from the DB, the front-end checks that the
  * permission and type exist in this object. The permissions and types should be exactly the same as the enums.
- * 
+ *
  * @type {object}
  */
 export const privacyLabels = Object.freeze({
@@ -206,7 +205,7 @@ export const privacyLabels = Object.freeze({
       social: {
         displayName: "Social",
         description: "A Social media company sent or received your data.",
-      }
+      },
     },
   },
   location: {
@@ -219,7 +218,8 @@ export const privacyLabels = Object.freeze({
       },
       tightLocation: {
         displayName: "Tight Location",
-        description: "Your Tight Location (lattitude and longitude coordinates) were found in a request.",
+        description:
+          "Your Tight Location (lattitude and longitude coordinates) were found in a request.",
       },
       zipCode: {
         displayName: "Zip Code",
@@ -245,15 +245,18 @@ export const privacyLabels = Object.freeze({
     types: {
       phoneNumber: {
         displayName: "Phone Number",
-        description: "A Phone Number from your watchlist was found in a request.",
+        description:
+          "A Phone Number from your watchlist was found in a request.",
       },
       emailAddress: {
         displayName: "Email Address",
-        description: "An Email Address from your watchlist was found in a request.",
+        description:
+          "An Email Address from your watchlist was found in a request.",
       },
       encodedEmail: {
         displayName: "Encoded Email",
-        description: "An Email Address from your watchlist was found in an alternate representation (The Trade Desk's UID)" // this should be updated with a link or different wording
+        description:
+          "An Email Address from your watchlist was found in an alternate representation (The Trade Desk's UID)", // this should be updated with a link or different wording
       },
       userKeyword: {
         displayName: "Keyword",
@@ -267,19 +270,23 @@ export const privacyLabels = Object.freeze({
     types: {
       trackingPixel: {
         displayName: "Tracking Pixel",
-        description: "A Tracking Pixel is code that silently pings a third-party to track your internet activity.",
+        description:
+          "A Tracking Pixel is code that silently pings a third-party to track your internet activity.",
       },
       possiblePixel: {
         displayName: "Possible Pixel",
-        description: "A Tracking Pixel is code that silently pings a third-party to track your internet activity."
+        description:
+          "A Tracking Pixel is code that silently pings a third-party to track your internet activity.",
       },
       ipAddress: {
         displayName: "IP Address",
-        description: "Your IP Address identifies your device and can be used to fetch your location.",
+        description:
+          "Your IP Address identifies your device and can be used to fetch your location.",
       },
       fingerprinting: {
         displayName: "Browser Fingerprinting",
-        description: "Browser Fingerprinting are practices that uniquely identify your browser to track activity across sessions.",
+        description:
+          "Browser Fingerprinting are practices that uniquely identify your browser to track activity across sessions.",
       },
     },
   },

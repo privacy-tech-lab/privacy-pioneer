@@ -28,6 +28,7 @@ import {
 import { Modal } from "bootstrap";
 import Form from "./components/forms";
 import inputValidator from "./components/input-validators";
+import ReactTooltip from "react-tooltip";
 
 /**
  * Popup modal to create/edit keyword
@@ -109,6 +110,12 @@ const EditModal = ({ keywordType, keyword, edit, id, updateList }) => {
   return (
     <>
       <SContent className="modal-content">
+        <ReactTooltip
+          place="right"
+          type="dark"
+          effect="solid"
+          multiline={true}
+        />
         <SModal>
           <SNavigationBar>
             <SLeading />
@@ -130,6 +137,7 @@ const EditModal = ({ keywordType, keyword, edit, id, updateList }) => {
               <SDropdownOptions show={showDropdown}>
                 {Object.keys(keywordTypes).map((key, index) => (
                   <SDropdownItem
+                    data-tip={keywordTypes[key]["toolTip"]}
                     onClick={() => {
                       setKeywordType(key);
                       setInputValid(true);
