@@ -16,8 +16,8 @@ function blobToURL(blob){
 
 /**
  * Entry point for downloading the user's stored data.
- * The user will get to select the name of the file. 
- * Defaults to CSV
+ * User does not choose the name for the file (so we can properly revoke the Object URL later)
+ * Defaults to TSV.
  * 
  * The CSV file is much smaller: it only includes the part of snippets that we have indexes for (like in the popup)
  * 
@@ -36,7 +36,6 @@ async function initiateDownload(exportDataType = exportTypeEnum.TSV) {
     var downloading = browser.downloads.download({
         url: downloadURL,
         filename: `integrated_privacy_analysis_data.${exportDataType}`,
-        saveAs: true,
     });
 }
 
