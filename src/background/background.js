@@ -77,3 +77,27 @@ importData().then((data) => {
     ["responseHeaders"]
   )
 })
+
+/**
+ * Gets a callback with downloadDelta every time downloads have been changed.
+ * If it is our download and it's done, we revoke the URL.
+ * Revokes the object URL after a download has been successfully completed or interrupted.
+ * downloadDelta: https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/API/downloads/onChanged#downloaddelta
+ */
+browser.downloads.onChanged.addListener( 
+  async function (downloadDelta) {
+    const status = downloadDelta.state.current
+    // if the download is finished, we fetch the url for the download and revoke that object URL
+    if (status === 'complete' || status === 'interrupted'){
+      const id = downloadDelta.id
+      const downloadItemArr = await browser.downloads.search( {id: id} );
+      const downloadItem = downloadItemArr[0] // search returns an array. We will get length 1 array because id's are unique
+      const url = downloadItem.url
+      const filename = downloadItem.filename
+      // we only revoke the URL if it is the download we initiated
+      if (filename.includes('integrated_privacy_analysis_data')) {
+        URL.revokeObjectURL(url); // revoke the url.
+      }
+    }
+  }
+)
