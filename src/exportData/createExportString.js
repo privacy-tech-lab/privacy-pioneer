@@ -28,8 +28,12 @@
     }
 
     // initiate column titles
-    const headers = ['Timestamp', 'Permission', 'rootURL', 'httpSnippet', 'reqUrl', 'Type', 'Index', 'FirstParty?', 'Parent', 'Extra Detail'];
-    var strArray = [ headers.join('\t') ] //initialze the tsv with the headers.
+    const columnTitles = [
+        'Timestamp', 'Permission', 'rootUrl', 'httpSnippet', 'reqUrl', 
+        'Type', 'Index', 'FirstParty?', 'Parent', 'Extra Detail'
+    ];
+
+    var strArray = [ columnTitles.join('\t') ] //initialze the tsv with the titles.
 
     for (const evidenceObj of objArray) {
         var rowArr = []
