@@ -10,6 +10,31 @@ import { getHostname } from "../utility/util.js"
 import { watchlistKeyval } from "../../../libs/indexed-db/index.js"
 import { getState } from "../buildUserData/structuredRoutines.js";
 
+function createEvidenceObj(
+  permission, 
+  rootUrl, 
+  snippet, 
+  requestUrl, 
+  typ, 
+  index, 
+  watchlistHash = undefined, 
+  extraDetail = undefined) {
+  const e = new Evidence( {
+    timestamp: undefined,
+    permission: permission,
+    rootUrl: rootUrl,
+    snippet: snippet,
+    requestUrl: requestUrl,
+    typ: typ,
+    index: index,
+    firstPartyRoot: undefined,
+    parentCompany: undefined,
+    watchlistHash: watchlistHash,
+    extraDetail: extraDetail
+  } )
+  return e
+}
+
 function watchlistHashGen (type, keyword) {
 
   /**
@@ -62,13 +87,13 @@ function locationKeywordSearch(strReq, locElems, rootUrl, reqUrl) {
         let st0 = stZips[0].toString()
         let st1 = stZips[1].toString()
         if (st0 == value.toString() || st1 == value.toString()){
-          res[6] = el['id']
+          res.watchlistHash = el['id']
         }
       });
     }
     watchlistVals.forEach(el => {
       if (el[permissionEnum.location][k] == value){
-        res[6] = el['id']
+        res.watchlistHash = el['id']
       }
     });
     return res
@@ -81,10 +106,11 @@ function locationKeywordSearch(strReq, locElems, rootUrl, reqUrl) {
       var res = regexSearch(strReq, value, rootUrl, reqUrl, k, permissionEnum.location)
       if (res.length != 0) {
         getVals(k, value, res).then(fufilled => res = fufilled)
-        output.push(res[0]);
+        output.push(res);
       }
       }
     }
+  output = output[0]
   return output
 }
 
@@ -120,7 +146,7 @@ function urlSearch(strReq, rootUrl, reqUrl, classifications) {
       if (classification in classificationTransformation) {
         let p, t;
         [p, t] = classificationTransformation[classification];
-        output.push([p, rootUrl, strReq, reqUrl, t, undefined])
+        output.push(createEvidenceObj(p, rootUrl, strReq, reqUrl, t, undefined))
       }
     }
   }
@@ -149,7 +175,7 @@ function urlSearch(strReq, rootUrl, reqUrl, classifications) {
    * @returns {void} Nothing. Adds to evidence list
    */
   function addDisconnectEvidence(perm, type) {
-    output.push([perm, request.details["originUrl"], "null", request.details["url"], type, undefined])
+    output.push(createEvidenceObj(perm, request.details["originUrl"], "null", request.details["url"], type, undefined))
   }
   
   // The fingerprintingInvasive category is the only one we are traversing.
@@ -245,7 +271,7 @@ function coordinateSearch(strReq, locData, rootUrl, reqUrl) {
 
       let delta = Math.abs(asFloat - goal)
       if (delta < deltaBound) {
-        output.push([permissionEnum.location, rootUrl, strReq, reqUrl, typ, [startIndex, endIndex]])
+        output.push(createEvidenceObj(permissionEnum.location, rootUrl, strReq, reqUrl, typ, [startIndex, endIndex]))
         // if we find evidence for this request we return an index that will terminate the loop
         return matchArr.length
       }
@@ -313,7 +339,7 @@ function regexSearch(strReq, keyword, rootUrl, reqUrl, type, perm = permissionEn
       re = new RegExp(`${fixed}`, "i");
       res = strReq.search(re)
     }
-    if (res != -1) { output.push([perm, rootUrl, strReq, reqUrl, type, [res, res + keyword.length], keywordIDWatch]) }
+    if (res != -1) { output.push(createEvidenceObj(perm, rootUrl, strReq, reqUrl, type, [res, res + keyword.length], keywordIDWatch)) }
   } else if (keyword instanceof RegExp){
     let res = strReq.search(keyword)
     if (res != -1){
@@ -328,7 +354,7 @@ function regexSearch(strReq, keyword, rootUrl, reqUrl, type, perm = permissionEn
       if (kString[kString.length - 3] != strReq[res + len -1]){
         len -= 1
       }
-      if (rootUrl) { output.push([perm, rootUrl, strReq, reqUrl, type, [res, res + len], keywordIDWatch]) }
+      if (rootUrl) { output.push(createEvidenceObj(perm, rootUrl, strReq, reqUrl, type, [res, res + len], keywordIDWatch)) }
     }
   }
   return output
@@ -350,7 +376,7 @@ function fingerprintSearch(strReq, networkKeywords, rootUrl, reqUrl) {
     for (const keyword of v){
       const idxKeyword = strReq.indexOf(keyword);
       if (idxKeyword != -1){
-        output.push([permissionEnum.tracking, rootUrl, strReq, reqUrl, typeEnum.fingerprinting, [idxKeyword, idxKeyword + keyword.length]]);
+        output.push(createEvidenceObj(permissionEnum.tracking, rootUrl, strReq, reqUrl, typeEnum.fingerprinting, [idxKeyword, idxKeyword + keyword.length]));
         break;
       }
     }
@@ -379,11 +405,11 @@ function pixelSearch(strReq, networkKeywords, rootUrl, reqUrl) {
       let reqUrlIndex = strReq.indexOf(reqUrl)
       // preference to show the reqUrl on the front end
       if (reqUrlIndex != -1) {
-        output.push([permissionEnum.tracking, rootUrl, strReq, reqUrl, typeEnum.trackingPixel, [reqUrlIndex, reqUrlIndex + reqUrl.length]])
+        output.push(createEvidenceObj(permissionEnum.tracking, rootUrl, strReq, reqUrl, typeEnum.trackingPixel, [reqUrlIndex, reqUrlIndex + reqUrl.length]))
       }
       // otherwise show the url from the pixel list on the front end
       else {
-        output.push([permissionEnum.tracking, rootUrl, strReq, reqUrl, typeEnum.trackingPixel, [searchIndex, searchIndex + url.length]])
+        output.push(createEvidenceObj(permissionEnum.tracking, rootUrl, strReq, reqUrl, typeEnum.trackingPixel, [searchIndex, searchIndex + url.length]))
       }  
     }
   }
@@ -415,7 +441,7 @@ function pixelSearch(strReq, networkKeywords, rootUrl, reqUrl) {
 
   if (resOne + resTwo != -2 && pix != -1 && qSearch != -1){
     let reqUrlIndex = strReq.indexOf(reqUrl)
-    output.push([permissionEnum.tracking, rootUrl, strReq, reqUrl, typeEnum.possiblePixel, [reqUrlIndex, reqUrlIndex + reqUrl.length]])
+    output.push(createEvidenceObj(permissionEnum.tracking, rootUrl, strReq, reqUrl, typeEnum.possiblePixel, [reqUrlIndex, reqUrlIndex + reqUrl.length]))
   }
   return output
 }
@@ -462,7 +488,7 @@ function encodedEmailSearch(strReq, networkKeywords, rootUrl, reqUrl) {
       let re = new RegExp(`${fixed}`, "i");
       let output = strReq.search(re)
       if (output != -1) {
-       output.push([permissionEnum.watchlist, rootUrl, strReq, reqUrl, typeEnum.encodedEmail, [output, output+encodedEmail.length], emailIDWatch, email])
+       output.push(createEvidenceObj(permissionEnum.watchlist, rootUrl, strReq, reqUrl, typeEnum.encodedEmail, [output, output+encodedEmail.length], emailIDWatch, email))
       }
     })
   })
