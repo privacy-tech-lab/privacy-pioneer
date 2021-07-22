@@ -9,7 +9,6 @@ background.js
 import { onBeforeRequest, onBeforeSendHeaders, onHeadersReceived } from "./analysis/analyze.js"
 import { importData } from './analysis/buildUserData/importSearchData.js';
 import Queue from "queue"
-import { initiateDownload } from '../exportData/initiateDownload.js';
 
 
 // A filter that restricts the events that will be sent to a listener.
