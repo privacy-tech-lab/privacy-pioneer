@@ -29,6 +29,7 @@ export const SButtonText = styled.div`
   cursor: pointer;
   color: var(--primaryBrandColor);
   text-decoration: underline;
+  align-self: flex-start;
   :hover {
     filter: brightness(0.95);
   }

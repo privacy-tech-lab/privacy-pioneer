@@ -1,15 +1,15 @@
-import React, { useEffect, useState } from "react";
-import { useHistory } from "react-router";
+import React, { useEffect, useState } from "react"
+import { useHistory } from "react-router"
 import {
   getWebsites,
   getLabels,
   getAllWebsiteLabels,
-} from "../../../libs/indexed-db";
-import Scaffold from "../../components/scaffold";
-import WebsiteLabelList from "../../components/website-label-list";
-import LabelSummaryCardList from "./components/label-summary-card";
-import LabelModal from "../home-view/components/detail-modal";
-import { Modal } from "bootstrap";
+} from "../../../libs/indexed-db"
+import Scaffold from "../../components/scaffold"
+import WebsiteLabelList from "../../components/website-label-list"
+import LabelSummaryCardList from "./components/label-summary-card"
+import LabelModal from "../home-view/components/detail-modal"
+import { Modal } from "bootstrap"
 
 import {
   SButtonText,
@@ -18,41 +18,41 @@ import {
   SSectionContainer,
   SSubtitle,
   STitle,
-} from "./style";
+} from "./style"
 
 /**
  * Home page view containing overview and recently identified labels
  */
 const HomeView = () => {
-  const history = useHistory();
-  const [websites, setWebsites] = useState({});
-  const [labels, setLabels] = useState({});
-  const [webLabels, setWebLabels] = useState({});
-  const [modal, setModal] = useState({ show: false });
-  const entries = Object.entries(websites);
+  const history = useHistory()
+  const [websites, setWebsites] = useState({})
+  const [labels, setLabels] = useState({})
+  const [webLabels, setWebLabels] = useState({})
+  const [modal, setModal] = useState({ show: false })
+  const entries = Object.entries(websites)
 
   useEffect(
     () =>
       getWebsites().then((websites) => {
         setWebsites(websites),
           getAllWebsiteLabels(websites).then((res) => {
-            setWebLabels(res);
+            setWebLabels(res)
           }),
-          getLabels(websites).then((labels) => setLabels(labels));
+          getLabels(websites).then((labels) => setLabels(labels))
         document
           .getElementById("detail-modal")
           .addEventListener("hidden.bs.modal", () => {
-            setModal({ show: false });
-          });
+            setModal({ show: false })
+          })
       }),
     []
-  );
+  )
 
   const handleTap = (items) => {
-    const modal = new Modal(document.getElementById("detail-modal"));
-    setModal(items);
-    modal.show();
-  };
+    const modal = new Modal(document.getElementById("detail-modal"))
+    setModal(items)
+    modal.show()
+  }
 
   return (
     <React.Fragment>
@@ -79,10 +79,15 @@ const HomeView = () => {
                 information
               </SSubtitle>
             </div>
-            <SButtonText onClick={() => history.push({ 
-              pathname: "/search", 
-              state: [websites, webLabels], //fixes race condition bug by passing this information to next page
-            })}>
+            <SButtonText
+              onClick={() =>
+                history.push({
+                  pathname: "/search",
+                  state: [websites, webLabels], //fixes race condition bug by passing this information to next page
+                })
+              }
+              data-tip="See all browsing history, including evidence originating from 3rd parties"
+            >
               See All
             </SButtonText>
           </SSectionContainer>
@@ -95,7 +100,7 @@ const HomeView = () => {
         </SContainer>
       </Scaffold>
     </React.Fragment>
-  );
-};
+  )
+}
 
-export default HomeView;
+export default HomeView
