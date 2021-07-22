@@ -10,8 +10,7 @@ function blobToURL(blob){
 
     // creates a URL with the data from the blob passed
     const dataURL = URL.createObjectURL(blob)
-    console.log(dataURL)
-
+    
     return dataURL
 }
 

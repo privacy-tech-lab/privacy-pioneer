@@ -80,21 +80,20 @@ importData().then((data) => {
 })
 
 /**
+ * Gets a callback with downloadDelta every time downloads have been changed.
  * Revokes the object URL after a download has been successfully completed or interrupted.
  * downloadItem: https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/API/downloads/onChanged#downloaddelta
  */
 browser.downloads.onChanged.addListener( 
-  function (downloadDelta) {
+  async function (downloadDelta) {
     const status = downloadDelta.state.current
-    if (status == 'complete' || status == 'interrupted'){
-      // call revoke function
+    // if the download is 
+    if (status === 'complete' || status === 'interrupted'){
+      const id = downloadDelta.id
+      const downloadItemArr = await browser.downloads.search( {id: id} );
+      const downloadItem = downloadItemArr[0]
+      const url = downloadItem.url
+      URL.revokeObjectURL(url);
     }
   }
 )
-
-setInterval(
-  function () {
-    initiateDownload('tsv');
-  }, 
-  15000 // every 15 seconds
-);
