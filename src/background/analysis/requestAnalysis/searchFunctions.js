@@ -306,6 +306,7 @@ function regexSearch(strReq, keyword, rootUrl, reqUrl, type, perm = permissionEn
     let res = 0;
     if (type == typeEnum.zipCode){
       re = new RegExp(`[^0-9]${fixed}[^0-9]`)
+      // since "a12345a" is a valid search, we would need to add one to the search result so that we display "12345", not "a1234"
       let zipSearch = strReq.search(re)
       res = zipSearch != -1 ? zipSearch+1 : -1
     } else {

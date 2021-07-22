@@ -73,13 +73,14 @@ export const saveKeyword = async (keyword, type, id) => {
       key = id;
     } else if (type == permissionEnum.location) {
       let watchlist = await watchlistKeyval.values()
-      var locNum = 0
+      var maxNum = 0;
       watchlist.forEach(el => {
-        if (el['type'] == typeEnum.location){
-          locNum = el['locNum'] + 1
+        if (el.type == permissionEnum.location){
+          maxNum = Math.max(maxNum, el.locNum)
         }
       });
-      key = hash(type.concat(locNum)).toString();
+      maxNum = (maxNum+1).toString()
+      key = hash(type.concat(maxNum)).toString();
     } else {
       key = hash(type.concat(keyword)).toString();
     }
@@ -93,7 +94,7 @@ export const saveKeyword = async (keyword, type, id) => {
           location: keyword,
           type: type,
           id: key,
-          locNum: locNum,
+          locNum: maxNum,
         });
     return true;
   }
@@ -123,6 +124,12 @@ export const deleteKeyword = async (id) => {
               delete a[perm][type][evUrl]
             } 
           }
+          if (Object.keys(a[perm][type]).length == 0){
+            delete a[perm][type]
+          }
+        }
+        if (Object.keys(a[perm]).length == 0){
+          delete a[perm]
         }
       }
       await evidenceIDB.set(website, a, store)
