@@ -17,6 +17,10 @@ const services = require("../../../assets/services.json");
 
 /**
  * Used to build all the data we search for in our analysis. This includes data in the watchlist DB and the JSON lists.
+ * 
+ * Defined in importSearchData.js
+ * 
+ * Used in background.js
  *
  * @returns {Promise<Array>} [locCoords, networkKeywords, services]
  *

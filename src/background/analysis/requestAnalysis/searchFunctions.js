@@ -12,6 +12,10 @@ import { getHostname } from "../utility/util.js"
  * Iterates through the user's location elements and adds exact text matches to evidence. 
  * Evidence will be added with permission location and the type of the found evidence (city or zip for example)
  * 
+ * Defined in searchFunctions.js
+ * 
+ * Used in scanHTTP.js
+ * 
  * @param {string} strReq 
  * @param {Dict<typeEnum>} locElems 
  * @param {string} rootUrl 
@@ -48,6 +52,10 @@ const classificationTransformation = {
  * Iterates through the disconnect list and adds evidence accordingly. It creates evidence with the category of the disconnect JSON as both the permission
  * and the type.
  * 
+ * Defined in searchFunctions.js
+ * 
+ * Used in scanHTTP.js
+ * 
  * @param {Request} request An HTTP request
  * @param {object} urls The disconnect JSON
  * @returns {Array<Array>|Array} An array of arrays with the search results [] if no result 
@@ -76,6 +84,10 @@ function urlSearch(strReq, rootUrl, reqUrl, classifications) {
  * Iterates through the disconnect list and adds evidence accordingly. 
  * Only iterating through the fingerprintingInvasive category right now.
  * 
+ * Defined in searchFunctions.js
+ * 
+ * Used in scanHTTP.js
+ * 
  * @param {Request} request An HTTP request
  * @param {object} urls The disconnect JSON
  * @returns {Array<Array>|Array} An array of arrays with the search results [] if no result 
@@ -86,6 +98,9 @@ function urlSearch(strReq, rootUrl, reqUrl, classifications) {
 
   /**
    * adds a piece of evidence from the disconnect JSON to allign with our permission type schema.
+   * 
+   * Defined, used in searchFunctions.js
+   * 
    * @param {string} perm permission from permissionEnum
    * @param {string} type type from typeEnum
    * @returns {void} Nothing. Adds to evidence list
@@ -121,6 +136,10 @@ function urlSearch(strReq, rootUrl, reqUrl, classifications) {
  * We only add evidence if we find a .1 distance from both the 
  * lattitude and the longitude within 250 characters of each other in the request
  * 
+ * Defined in searchFunctions.js
+ * 
+ * Used in scanHTTP.js
+ * 
  * @param {string} strReq The HTTP request as a string 
  * @param {Array<number>} locData The coordinates of the user
  * @param {string} rootUrl The rootUrl as a string
@@ -147,6 +166,8 @@ function coordinateSearch(strReq, locData, rootUrl, reqUrl) {
    * Takes in a match from the regular expression and keeps only the parts which can be parsed
    * by parseFloat. Returns a float.
    * 
+   * Defined, used in searchFunctions.js
+   * 
    * @param {string} match
    * @returns {float} the match as a float
    */
@@ -165,6 +186,8 @@ function coordinateSearch(strReq, locData, rootUrl, reqUrl) {
 
   /**
    * If we find lattitude, we search for longitude and vice versa
+   * 
+   * Defined, used in searchFunctions.js
    * 
    * @param {Array<Iterator>} matchArr An array with possible floating point numbers
    * @param {number} goal Either a lattitude or a longitude.
@@ -199,6 +222,8 @@ function coordinateSearch(strReq, locData, rootUrl, reqUrl) {
   /**
    * Goes through the match array and searches for matches within a delta bound.
    * 
+   * Defined, used in searchFunctions.js
+   * 
    * @param {number} deltaBound Bound for finding matches
    * @param {string} typ What typeEnum maps to the passed bound
    */
@@ -230,6 +255,10 @@ function coordinateSearch(strReq, locData, rootUrl, reqUrl) {
 /**
  * Searches a request using regular expressions. Case insensitive. Can process special characters.
  * 
+ * Defined in searchFunctions.js
+ * 
+ * Used in scanHTTP.js
+ * 
  * @param {string} strReq The request as a string
  * @param {string} keyword The keyword as a string
  * @param {string} rootUrl The rootUrl as a string
@@ -259,13 +288,18 @@ function regexSearch(strReq, keyword, rootUrl, reqUrl, type, perm = permissionEn
 }
 
 /**
+ * Searches a request for the fingerprinting elements populated in the networkKeywords it is passed. These elements can be found in the keywords JSON
+ * 
+ * Defined in searchFunctions.js
+ * 
+ * Used in scanHTTP.js
  * 
  * @param {string} strReq The request as a string
  * @param {Dict} networkKeywords A dictionary containing fingerprinting keywords
  * @param {string} rootUrl The rootUrl as a string
  * @param {string} reqUrl The requestUrl as a string
  * @returns {Array<Array>|Array} An array of arrays with the search results [] if no result 
- * Searches a request for the fingerprinting elements populated in the networkKeywords it is passed. These elements can be found in the keywords JSON
+ * 
  */
 function fingerprintSearch(strReq, networkKeywords, rootUrl, reqUrl) {
   var output = []
@@ -287,6 +321,10 @@ function fingerprintSearch(strReq, networkKeywords, rootUrl, reqUrl) {
  * It will index the evidence as the requestUrl if it can find it in the strReq (which it always should). 
  * This is because most pixels contain data encoded into the reqUrl
  * If for some reason this doesn't work, it will choose the index of the url from the list.
+ * 
+ * Defined in searchFunctions.js
+ * 
+ * Used in scanHTTP.js
  * 
  * @param {string} strReq The request as a string
  * @param {Dict} networkKeywords A dictionary containing the pixel URLs
@@ -318,6 +356,10 @@ function pixelSearch(strReq, networkKeywords, rootUrl, reqUrl) {
  * Dynamic Pixel search function.
  * Looks for height, width = 1, 'pixel' and '?' in request URL
  * 
+ * Defined in searchFunctions.js
+ * 
+ * Used in scanHTTP.js
+ * 
  * @param {string} strReq The request as a string
  * @param {string} reqUrl The requestUrl as a string
  * @param {string} rootUrl The rootUrl as a string
@@ -347,6 +389,10 @@ function pixelSearch(strReq, networkKeywords, rootUrl, reqUrl) {
 /**
  * ipSearch first checks if we have a different rootUrl and reqUrl. If we do, it does a standard text search for the given ip.
  * 
+ * Defined in searchFunctions.js
+ * 
+ * Used in scanHTTP.js
+ * 
  * @param {string} strReq The request as a string
  * @param {string} ip An ip address as a string
  * @param {string} rootUrl Root url as a string
@@ -367,6 +413,11 @@ function ipSearch(strReq, ip, rootUrl, reqUrl) {
 
 
 /**
+ * Searches for encoded emails within HTTP requests. Type will be encodedEmail. Also adds an extraDetail of original email address
+ * 
+ * Defined in searchFunctions.js
+ * 
+ * Used in scanHTTP.js
  * 
  * @param {string} strReq The request as a string
  * @param {Dict} networkKeywords A dictionary containing the encoded email object

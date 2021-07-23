@@ -13,9 +13,20 @@ import { getAllEvidenceForRequest } from "./requestAnalysis/scanHTTP.js";
 // Temporary container to hold network requests while properties are being added from listener callbacks
 const buffer = {}
 
-// OnBeforeRequest callback
-// Mozilla docs outlines several ways to parse incoming chunks of data; Feel free to experiment with others
-// https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/API/webRequest/StreamFilter/ondata
+/**
+ * OnBeforeRequest callback
+ * 
+ * Mozilla docs outlines several ways to parse incoming chunks of data; Feel free to experiment with others
+ * https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/API/webRequest/StreamFilter/ondata
+ * 
+ * Defined in analyze.js
+ * 
+ * Used in background.js
+ * 
+ * @param {Object} details Individual request
+ * @param {Array} data Data from importData function [locCoords, networkKeywords, services]
+ * @returns {Void} Calls resolveBuffer (in analyze.js)
+ */
 const onBeforeRequest = (details, data) => {
   // filter = you can now monitor a response before the request is sent
   const filter = browser.webRequest.filterResponseData(details.requestId),
@@ -60,7 +71,17 @@ const onBeforeRequest = (details, data) => {
   }
 }
 
-// OnBeforeSendHeaders callback
+/**
+ * OnBeforeSendHeaders callback
+ * 
+ * Defined in analyze.js
+ * 
+ * Used in background.js
+ * 
+ * @param {Object} details Individual request
+ * @param {Array} data Data from importData function [locCoords, networkKeywords, services]
+ * @returns {Void} Calls resolveBuffer (in analyze.js)
+ */
 const onBeforeSendHeaders = (details, data) => {
 
   let request
@@ -82,7 +103,17 @@ const onBeforeSendHeaders = (details, data) => {
   resolveBuffer(request.id, data)
 }
 
-// OnHeadersReceived callback
+/**
+ * OnHeadersRecieved callback
+ * 
+ * Defined in analyze.js
+ * 
+ * Used in background.js
+ * 
+ * @param {Object} details Individual request
+ * @param {Array} data Data from importData function [locCoords, networkKeywords, services]
+ * @returns {Void} Calls resolveBuffer (in analyze.js)
+ */
 const onHeadersReceived = (details, data) => {
   let request
 
@@ -105,7 +136,15 @@ const onHeadersReceived = (details, data) => {
   resolveBuffer(request.id, data)
 }
 
-// Verifies if we have all the data for a request to be analyzed
+/**
+ * Verifies if we have all the data for a request to be analyzed
+ * 
+ * Defined, used in analyze.js
+ * 
+ * @param {int} id id of the request
+ * @param {Array} data Data from importData function [locCoords, networkKeywords, services]
+ * @returns {void} calls analyze function, below
+ */
 function resolveBuffer(id, data) {
   if (id in buffer) {
     const request = buffer[id]
@@ -135,6 +174,8 @@ function resolveBuffer(id, data) {
 
 /**
  * Calls the analysis functions from searchFunctions.js on the appropriate data that we have
+ * 
+ * Defined, used in analyze.js
  * 
  * @param {Request} request HTTP request.
  * @param {Array} userData data from the watchlist to be searched for.

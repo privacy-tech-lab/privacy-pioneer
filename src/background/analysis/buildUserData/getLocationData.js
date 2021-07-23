@@ -8,6 +8,9 @@ location info
 
 /**
  * Uses the navigator API to get the users coordinates.
+ * 
+ * Defined, used in getLocationData.js
+ * 
  * @returns {object} An object with properties long and lat
  */
 const getCoords = async () => {
@@ -25,6 +28,11 @@ const getCoords = async () => {
 
 /**
  * Calls getCoords to return an array containing [lat, long]. Returns [0,0] on error
+ * 
+ * Defined in getLocationData.js
+ * 
+ * Used in importSearch.js
+ * 
  * @returns {Promise<Array<number>>} The coordinates of the user
  */
 export async function getLocationData() {

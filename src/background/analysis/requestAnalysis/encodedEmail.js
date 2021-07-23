@@ -1,4 +1,9 @@
 /**
+ * Removes ".", "+" and everything after from the email
+ * 
+ * Defined in encodedEmail.js
+ * 
+ * Used in importSearchData.js
  * 
  * @param {string} email Email we want to create codes for based on UID 2.0 
  * @returns {string} Email without . in username and removes '+' and everything following in username
@@ -13,13 +18,21 @@ function setEmail(email) {
 }
 
 /**
+ * Creates a hex of the email obtained by setEmail()
+ * 
+ * Defined in encodedEmail.js
+ * 
+ * Used in importSearchData.js
  * 
  * @param {string} email Email after setEmail()
- * @returns {Promise<string>} Hex of the email, SHA-256
+ * @returns {Promise<string>} Hex of the email, SHA-256 encoded
  */
 async function digestMessage(email) {
+  // returns a Uint8 array of the email
   const msgUint8 = new TextEncoder().encode(email);
+  // returns a SHA-256 hash of the email
   const hashBuffer = await crypto.subtle.digest("SHA-256", msgUint8);
+  // returns an array from the buffer
   const hashArray = Array.from(new Uint8Array(hashBuffer));
   const hashHex = hashArray
     .map((b) => b.toString(16).padStart(2, "0"))
@@ -28,6 +41,11 @@ async function digestMessage(email) {
 }
 
 /**
+ * Creates base64 version of the return from digestMessage()
+ * 
+ * Defined in encodedEmail.js
+ * 
+ * Used in importSearchData.js
  * 
  * @param {string} hexStr String of the hexed email from digestMessage()
  * @returns Base 64 SHA-256 email as a string

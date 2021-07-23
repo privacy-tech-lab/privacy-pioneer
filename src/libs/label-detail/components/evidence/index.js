@@ -103,7 +103,7 @@ const Evidence = ({ collapseId, request, label, type }) => {
         specificDescription.leading = `‣ The URL that initiated this HTTP request is known to practice `;
         specificDescription.highlight = `${displayType}`;
         specificDescription.trailing = `.`;
-        specificDescription.signOff = `${handEmoji} Request URL below`;
+        specificDescription.signOff = `${handEmoji} request URL below`;
       }
 
       // description for when the evidence came with an index in the strReq
