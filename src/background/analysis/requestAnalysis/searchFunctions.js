@@ -4,59 +4,12 @@ searchFunctions.js
 - searchFunctions.js contains all functions used to search through network
 requests
 */
-import { Request, typeEnum, permissionEnum, Evidence } from "../classModels.js"
+import { Request, typeEnum, permissionEnum } from "../classModels.js"
 import { regexSpecialChar, escapeRegExp } from "../utility/regexFunctions.js"
 import { getHostname } from "../utility/util.js"
 import { watchlistKeyval } from "../../../libs/indexed-db/index.js"
-import { getState } from "../buildUserData/structuredRoutines.js";
-
-function createEvidenceObj(
-  permission, 
-  rootUrl, 
-  snippet, 
-  requestUrl, 
-  typ, 
-  index, 
-  watchlistHash = undefined, 
-  extraDetail = undefined) {
-  const e = new Evidence( {
-    timestamp: undefined,
-    permission: permission,
-    rootUrl: rootUrl,
-    snippet: snippet,
-    requestUrl: requestUrl,
-    typ: typ,
-    index: index,
-    firstPartyRoot: undefined,
-    parentCompany: undefined,
-    watchlistHash: watchlistHash,
-    extraDetail: extraDetail
-  } )
-  return e
-}
-
-function watchlistHashGen (type, keyword) {
-
-  /**
-   * Utility function to create hash for watchlist key based on keyword and type
-   * This will overwrite keywords in the watchlist store that have the same keyword and type
-   * Which is okay
-   * from: https://werxltd.com/wp/2010/05/13/javascript-implementation-of-javas-string-hashcode-method/
-   */
-  function hash (str) {
-    var hash = 0,
-      i,
-      chr;
-    for (i = 0; i < str.length; i++) {
-      chr = str.charCodeAt(i);
-      hash = (hash << 5) - hash + chr;
-      hash |= 0;
-    }
-    return hash;
-  };
-
-  return hash(type.concat(keyword)).toString()
-}
+import { getState } from "../buildUserData/structuredRoutines.js"
+import { watchlistHashGen, createEvidenceObj } from "../utility/util.js"
 
 
 /**
@@ -72,45 +25,54 @@ function watchlistHashGen (type, keyword) {
 function locationKeywordSearch(strReq, locElems, rootUrl, reqUrl) {
 
   /**
+   * Updates the watchlistHash property of a location evidence by finding
+   * the id that this element got in the watchlist store
    * 
    * @param {string} k The type of the evidence, as defined by typeEnum
    * @param {string|regex} value The value we searched for
    * @param {Array} res The array we are considering to be added to evidence
-   * @returns The corrected array to be added to evidence
+   * @returns {Evidence} The corrected evidence to be added to the output Array
    */
-  async function getVals(k, value, res){
-    res = res[0]
+  async function updateWatchlistHashProperty(k, value, res){
+    var resultEvidence = res[0]
     var watchlistVals = await watchlistKeyval.values()
-    if (k==typeEnum.state){
+    // for states we find the zip that points to that state. Then we take that zip's ID
+    if (k == typeEnum.state){
       watchlistVals.forEach(el => {
-        let stZips = getState(el[permissionEnum.location][typeEnum.zipCode])
-        let st0 = stZips[0].toString()
-        let st1 = stZips[1].toString()
-        if (st0 == value.toString() || st1 == value.toString()){
-          res.watchlistHash = el['id']
+        if (permissionEnum.location in el) {
+          let stZips = getState(el[permissionEnum.location][typeEnum.zipCode])
+          let st0 = stZips[0].toString()
+          let st1 = stZips[1].toString()
+          if (st0 == value.toString() || st1 == value.toString()){
+            resultEvidence.watchlistHash = el['id'] // 'id' is assigned by the same hash by the frontend.
+          }
         }
       });
     }
-    watchlistVals.forEach(el => {
-      if (el[permissionEnum.location][k] == value){
-        res.watchlistHash = el['id']
-      }
-    });
-    return res
+    // otherwise we just take the ID for this location element itself
+    else {
+      watchlistVals.forEach(el => {
+        if (permissionEnum.location in el) {
+          if (el[permissionEnum.location][k] == value){
+            resultEvidence.watchlistHash = el['id'] // 'id' is assigned by the same hash by the frontend.
+          }
+        }
+      });
+    }
+    return resultEvidence
   }
-
+  
   var output = []
   for (const [k, v] of Object.entries(locElems)) {
     // every entry is an array, so we iterate through it.
     for (let value of v) {
       var res = regexSearch(strReq, value, rootUrl, reqUrl, k, permissionEnum.location)
       if (res.length != 0) {
-        getVals(k, value, res).then(fufilled => res = fufilled)
-        output.push(res);
-      }
+        //updateWatchlistHashProperty(k, value, res).then(fufilled => res = fufilled)
+        output.push(res[0]);
       }
     }
-  output = output[0]
+  }
   return output
 }
 
@@ -262,7 +224,7 @@ function coordinateSearch(strReq, locData, rootUrl, reqUrl) {
     let j = arrIndex + 1
     while ( j < matchArr.length ) {
       let match = matchArr[j]
-      let startIndex = match.index
+      let startIndex = match.index + 1
       let endIndex = startIndex + match[0].length
       const asFloat = cleanMatch(match[0])
 
@@ -291,7 +253,7 @@ function coordinateSearch(strReq, locData, rootUrl, reqUrl) {
     // matchArr is sorted by index, so we only need to look at elements to the right of a potential match
     while (i < matchArr.length) {
       let match = matchArr[i]
-      let startIndex = match.index
+      let startIndex = match.index + 1
       const asFloat = cleanMatch(match[0])
 
       let deltaLat = Math.abs(asFloat - absLat)
