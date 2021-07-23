@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react"
 import { useHistory, useLocation } from "react-router"
-import ReactTooltip from "react-tooltip"
 import logo from "../../../../../assets/icon-48.png"
 import * as Icons from "../../../../../libs/icons"
 import {
@@ -46,7 +45,6 @@ const NavBar = () => {
 
   return (
     <SNavBar>
-      <ReactTooltip place="bottom" type="dark" effect="solid" />
       <SLeading>
         <SLeadingContainer onClick={() => configureRoute("/")}>
           <SBrandIcon src={logo} alt="Logo" />
@@ -58,6 +56,7 @@ const NavBar = () => {
           active={tab === 0}
           onClick={() => configureRoute("/")}
           data-tip="See your recent browsing history and all generated labels"
+          data-for="default"
         >
           <Icons.Home size="24px" />
           Home
@@ -66,6 +65,7 @@ const NavBar = () => {
           active={tab === 1}
           onClick={() => configureRoute("/watchlist")}
           data-tip="Enter personal keywords that ___ will look out for while you browse"
+          data-for="default"
         >
           <Icons.Radar size="20px" />
           Watchlist
@@ -74,6 +74,7 @@ const NavBar = () => {
           active={tab === 2}
           onClick={() => configureRoute("/settings")}
           data-tip="Control ___’s settings"
+          data-for="default"
         >
           <Icons.Settings size="24px" />
           Settings
@@ -82,6 +83,7 @@ const NavBar = () => {
           active={tab === 3}
           onClick={() => configureRoute("/about")}
           data-tip="About ____"
+          data-for="default"
         >
           <Icons.Info size="24px" />
           About

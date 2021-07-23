@@ -10,7 +10,6 @@ import WebsiteLabelList from "../../components/website-label-list"
 import LabelSummaryCardList from "./components/label-summary-card"
 import LabelModal from "../home-view/components/detail-modal"
 import { Modal } from "bootstrap"
-
 import {
   SButtonText,
   SCardGroup,
@@ -87,6 +86,7 @@ const HomeView = () => {
                 })
               }
               data-tip="See all browsing history, including evidence originating from 3rd parties"
+              data-for="default"
             >
               See All
             </SButtonText>

@@ -1,8 +1,8 @@
 import React from "react"
-import ReactTooltip from "react-tooltip"
 import { privacyLabels } from "../../../../../background/analysis/classModels"
 import * as Icons from "../../../../../libs/icons"
 import { SContainer, SFooter, SHeader, SLabel, STotal } from "./style"
+import ReactTooltip from "react-tooltip"
 
 /**
  * Summary card that highlights notable stat from identified label
@@ -10,10 +10,10 @@ import { SContainer, SFooter, SHeader, SLabel, STotal } from "./style"
 const LabelSummaryCard = ({ labeltype, website }) => {
   return (
     <>
-      <ReactTooltip place="bottom" type="dark" effect="solid" />
       <SContainer
         labeltype={labeltype}
         data-tip={privacyLabels[labeltype]["description"]}
+        data-for="labelCard"
       >
         <SHeader>
           <STotal>{website}</STotal>
@@ -35,11 +35,20 @@ const LabelSummaryCard = ({ labeltype, website }) => {
 const LabelSummaryCardList = ({ labels }) => {
   const entries = Object.entries(labels)
   return entries.map(([labeltype, numOfWebsites]) => (
-    <LabelSummaryCard
-      key={labeltype}
-      labeltype={labeltype}
-      website={numOfWebsites}
-    />
+    <>
+      <ReactTooltip
+        place="bottom"
+        effect="solid"
+        textColor="var(--primaryBrandColor)"
+        backgroundColor="var(--primaryBrandTintColor)"
+        id="labelCard"
+      />
+      <LabelSummaryCard
+        key={labeltype}
+        labeltype={labeltype}
+        website={numOfWebsites}
+      />
+    </>
   ))
 }
 

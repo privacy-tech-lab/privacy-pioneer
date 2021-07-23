@@ -1,12 +1,13 @@
-import React, { useEffect } from "react";
-import { Route, Switch, useLocation } from "react-router-dom";
-import { AnimatePresence } from "framer-motion";
-import NavBar from "./components/nav-bar";
-import HomeView from "../home-view";
-import WatchlistView from "../watchlist-view";
-import AboutView from "../about-view";
-import SettingsView from "../settings-view";
-import SearchView from "../search-view";
+import React, { useEffect } from "react"
+import { Route, Switch, useLocation } from "react-router-dom"
+import { AnimatePresence } from "framer-motion"
+import NavBar from "./components/nav-bar"
+import HomeView from "../home-view"
+import WatchlistView from "../watchlist-view"
+import AboutView from "../about-view"
+import SettingsView from "../settings-view"
+import SearchView from "../search-view"
+import ReactTooltip from "react-tooltip"
 
 /**
  * Root node of application that handles routing
@@ -14,10 +15,18 @@ import SearchView from "../search-view";
  *  See Scaffold component for specific animation
  */
 const AppView = () => {
-  const location = useLocation();
+  const location = useLocation()
 
   return (
     <React.Fragment>
+      <ReactTooltip
+        textColor="var(--primaryBrandColor)"
+        backgroundColor="var(--primaryBrandTintColor)"
+        effect="solid"
+        id="default"
+        delayShow="500"
+        multiline
+      />
       <NavBar />
       <AnimatePresence exitBeforeEnter>
         <Switch location={location} key={location.pathname}>
@@ -29,7 +38,7 @@ const AppView = () => {
         </Switch>
       </AnimatePresence>
     </React.Fragment>
-  );
-};
+  )
+}
 
-export default AppView;
+export default AppView
