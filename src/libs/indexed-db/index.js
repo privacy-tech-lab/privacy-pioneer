@@ -1,68 +1,68 @@
-import { openDB } from "idb";
-import { evidenceKeyval as evidenceIDB } from "../../background/analysis/interactDB/openDB.js";
+import { openDB } from "idb"
+import { evidenceKeyval as evidenceIDB } from "../../background/analysis/interactDB/openDB.js"
 import {
   keywordTypes,
   permissionEnum,
   privacyLabels,
   storeEnum,
-} from "../../background/analysis/classModels";
-import { getExcludedLabels } from "../settings";
-import Parents from "../../assets/parents.json";
+} from "../../background/analysis/classModels"
+import { getExcludedLabels } from "../settings"
+import Parents from "../../assets/parents.json"
 
 /**
  * Create/open indexed-db to store keywords for watchlist
  */
 const dbPromise = openDB("UserData-store", 1, {
   upgrade(db) {
-    db.createObjectStore("watchlist");
-    db.createObjectStore("userSettings");
+    db.createObjectStore("watchlist")
+    db.createObjectStore("userSettings")
   },
-});
+})
 
 /**
  * Wrapper functions for CRUD operations of 'watchlist' indexed-db
  */
 export const watchlistKeyval = {
   async get(key) {
-    return (await dbPromise).get("watchlist", key);
+    return (await dbPromise).get("watchlist", key)
   },
   async set(key, val) {
-    return (await dbPromise).put("watchlist", val, key);
+    return (await dbPromise).put("watchlist", val, key)
   },
   async delete(key) {
-    return (await dbPromise).delete("watchlist", key);
+    return (await dbPromise).delete("watchlist", key)
   },
   async clear() {
-    return (await dbPromise).clear("watchlist");
+    return (await dbPromise).clear("watchlist")
   },
   async keys() {
-    return (await dbPromise).getAllKeys("watchlist");
+    return (await dbPromise).getAllKeys("watchlist")
   },
   async values() {
-    return (await dbPromise).getAll("watchlist");
+    return (await dbPromise).getAll("watchlist")
   },
-};
+}
 
 export const settingsKeyval = {
   async get(key) {
-    return (await dbPromise).get("userSettings", key);
+    return (await dbPromise).get("userSettings", key)
   },
   async set(key, val) {
-    return (await dbPromise).put("userSettings", val, key);
+    return (await dbPromise).put("userSettings", val, key)
   },
   async delete(key) {
-    return (await dbPromise).delete("userSettings", key);
+    return (await dbPromise).delete("userSettings", key)
   },
   async clear() {
-    return (await dbPromise).clear("userSettings");
+    return (await dbPromise).clear("userSettings")
   },
   async keys() {
-    return (await dbPromise).getAllKeys("userSettings");
+    return (await dbPromise).getAllKeys("userSettings")
   },
   async values() {
-    return (await dbPromise).getAll("userSettings");
+    return (await dbPromise).getAll("userSettings")
   },
-};
+}
 
 /**
  * Utility function to create hash for watchlist key based on keyword and type
@@ -73,14 +73,14 @@ export const settingsKeyval = {
 const hash = (str) => {
   var hash = 0,
     i,
-    chr;
+    chr
   for (i = 0; i < str.length; i++) {
-    chr = str.charCodeAt(i);
-    hash = (hash << 5) - hash + chr;
-    hash |= 0;
+    chr = str.charCodeAt(i)
+    hash = (hash << 5) - hash + chr
+    hash |= 0
   }
-  return hash;
-};
+  return hash
+}
 
 /**
  * Saves/updates keyword from wathlist store
@@ -90,11 +90,11 @@ const hash = (str) => {
 export const saveKeyword = async (keyword, type, id) => {
   // Validate
   if (type in keywordTypes && keyword) {
-    let key;
+    let key
     if (id != null) {
-      key = id;
+      key = id
     } else {
-      key = hash(type.concat(keyword)).toString();
+      key = hash(type.concat(keyword)).toString()
     }
     type != permissionEnum.location
       ? await watchlistKeyval.set(key, {
@@ -106,18 +106,18 @@ export const saveKeyword = async (keyword, type, id) => {
           location: keyword,
           type: type,
           id: key,
-        });
-    return true;
+        })
+    return true
   }
-  return false;
-};
+  return false
+}
 
 /**
  * Deletes keyword from watchlist store
  */
 export const deleteKeyword = async (id) => {
-  await watchlistKeyval.delete(id);
-};
+  await watchlistKeyval.delete(id)
+}
 
 /**
  * Get identified labels of website from indexedDB
@@ -125,35 +125,39 @@ export const deleteKeyword = async (id) => {
  * result: {..., label: {..., requestURL: {..., labelType: requestObject}}}
  */
 export const getWebsiteLabels = async (website) => {
-  const excludedLabels = await getExcludedLabels();
+  const excludedLabels = await getExcludedLabels()
   try {
-    var evidence = await evidenceIDB.get(website, storeEnum.firstParty); // first try first party DB
+    var evidence = await evidenceIDB.get(website, storeEnum.firstParty) // first try first party DB
     if (evidence == undefined) {
-      evidence = await evidenceIDB.get(website, storeEnum.thirdParty);
+      evidence = await evidenceIDB.get(website, storeEnum.thirdParty)
     } // then try third party DB
-    const result = {};
+    const result = {}
     for (const [label, value] of Object.entries(evidence)) {
       for (const [type, requests] of Object.entries(value)) {
         for (const [url, e] of Object.entries(requests)) {
           // Verify label and type are in privacyLabels
-          if (label in privacyLabels && type in privacyLabels[label]["types"]) {
+          if (
+            label in privacyLabels &&
+            type in privacyLabels[label]["types"] &&
+            !excludedLabels.includes(label)
+          ) {
             // Add label in data to object
             if (!(label in result)) {
-              result[label] = { [url]: { [type]: e } };
+              result[label] = { [url]: { [type]: e } }
             } else if (!(url in result[label])) {
-              result[label][url] = { [type]: e };
+              result[label][url] = { [type]: e }
             } else {
-              result[label][url][type] = e;
+              result[label][url][type] = e
             }
           }
         }
       }
     }
-    return result;
+    return result
   } catch (error) {
-    return {};
+    return {}
   }
-};
+}
 
 /**
  * Get identified labels of all websites stored in indexedDB
@@ -161,17 +165,17 @@ export const getWebsiteLabels = async (website) => {
  */
 
 const getAllWebsiteLabels = async () => {
-  const weblabels = {};
-  const websites = await getWebsites();
+  const weblabels = {}
+  const websites = await getWebsites()
   try {
     Object.keys(websites).forEach((website) => {
-      getWebsiteLabels(website).then((res) => (weblabels[website] = res));
-    });
-    return weblabels;
+      getWebsiteLabels(website).then((res) => (weblabels[website] = res))
+    })
+    return weblabels
   } catch (error) {
-    return weblabels;
+    return weblabels
   }
-};
+}
 
 /**
  *
@@ -186,20 +190,20 @@ const getAllWebsiteLabels = async () => {
  * @param {Dict} res Resulting dictionary
  * @returns Void
  */
-const buildLabels = async (store, res) => {
+const buildLabels = async (store, res, excludedLabels) => {
   try {
-    const websites = await evidenceIDB.keys(store);
+    const websites = await evidenceIDB.keys(store)
     for (const website of websites) {
-      const evidence = await evidenceIDB.get(website, store); // website evidence from indexedDB
+      const evidence = await evidenceIDB.get(website, store) // website evidence from indexedDB
       const labels = Object.keys(evidence).filter(
-        (label) => label in privacyLabels
-      ); // verify label in privacy labels
-      if (labels.length && !(website in res)) res[website] = labels; // give priority to first party labels if we have the same key in both stores
+        (label) => label in privacyLabels && !excludedLabels.includes(label)
+      ) // verify label in privacy labels
+      if (labels.length && !(website in res)) res[website] = labels // give priority to first party labels if we have the same key in both stores
     }
   } catch (error) {
-    return {};
+    return {}
   }
-};
+}
 
 /**
  * Get all identified websites and thier labels from indexedDB
@@ -208,16 +212,17 @@ const buildLabels = async (store, res) => {
 
 export const getWebsites = async () => {
   try {
-    const result = {};
+    const excludedLabels = await getExcludedLabels()
+    const result = {}
 
-    await buildLabels(storeEnum.firstParty, result); // first party labels
-    await buildLabels(storeEnum.thirdParty, result); // third party labels
+    await buildLabels(storeEnum.firstParty, result, excludedLabels) // first party labels
+    await buildLabels(storeEnum.thirdParty, result, excludedLabels) // third party labels
 
-    return result;
+    return result
   } catch (error) {
-    return {};
+    return {}
   }
-};
+}
 
 /**
  * Uses above function to iterate through websites
@@ -226,24 +231,23 @@ export const getWebsites = async () => {
  */
 
 export const getLabels = async () => {
-  let res = {};
-  const excludedLabels = await getExcludedLabels();
-  const labels = await getAllWebsiteLabels();
-  res["excludedLabels"] = excludedLabels;
-  const websites = Object.keys(await getWebsites());
+  let res = {}
+  const labels = await getAllWebsiteLabels()
+  const websites = Object.keys(await getWebsites())
+  const excludedLabels = await getExcludedLabels()
 
   Object.values(permissionEnum).forEach((label) => {
-    res[label] = {};
-  });
+    if (!excludedLabels.includes(label)) res[label] = {}
+  })
 
   websites.forEach((website) => {
     Object.keys(labels[website]).forEach((label) => {
-      res[label][website] = labels[website][label];
-    });
-  });
+      res[label][website] = labels[website][label]
+    })
+  })
 
-  return res;
-};
+  return res
+}
 
 /**
  * Takes a given label Object and returns an array of
@@ -255,17 +259,17 @@ export const getLabels = async () => {
  */
 
 export const getParents = (labels) => {
-  let parents = [];
+  let parents = []
   if (labels) {
     Object.keys(labels).forEach((website) => {
-      let evidenceType = Object.keys(labels[website])[0];
-      let parent = labels[website][evidenceType]["parentCompany"];
-      if (parent) !parents.includes(parent) ? parents.push(parent) : null;
-      else parents.push(website);
-    });
+      let evidenceType = Object.keys(labels[website])[0]
+      let parent = labels[website][evidenceType]["parentCompany"]
+      if (parent) !parents.includes(parent) ? parents.push(parent) : null
+      else parents.push(website)
+    })
   }
-  return parents;
-};
+  return parents
+}
 
 const companiesWithSVG = new Set([
   "AddThis",
@@ -283,7 +287,7 @@ const companiesWithSVG = new Set([
   "Twitter",
   "Verizon",
   "Yandex",
-]);
+])
 /**
  * Returns parent company from website name
  *
@@ -294,14 +298,14 @@ export const getParent = (website) => {
     Parents.entriesOurs
   )) {
     if (childrenSites.includes(website) && companiesWithSVG.has(parentSite)) {
-      return parentSite;
+      return parentSite
     }
   }
   for (const [parentSite, childrenSites] of Object.entries(
     Parents.entriesDisconnect
   )) {
     if (childrenSites.includes(website) && companiesWithSVG.has(parentSite)) {
-      return parentSite;
+      return parentSite
     }
   }
-};
+}

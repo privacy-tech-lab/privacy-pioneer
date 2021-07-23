@@ -107,6 +107,14 @@ export const storeEnum = Object.freeze({
 })
 
 /**
+ * @enum {string} Enum used to reference file formats that are available for export
+ */
+export const exportTypeEnum = Object.freeze({
+  JSON: 'JSON',
+  TSV: 'tsv',
+});
+
+/**
  * permissions are the broader category that types belong to (see typeEnum)
  * @enum {string} Enum used to reference permissions. Type: String
  */

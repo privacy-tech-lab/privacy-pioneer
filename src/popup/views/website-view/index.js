@@ -1,9 +1,9 @@
-import React, { useEffect, useState } from "react";
-import Scaffold from "../../components/scaffold";
-import { css } from "@emotion/react";
-import WebsiteLogo from "../../../libs/website-logo";
-import LabelCard from "../../../libs/label-card";
-import * as Icons from "../../../libs/icons";
+import React, { useEffect, useState } from "react"
+import Scaffold from "../../components/scaffold"
+import { css } from "@emotion/react"
+import WebsiteLogo from "../../../libs/website-logo"
+import LabelCard from "../../../libs/label-card"
+import * as Icons from "../../../libs/icons"
 import {
   SLeading,
   SBrandIcon,
@@ -17,53 +17,51 @@ import {
   SLoader,
   SEmpty,
   SEmptyText,
-} from "./style";
-import NavBar from "../../components/nav-bar";
-import { getWebsiteLabels } from "../../../libs/indexed-db";
-import { getHostname } from "../../../background/analysis/utility/util.js";
-import { useHistory } from "react-router";
-import RiseLoader from "react-spinners/RiseLoader";
-import { getExcludedLabels } from "../../../libs/settings";
+} from "./style"
+import NavBar from "../../components/nav-bar"
+import { getWebsiteLabels } from "../../../libs/indexed-db"
+import { getHostname } from "../../../background/analysis/utility/util.js"
+import { useHistory } from "react-router"
+import RiseLoader from "react-spinners/RiseLoader"
 
 /**
  * Page view containing current website and identified label cards
  */
 const WebsiteView = () => {
-  const history = useHistory();
-  const [website, setWebsite] = useState("...");
-  const [labels, setLabels] = useState({});
-  const [excludedLabels, setExcludedLabels] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [empty, setEmpty] = useState(true);
-  const [ourOptions, setOurOptions] = useState(false);
+  const history = useHistory()
+  const [website, setWebsite] = useState("...")
+  const [labels, setLabels] = useState({})
+  const [loading, setLoading] = useState(true)
+  const [empty, setEmpty] = useState(true)
+  const [ourOptions, setOurOptions] = useState(false)
 
   /**
    * Navigate to route in options page based on urlHash
    */
   const navigate = ({ urlHash = "" }) => {
-    const url = browser.runtime.getURL("options.html");
+    const url = browser.runtime.getURL("options.html")
     browser.tabs.query({ url: url }, function (tabs) {
       if (tabs.length) {
-        browser.tabs.update(tabs[0].id, { active: true, url: url + urlHash });
+        browser.tabs.update(tabs[0].id, { active: true, url: url + urlHash })
       } else {
-        browser.tabs.create({ url: url + urlHash });
+        browser.tabs.create({ url: url + urlHash })
       }
-    });
-  };
+    })
+  }
 
   /**
    * Get number of privacy labels identified
    */
   const getCount = () => {
-    const keys = Object.keys(labels);
+    const keys = Object.keys(labels)
     if (keys.length === 0) {
-      return "0 Privacy Practices Identified";
+      return "0 Privacy Practices Identified"
     } else if (keys.length === 1) {
-      return "1 Privacy Practice Identified";
+      return "1 Privacy Practice Identified"
     } else {
-      return `${keys.length} Privacy Practices Identified`;
+      return `${keys.length} Privacy Practices Identified`
     }
-  };
+  }
 
   /**
    * Checks if current site is the extension's options page
@@ -75,11 +73,11 @@ const WebsiteView = () => {
       hostName.search(/moz-extension/) != -1 &&
       hostName.search(/options.html#/) != -1
     ) {
-      setOurOptions(true);
+      setOurOptions(true)
     } else {
-      setOurOptions(false);
+      setOurOptions(false)
     }
-  };
+  }
 
   useEffect(() => {
     /**
@@ -88,28 +86,27 @@ const WebsiteView = () => {
      */
     const message = (request, sender, sendResponse) => {
       if (request.msg === "popup.currentTab") {
-        const host = getHostname(request.data);
-        checkOurOptions(request.data);
-        getExcludedLabels().then((res) => setExcludedLabels(res));
+        const host = getHostname(request.data)
+        checkOurOptions(request.data)
         getWebsiteLabels(host).then((labels) => {
-          setLabels(labels);
+          setLabels(labels)
           if (Object.keys(labels).length > 0) {
             setTimeout(() => {
-              setEmpty(false), setLoading(false);
-            }, 800);
-          } else setTimeout(() => setLoading(false), 2000);
-        });
-        setWebsite(host);
+              setEmpty(false), setLoading(false)
+            }, 800)
+          } else setTimeout(() => setLoading(false), 2000)
+        })
+        setWebsite(host)
       }
-    };
+    }
 
-    browser.runtime.onMessage.addListener(message);
-    browser.runtime.sendMessage({ msg: "background.currentTab" });
+    browser.runtime.onMessage.addListener(message)
+    browser.runtime.sendMessage({ msg: "background.currentTab" })
 
     return () => {
-      browser.runtime.onMessage.removeListener(message);
-    };
-  }, []);
+      browser.runtime.onMessage.removeListener(message)
+    }
+  }, [])
 
   return (
     <Scaffold
@@ -177,7 +174,6 @@ const WebsiteView = () => {
                   label={label}
                   requests={requests}
                   website={website}
-                  excludedLabels={excludedLabels}
                 />
               ))
             )}
@@ -185,7 +181,7 @@ const WebsiteView = () => {
         )
       }
     />
-  );
-};
+  )
+}
 
-export default WebsiteView;
+export default WebsiteView
