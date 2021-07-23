@@ -41,6 +41,7 @@ const LabelSummaryCardList = ({ labels }) => {
         effect="solid"
         textColor="var(--primaryBrandColor)"
         backgroundColor="var(--primaryBrandTintColor)"
+        delayShow="500"
         id="labelCard"
       />
       <LabelSummaryCard
