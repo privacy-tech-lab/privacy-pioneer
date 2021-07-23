@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from "react";
-import { permissionEnum } from "../../../../background/analysis/classModels";
-import * as Icons from "../../../../libs/icons";
+import React, { useEffect, useRef, useState } from "react"
+import { permissionEnum } from "../../../../background/analysis/classModels"
+import * as Icons from "../../../../libs/icons"
 import {
   deleteEvidenceDB,
   deleteKeywordDB,
@@ -9,7 +9,7 @@ import {
   setTheme,
   settingsEnum,
   toggleLabel,
-} from "../../../../libs/settings";
+} from "../../../../libs/settings"
 import {
   SSubtitle,
   SSettingHeader,
@@ -23,7 +23,11 @@ import {
   SDangerSection,
   SLabelToggle,
   SDangerButton,
-} from "./style";
+  SDropdown,
+  SDropdownItem,
+  SDropdownOptions,
+  SDropdownSelection,
+} from "./style"
 
 export const ToggleSwitch = ({ isActive, label, onClick, spaceBetween }) => (
   <div
@@ -47,7 +51,7 @@ export const ToggleSwitch = ({ isActive, label, onClick, spaceBetween }) => (
       />
     </SSwitch>
   </div>
-);
+)
 
 export const LabelToggle = () => {
   const [labelStatus, SetLabelStatus] = useState({
@@ -55,26 +59,26 @@ export const LabelToggle = () => {
     [permissionEnum.monetization]: true,
     [permissionEnum.watchlist]: true,
     [permissionEnum.tracking]: true,
-  });
+  })
 
   useEffect(() => {
-    let componentMounted = true;
+    let componentMounted = true
 
     getLabelStatus().then((res) => {
-      if (componentMounted) SetLabelStatus(res);
-    });
+      if (componentMounted) SetLabelStatus(res)
+    })
     return () => {
-      componentMounted = false;
-    };
-  }, [labelStatus]);
+      componentMounted = false
+    }
+  }, [labelStatus])
 
   const toggle = (label) => {
-    toggleLabel(label);
-    const newLabelStatus = labelStatus;
-    let previousStatus = newLabelStatus[label];
-    newLabelStatus[label] = !previousStatus;
-    SetLabelStatus(newLabelStatus);
-  };
+    toggleLabel(label)
+    const newLabelStatus = labelStatus
+    let previousStatus = newLabelStatus[label]
+    newLabelStatus[label] = !previousStatus
+    SetLabelStatus(newLabelStatus)
+  }
 
   return (
     <SLabelToggle>
@@ -88,24 +92,24 @@ export const LabelToggle = () => {
         />
       ))}
     </SLabelToggle>
-  );
-};
+  )
+}
 
 export const ThemeSelection = ({ changeTheme }) => {
-  const [selTheme, setSelTheme] = useState("");
+  const [selTheme, setSelTheme] = useState("")
   useEffect(
     () =>
       getTheme().then((res) => {
-        if (res) setSelTheme(res);
+        if (res) setSelTheme(res)
       }),
     [selTheme]
-  );
+  )
 
   const setETheme = async (theme) => {
-    await setTheme(theme);
-    setSelTheme(theme);
-    changeTheme(theme);
-  };
+    await setTheme(theme)
+    setSelTheme(theme)
+    changeTheme(theme)
+  }
   return (
     <SThemeSection>
       <SThemeIcon
@@ -133,14 +137,42 @@ export const ThemeSelection = ({ changeTheme }) => {
         <Icons.Settings size={48} />
       </SThemeIcon>
     </SThemeSection>
-  );
-};
-export const ExportData = () => (
-  <SExportSection>
-    <SExportButton>CSV</SExportButton>
-    <SExportButton>JSON</SExportButton>
-  </SExportSection>
-);
+  )
+}
+export const ExportData = () => {
+  const [showDropdown, setDropdown] = useState(false)
+  const dropdownRef = useRef()
+  const blur = (event) => {
+    if (!dropdownRef.current.contains(event.target)) {
+      setDropdown(false)
+    }
+  }
+  useEffect(() => {
+    document.addEventListener("mousedown", blur)
+    return () => document.removeEventListener("mousedown", blur)
+  }, [])
+  return (
+    <SExportSection>
+      <SDropdown
+        onClick={() => setDropdown((state) => !state)}
+        ref={dropdownRef}
+      >
+        <SDropdownOptions show={showDropdown}>
+          <SDropdownItem>Test</SDropdownItem>
+          <SDropdownItem>Test</SDropdownItem>
+          <SDropdownItem>Hello Test</SDropdownItem>
+          <SDropdownItem>Test</SDropdownItem>
+        </SDropdownOptions>
+        <SDropdownSelection>
+          Select Time Range
+          <Icons.ChevronDown size="24px" />
+        </SDropdownSelection>
+      </SDropdown>
+      <SExportButton>TSV</SExportButton>
+      <SExportButton>JSON</SExportButton>
+    </SExportSection>
+  )
+}
 export const DangerZone = () => {
   const handleEvidence = () => {
     if (
@@ -148,9 +180,9 @@ export const DangerZone = () => {
         "Are you sure you want to delete all of the evidence we've collected?"
       )
     ) {
-      deleteEvidenceDB();
+      deleteEvidenceDB()
     }
-  };
+  }
 
   const handleWatchlist = () => {
     if (
@@ -158,9 +190,9 @@ export const DangerZone = () => {
         "Are you sure you want to delete all of the keywords you've asked us to track?"
       )
     ) {
-      deleteKeywordDB();
+      deleteKeywordDB()
     }
-  };
+  }
   return (
     <SDangerSection>
       <SSettingHeader>Danger Zone</SSettingHeader>
@@ -172,5 +204,5 @@ export const DangerZone = () => {
         </SDangerButton>
       </div>
     </SDangerSection>
-  );
-};
+  )
+}

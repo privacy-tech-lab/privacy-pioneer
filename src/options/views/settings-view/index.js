@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import Scaffold from "../../components/scaffold";
+import React, { useEffect, useRef, useState } from "react"
+import Scaffold from "../../components/scaffold"
 import {
   STitle,
   SContainer,
@@ -8,14 +8,14 @@ import {
   SBody,
   SSection,
   SSeperator,
-} from "./style";
+} from "./style"
 import {
   ToggleSwitch,
   ThemeSelection,
   ExportData,
   DangerZone,
   LabelToggle,
-} from "./components";
+} from "./components"
 
 /**
  * Settings page view
@@ -50,7 +50,7 @@ const SettingsView = ({ changeTheme }) => {
         </SBody>
       </SContainer>
     </Scaffold>
-  );
-};
+  )
+}
 
-export default SettingsView;
+export default SettingsView
