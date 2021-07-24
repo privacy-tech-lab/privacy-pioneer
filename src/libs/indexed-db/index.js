@@ -5,9 +5,11 @@ import {
   permissionEnum,
   privacyLabels,
   storeEnum,
+  typeEnum,
 } from "../../background/analysis/classModels"
-import { getExcludedLabels } from "../settings"
 import Parents from "../../assets/parents.json"
+import { watchlistHashGen } from "../../background/analysis/utility/util.js"
+import { getState } from "../../background/analysis/buildUserData/structuredRoutines.js"
 
 /**
  * Create/open indexed-db to store keywords for watchlist
@@ -65,24 +67,6 @@ export const settingsKeyval = {
 }
 
 /**
- * Utility function to create hash for watchlist key based on keyword and type
- * This will overwrite keywords in the watchlist store that have the same keyword and type
- * Which is okay
- * from: https://werxltd.com/wp/2010/05/13/javascript-implementation-of-javas-string-hashcode-method/
- */
-const hash = (str) => {
-  var hash = 0,
-    i,
-    chr
-  for (i = 0; i < str.length; i++) {
-    chr = str.charCodeAt(i)
-    hash = (hash << 5) - hash + chr
-    hash |= 0
-  }
-  return hash
-}
-
-/**
  * Saves/updates keyword from wathlist store
  * Updates keyword when 'id' is not undefined
  * Return true if successful, false otherwise
@@ -93,8 +77,18 @@ export const saveKeyword = async (keyword, type, id) => {
     let key
     if (id != null) {
       key = id
+    } else if (type == permissionEnum.location) {
+      let watchlist = await watchlistKeyval.values()
+      var maxNum = 0
+      watchlist.forEach((el) => {
+        if (el.type == permissionEnum.location) {
+          maxNum = Math.max(maxNum, el.locNum)
+        }
+      })
+      maxNum = (maxNum + 1).toString()
+      key = watchlistHashGen(type, maxNum)
     } else {
-      key = hash(type.concat(keyword)).toString()
+      key = watchlistHashGen(type, keyword)
     }
     type != permissionEnum.location
       ? await watchlistKeyval.set(key, {
@@ -106,6 +100,7 @@ export const saveKeyword = async (keyword, type, id) => {
           location: keyword,
           type: type,
           id: key,
+          locNum: maxNum,
         })
     return true
   }
@@ -115,7 +110,65 @@ export const saveKeyword = async (keyword, type, id) => {
 /**
  * Deletes keyword from watchlist store
  */
-export const deleteKeyword = async (id) => {
+export const deleteKeyword = async (id, type) => {
+  let firstEvKeys = await evidenceIDB.keys(storeEnum.firstParty)
+  let thirdEvKeys = await evidenceIDB.keys(storeEnum.thirdParty)
+
+  // this will be a singleton set for all cases except (this needs two lines because Set(id) adds each char as an element)
+  var idSet = new Set()
+  idSet.add(id)
+
+  /* for location elements, we need to delete all of its associated ids so
+   * we fetch the object, generate the hashes for all of its values, and add
+   * those to our set */
+  if (type == permissionEnum.location) {
+    const deletedItem = await watchlistKeyval.get(id)
+    for (const [type, keyword] of Object.entries(deletedItem.location)) {
+      idSet.add(watchlistHashGen(type, keyword))
+      // then we also need to get the full state name from the zip
+      if (type == typeEnum.zipCode) {
+        let st, state
+        ;[st, state] = getState(keyword)
+        idSet.add(watchlistHashGen(typeEnum.state, state))
+      }
+    }
+  }
+
+  /**
+   * Deletes evidence if watchlistHash of the evidence is the same as the id we are deleting from the watchlist
+   * @param {Object} evidenceStoreKeys All keys from the related store, taken from the above lines
+   * @param {String} store Store name from storeEnum
+   */
+  function runDeletion(evidenceStoreKeys, store) {
+    evidenceStoreKeys.forEach(async (website) => {
+      let a = await evidenceIDB.get(website, store)
+      if (a == undefined) {
+        return
+      } // shouldn't happen but just in case
+      for (const [perm, typeLevel] of Object.entries(a)) {
+        for (const [type, evUrls] of Object.entries(typeLevel)) {
+          for (const [evUrl, evidence] of Object.entries(evUrls)) {
+            if (idSet.has(evidence.watchlistHash)) {
+              delete a[perm][type][evUrl]
+            }
+          }
+          if (Object.keys(a[perm][type]).length == 0) {
+            delete a[perm][type]
+          }
+        }
+        if (Object.keys(a[perm]).length == 0) {
+          delete a[perm]
+        }
+      }
+      await evidenceIDB.set(website, a, store)
+    })
+  }
+
+  // delete from Evidence
+  runDeletion(firstEvKeys, storeEnum.firstParty)
+  runDeletion(thirdEvKeys, storeEnum.thirdParty)
+
+  // delete from watchlist
   await watchlistKeyval.delete(id)
 }
 

@@ -4,9 +4,13 @@ searchFunctions.js
 - searchFunctions.js contains all functions used to search through network
 requests
 */
-import { Request, typeEnum, permissionEnum, Evidence } from "../classModels.js"
+import { Request, typeEnum, permissionEnum } from "../classModels.js"
 import { regexSpecialChar, escapeRegExp } from "../utility/regexFunctions.js"
 import { getHostname } from "../utility/util.js"
+import { watchlistKeyval } from "../../../libs/indexed-db/index.js"
+import { getState } from "../buildUserData/structuredRoutines.js"
+import { watchlistHashGen, createEvidenceObj } from "../utility/util.js"
+
 
 /**
  * Iterates through the user's location elements and adds exact text matches to evidence. 
@@ -19,14 +23,17 @@ import { getHostname } from "../utility/util.js"
  * @returns {Array<Array>|Array} An array of arrays with the search results [] if no result 
  */
 function locationKeywordSearch(strReq, locElems, rootUrl, reqUrl) {
+  
   var output = []
   for (const [k, v] of Object.entries(locElems)) {
     // every entry is an array, so we iterate through it.
     for (let value of v) {
-      let res = regexSearch(strReq, value, rootUrl, reqUrl, k, permissionEnum.location)
-      if (res.length != 0) output.push(res[0]);
+      const res = regexSearch(strReq, value, rootUrl, reqUrl, k, permissionEnum.location)
+      if (res.length != 0) {
+        output.push(res[0]); // this comes in as an Array that will always be length one
       }
     }
+  }
   return output
 }
 
@@ -62,7 +69,7 @@ function urlSearch(strReq, rootUrl, reqUrl, classifications) {
       if (classification in classificationTransformation) {
         let p, t;
         [p, t] = classificationTransformation[classification];
-        output.push([p, rootUrl, strReq, reqUrl, t, undefined])
+        output.push(createEvidenceObj(p, rootUrl, strReq, reqUrl, t, undefined))
       }
     }
   }
@@ -91,7 +98,7 @@ function urlSearch(strReq, rootUrl, reqUrl, classifications) {
    * @returns {void} Nothing. Adds to evidence list
    */
   function addDisconnectEvidence(perm, type) {
-    output.push([perm, request.details["originUrl"], "null", request.details["url"], type, undefined])
+    output.push(createEvidenceObj(perm, request.details["originUrl"], "null", request.details["url"], type, undefined))
   }
   
   // The fingerprintingInvasive category is the only one we are traversing.
@@ -178,7 +185,7 @@ function coordinateSearch(strReq, locData, rootUrl, reqUrl) {
     let j = arrIndex + 1
     while ( j < matchArr.length ) {
       let match = matchArr[j]
-      let startIndex = match.index
+      let startIndex = match.index + 1
       let endIndex = startIndex + match[0].length
       const asFloat = cleanMatch(match[0])
 
@@ -187,7 +194,7 @@ function coordinateSearch(strReq, locData, rootUrl, reqUrl) {
 
       let delta = Math.abs(asFloat - goal)
       if (delta < deltaBound) {
-        output.push([permissionEnum.location, rootUrl, strReq, reqUrl, typ, [startIndex, endIndex]])
+        output.push(createEvidenceObj(permissionEnum.location, rootUrl, strReq, reqUrl, typ, [startIndex, endIndex]))
         // if we find evidence for this request we return an index that will terminate the loop
         return matchArr.length
       }
@@ -207,7 +214,7 @@ function coordinateSearch(strReq, locData, rootUrl, reqUrl) {
     // matchArr is sorted by index, so we only need to look at elements to the right of a potential match
     while (i < matchArr.length) {
       let match = matchArr[i]
-      let startIndex = match.index
+      let startIndex = match.index + 1
       const asFloat = cleanMatch(match[0])
 
       let deltaLat = Math.abs(asFloat - absLat)
@@ -240,20 +247,38 @@ function coordinateSearch(strReq, locData, rootUrl, reqUrl) {
  *
  */
 function regexSearch(strReq, keyword, rootUrl, reqUrl, type, perm = permissionEnum.watchlist ) {
+  let keywordIDWatch = watchlistHashGen(type, keyword)
   var output = []
   if (typeof keyword == 'string'){
     let fixed = escapeRegExp(keyword)
-    let re = new RegExp(`${fixed}`, "i");
-    let res = strReq.search(re)
-    if (res != -1) { output.push([perm, rootUrl, strReq, reqUrl, type, [res, res + keyword.length]]) }
+    let re;
+    let res = 0;
+    if (type == typeEnum.zipCode){
+      re = new RegExp(`[^0-9]${fixed}[^0-9]`)
+      // since "a12345a" is a valid search, we would need to add one to the search result so that we display "12345", not "a1234"
+      let zipSearch = strReq.search(re)
+      res = zipSearch != -1 ? zipSearch+1 : -1
+    } else {
+      re = new RegExp(`${fixed}`, "i");
+      res = strReq.search(re)
+    }
+    if (res != -1) { output.push(createEvidenceObj(perm, rootUrl, strReq, reqUrl, type, [res, res + keyword.length], keywordIDWatch)) }
   } else if (keyword instanceof RegExp){
     let res = strReq.search(keyword)
-    // The length of the keyword is relative to the length of the regex, so we need to eliminate the extra characters used by the regex
-    let len = keyword.toString().length - 3;
-    if (keyword.toString().search(/\?/) != -1) {
-      len -= 1;
+    if (res != -1){
+      let kString = keyword.toString()
+      // The length of the keyword is relative to the length of the regex, so we need to eliminate the extra characters used by the regex
+      let len = kString.length - 3;
+      // If we are conditionally searching for special chars due to spaces in the state (eg. 'New York' as /New.?York/i), we should decrement length by 1
+      if (kString.search(/\?/) != -1) {
+        len -= 1
+      }
+      // If the last char in the string is not matching up with what it should be due to a lack of special char (eg. "NEWYORK/" ends with '/' instead of 'K'), decrement length by 1
+      if (kString[kString.length - 3] != strReq[res + len -1]){
+        len -= 1
+      }
+      if (rootUrl) { output.push(createEvidenceObj(perm, rootUrl, strReq, reqUrl, type, [res, res + len], keywordIDWatch)) }
     }
-    if (res != -1 && rootUrl) { output.push([perm, rootUrl, strReq, reqUrl, type, [res, res + len]]) }
   }
   return output
 }
@@ -274,7 +299,7 @@ function fingerprintSearch(strReq, networkKeywords, rootUrl, reqUrl) {
     for (const keyword of v){
       const idxKeyword = strReq.indexOf(keyword);
       if (idxKeyword != -1){
-        output.push([permissionEnum.tracking, rootUrl, strReq, reqUrl, typeEnum.fingerprinting, [idxKeyword, idxKeyword + keyword.length]]);
+        output.push(createEvidenceObj(permissionEnum.tracking, rootUrl, strReq, reqUrl, typeEnum.fingerprinting, [idxKeyword, idxKeyword + keyword.length]));
         break;
       }
     }
@@ -303,11 +328,11 @@ function pixelSearch(strReq, networkKeywords, rootUrl, reqUrl) {
       let reqUrlIndex = strReq.indexOf(reqUrl)
       // preference to show the reqUrl on the front end
       if (reqUrlIndex != -1) {
-        output.push([permissionEnum.tracking, rootUrl, strReq, reqUrl, typeEnum.trackingPixel, [reqUrlIndex, reqUrlIndex + reqUrl.length]])
+        output.push(createEvidenceObj(permissionEnum.tracking, rootUrl, strReq, reqUrl, typeEnum.trackingPixel, [reqUrlIndex, reqUrlIndex + reqUrl.length]))
       }
       // otherwise show the url from the pixel list on the front end
       else {
-        output.push([permissionEnum.tracking, rootUrl, strReq, reqUrl, typeEnum.trackingPixel, [searchIndex, searchIndex + url.length]])
+        output.push(createEvidenceObj(permissionEnum.tracking, rootUrl, strReq, reqUrl, typeEnum.trackingPixel, [searchIndex, searchIndex + url.length]))
       }  
     }
   }
@@ -339,7 +364,7 @@ function pixelSearch(strReq, networkKeywords, rootUrl, reqUrl) {
 
   if (resOne + resTwo != -2 && pix != -1 && qSearch != -1){
     let reqUrlIndex = strReq.indexOf(reqUrl)
-    output.push([permissionEnum.tracking, rootUrl, strReq, reqUrl, typeEnum.possiblePixel, [reqUrlIndex, reqUrlIndex + reqUrl.length]])
+    output.push(createEvidenceObj(permissionEnum.tracking, rootUrl, strReq, reqUrl, typeEnum.possiblePixel, [reqUrlIndex, reqUrlIndex + reqUrl.length]))
   }
   return output
 }
@@ -379,13 +404,14 @@ function encodedEmailSearch(strReq, networkKeywords, rootUrl, reqUrl) {
   const encodedObj = networkKeywords[permissionEnum.watchlist][typeEnum.encodedEmail]
   const emails = Object.keys(encodedObj)
   emails.forEach(email => {
+    let emailIDWatch = watchlistHashGen(typeEnum.emailAddress, email)
     let encodeLst = encodedObj[email]
     encodeLst.forEach(encodedEmail => {
       let fixed = escapeRegExp(encodedEmail)
       let re = new RegExp(`${fixed}`, "i");
       let output = strReq.search(re)
       if (output != -1) {
-       output.push([permissionEnum.watchlist, rootUrl, strReq, reqUrl, typeEnum.encodedEmail, [output, output+encodedEmail.length], email])
+       output.push(createEvidenceObj(permissionEnum.watchlist, rootUrl, strReq, reqUrl, typeEnum.encodedEmail, [output, output+encodedEmail.length], emailIDWatch, email))
       }
     })
   })

@@ -48,7 +48,7 @@ const ListItem = ({ keyword, type, id, configModal, updateList, location }) => {
           <SDropdownOptions show={showDropdown}>
             <SDropdownItem
               onClick={async () => {
-                await deleteKeyword(id);
+                await deleteKeyword(id, type);
                 await updateList();
               }}
             >

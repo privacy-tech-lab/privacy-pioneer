@@ -16,7 +16,7 @@ Currently, we only support Firefox.
 
 Ensure that you have [node and npm](https://www.npmjs.com/get-npm) installed.
 
-In the root directory of the project, start by installing the dependencies by running:
+In the root directory of the project, start by [installing the dependencies by running](https://github.com/privacy-tech-lab/integrated-privacy-analysis/issues/249#issuecomment-885723394):
 
 ```bash
 npm install --production=false
