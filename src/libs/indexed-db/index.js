@@ -10,6 +10,7 @@ import {
 import Parents from "../../assets/parents.json"
 import { watchlistHashGen } from "../../background/analysis/utility/util.js"
 import { getState } from "../../background/analysis/buildUserData/structuredRoutines.js"
+import { getExcludedLabels } from "../settings/index.js"
 
 /**
  * Create/open indexed-db to store keywords for watchlist
