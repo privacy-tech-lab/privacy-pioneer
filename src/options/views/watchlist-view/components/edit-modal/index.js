@@ -19,7 +19,7 @@ import {
   SErrorText,
 } from "./style";
 import * as Icons from "../../../../../libs/icons";
-import { saveKeyword } from "../../../../../libs/indexed-db";
+import { saveKeyword } from "../../../../../libs/indexed-db/updateWatchlist.js";
 import {
   keywordTypes,
   permissionEnum,
