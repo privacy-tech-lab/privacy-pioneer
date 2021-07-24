@@ -19,7 +19,7 @@ import {
   SEmptyText,
 } from "./style";
 import NavBar from "../../components/nav-bar";
-import { getWebsiteLabels } from "../../../libs/indexed-db";
+import { getWebsiteLabels } from "../../../libs/indexed-db/getDbData";
 import { getHostname } from "../../../background/analysis/utility/util.js";
 import { useHistory } from "react-router";
 import RiseLoader from "react-spinners/RiseLoader";

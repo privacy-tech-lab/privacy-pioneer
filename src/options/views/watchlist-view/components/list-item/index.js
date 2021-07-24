@@ -8,7 +8,7 @@ import {
   SDropdownItem,
 } from "./style";
 import * as Icons from "../../../../../libs/icons";
-import { deleteKeyword } from "../../../../../libs/indexed-db";
+import { deleteKeyword } from "../../../../../libs/indexed-db/updateKeyword.js";
 import { keywordTypes } from "../../../../../background/analysis/classModels";
 import { Modal } from "bootstrap";
 

@@ -6,7 +6,7 @@ import { SLeading } from "./style"
 import LabelDetail from "../../../libs/label-detail"
 import NavBar from "../../components/nav-bar"
 import { privacyLabels } from "../../../background/analysis/classModels"
-import { getWebsiteLabels } from "../../../libs/indexed-db"
+import { getWebsiteLabels } from "../../../libs/indexed-db/getDbData"
 
 /**
  * Page view detailing information collected and shared.

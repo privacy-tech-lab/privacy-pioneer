@@ -7,7 +7,7 @@ requests
 import { Request, typeEnum, permissionEnum } from "../classModels.js"
 import { regexSpecialChar, escapeRegExp } from "../utility/regexFunctions.js"
 import { getHostname } from "../utility/util.js"
-import { watchlistKeyval } from "../../../libs/indexed-db/index.js"
+import { watchlistKeyval } from "../../../libs/indexed-db/openDB.js"
 import { getState } from "../buildUserData/structuredRoutines.js"
 import { watchlistHashGen, createEvidenceObj } from "../utility/util.js"
 

@@ -4,7 +4,7 @@ import {
   getWebsites,
   getLabels,
   getAllWebsiteLabels,
-} from "../../../libs/indexed-db";
+} from "../../../libs/indexed-db/getDbData";
 import Scaffold from "../../components/scaffold";
 import WebsiteLabelList from "../../components/website-label-list";
 import LabelSummaryCardList from "./components/label-summary-card";

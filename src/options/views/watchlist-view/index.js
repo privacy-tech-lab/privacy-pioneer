@@ -11,13 +11,13 @@ import { SContainer, SSubtitle } from "./style";
 import * as Icons from "../../../libs/icons";
 import ListItem from "./components/list-item";
 import EditModal from "./components/edit-modal";
-import { watchlistKeyval } from "../../../libs/indexed-db";
+import { watchlistKeyval } from "../../../libs/indexed-db/openDB.js";
 import { Modal } from "bootstrap";
 import {
   permissionEnum,
   typeEnum,
 } from "../../../background/analysis/classModels";
-import { saveKeyword } from "../../../libs/indexed-db";
+import { saveKeyword } from "../../../libs/indexed-db/updateKeyword.js";
 
 /**
  * Watchlist page view allowing user to add/modify keywords
