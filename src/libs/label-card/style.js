@@ -64,7 +64,7 @@ export const SDescription = styled.div`
 
 export const SBadge = styled.div`
   /* border: 2px solid white; */
-  background-color: var(--primaryBrandTintColor);
+  background-color: var(--primaryBadgeColor);
   color: var(--tintTextColor);
   border-radius: 1em;
   text-align: center;

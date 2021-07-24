@@ -47,16 +47,17 @@ const Options = css`
 const defaultTheme = css`
   :root {
     // Colors
-    --primaryBrandColor: #f2e8f9;
-    --primaryBrandTintColor: #6b219f;
-    --backgroundColor: #eaece9;
+    --primaryBrandColor: #6b219f;
+    --primaryBrandTintColor: #f2e8f9;
+    --backgroundColor: #fcffff; 
     --primaryTextColor: #000000;
     --secondaryTextColor: #3c3c43;
-    --cardColor: #d5d9d3;
-    --textFieldColor: #c6cdd2;
-    --textFieldColorModal: #c6cdd2;
+    --cardColor: #d9c5e6;
+    --textFieldColor: #f5ebfc;
+    --textFieldColorModal: #f5ebfc;
     --seperatorColor: #c6c6c8;
     --tintTextColor: white;
+    --primaryBadgeColor: #6b219f;
   }
 `;
 
@@ -71,6 +72,7 @@ const darkTheme = css`
     --textFieldColor: #3a3a3c;
     --seperatorColor: #38383a;
     --tintTextColor: black;
+    --primaryBadgeColor: #f2e8f9;
   }
 `;
 
