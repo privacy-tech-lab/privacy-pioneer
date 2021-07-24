@@ -28,7 +28,7 @@ function locationKeywordSearch(strReq, locElems, rootUrl, reqUrl) {
   for (const [k, v] of Object.entries(locElems)) {
     // every entry is an array, so we iterate through it.
     for (let value of v) {
-      var res = regexSearch(strReq, value, rootUrl, reqUrl, k, permissionEnum.location)
+      const res = regexSearch(strReq, value, rootUrl, reqUrl, k, permissionEnum.location)
       if (res.length != 0) {
         output.push(res[0]); // this comes in as an Array that will always be length one
       }
