@@ -1,3 +1,15 @@
+<p align="center">
+  <img alt="GitHub release (latest by date)" src="https://img.shields.io/github/v/release/privacy-tech-lab/integrated-privacy-analysis">
+  <img alt="GitHub Release Date" src="https://img.shields.io/github/release-date/privacy-tech-lab/integrated-privacy-analysis">
+  <img alt="GitHub last commit" src="https://img.shields.io/github/last-commit/privacy-tech-lab/integrated-privacy-analysis">
+  <img alt="GitHub issues" src="https://img.shields.io/github/issues-raw/privacy-tech-lab/integrated-privacy-analysis">
+  <img alt="GitHub closed issues" src="https://img.shields.io/github/issues-closed-raw/privacy-tech-lab/integrated-privacy-analysis">
+  <img alt="GitHub" src="https://img.shields.io/github/license/privacy-tech-lab/integrated-privacy-analysis">
+  <img alt="GitHub watchers" src="https://img.shields.io/github/watchers/privacy-tech-lab/integrated-privacy-analysis?style=social">
+  <img alt="GitHub Repo stars" src="https://img.shields.io/github/stars/privacy-tech-lab/integrated-privacy-analysis?style=social">
+  <img alt="GitHub forks" src="https://img.shields.io/github/forks/privacy-tech-lab/integrated-privacy-analysis?style=social">
+</p>
+
 # integrated-privacy-analysis
 
 <p align="center">
@@ -115,5 +127,5 @@ This project uses the following third party libraries and resources. We thank th
 - [Styled Components](https://styled-components.com)
 
 <p align="center">
-  <img src="https://github.com/privacy-tech-lab/integrated-privacy-analysis/blob/main/plt_logo.png" width="200px" height="200px" alt="privacy-tech-lab logo">
+  <a href="https://www.privacytechlab.org/"><img src="https://github.com/privacy-tech-lab/integrated-privacy-analysis/blob/main/plt_logo.png" width="200px" height="200px" alt="privacy-tech-lab logo"></a>
 <p>
