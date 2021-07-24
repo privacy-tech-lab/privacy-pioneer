@@ -69,13 +69,6 @@ importData().then((data) => {
       }
     }
   )
-  /**
-   * calls tabUpdate callback on tabChange
-   * @listens tabUpdateEvent
-   */
-  browser.tabs.onUpdated.addListener(function (tabId, changeInfo, tab) {
-    tabUpdate(tabId, changeInfo, tab, data)
-  })
 
   // Listener to get response data, request body, and details about request
   browser.webRequest.onBeforeRequest.addListener(
@@ -111,8 +104,8 @@ importData().then((data) => {
 
 async function initDB(initArr) {
   for (let initItem of initArr) {
-    let key, keyword, type, id
-    ;[key, keyword, type, id] = initItem
+    let key, keyword, type, id;
+    [key, keyword, type, id] = initItem
     watchlistKeyval.set(key, {
       keyword: keyword,
       type: type,
