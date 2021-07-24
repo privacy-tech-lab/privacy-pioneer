@@ -121,6 +121,8 @@ function createEvidenceObj(
 }
 
 function watchlistHashGen (type, keyword) {
+  if ( typeof type != 'string') { type = String(type) }
+  if ( typeof keyword != 'string' ) { keyword = String(keyword) }
   return hashTypeAndPermission(type.concat(keyword)).toString()
 }
 

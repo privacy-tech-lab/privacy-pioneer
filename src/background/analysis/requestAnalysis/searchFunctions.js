@@ -23,44 +23,6 @@ import { watchlistHashGen, createEvidenceObj } from "../utility/util.js"
  * @returns {Array<Array>|Array} An array of arrays with the search results [] if no result 
  */
 function locationKeywordSearch(strReq, locElems, rootUrl, reqUrl) {
-
-  /**
-   * Updates the watchlistHash property of a location evidence by finding
-   * the id that this element got in the watchlist store
-   * 
-   * @param {string} k The type of the evidence, as defined by typeEnum
-   * @param {string|regex} value The value we searched for
-   * @param {Array} res The array we are considering to be added to evidence
-   * @returns {Evidence} The corrected evidence to be added to the output Array
-   */
-  async function updateWatchlistHashProperty(k, value, res){
-    var resultEvidence = res[0]
-    var watchlistVals = await watchlistKeyval.values()
-    // for states we find the zip that points to that state. Then we take that zip's ID
-    if (k == typeEnum.state){
-      watchlistVals.forEach(el => {
-        if (permissionEnum.location in el) {
-          let stZips = getState(el[permissionEnum.location][typeEnum.zipCode])
-          let st0 = stZips[0].toString()
-          let st1 = stZips[1].toString()
-          if (st0 == value.toString() || st1 == value.toString()){
-            resultEvidence.watchlistHash = el['id'] // 'id' is assigned by the same hash by the frontend.
-          }
-        }
-      });
-    }
-    // otherwise we just take the ID for this location element itself
-    else {
-      watchlistVals.forEach(el => {
-        if (permissionEnum.location in el) {
-          if (el[permissionEnum.location][k] == value){
-            resultEvidence.watchlistHash = el['id'] // 'id' is assigned by the same hash by the frontend.
-          }
-        }
-      });
-    }
-    return resultEvidence
-  }
   
   var output = []
   for (const [k, v] of Object.entries(locElems)) {
@@ -68,8 +30,7 @@ function locationKeywordSearch(strReq, locElems, rootUrl, reqUrl) {
     for (let value of v) {
       var res = regexSearch(strReq, value, rootUrl, reqUrl, k, permissionEnum.location)
       if (res.length != 0) {
-        //updateWatchlistHashProperty(k, value, res).then(fufilled => res = fufilled)
-        output.push(res[0]);
+        output.push(res[0]); // this comes in as an Array that will always be length one
       }
     }
   }
