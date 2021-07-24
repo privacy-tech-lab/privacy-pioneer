@@ -53,8 +53,8 @@ const defaultTheme = css`
     --primaryTextColor: #000000;
     --secondaryTextColor: #3c3c43;
     --cardColor: #d9c5e6;
-    --textFieldColor: #c6cdd2;
-    --textFieldColorModal: #c6cdd2;
+    --textFieldColor: #f5ebfc;
+    --textFieldColorModal: #f5ebfc;
     --seperatorColor: #c6c6c8;
     --tintTextColor: white;
     --primaryBadgeColor: #6b219f;
