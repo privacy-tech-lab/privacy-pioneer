@@ -8,6 +8,7 @@ export const SCard = styled.div`
   justify-content: space-between;
   background-color: var(--cardColor);
   width: ${(props) => (props.popup ? "340px" : "250px")};
+  height: 140px;
   margin: ${(props) => props.margin};
   padding: 16px;
   border-radius: 16px;
@@ -64,7 +65,7 @@ export const SDescription = styled.div`
 export const SBadge = styled.div`
   /* border: 2px solid white; */
   background-color: var(--primaryBrandTintColor);
-  color: black;
+  color: var(--tintTextColor);
   border-radius: 1em;
   text-align: center;
   justify-self: center;

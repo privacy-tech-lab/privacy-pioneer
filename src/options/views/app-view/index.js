@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Route, Switch, useLocation } from "react-router-dom";
 import { AnimatePresence } from "framer-motion";
 import NavBar from "./components/nav-bar";
@@ -7,6 +7,8 @@ import WatchlistView from "../watchlist-view";
 import AboutView from "../about-view";
 import SettingsView from "../settings-view";
 import SearchView from "../search-view";
+import GlobalStyle from "../../../libs/global-style";
+import { getTheme, settingsEnum } from "../../../libs/settings";
 
 /**
  * Root node of application that handles routing
@@ -15,15 +17,28 @@ import SearchView from "../search-view";
  */
 const AppView = () => {
   const location = useLocation();
+  const [theme, setTheme] = useState(settingsEnum.sameAsSystem);
+
+  useEffect(
+    () =>
+      getTheme().then((res) => {
+        if (res) setTheme(res);
+      }),
+    [theme]
+  );
 
   return (
     <React.Fragment>
+      <GlobalStyle theme={theme} />
       <NavBar />
       <AnimatePresence exitBeforeEnter>
         <Switch location={location} key={location.pathname}>
           <Route path="/" exact component={HomeView} />
           <Route path="/watchlist" component={WatchlistView} />
-          <Route path="/settings" component={SettingsView} />
+          <Route
+            path="/settings"
+            render={() => <SettingsView changeTheme={setTheme} />}
+          />
           <Route path="/about" component={AboutView} />
           <Route path="/search" component={SearchView} />
         </Switch>
