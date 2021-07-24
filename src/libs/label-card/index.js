@@ -14,7 +14,7 @@ import {
 } from "./style"
 import { privacyLabels } from "../../background/analysis/classModels"
 import { CompanyLogo } from "../website-logo"
-import { getParents } from "../indexed-db"
+import { getParents } from "../company-icons/getCompany.js"
 import { useHistory } from "react-router-dom"
 
 /**

@@ -6,7 +6,7 @@ import * as Icons from "../../../libs/icons";
 import { Modal } from "bootstrap";
 import LabelModal from "../home-view/components/detail-modal";
 import WebsiteLabelList from "../../components/website-label-list";
-import { getLabels, getWebsites } from "../../../libs/indexed-db";
+import { getLabels, getWebsites } from "../../../libs/indexed-db/getIdbData.js";
 import { useHistory, useLocation } from "react-router";
 
 /**

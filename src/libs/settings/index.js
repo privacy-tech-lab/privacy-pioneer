@@ -1,4 +1,4 @@
-import { settingsKeyval, watchlistKeyval } from "../indexed-db"
+import { settingsKeyval, watchlistKeyval } from "../indexed-db/openDB.js"
 import {
   permissionEnum,
   storeEnum,
