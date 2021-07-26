@@ -22,6 +22,7 @@ import Parents from "../../assets/parents.json";
     return parents
   }
   
+  // This is the list of companies we have SVGs for. Will be updated as needed
   const companiesWithSVG = new Set([
     "AddThis",
     "Adobe",
@@ -40,9 +41,10 @@ import Parents from "../../assets/parents.json";
     "Yandex",
   ])
   /**
-   * Returns parent company from website name
+   * Obtains the parent company from the website name
    *
    * @param {string} website
+   * @returns parent company from website name
    */
   export const getParent = (website) => {
     for (const [parentSite, childrenSites] of Object.entries(
