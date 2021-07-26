@@ -28,6 +28,8 @@ import {
   SDropdownOptions,
   SDropdownSelection,
 } from "./style"
+import { initiateDownload } from "../../../../exportData/initiateDownload"
+import { exportTypeEnum } from "../../../../background/analysis/classModels.js"
 
 export const ToggleSwitch = ({ isActive, label, onClick, spaceBetween }) => (
   <div
@@ -168,8 +170,16 @@ export const ExportData = () => {
           <Icons.ChevronDown size="24px" />
         </SDropdownSelection>
       </SDropdown>
-      <SExportButton>TSV</SExportButton>
-      <SExportButton>JSON</SExportButton>
+      <SExportButton
+        onClick = { () => initiateDownload(exportTypeEnum.TSV)}
+      >
+        TSV 
+      </SExportButton>
+      <SExportButton
+        onClick = { () => initiateDownload(exportTypeEnum.JSON)}
+      >
+        JSON 
+      </SExportButton>
     </SExportSection>
   )
 }

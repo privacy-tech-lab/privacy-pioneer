@@ -49,6 +49,7 @@ async function addToEvidenceStore(evidenceToAdd, firstParty, parent, rootU, requ
       evidenceObject.rootUrl = rootU
       evidenceObject.parentCompany = parent
 
+
       // whitelist our IP API
       if (requestU == 'http://ip-api.com/json/'){ return new Promise( function(resolve, reject) {
         resolve('whitelist IP API');
