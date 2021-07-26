@@ -41,23 +41,6 @@ async function addToEvidenceStore(evidenceToAdd, firstParty, parent, rootU, requ
   var evidence = await evidenceKeyval.get(rootUrl, store)
   if (evidence === undefined) { evidence = {} }
 
-  function cutDownSnippet(evidenceObject) {
-    if ( evidenceObject.index === -1 ) {
-      evidenceObject.snippet = null
-    }
-    else {
-      let start, end
-      [start, end] = evidenceObject.index
-      const snipLength = evidenceObject.snippet.length
-
-      const frontBuffer = start < 300 ? start : 300
-      const endBuffer = end + 300 < snipLength ? 300 : snipLength - end - 1
-
-      evidenceObject.snippet = evidenceObject.snippet.substring(start - frontBuffer, end + endBuffer)
-      evidenceObject.index = [frontBuffer, frontBuffer + end - start]
-    }
-  }
-
   function unpackAndUpdate(evidenceObject) {
     // if this is a valid object
     if (evidenceObject.rootUrl){
@@ -66,7 +49,6 @@ async function addToEvidenceStore(evidenceToAdd, firstParty, parent, rootU, requ
       evidenceObject.rootUrl = rootU
       evidenceObject.parentCompany = parent
 
-      cutDownSnippet(evidenceObject)
 
       // whitelist our IP API
       if (requestU == 'http://ip-api.com/json/'){ return new Promise( function(resolve, reject) {
