@@ -26,7 +26,7 @@ const LabelCard = ({ requests, website, label, margin, onTap, popup }) => {
   const history = useHistory()
 
   /**
-   * Get label description
+   * Label descriptions ({___} collected and shared {label}, collected, shared with {___})
    */
   const getDescription = () => {
     if (collected && urls.length > 1) {

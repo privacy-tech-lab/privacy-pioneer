@@ -22,8 +22,8 @@ const LabelSummaryCard = ({ labeltype, websiteTotal }) => {
 
 /**
  * List of Summary cards given label and stat {label:stat}
+ * @param {object} labels label and stat {label:stat} object
  */
-
 const LabelSummaryCardList = ({ labels }) => {
   const entries = Object.entries(labels)
   return entries.map(([labeltype, evidence]) => {

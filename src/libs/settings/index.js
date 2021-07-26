@@ -13,6 +13,9 @@ export const settingsEnum = Object.freeze({
   yaml: "yaml",
 })
 
+/**
+ * Sets all labels on in settings, theme (colors) to be system setting
+ */
 export const setDefault = async () => {
   if ((await settingsKeyval.values()).length == 0) {
     await settingsKeyval.set(permissionEnum.location, true)
@@ -23,6 +26,10 @@ export const setDefault = async () => {
   }
 }
 
+/**
+ * Toggles labels on or off
+ * @param {string} label label we generated
+ */
 export const toggleLabel = async (label) => {
   let currentVal = await settingsKeyval.get(label)
   if (Object.values(permissionEnum).includes(label)) {
@@ -30,6 +37,9 @@ export const toggleLabel = async (label) => {
   }
 }
 
+/**
+ * Tells whether the labels are on or off based on settings
+ */
 export const getLabelStatus = async () => {
   let labelStatus = {}
   for (const label of Object.values(permissionEnum)) {
@@ -38,23 +48,40 @@ export const getLabelStatus = async () => {
   return labelStatus
 }
 
+/**
+ * Sets the theme to be light, dark, or system
+ * @param {string} theme desired theme (colors)
+ */
 export const setTheme = async (theme) => {
   await settingsKeyval.set("theme", theme)
 }
 
+/**
+ * Gets theme (color)
+ */
 export const getTheme = async () => {
   return await settingsKeyval.get("theme")
 }
 
+/**
+ * delete all evidence
+ */
 export const deleteEvidenceDB = async () => {
   await evidenceKeyval.clear(storeEnum.firstParty)
   await evidenceKeyval.clear(storeEnum.thirdParty)
 }
 
+/**
+ * delete everything in watchlist
+ */
 export const deleteKeywordDB = async () => {
   await watchlistKeyval.clear()
 }
 
+/**
+ * Obtains the labels the user has turned off
+ * @returns labels the user turned off
+ */
 export const getExcludedLabels = async () => {
   let excludedLabels = []
   let labels = Object.values(permissionEnum)

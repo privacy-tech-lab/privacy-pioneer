@@ -26,6 +26,7 @@ const SearchView = () => {
 
   /**
    * Filter websites based on user input string from text field
+   * @param {string} keyString string the user entered
    */
   const filter = (keyString) => {
     const filteredKeys = Object.keys(allWebsites).filter((k) =>

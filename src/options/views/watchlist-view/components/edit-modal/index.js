@@ -70,11 +70,17 @@ const EditModal = ({ keywordType, keyword, edit, id, updateList }) => {
     return () => document.removeEventListener("mousedown", blur);
   }, []);
 
+  /**
+   * Reset the form if the input is not valid
+   */
   const badInput = (type) => {
     setInputValid(false);
     setKeyType(type);
   };
 
+  /**
+   * Validate a user input
+   */
   const validate = () => {
     if (
       _keywordType == typeEnum.phone &&

@@ -4,6 +4,11 @@ import { SContainer, SHeader, SCollapse, SCodeBlock, SBody, SEvidenceDescription
 
 /**
  * 'Collapse' containing evidence/extra info about identified label type
+ * 
+ * @param collapseId id of label to be collapsed
+ * @param request our evidence object for this request
+ * @param label Label we have attributed to the http request
+ * @param type type of label
  */
 const Evidence = ({ collapseId, request, label, type }) => {
   /**
@@ -20,6 +25,8 @@ const Evidence = ({ collapseId, request, label, type }) => {
 
   /**
    * Get the identified evidence code snippet
+   * @param {object} request our evidence object for this request
+   * @returns {object} sliced snippet | null
    */
   const getSnippet = (request) => {
     if (
@@ -47,6 +54,8 @@ const Evidence = ({ collapseId, request, label, type }) => {
 
   /**
    * Get sub label general description
+   * @param {object} request our evidence object for this request
+   * @returns {object} sliced general description of our reasonings for our labels | ""
    */
   const getGeneralDescription = (request) => {
     if (request != null) {
@@ -92,6 +101,8 @@ const Evidence = ({ collapseId, request, label, type }) => {
 
   /**
    * Get sub label specific description
+   * @param {object} request our evidence object for this request
+   * @returns {object} sliced specific description of our reasonings for our labels | ""
    */
   const getSpecificDescription = (request) => {
     if (request != null) {

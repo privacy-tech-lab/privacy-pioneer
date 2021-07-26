@@ -5,6 +5,10 @@ import {
   permissionEnum,
 } from "../../../../../../background/analysis/classModels";
 import { keywordTypes } from "../../../../../../background/analysis/classModels";
+
+/**
+ * Form for a user to input their address
+ */
 const AddressForm = ({ onChange, value }) => {
   return (
     <SForm>
@@ -71,6 +75,10 @@ const AddressForm = ({ onChange, value }) => {
     </SForm>
   );
 };
+
+/**
+ * Form for a user to add their own non-location keywords
+ */
 const KeywordForm = ({ keywordType, onChange, value }) => {
   return (
     <SKeyword>
@@ -88,6 +96,9 @@ const KeywordForm = ({ keywordType, onChange, value }) => {
   );
 };
 
+/**
+ * Chooses the form the user should see (location or normal)
+ */
 const Form = ({ keywordType, onAddressChange, onRegularChange, value }) => {
   return keywordType != permissionEnum.location ? (
     <KeywordForm
