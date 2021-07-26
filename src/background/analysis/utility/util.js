@@ -95,6 +95,7 @@ function getHostname(url) {
  * @param {Array|undefined} index 
  * @param {number} watchlistHash 
  * @param {string|undefined} extraDetail 
+ * @param {boolean} cutDown
  * @returns {Evidence}
  */
 function createEvidenceObj(
