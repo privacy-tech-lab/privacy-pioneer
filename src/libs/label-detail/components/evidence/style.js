@@ -31,7 +31,7 @@ export const SCodeBlock = styled(motion.div)`
     width: 100%;
     display: block;
     padding: 8px;
-    background: var(--textFieldColorModal);
+    background: var(--textFieldColor);
     border-radius: 8px;
   }
   span {
@@ -50,7 +50,7 @@ export const SBody = styled.div`
     width: 100%;
     display: block;
     padding: 8px;
-    background: var(--textFieldColorModal);
+    background: var(--textFieldColor);
     border-radius: 8px;
   }
   code {
@@ -71,7 +71,7 @@ export const SEvidenceDescription = styled.div`
     width: 100%;
     display: block;
     padding: 8px;
-    background: var(--textFieldColorModal);
+    background: var(--textFieldColor);
     border-radius: 8px;
   }
   span {
