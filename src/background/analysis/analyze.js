@@ -153,7 +153,7 @@ async function analyze(request, userData) {
     const parent = tagParent(reqUrl)
     
     // push the job to the Queue (will add the evidence for one HTTP request at a time)
-    evidenceQ.push(function(cb) { cb(null, addToEvidenceStore(allEvidence, partyBool, parent, rootUrl))});
+    evidenceQ.push(function(cb) { cb(null, addToEvidenceStore(allEvidence, partyBool, parent, rootUrl, reqUrl))});
   }
 }
 
