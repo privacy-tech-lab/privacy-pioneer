@@ -39,23 +39,23 @@ const LabelCard = ({ requests, website, label, margin, onTap, popup }) => {
             flexDirection: "row",
           }}
         >
-          <SBadge>Collected</SBadge>
+          <SBadge>First Party</SBadge>
           <SBadge>
-            Shared with {urls.length - 1}
-            {urls.length - 1 > 1 ? " sites" : " site"}
+            {urls.length - 1}
+            {urls.length - 1 > 1 ? " Thrid Parties" : " Thrid Party"}
           </SBadge>
         </div>
       )
     } else if (collected) {
       // return `${website} collected ${label} data.`;
-      return <SBadge>Collected</SBadge>
+      return <SBadge>First Party</SBadge>
     } else {
       return (
         // `${website} shared ${label} data with ${urls.length} ${
         //   urls.length == 1 ? "company" : "companies"
         // }`;
         <SBadge>
-          Shared with {urls.length} {urls.length > 1 ? "sites" : "site"}
+          {urls.length} {urls.length > 1 ? "Third Parties" : "Third Party"}
         </SBadge>
       )
     }
@@ -66,19 +66,55 @@ const LabelCard = ({ requests, website, label, margin, onTap, popup }) => {
    * Render max 2 badges
    */
   const getThirdParties = () => {
-    let parentCompanies = getParents(requests)
+    const websites = Object.keys(requests)
+    const parents = getParents(requests)
+    const parentCompanies = parents.companies
+    const sitesWithParents = parents.includedSites
+    const parentIcons = parentCompanies.map((company) => (
+      <CompanyLogo parent={company} key={company} margin={"0px 4px 0px 4px"} />
+    ))
+    console.log(parentIcons)
+
+    const Content = () => {
+      if (parentIcons.length >= 1 && parentIcons != [null]) {
+        return sitesWithParents.length == websites.length ? (
+          <SLogo>{parentIcons}</SLogo>
+        ) : (
+          <SLogo>
+            {parentIcons}{" "}
+            <SMore>
+              <Icons.Plus size={18} /> {websites.length - parentIcons.length}
+              {" more"}
+            </SMore>
+          </SLogo>
+        )
+      } else if (parentCompanies.length > 0 && parentIcons.length == 0) {
+        return (
+          <SLogo>
+            {parentCompanies[0]}
+            <SMore>
+              <Icons.Plus size={18} />{" "}
+              {websites.length - parentCompanies.length}
+              {" more"}
+            </SMore>
+          </SLogo>
+        )
+      } else
+        return (
+          <SLogo>
+            {websites[0]}
+            <SMore>
+              <Icons.Plus size={18} /> {websites.length - 1}
+              {" more"}
+            </SMore>
+          </SLogo>
+        )
+    }
     return (
       <>
         <SSeperator marginTop="16px" marginBottom="0px" />
-        <SLogo>
-          {parentCompanies.map((company) => (
-            <CompanyLogo
-              parent={company}
-              key={company}
-              margin={"8px 4px 0px 4px"}
-            />
-          ))}
-        </SLogo>
+
+        <Content />
       </>
     )
   }

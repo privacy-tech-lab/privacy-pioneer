@@ -1,6 +1,6 @@
-import React from "react";
-import styled, { css } from "styled-components";
-import { CompanyLogoSVG, Twitter } from "../company-icons";
+import React from "react"
+import styled, { css } from "styled-components"
+import { CompanyLogoSVG, Twitter } from "../company-icons"
 
 /**
  * Generally this would be in a style.js file
@@ -16,13 +16,13 @@ const SWebsiteLogo = styled.div`
   border-radius: ${(props) => (props.letter ? "50%" : "0px")};
   background-color: ${(props) =>
     props.letter ? "var(--primaryBrandTintColor)" : "none"};
-`;
+`
 
 const SLetterLogo = styled.div`
   color: var(--primaryBrandColor);
   font-weight: bold;
   font-size: ${(props) => (props.large ? "32px" : "16px")};
-`;
+`
 
 /**
  * Displays website logo (which is the first letter of website)
@@ -32,17 +32,20 @@ const WebsiteLogo = ({ website, large, margin }) => {
     <SWebsiteLogo margin={margin} large={large} letter>
       <SLetterLogo large={large}>{website.charAt(0).toUpperCase()}</SLetterLogo>
     </SWebsiteLogo>
-  );
-};
+  )
+}
 
 export const CompanyLogo = ({ parent, large, margin }) => {
-  const Logo = CompanyLogoSVG[parent];
-  return Logo ? (
-    <SWebsiteLogo margin={margin} large={large}>
-      {" "}
-      <Logo size={"24px"} />
-    </SWebsiteLogo>
-  ) : null;
-};
+  const Logo = CompanyLogoSVG[parent]
+  console.log(Logo)
+  if (Logo) {
+    return (
+      <SWebsiteLogo margin={margin} large={large}>
+        {" "}
+        <Logo size={"24px"} />
+      </SWebsiteLogo>
+    )
+  } else return null
+}
 
-export default WebsiteLogo;
+export default WebsiteLogo
