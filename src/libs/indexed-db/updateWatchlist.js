@@ -2,7 +2,7 @@ import { watchlistKeyval } from "./openDB.js";
 import { evidenceKeyval as evidenceIDB } from "../../background/analysis/interactDB/openDB.js";
 import { watchlistHashGen } from "../../background/analysis/utility/util.js";
 import { getState } from "../../background/analysis/buildUserData/structuredRoutines.js";
-import { keywordTypes, permissionEnum, storeEnum } from "../../background/analysis/classModels.js";
+import { keywordTypes, permissionEnum, storeEnum, typeEnum } from "../../background/analysis/classModels.js";
 
 
 /**

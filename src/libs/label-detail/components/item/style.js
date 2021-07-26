@@ -8,8 +8,8 @@ export const SBadge = styled.div`
   border: solid;
   border-radius: 16px;
   background: rgba(0, 0, 0, 0);
-  color: var(--primaryBadgeColor);
-  border-color: var(--primaryBadgeColor);
+  color: var(--primaryHighlightColor);
+  border-color: var(--primaryHighlightColor);
   border-width: 2px;
   font-size: 12px;
   margin-right: 8px;
@@ -19,10 +19,6 @@ export const SBadge = styled.div`
   padding-top: 4px;
   padding-bottom: 4px;
   font-weight: bold;
-  @media (prefers-color-scheme: dark) {
-    color: var(--primaryBrandTintColor);
-    border-color: var(--primaryBrandTintColor);
-  }
 `
 
 export const SBadgeGroup = styled.div`

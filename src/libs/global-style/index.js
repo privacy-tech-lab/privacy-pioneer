@@ -54,10 +54,9 @@ const defaultTheme = css`
     --secondaryTextColor: #3c3c43;
     --cardColor: #d9c5e6;
     --textFieldColor: #f5ebfc;
-    --textFieldColorModal: #f5ebfc;
     --seperatorColor: #c6c6c8;
     --tintTextColor: white;
-    --primaryBadgeColor: #6b219f;
+    --primaryHighlightColor: #6b219f;
   }
 `;
 
@@ -72,7 +71,7 @@ const darkTheme = css`
     --textFieldColor: #3a3a3c;
     --seperatorColor: #38383a;
     --tintTextColor: black;
-    --primaryBadgeColor: #f2e8f9;
+    --primaryHighlightColor: #f2e8f9;
   }
 `;
 
