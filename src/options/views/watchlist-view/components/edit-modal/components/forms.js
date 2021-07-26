@@ -13,11 +13,11 @@ const AddressForm = ({ onChange, value }) => {
         <SInput
           placeholder={
             keywordTypes[permissionEnum.location]["placeholder"][
-              typeEnum.address
+              typeEnum.streetAddress
             ]
           }
-          onChange={(e) => onChange(typeEnum.address, e.target.value)}
-          value={value[typeEnum.address]}
+          onChange={(e) => onChange(typeEnum.streetAddress, e.target.value)}
+          value={value[typeEnum.streetAddress]}
         />
       </SKeyword>
 

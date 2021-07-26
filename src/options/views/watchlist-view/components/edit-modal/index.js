@@ -55,7 +55,7 @@ const EditModal = ({ keywordType, keyword, edit, id, updateList }) => {
   const handleAddressChange = (type, value) => {
     var newLocation = _location;
     newLocation[type] = value;
-    newLocation["display"] = `${newLocation[typeEnum.address]}, ${
+    newLocation["display"] = `${newLocation[typeEnum.streetAddress]}, ${
       newLocation[typeEnum.city]
     }, ${newLocation[typeEnum.state]} ${newLocation[typeEnum.zipCode]} `;
     setLocation(newLocation);
