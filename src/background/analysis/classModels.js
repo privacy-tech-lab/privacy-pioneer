@@ -141,7 +141,7 @@ export const typeEnum = Object.freeze({
 
   // location types
   coarseLocation: "coarseLocation",
-  tightLocation: "tightLocation",
+  fineLocation: "fineLocation",
   zipCode: "zipCode",
   streetAddress: "streetAddress",
   city: "city",
@@ -226,11 +226,11 @@ export const privacyLabels = Object.freeze({
     types: {
       coarseLocation: {
         displayName: "Coarse Location",
-        description: "",
+        description: "Your Coarse Location (lattitude and longitude coordinates within 1 degree) were found in a request.",
       },
-      tightLocation: {
-        displayName: "Tight Location",
-        description: "Your Tight Location (lattitude and longitude coordinates) were found in a request.",
+      fineLocation: {
+        displayName: "Fine Location",
+        description: "Your Fine Location (lattitude and longitude coordinates) were found in a request.",
       },
       zipCode: {
         displayName: "Zip Code",
