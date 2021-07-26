@@ -1,10 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useHistory } from "react-router";
-import {
-  getWebsites,
-  getLabels,
-  getAllWebsiteLabels,
-} from "../../../libs/indexed-db";
+import { getWebsites, getLabels } from "../../../libs/indexed-db/getIdbData.js";
 import Scaffold from "../../components/scaffold";
 import WebsiteLabelList from "../../components/website-label-list";
 import LabelSummaryCardList from "./components/label-summary-card";
@@ -27,23 +23,21 @@ const HomeView = () => {
   const history = useHistory();
   const [websites, setWebsites] = useState({});
   const [labels, setLabels] = useState({});
-  const [webLabels, setWebLabels] = useState({});
   const [modal, setModal] = useState({ show: false });
   const entries = Object.entries(websites);
 
   useEffect(
     () =>
       getWebsites().then((websites) => {
-        setWebsites(websites),
-          getAllWebsiteLabels(websites).then((res) => {
-            setWebLabels(res);
-          }),
-          getLabels(websites).then((labels) => setLabels(labels));
-        document
-          .getElementById("detail-modal")
-          .addEventListener("hidden.bs.modal", () => {
-            setModal({ show: false });
-          });
+        setWebsites(websites);
+        getLabels().then((labels) => {
+          setLabels(labels);
+        }),
+          document
+            .getElementById("detail-modal")
+            .addEventListener("hidden.bs.modal", () => {
+              setModal({ show: false });
+            });
       }),
     []
   );
@@ -79,15 +73,19 @@ const HomeView = () => {
                 information
               </SSubtitle>
             </div>
-            <SButtonText onClick={() => history.push({ 
-              pathname: "/search", 
-              state: [websites, webLabels], //fixes race condition bug by passing this information to next page
-            })}>
+            <SButtonText
+              onClick={() =>
+                history.push({
+                  pathname: "/search",
+                  state: [websites, labels], //fixes race condition bug by passing this information to next page
+                })
+              }
+            >
               See All
             </SButtonText>
           </SSectionContainer>
           <WebsiteLabelList
-            labels={webLabels}
+            allLabels={labels}
             websites={websites}
             maxLength={entries.length > 6 ? 5 : entries.length}
             handleTap={handleTap}

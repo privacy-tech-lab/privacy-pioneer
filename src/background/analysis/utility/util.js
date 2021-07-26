@@ -1,9 +1,14 @@
+import { Evidence } from '../classModels.js'
+
 function sleep(ms) {
     return new Promise(resolve => setTimeout(resolve, ms));
   }
 
 /**
- * A non-secure hash that takes str -> int
+ * Utility function to create hash for watchlist key based on keyword and type
+ * This will overwrite keywords in the watchlist store that have the same keyword and type
+ * Which is okay
+ * from: https://werxltd.com/wp/2010/05/13/javascript-implementation-of-javas-string-hashcode-method/
  * @param {string} str 
  * @returns {number}
  */
@@ -74,4 +79,52 @@ function getHostname(url) {
 }
 
 
-export { hashTypeAndPermission, extractHostname, getHostname }
+/**
+ * Utility function to create an evidence Object with incomplete information.
+ * Called by search functions. Passed to addToEvidence where the object is fully
+ * fully updated and placed in the DB.
+ * See Evidence object in classmodels.js for param explanations
+ * 
+ * @param {string} permission 
+ * @param {string} rootUrl 
+ * @param {string} snippet 
+ * @param {string} requestUrl 
+ * @param {string} typ 
+ * @param {Array|undefined} index 
+ * @param {number} watchlistHash 
+ * @param {string|undefined} extraDetail 
+ * @returns {Evidence}
+ */
+function createEvidenceObj(
+  permission, 
+  rootUrl, 
+  snippet, 
+  requestUrl, 
+  typ, 
+  index, 
+  watchlistHash = undefined, 
+  extraDetail = undefined) {
+  const e = new Evidence( {
+    timestamp: undefined,
+    permission: permission,
+    rootUrl: rootUrl,
+    snippet: snippet,
+    requestUrl: requestUrl,
+    typ: typ,
+    index: index,
+    firstPartyRoot: undefined,
+    parentCompany: undefined,
+    watchlistHash: watchlistHash,
+    extraDetail: extraDetail
+  } )
+  return e
+}
+
+function watchlistHashGen (type, keyword) {
+  if ( typeof type != 'string') { type = String(type) }
+  if ( typeof keyword != 'string' ) { keyword = String(keyword) }
+  return hashTypeAndPermission(type.concat(keyword)).toString()
+}
+
+
+export { hashTypeAndPermission, extractHostname, getHostname, watchlistHashGen, createEvidenceObj }

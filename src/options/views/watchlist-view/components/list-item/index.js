@@ -8,7 +8,7 @@ import {
   SDropdownItem,
 } from "./style";
 import * as Icons from "../../../../../libs/icons";
-import { deleteKeyword } from "../../../../../libs/indexed-db";
+import { deleteKeyword } from "../../../../../libs/indexed-db/updateWatchlist.js";
 import { keywordTypes } from "../../../../../background/analysis/classModels";
 import { Modal } from "bootstrap";
 
@@ -48,7 +48,7 @@ const ListItem = ({ keyword, type, id, configModal, updateList, location }) => {
           <SDropdownOptions show={showDropdown}>
             <SDropdownItem
               onClick={async () => {
-                await deleteKeyword(id);
+                await deleteKeyword(id, type);
                 await updateList();
               }}
             >

@@ -7,7 +7,7 @@ network requests
 */
 import { getLocationData, filterGeocodeResponse } from "./getLocationData.js"
 import { buildPhone, getState } from '../buildUserData/structuredRoutines.js'
-import { watchlistKeyval } from '../../../libs/indexed-db/index.js'
+import { watchlistKeyval } from '../../../libs/indexed-db/openDB.js'
 import { typeEnum, permissionEnum } from "../classModels.js"
 import {setEmail, digestMessage, hexToBase64} from '../requestAnalysis/encodedEmail.js';
 

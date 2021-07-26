@@ -6,7 +6,7 @@ import * as Icons from "../../../libs/icons";
 import { Modal } from "bootstrap";
 import LabelModal from "../home-view/components/detail-modal";
 import WebsiteLabelList from "../../components/website-label-list";
-import { getAllWebsiteLabels, getWebsiteLabels, getWebsites } from "../../../libs/indexed-db";
+import { getLabels, getWebsites } from "../../../libs/indexed-db/getIdbData.js";
 import { useHistory, useLocation } from "react-router";
 
 /**
@@ -15,8 +15,12 @@ import { useHistory, useLocation } from "react-router";
 const SearchView = () => {
   const location = useLocation();
   const [allWebsites, setAllWebsites] = useState({});
-  const [filteredSites, setFilter] = useState(typeof(location.state) != "undefined" ? location.state[0] : {}); // all websites in DB (passed from previous page)
-  const [webLabels, setWebLabels] = useState(typeof(location.state) != "undefined" ? location.state[1] : {});  // all labels in DB (passed from previous page)
+  const [filteredSites, setFilter] = useState(
+    typeof location.state != "undefined" ? location.state[0] : {}
+  ); // all websites in DB (passed from previous page)
+  const [webLabels, setWebLabels] = useState(
+    typeof location.state != "undefined" ? location.state[1] : {}
+  ); // all labels in DB (passed from previous page)
   const [modal, setModal] = useState({ show: false });
   const history = useHistory();
 
@@ -47,11 +51,13 @@ const SearchView = () => {
 
       // we only call the setFilter and setWebLabels hooks if we weren't passed the data
       // from the previous page
-      if (typeof(location.state) == "undefined") {
+      if (typeof location.state == "undefined") {
         setFilter(websites);
       }
-      if (typeof(location.state) == "undefined") {
-        getAllWebsiteLabels(websites).then((res) => {setWebLabels(res);});
+      if (typeof location.state == "undefined") {
+        getLabels().then((res) => {
+          setWebLabels(res.byWebsite);
+        });
       }
     });
   }, []);
@@ -87,7 +93,7 @@ const SearchView = () => {
           </SInputContainer>
           <WebsiteLabelList
             websites={filteredSites}
-            labels={webLabels}
+            allLabels={webLabels}
             handleTap={handleTap}
           />
         </SContainer>

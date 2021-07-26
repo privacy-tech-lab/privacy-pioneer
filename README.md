@@ -1,3 +1,15 @@
+<p align="center">
+  <img alt="GitHub release (latest by date)" src="https://img.shields.io/github/v/release/privacy-tech-lab/integrated-privacy-analysis">
+  <img alt="GitHub Release Date" src="https://img.shields.io/github/release-date/privacy-tech-lab/integrated-privacy-analysis">
+  <img alt="GitHub last commit" src="https://img.shields.io/github/last-commit/privacy-tech-lab/integrated-privacy-analysis">
+  <img alt="GitHub issues" src="https://img.shields.io/github/issues-raw/privacy-tech-lab/integrated-privacy-analysis">
+  <img alt="GitHub closed issues" src="https://img.shields.io/github/issues-closed-raw/privacy-tech-lab/integrated-privacy-analysis">
+  <img alt="GitHub" src="https://img.shields.io/github/license/privacy-tech-lab/integrated-privacy-analysis">
+  <img alt="GitHub watchers" src="https://img.shields.io/github/watchers/privacy-tech-lab/integrated-privacy-analysis?style=social">
+  <img alt="GitHub Repo stars" src="https://img.shields.io/github/stars/privacy-tech-lab/integrated-privacy-analysis?style=social">
+  <img alt="GitHub forks" src="https://img.shields.io/github/forks/privacy-tech-lab/integrated-privacy-analysis?style=social">
+</p>
+
 # integrated-privacy-analysis
 
 <p align="center">
@@ -16,7 +28,7 @@ Currently, we only support Firefox.
 
 Ensure that you have [node and npm](https://www.npmjs.com/get-npm) installed.
 
-In the root directory of the project, start by installing the dependencies by running:
+In the root directory of the project, start by [installing the dependencies by running](https://github.com/privacy-tech-lab/integrated-privacy-analysis/issues/249#issuecomment-885723394):
 
 ```bash
 npm install --production=false
@@ -95,10 +107,11 @@ Our extension is analyzing the following privacy practices for each first and th
 
 An overview of the architecture of our extension is available [separately](https://github.com/privacy-tech-lab/integrated-privacy-analysis/blob/main/architecture_overview.md).
 
-## Third Party Libraries
+## Third Party Libraries and Resources
 
 This project uses the following third party libraries and resources. We thank the developers.
 
+- [Babel](https://babeljs.io/)
 - [Bootstrap](https://getbootstrap.com)
 - [Disconnect Tracker Protection lists](https://github.com/disconnectme/disconnect-tracking-protection)
 - [Eva Icons](https://akveo.github.io/eva-icons/#/)
@@ -107,13 +120,16 @@ This project uses the following third party libraries and resources. We thank th
 - [Idb](https://www.npmjs.com/package/idb)
 - [Ion Icons](https://ionicons.com)
 - [JSDoc](https://www.npmjs.com/package/jsdoc)
+- [Node.js](https://nodejs.org/en/)
+- [npm](https://www.npmjs.com/)
 - [Queue](https://www.npmjs.com/package/queue)
 - [React](https://reactjs.org)
 - [Radar Icon](https://www.svgrepo.com/svg/167040/radar)
 - [React Spinners](https://www.npmjs.com/package/react-spinners)
 - [Simple Icons](https://github.com/simple-icons/simple-icons)
 - [Styled Components](https://styled-components.com)
+- [webpack](https://webpack.js.org/)
 
 <p align="center">
-  <img src="https://github.com/privacy-tech-lab/integrated-privacy-analysis/blob/main/plt_logo.png" width="200px" height="200px" alt="privacy-tech-lab logo">
+  <a href="https://www.privacytechlab.org/"><img src="https://github.com/privacy-tech-lab/integrated-privacy-analysis/blob/main/plt_logo.png" width="200px" height="200px" alt="privacy-tech-lab logo"></a>
 <p>

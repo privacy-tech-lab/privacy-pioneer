@@ -52,42 +52,27 @@ async function addToEvidenceStore(evidenceToAdd, firstParty, parent, rootU, requ
    * @param {Object} evidenceListObject The evidence object to add
    * @returns {Void} updates the evidence object defined outside the function
    */
-  function unpackAndUpdate(evidenceListObject) {
-    // unpack the list we are passed
-    let perm, rootU, snip, requestU, t, i, extraDetail
-    if (evidenceListObject.length == 6) {
-      [perm, rootU, snip, requestU, t, i] = evidenceListObject
-      extraDetail = undefined
-    }
-    else { [perm, rootU, snip, requestU, t, i, extraDetail] = evidenceListObject}
+  function unpackAndUpdate(evidenceObject) {
+    // if this is a valid object
+    if (evidenceObject.rootUrl){
+      evidenceObject.timestamp = ts
+      evidenceObject.firstPartyRoot = firstParty
+      evidenceObject.rootUrl = rootU
+      evidenceObject.parentCompany = parent
 
-    rootU = rootUrl
-  
-    // whitelist our IP API
-    if (requestU == 'http://ip-api.com/json/'){ return new Promise( function(resolve, reject) {
-      resolve('whitelist IP API');
-    }) };
-  
-    const e = new Evidence( {
-      timestamp: ts,
-      permission: perm,
-      rootUrl: rootUrl,
-      snippet: snip,
-      requestUrl: requestU,
-      typ: t,
-      index: i,
-      firstPartyRoot: firstParty,
-      parentCompany: parent,
-      extraDetail: extraDetail
-    } )
-  
-    evidence = updateFetchedDict(evidence, e)
+      // whitelist our IP API
+      if (requestU == 'http://ip-api.com/json/'){ return new Promise( function(resolve, reject) {
+        resolve('whitelist IP API');
+      }) };
+      
+      evidence = updateFetchedDict(evidence, evidenceObject)
+    }
   }
 
   // update the fetched evidence dict with each piece of evidence we have for this request
-  for ( const evidenceList of evidenceToAdd) {
-    unpackAndUpdate(evidenceList)
-  }
+  for ( const evidenceObj of evidenceToAdd) {
+    unpackAndUpdate(evidenceObj)
+    }
 
   //final return statement
   return new Promise( function(resolve, reject) {

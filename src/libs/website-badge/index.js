@@ -1,6 +1,6 @@
 import React from "react";
 import styled from "styled-components";
-import { getParent, getParents } from "../indexed-db";
+import { getParent, getParents } from "../company-icons/getCompany.js";
 import WebsiteLogo, { CompanyLogo } from "../website-logo";
 
 /**
