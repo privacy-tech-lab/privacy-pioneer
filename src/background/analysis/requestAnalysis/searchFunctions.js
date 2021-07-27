@@ -185,7 +185,7 @@ function coordinateSearch(strReq, locData, rootUrl, reqUrl) {
     while ( j < matchArr.length ) {
       let match = matchArr[j]
       let startIndex = match.index + 1
-      let endIndex = startIndex + match[0].length
+      let endIndex = startIndex + match[0].length - 1
       const asFloat = cleanMatch(match[0])
 
       // potential is too far away, move on
@@ -225,7 +225,7 @@ function coordinateSearch(strReq, locData, rootUrl, reqUrl) {
     }
   }
 
-  iterateMatchArray(.1, typeEnum.tightLocation) // we define tight location as within .1 degree lng/lat
+  iterateMatchArray(.1, typeEnum.fineLocation) // we define tight location as within .1 degree lng/lat
   iterateMatchArray(1, typeEnum.coarseLocation) // we define coarse location as within 1 degree lng/lat
   
   return output

@@ -52,12 +52,12 @@ const defaultTheme = css`
     --backgroundColor: #fcffff; 
     --primaryTextColor: #000000;
     --secondaryTextColor: #3c3c43;
-    --cardColor: #d9c5e6;
-    --textFieldColor: #f5ebfc;
-    --textFieldColorModal: #f5ebfc;
+    --cardColor: #ededed;
+    --textFieldColor: #f2e8f9;
+    --inputTextFieldColor: #c6cdd2;
     --seperatorColor: #c6c6c8;
     --tintTextColor: white;
-    --primaryBadgeColor: #6b219f;
+    --primaryHighlightColor: #6b219f;
   }
 `;
 
@@ -70,9 +70,10 @@ const darkTheme = css`
     --secondaryTextColor: #ebebf5;
     --cardColor: #2c2c2e;
     --textFieldColor: #3a3a3c;
+    --inputTextFieldColor: #3a3a3c;
     --seperatorColor: #38383a;
     --tintTextColor: black;
-    --primaryBadgeColor: #f2e8f9;
+    --primaryHighlightColor: #f2e8f9;
   }
 `;
 

@@ -80,7 +80,7 @@ export const SInput = styled.input`
   padding-bottom: 8px;
   margin-top: 4px;
   width: 100%;
-  background-color: var(--textFieldColor);
+  background-color: var(--inputTextFieldColor);
   border-radius: 8px;
   border: 0px solid #eee;
   outline: none;
@@ -111,7 +111,7 @@ export const SDropdownOptions = styled.div`
   top: 56px;
   display: ${(props) => (props.show ? "block" : "none")};
   position: absolute;
-  background-color: var(--textFieldColor);
+  background-color: var(--inputTextFieldColor);
   box-shadow: 0px 4px 16px -8px rgba(0, 0, 0, 0.25);
   border-radius: 8px;
   z-index: 3;
@@ -133,7 +133,7 @@ export const SDropdownItem = styled.div`
   border: 1px solid var(--seperatorColor);
   padding: 16px;
   cursor: pointer;
-  background-color: var(--textFieldColor);
+  background-color: var(--inputTextFieldColor);
   :hover {
     filter: brightness(0.95);
   }
@@ -168,7 +168,7 @@ export const SDropdownSelection = styled.div`
   flex-direction: column;
   flex-direction: row;
   justify-content: space-between;
-  background-color: var(--textFieldColor);
+  background-color: var(--inputTextFieldColor);
   :hover {
     filter: brightness(0.95);
   }

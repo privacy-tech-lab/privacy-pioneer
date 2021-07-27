@@ -27,15 +27,12 @@ export const SSectionContainer = styled.div`
 export const SButtonText = styled.div`
   font-weight: bold;
   cursor: pointer;
-  color: var(--primaryBrandColor);
+  color: var(--primaryHighlightColor);
   text-decoration: underline;
   :hover {
     filter: brightness(0.95);
   }
   :active {
     filter: brightness(1.05);
-  }
-  @media (prefers-color-scheme: dark) {
-    color: var(--primaryBrandTintColor);
   }
 `;
