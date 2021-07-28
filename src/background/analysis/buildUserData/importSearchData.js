@@ -17,6 +17,10 @@ const services = require("../../../assets/services.json");
 
 /**
  * Used to build all the data we search for in our analysis. This includes data in the watchlist DB and the JSON lists.
+ * 
+ * Defined in importSearchData.js
+ * 
+ * Used in background.js
  *
  * @returns {Promise<Array>} [locCoords, networkKeywords, services]
  *
@@ -82,9 +86,9 @@ export async function importData() {
         locElems[typeEnum.city] = userCity
     }
 
-    if (typeEnum.address in user_store_dict) {
-        const userAddress = user_store_dict[typeEnum.address]
-        locElems[typeEnum.address] = userAddress
+    if (typeEnum.streetAddress in user_store_dict) {
+        const userAddress = user_store_dict[typeEnum.streetAddress]
+        locElems[typeEnum.streetAddress] = userAddress
     }
 
     networkKeywords[permissionEnum.location] = locElems
@@ -137,7 +141,7 @@ export async function importData() {
  */
 function parseLocationObject(locObj, user_dict) {
 
-    const locElems = new Set([typeEnum.address, typeEnum.city, typeEnum.zipCode])
+    const locElems = new Set([typeEnum.streetAddress, typeEnum.city, typeEnum.zipCode])
 
     for ( let [t, val] of Object.entries(locObj) ) {
         if(locElems.has(t)) {

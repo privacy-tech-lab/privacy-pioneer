@@ -6,6 +6,9 @@ import { Collapse } from "bootstrap"
 
 /**
  * Display of badges with sub types and collapse containing description and evidence
+ * @param {object} request our evidence object for this request
+ * @param {string} url the request url
+ * @param {string} label the associated label of this evidence
  */
 const Item = ({ request, url, label }) => {
   const [evidence, setEvidence] = useState({ request: null, label: null, type: null })
@@ -14,6 +17,9 @@ const Item = ({ request, url, label }) => {
 
   /**
    * Show/hide collapse and populate with evidence data
+   * @param {event} event onClick event of the badge
+   * @param {object} request our evidence object for this request
+   * @param {string} type The type of evidence
    */
   const inflateCollapse = (event, request, type) => {
 

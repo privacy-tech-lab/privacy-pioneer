@@ -17,6 +17,8 @@ const SBadge = styled.div`
 
 /**
  * Displays website logo (which is the first letter of website) and title of website
+ * @param {string} website the host website
+ * @param {string|null} showParent the parent company of the site
  */
 const WebsiteBadge = ({ website, showParent }) => {
   const parent = getParent(website);
