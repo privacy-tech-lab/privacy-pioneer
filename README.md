@@ -107,29 +107,9 @@ Our extension is analyzing the following privacy practices for each first and th
 
 An overview of the architecture of our extension is available [separately](https://github.com/privacy-tech-lab/integrated-privacy-analysis/blob/main/architecture_overview.md).
 
-## Third Party Libraries and Resources
+## Third Party Libraries
 
-This project uses the following third party libraries and resources. We thank the developers.
-
-- [Babel](https://babeljs.io/)
-- [Bootstrap](https://getbootstrap.com)
-- [Disconnect Tracker Protection lists](https://github.com/disconnectme/disconnect-tracking-protection)
-- [Eva Icons](https://akveo.github.io/eva-icons/#/)
-- [Framer Motion](https://www.framer.com/motion/)
-- [iconmonstr](https://iconmonstr.com/)
-- [Idb](https://www.npmjs.com/package/idb)
-- [Ion Icons](https://ionicons.com)
-- [JSDoc](https://www.npmjs.com/package/jsdoc)
-- [Node.js](https://nodejs.org/en/)
-- [npm](https://www.npmjs.com/)
-- [Queue](https://www.npmjs.com/package/queue)
-- [React](https://reactjs.org)
-- [Radar Icon](https://www.svgrepo.com/svg/167040/radar)
-- [React Spinners](https://www.npmjs.com/package/react-spinners)
-- [React Loading Skeleton](https://www.npmjs.com/package/react-loading-skeleton)
-- [Simple Icons](https://github.com/simple-icons/simple-icons)
-- [Styled Components](https://styled-components.com)
-- [webpack](https://webpack.js.org/)
+This project uses various [third party libraries](https://github.com/privacy-tech-lab/integrated-privacy-analysis/blob/main/package.json). We thank the developers.
 
 <p align="center">
   <a href="https://www.privacytechlab.org/"><img src="https://github.com/privacy-tech-lab/integrated-privacy-analysis/blob/main/plt_logo.png" width="200px" height="200px" alt="privacy-tech-lab logo"></a>

@@ -25,7 +25,7 @@ const LabelCard = ({ requests, website, label, margin, onTap, popup }) => {
   const collected = urls.includes(website) // Check if website collected data
 
   /**
-   * Get label description
+   * Label descriptions ({___} collected and shared {label}, collected, shared with {___})
    */
   const getDescription = () => {
     if (collected && urls.length > 1) {

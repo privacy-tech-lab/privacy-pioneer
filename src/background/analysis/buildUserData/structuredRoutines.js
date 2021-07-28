@@ -3,6 +3,10 @@ import { PhoneNumberUtil } from "google-libphonenumber";
 
 /**
  * Uses google's libphonenumber library to reformat the user's phone number
+ * 
+ * Defined in structuredRoutines.js
+ * 
+ * Used in importSearch.js
  *
  * @param {string} userNumber
  * @returns {Array<strings>} An array of reformatted phone numbers. Empty list if invalid input.
@@ -50,6 +54,10 @@ function buildPhone(userNumber) {
 /**
  * Takes the user's zip code and returns an array containing [stateAbrev, stateFull]. Uses structure of zipCode to do so.
  * Adapted from (https://stackoverflow.com/questions/28821804/how-can-i-quickly-determine-the-state-for-a-given-zipcode)
+ * 
+ * Defined in structuredRoutines.js
+ * 
+ * Used in importSearch.js
  *
  * @param {string} zipString
  * @returns {Array<any>|Array<undefined>} An array containing [undefined, undefined] if invalid input, or [st abrev string, state regex] if valid input

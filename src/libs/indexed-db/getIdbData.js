@@ -48,7 +48,7 @@ export const getWebsiteLabels = async (website) => {
 
 /**
  * Get identified labels of all websites stored in indexedDB
- * result: {..., website: {...,label: {..., requestURL: {..., labelType: requestObject}}}}
+ * @returns: {..., website: {...,label: {..., requestURL: {..., labelType: requestObject}}}}
  */
 
 const getAllWebsiteLabels = async () => {

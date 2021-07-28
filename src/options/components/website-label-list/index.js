@@ -5,8 +5,11 @@ import { SContainer, SItem, SLabel, SLabelGroup, SSeperator } from "./style"
 
 /**
  * Makes label cards for a given website
+ * @param {string} website the host website
+ * @param {function} handleTap function that handles clicking on the cards
+ * @param allLabels 
+ * @param webLabels 
  */
-
 const LabelCards = ({ website, handleTap, allLabels, webLabels }) => {
   return webLabels.map((label, index) => {
     const requests =
@@ -28,8 +31,11 @@ const LabelCards = ({ website, handleTap, allLabels, webLabels }) => {
 
 /**
  * Displays a list of websites and a quick summary of their privacy labels
+ * @param {string} websites All websites we have evidence for
+ * @param {int} maxLength
+ * @param allLabels 
+ * @param webLabels 
  */
-
 const WebsiteLabelList = ({ websites, maxLength, handleTap, allLabels }) => {
   const entries = Object.entries(websites)
   return (
