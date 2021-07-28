@@ -50,7 +50,7 @@ async function importData() {
         userPhone = []
         let phone_arr = user_store_dict[typeEnum.phoneNumber]
         phone_arr.forEach( phone => {
-            const origHash = watchlistHashGen(phone)
+            const origHash = watchlistHashGen(typeEnum.phoneNumber, phone)
             // creates an array of possible re-configurations for each number
             let format_arr = buildPhone(phone)
             format_arr.forEach( format => {
