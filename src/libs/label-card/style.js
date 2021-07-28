@@ -10,7 +10,6 @@ export const SCard = styled.div`
   width: ${(props) => (props.popup ? "340px" : "250px")};
   height: 140px;
   margin: ${(props) => props.margin};
-  padding: 16px;
   border-radius: 16px;
   :hover {
     filter: brightness(0.95);
@@ -18,6 +17,9 @@ export const SCard = styled.div`
   :active {
     filter: brightness(1.05);
   }
+`
+export const SContent = styled.div`
+  margin: 16px;
 `
 
 export const SSeperator = styled.div`
@@ -33,6 +35,8 @@ export const SLogo = styled.div`
   display: flex;
   flex-direction: row;
   margin-top: 8px;
+  font-size: var(--headline);
+  align-items: center;
 `
 
 export const SHeader = styled.div`

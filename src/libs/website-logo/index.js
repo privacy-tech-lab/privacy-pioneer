@@ -37,7 +37,6 @@ const WebsiteLogo = ({ website, large, margin }) => {
 
 export const CompanyLogo = ({ parent, large, margin }) => {
   const Logo = CompanyLogoSVG[parent]
-  console.log(Logo)
   if (Logo) {
     return (
       <SWebsiteLogo margin={margin} large={large}>
@@ -45,7 +44,9 @@ export const CompanyLogo = ({ parent, large, margin }) => {
         <Logo size={"24px"} />
       </SWebsiteLogo>
     )
-  } else return null
+  } else {
+    return null
+  }
 }
 
 export default WebsiteLogo

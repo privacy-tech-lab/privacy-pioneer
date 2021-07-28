@@ -6,23 +6,27 @@ import Parents from "../../assets/parents.json"
  * label to be displayed in the UI
  *
  * @param {Object} labels
- * @returns {Array} Returns array of parent companies
+ * @returns {Object} Returns Object of parent companies with icons, without icons and websites with iconed companies
  */
 
 export const getParents = (labels) => {
-  let companies = []
-  let includedSites = []
+  const companies = {}
   if (labels) {
     Object.keys(labels).forEach((website) => {
-      let evidenceType = Object.keys(labels[website])[0]
-      let company = labels[website][evidenceType]["parentCompany"]
-      if (parent) {
-        if (!companies.includes(company))
-          companies.push(company), includedSites.push(website)
-        else includedSites.push(website)
+      const evidenceType = Object.keys(labels[website])[0]
+      const company = labels[website][evidenceType]["parentCompany"]
+      if (company) {
+        if (!Object.keys(companies).includes(company)) {
+          companies[company] = {}
+          companies[company]["websites"] = [website]
+        } else companies[company]["websites"].push(company)
+
+        if (companiesWithSVG.has(company)) {
+          companies[company]["hasIcon"] = true
+        } else companies[company]["hasIcon"] = false
       }
     })
-    return { companies, includedSites }
+    return companies
   }
 }
 

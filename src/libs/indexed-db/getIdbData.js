@@ -6,7 +6,6 @@ import {
 } from "../../background/analysis/classModels"
 import { getExcludedLabels } from "../settings/index.js"
 
-
 /**
  * Get identified labels of website from indexedDB
  * Restucture to display in UI
@@ -86,7 +85,13 @@ const buildLabels = async (store, res, excludedLabels) => {
       const labels = Object.keys(evidence).filter(
         (label) => label in privacyLabels && !excludedLabels.includes(label)
       ) // verify label in privacy labels
-      if (labels.length && !(website in res)) res[website] = labels // give priority to first party labels if we have the same key in both stores
+      const timestamp = getTimeStamp(evidence)
+
+      if (labels.length && !(website in res)) {
+        res[website] = {}
+        res[website].labels = labels
+        res[website].timestamp = timestamp
+      } // give priority to first party labels if we have the same key in both stores
     }
   } catch (error) {
     return {}
@@ -101,15 +106,41 @@ const buildLabels = async (store, res, excludedLabels) => {
 export const getWebsites = async () => {
   try {
     const excludedLabels = await getExcludedLabels()
-    const result = {}
+    const unsortedResult = {}
 
-    await buildLabels(storeEnum.firstParty, result, excludedLabels) // first party labels
-    await buildLabels(storeEnum.thirdParty, result, excludedLabels) // third party labels
+    await buildLabels(storeEnum.firstParty, unsortedResult, excludedLabels) // first party labels
+    await buildLabels(storeEnum.thirdParty, unsortedResult, excludedLabels) // third party labels
 
-    return result
+    const sortedResult = sortEvidence(unsortedResult)
+    return sortedResult
   } catch (error) {
     return {}
   }
+}
+
+const getTimeStamp = (evidence) => {
+  var timestamp = 0
+  Object.keys(evidence).forEach((permission) => {
+    Object.keys(evidence[permission]).forEach((type) =>
+      Object.keys(evidence[permission][type]).forEach((website) => {
+        timestamp =
+          evidence[permission][type][website].timestamp > timestamp
+            ? evidence[permission][type][website].timestamp
+            : timestamp
+      })
+    )
+  })
+  return timestamp
+}
+
+const sortEvidence = (websites) => {
+  let entries = Object.entries(websites)
+
+  entries.sort(function ([websiteA, evidenceA], [websiteB, evidenceB]) {
+    return evidenceB.timestamp - evidenceA.timestamp
+  })
+
+  return Object.fromEntries(entries)
 }
 
 /**

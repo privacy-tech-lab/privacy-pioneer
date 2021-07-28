@@ -11,19 +11,18 @@ import {
   SMore,
   SLogo,
   SBadge,
+  SContent,
 } from "./style"
 import { privacyLabels } from "../../background/analysis/classModels"
 import { CompanyLogo } from "../website-logo"
 import { getParents } from "../company-icons/getCompany.js"
-import { useHistory } from "react-router-dom"
-
+import Skeleton, { SkeletonTheme } from "react-loading-skeleton"
 /**
  * Card that briefly summarizes label and description for website
  */
 const LabelCard = ({ requests, website, label, margin, onTap, popup }) => {
   const urls = Object.keys(requests) // detected request urls containing identified data
   const collected = urls.includes(website) // Check if website collected data
-  const history = useHistory()
 
   /**
    * Get label description
@@ -31,8 +30,6 @@ const LabelCard = ({ requests, website, label, margin, onTap, popup }) => {
   const getDescription = () => {
     if (collected && urls.length > 1) {
       return (
-        // `${website} collected and shared ${label} data with ${urls.length - 1}{" "}
-        //   companies`
         <div
           style={{
             display: "flex",
@@ -47,13 +44,9 @@ const LabelCard = ({ requests, website, label, margin, onTap, popup }) => {
         </div>
       )
     } else if (collected) {
-      // return `${website} collected ${label} data.`;
       return <SBadge>First Party</SBadge>
     } else {
       return (
-        // `${website} shared ${label} data with ${urls.length} ${
-        //   urls.length == 1 ? "company" : "companies"
-        // }`;
         <SBadge>
           {urls.length} {urls.length > 1 ? "Third Parties" : "Third Party"}
         </SBadge>
@@ -66,74 +59,107 @@ const LabelCard = ({ requests, website, label, margin, onTap, popup }) => {
    * Render max 2 badges
    */
   const getThirdParties = () => {
-    const websites = Object.keys(requests)
-    const parents = getParents(requests)
-    const parentCompanies = parents.companies
-    const sitesWithParents = parents.includedSites
-    const parentIcons = parentCompanies.map((company) => (
-      <CompanyLogo parent={company} key={company} margin={"0px 4px 0px 4px"} />
-    ))
-    console.log(parentIcons)
-
-    const Content = () => {
-      if (parentIcons.length >= 1 && parentIcons != [null]) {
-        return sitesWithParents.length == websites.length ? (
-          <SLogo>{parentIcons}</SLogo>
-        ) : (
-          <SLogo>
-            {parentIcons}{" "}
-            <SMore>
-              <Icons.Plus size={18} /> {websites.length - parentIcons.length}
-              {" more"}
-            </SMore>
-          </SLogo>
+    const More = ({ amount }) => {
+      if (amount > 0) {
+        return (
+          <SMore>
+            <Icons.Plus size={18} /> {amount}
+            {" more"}
+          </SMore>
         )
-      } else if (parentCompanies.length > 0 && parentIcons.length == 0) {
+      } else return null
+    }
+
+    const ThirdPartyContent = () => {
+      const websites = Object.keys(requests)
+      const parents = getParents(requests)
+      const companiesWithIcons = Object.keys(parents).filter(
+        (company) => parents[company].hasIcon
+      )
+
+      if (companiesWithIcons.length >= 1) {
+        companiesWithIcons.length =
+          companiesWithIcons.length > 3 ? 3 : companiesWithIcons.length
+        let numOfSitesWithIcons = 0
+        companiesWithIcons.forEach((company) => {
+          numOfSitesWithIcons += parents[company].websites.length
+        })
         return (
           <SLogo>
-            {parentCompanies[0]}
-            <SMore>
-              <Icons.Plus size={18} />{" "}
-              {websites.length - parentCompanies.length}
-              {" more"}
-            </SMore>
+            {companiesWithIcons.map((company) => {
+              if (company)
+                return (
+                  <CompanyLogo
+                    parent={company}
+                    key={company}
+                    margin={"0px 6px 0px 6px"}
+                    data-for="default"
+                    data-tip={parents[company].websites.join("<br/>")}
+                  />
+                )
+            })}
+            <More amount={websites.length - numOfSitesWithIcons} />
+          </SLogo>
+        )
+      } else if (Object.keys(parents).length >= 1) {
+        const displayedCompanyName = Object.keys(parents)[0]
+        return (
+          <SLogo>
+            <div
+              data-for="default"
+              data-tip={parents[displayedCompanyName].websites.join("<br/>")}
+            >
+              {displayedCompanyName.charAt(0).toUpperCase() +
+                displayedCompanyName.substring(1)}
+            </div>
+            <More
+              amount={
+                websites.length - parents[displayedCompanyName].websites.length
+              }
+            />
           </SLogo>
         )
       } else
         return (
           <SLogo>
             {websites[0]}
-            <SMore>
-              <Icons.Plus size={18} /> {websites.length - 1}
-              {" more"}
-            </SMore>
+            <More amount={websites.length - 1} />
           </SLogo>
         )
     }
+
     return (
       <>
         <SSeperator marginTop="16px" marginBottom="0px" />
-
-        <Content />
+        <ThirdPartyContent />
       </>
     )
   }
 
   return (
     <SCard margin={margin} onClick={onTap} popup={popup}>
-      <div>
-        <SHeader>
-          <SHeaderLeading>
-            {Icons.getLabelIcon(label)}
-            <SHeaderTitle>{privacyLabels[label]["displayName"]}</SHeaderTitle>
-          </SHeaderLeading>
-          <SHeaderTrailing>
-            <Icons.ChevronRight size="24px" />
-          </SHeaderTrailing>
-        </SHeader>
-        <SDescription>{getDescription()}</SDescription>
-        {getThirdParties()}
-      </div>
+      {requests == "empty" ? (
+        <SkeletonTheme
+          color="var(--cardColor)"
+          highlightColor="var(--cardLoaderColor)"
+        >
+          <Skeleton height={"140px"} />
+        </SkeletonTheme>
+      ) : (
+        <SContent>
+          <SHeader>
+            <SHeaderLeading>
+              {Icons.getLabelIcon(label)}
+              <SHeaderTitle>{privacyLabels[label]["displayName"]}</SHeaderTitle>
+            </SHeaderLeading>
+            <SHeaderTrailing>
+              <Icons.ChevronRight size="24px" />
+            </SHeaderTrailing>
+          </SHeader>
+          <SDescription>{getDescription()}</SDescription>
+          {getThirdParties()}
+        </SContent>
+      )}
     </SCard>
   )
 }

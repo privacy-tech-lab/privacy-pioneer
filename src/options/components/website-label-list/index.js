@@ -9,23 +9,20 @@ import { SContainer, SItem, SLabel, SLabelGroup, SSeperator } from "./style"
 
 const LabelCards = ({ website, handleTap, allLabels, webLabels }) => {
   return webLabels.map((label, index) => {
-    try {
-      const requests = allLabels[label][website]
-      return (
-        <LabelCard
-          key={index}
-          onTap={() => {
-            handleTap({ label, requests, website, show: true })
-          }}
-          margin="8px 16px 0px 0px"
-          label={label}
-          requests={requests}
-          website={website}
-        />
-      )
-    } catch {
-      return null
-    }
+    const requests =
+      Object.entries(allLabels).length > 0 ? allLabels[label][website] : "empty"
+    return (
+      <LabelCard
+        key={index}
+        onTap={() => {
+          handleTap({ label, requests, website, show: true })
+        }}
+        margin="8px 16px 0px 0px"
+        label={label}
+        requests={requests}
+        website={website}
+      />
+    )
   })
 }
 
@@ -35,25 +32,22 @@ const LabelCards = ({ website, handleTap, allLabels, webLabels }) => {
 
 const WebsiteLabelList = ({ websites, maxLength, handleTap, allLabels }) => {
   const entries = Object.entries(websites)
-
   return (
     <SContainer>
-      {entries
-        .slice(0, maxLength ?? entries.length)
-        .map(([website, webLabels]) => (
-          <SItem key={website}>
-            <WebsiteBadge website={website} />
-            <SLabelGroup>
-              <LabelCards
-                website={website}
-                handleTap={handleTap}
-                allLabels={allLabels}
-                webLabels={webLabels}
-              />
-            </SLabelGroup>
-            <SSeperator marginTop="16px" />
-          </SItem>
-        ))}
+      {entries.slice(0, maxLength ?? entries.length).map(([website, data]) => (
+        <SItem key={website}>
+          <WebsiteBadge website={website} />
+          <SLabelGroup>
+            <LabelCards
+              website={website}
+              handleTap={handleTap}
+              allLabels={allLabels}
+              webLabels={data.labels}
+            />
+          </SLabelGroup>
+          <SSeperator marginTop="16px" />
+        </SItem>
+      ))}
     </SContainer>
   )
 }

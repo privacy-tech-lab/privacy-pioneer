@@ -126,6 +126,7 @@ This project uses the following third party libraries and resources. We thank th
 - [React](https://reactjs.org)
 - [Radar Icon](https://www.svgrepo.com/svg/167040/radar)
 - [React Spinners](https://www.npmjs.com/package/react-spinners)
+- [React Loading Skeleton](https://www.npmjs.com/package/react-loading-skeleton)
 - [Simple Icons](https://github.com/simple-icons/simple-icons)
 - [Styled Components](https://styled-components.com)
 - [webpack](https://webpack.js.org/)
