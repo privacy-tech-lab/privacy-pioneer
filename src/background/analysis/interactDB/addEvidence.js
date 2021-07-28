@@ -4,20 +4,23 @@ import { Evidence, typeEnum, storeEnum } from "../classModels.js"
 
 
 /**
- *
- * @param {string} perm The permission of this piece of evidence
- * @param {string} rootU The rootUrl of the request
- * @param {string} snip The request as a string
- * @param {string} requestU The requestUrl of the request
- * @param {string} t The type of the evidence
- * @param {Array|undefined} i The index (where in the request string) of the evidence (Either an array or length 2 or undefined)
- * @returns {Promise} Nothing. The evidence DB is updated.
- *
- * addToEvidenceList is the function that is called to populate the DB with a piece of evidence. Called by the functions in
- * searchFuncitons.js. The function is async because it makes calls to the DB and the browser history. Pieces of evidence are stored as
+ * addToEvidenceList is the function that is called to populate the DB with a piece of evidence. Called by analyze.js when adding evidence.
+ * The function is async because it makes calls to the DB and the browser history. Pieces of evidence are stored as
  * Evidence objects. These objects are stored at keys of their rootUrl. At each rootUrl, there is a dictionary with a permission level
  * (defined in permissionEnum) and then a further type level (defined in typeEnum). We store only one piece of evidence per permssion/type for a
  * given rootUrl and a maximum of 5 pieces of evidence in total for a permission/type.
+ *
+ * Defined in addEvidence.js
+ * 
+ * Used in analyze.js
+ * 
+ * @param {Object} evidenceToAdd Evidence that the function should add to the correct store in evidenceIDB
+ * @param {boolean} firstParty Whether the evidence is a first party request
+ * @param {string|undefined} parent Parent company of the request Url, if possible
+ * @param {string} rootU The rootUrl of the request
+ * @param {string} requestU The requestUrl of the request
+ * @returns {Promise} Nothing. The evidence DB is updated.
+ * 
  */
 
 // perm, rootU, snip, requestU, t, i, extraDetail = undefined)
@@ -41,41 +44,35 @@ async function addToEvidenceStore(evidenceToAdd, firstParty, parent, rootU, requ
   var evidence = await evidenceKeyval.get(rootUrl, store)
   if (evidence === undefined) { evidence = {} }
 
-  function unpackAndUpdate(evidenceListObject) {
-    // unpack the list we are passed
-    let perm, rootU, snip, requestU, t, i, extraDetail
-    if (evidenceListObject.length == 6) {
-      [perm, rootU, snip, requestU, t, i] = evidenceListObject
-      extraDetail = undefined
-    }
-    else { [perm, rootU, snip, requestU, t, i, extraDetail] = evidenceListObject}
+  /**
+   * Unpacks and updates an evidence object to add to to our stores in evidenceIDB
+   * 
+   * Defined, used in addEvidence.js
+   * 
+   * @param {Object} evidenceListObject The evidence object to add
+   * @returns {Void} updates the evidence object defined outside the function
+   */
+  function unpackAndUpdate(evidenceObject) {
+    // if this is a valid object
+    if (evidenceObject.rootUrl){
+      evidenceObject.timestamp = ts
+      evidenceObject.firstPartyRoot = firstParty
+      evidenceObject.rootUrl = rootU
+      evidenceObject.parentCompany = parent
 
-    rootU = rootUrl
-  
-    // whitelist our IP API
-    if (requestU == 'http://ip-api.com/json/'){ return new Promise( function(resolve, reject) {
-      resolve('whitelist IP API');
-    }) };
-  
-    const e = new Evidence( {
-      timestamp: ts,
-      permission: perm,
-      rootUrl: rootUrl,
-      snippet: snip,
-      requestUrl: requestU,
-      typ: t,
-      index: i,
-      firstPartyRoot: firstParty,
-      parentCompany: parent,
-      extraDetail: extraDetail
-    } )
-  
-    evidence = updateFetchedDict(evidence, e)
+
+      // whitelist our IP API
+      if (requestU == 'http://ip-api.com/json/'){ return new Promise( function(resolve, reject) {
+        resolve('whitelist IP API');
+      }) };
+      
+      evidence = updateFetchedDict(evidence, evidenceObject)
+    }
   }
 
   // update the fetched evidence dict with each piece of evidence we have for this request
-  for ( const evidenceList of evidenceToAdd) {
-    unpackAndUpdate(evidenceList)
+  for ( const evidenceObj of evidenceToAdd) {
+    unpackAndUpdate(evidenceObj)
     }
 
   //final return statement
@@ -89,6 +86,8 @@ async function addToEvidenceStore(evidenceToAdd, firstParty, parent, rootU, requ
 /**
  * Function used to update an already fetched evidence dictionary with a piece of evidence, e.
  * 
+ * Defined, used in addEvidence.js
+ * 
  * @param {Dict} evidenceDict The dictionary we are updating 
  * @param {Evidence} e An evidence object
  * @returns {Dict} The param evidenceDict, but updated with Evidence, e, appropriately
@@ -98,6 +97,8 @@ function updateFetchedDict(evidenceDict, e) {
     /**
     * Used to push evidence through (override evidence cap of 4 per type)
     * that will create multiple labels for one request URL
+    * 
+    * Defined, used in addEvidence.js
     *
     * @param {Object} currDict object with the dexisting evidence for a permission
     * @param {string} typ the type that we're currently trying to add

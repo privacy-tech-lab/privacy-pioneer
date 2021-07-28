@@ -1,9 +1,14 @@
+import { Evidence } from '../classModels.js'
+
 function sleep(ms) {
     return new Promise(resolve => setTimeout(resolve, ms));
   }
 
 /**
- * A non-secure hash that takes str -> int
+ * Utility function to create hash for watchlist key based on keyword and type
+ * This will overwrite keywords in the watchlist store that have the same keyword and type
+ * Which is okay
+ * from: https://werxltd.com/wp/2010/05/13/javascript-implementation-of-javas-string-hashcode-method/
  * @param {string} str 
  * @returns {number}
  */
@@ -74,4 +79,83 @@ function getHostname(url) {
 }
 
 
-export { hashTypeAndPermission, extractHostname, getHostname }
+
+
+/**
+ * Utility function to create an evidence Object with incomplete information.
+ * Called by search functions. Passed to addToEvidence where the object is fully
+ * fully updated and placed in the DB.
+ * See Evidence object in classmodels.js for param explanations
+ * 
+ * @param {string} permission 
+ * @param {string} rootUrl 
+ * @param {string} snippet 
+ * @param {string} requestUrl 
+ * @param {string} typ 
+ * @param {Array|undefined} index 
+ * @param {number} watchlistHash 
+ * @param {string|undefined} extraDetail 
+ * @param {boolean} cutDown
+ * @returns {Evidence}
+ */
+function createEvidenceObj(
+  permission, 
+  rootUrl, 
+  snippet, 
+  requestUrl, 
+  typ, 
+  index, 
+  watchlistHash = undefined, 
+  extraDetail = undefined,
+  cutDown = true) {
+
+  /**
+   * Cuts down a snippet to only include the context of where we found
+   * The evidence
+   * 
+   * @param {Evidence} evidenceObject 
+   * @returns {void} updates evidenceObject
+   */
+  function cutDownSnippet(evidenceObject) {
+    if ( evidenceObject.index === -1 ) {
+      evidenceObject.snippet = null
+    }
+    else {
+      let start, end
+      [start, end] = evidenceObject.index
+      const snipLength = evidenceObject.snippet.length
+
+      const frontBuffer = start < 300 ? start : 300
+      const endBuffer = end + 300 < snipLength ? 300 : snipLength - end - 1
+
+      evidenceObject.snippet = evidenceObject.snippet.substring(start - frontBuffer, end + endBuffer)
+      evidenceObject.index = [frontBuffer, frontBuffer + end - start]
+    }
+  }
+
+  const e = new Evidence( {
+    timestamp: undefined,
+    permission: permission,
+    rootUrl: rootUrl,
+    snippet: snippet,
+    requestUrl: requestUrl,
+    typ: typ,
+    index: index,
+    firstPartyRoot: undefined,
+    parentCompany: undefined,
+    watchlistHash: watchlistHash,
+    extraDetail: extraDetail
+  } )
+
+  if ( cutDown ) { cutDownSnippet(e) } // if cutting down is set to true, cut the snippet down
+  return e
+}
+
+function watchlistHashGen (type, keyword) {
+  if ( typeof type != 'string') { type = String(type) }
+  if ( typeof keyword != 'string' ) { keyword = String(keyword) }
+  return hashTypeAndPermission(type.concat(keyword)).toString()
+}
+
+
+export { hashTypeAndPermission, extractHostname, getHostname, watchlistHashGen, createEvidenceObj }

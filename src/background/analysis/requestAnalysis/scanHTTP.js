@@ -7,7 +7,11 @@ import { permissionEnum, typeEnum, resourceTypeEnum } from '../classModels.js'
  * It returns an empty array if no evidence is found. Else an array of arrays containing the
  * information to be added.
  * 
- * @param request An HTTP Request to be analyzed
+ * Defined in scanHTTP.js
+ * 
+ * Used in analyze.js
+ * 
+ * @param request An HTTP request to be analyzed
  * @param userData 
  */
 function getAllEvidenceForRequest(request, userData) {
@@ -31,9 +35,11 @@ function getAllEvidenceForRequest(request, userData) {
      * We call this function to appropriately build the result list from our search functions.
      * We don't add non-findings, and we unpack multi-findings
      * 
+     * Defined, used in scanHTTP.js
+     * 
      * @param {Array<Array>} f The search function result 
      * @param {Array} arr The array of results we are building for this HTTP request 
-     * @returns 
+     * @returns {Void} Updates the array of evidence, defined outside of this function
      */
     function executeAndPush(f, arr = evidenceArr) {
         if (typeof f == 'undefined') {return}

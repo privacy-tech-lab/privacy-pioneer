@@ -12,7 +12,6 @@ import { HashRouter as Router } from "react-router-dom"
  */
 ReactDOM.render(
   <React.StrictMode>
-    <GlobalStyle />
     <Router hashType={"noslash"}>
       <AppView />
     </Router>

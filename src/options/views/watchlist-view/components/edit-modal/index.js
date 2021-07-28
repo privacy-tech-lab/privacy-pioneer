@@ -19,7 +19,7 @@ import {
   SErrorText,
 } from "./style"
 import * as Icons from "../../../../../libs/icons"
-import { saveKeyword } from "../../../../../libs/indexed-db"
+import { saveKeyword } from "../../../../../libs/indexed-db/updateWatchlist.js"
 import {
   keywordTypes,
   permissionEnum,
@@ -56,7 +56,7 @@ const EditModal = ({ keywordType, keyword, edit, id, updateList }) => {
   const handleAddressChange = (type, value) => {
     var newLocation = _location
     newLocation[type] = value
-    newLocation["display"] = `${newLocation[typeEnum.address]}, ${
+    newLocation["display"] = `${newLocation[typeEnum.streetAddress]}, ${
       newLocation[typeEnum.city]
     }, ${newLocation[typeEnum.state]} ${newLocation[typeEnum.zipCode]} `
     setLocation(newLocation)
@@ -71,11 +71,17 @@ const EditModal = ({ keywordType, keyword, edit, id, updateList }) => {
     return () => document.removeEventListener("mousedown", blur)
   }, [])
 
+  /**
+   * Reset the form if the input is not valid
+   */
   const badInput = (type) => {
     setInputValid(false)
     setKeyType(type)
   }
 
+  /**
+   * Validate a user input
+   */
   const validate = () => {
     if (
       _keywordType == typeEnum.phone &&

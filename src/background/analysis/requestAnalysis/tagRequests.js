@@ -4,6 +4,11 @@ const parentJson = require('../../../assets/parents.json');
 
 /**
  * Tells us whether or not the request was initiated by an origin that the user intended
+ * 
+ * Defined in tagRequests.js
+ * 
+ * Used in analyze.js
+ * 
  * @param {string} rootU the rootURL of the request
  * @returns {Promse<boolean>} true if first party, false if third party
  */
@@ -27,6 +32,10 @@ async function tagParty(rootU) {
 * found here (https://github.com/disconnectme/disconnect-tracking-protection/blob/master/entities.json).
 * Changes were made to compile the properties and resources lists from that json into one list, then filtered so that
 * only companies with 5 or more related websites are searched for
+*
+* Defined in tagRequests.js
+*
+* Used in analyze.js
 *
 * @param {string} reqUrl The requestURL
 * @param {object} parents The parents json from src/assets/parents.json

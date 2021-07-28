@@ -1,5 +1,5 @@
-import React from "react";
-import * as Icons from "../icons";
+import React from "react"
+import * as Icons from "../icons"
 import {
   SCard,
   SDescription,
@@ -11,91 +11,158 @@ import {
   SMore,
   SLogo,
   SBadge,
-} from "./style";
-import { privacyLabels } from "../../background/analysis/classModels";
-import { CompanyLogo } from "../website-logo";
-import { getParents } from "../indexed-db";
+  SContent,
+} from "./style"
+import { privacyLabels } from "../../background/analysis/classModels"
+import { CompanyLogo } from "../website-logo"
+import { getParents } from "../company-icons/getCompany.js"
+import Skeleton, { SkeletonTheme } from "react-loading-skeleton"
 
 /**
  * Card that briefly summarizes label and description for website
  */
 const LabelCard = ({ requests, website, label, margin, onTap, popup }) => {
-  const urls = Object.keys(requests); // detected request urls containing identified data
-  const collected = urls.includes(website); // Check if website collected data
+  const urls = Object.keys(requests) // detected request urls containing identified data
+  const collected = urls.includes(website) // Check if website collected data
 
   /**
-   * Get label description
+   * Label descriptions ({___} collected and shared {label}, collected, shared with {___})
    */
   const getDescription = () => {
     if (collected && urls.length > 1) {
       return (
-        // `${website} collected and shared ${label} data with ${urls.length - 1}{" "}
-        //   companies`
         <div
           style={{
             display: "flex",
             flexDirection: "row",
           }}
         >
-          <SBadge>Collected</SBadge>
+          <SBadge>First Party</SBadge>
           <SBadge>
-            Shared with {urls.length - 1}
-            {urls.length - 1 > 1 ? " sites" : " site"}
+            {urls.length - 1}
+            {urls.length - 1 > 1 ? " Thrid Parties" : " Thrid Party"}
           </SBadge>
         </div>
-      );
+      )
     } else if (collected) {
-      // return `${website} collected ${label} data.`;
-      return <SBadge>Collected</SBadge>;
+      return <SBadge>First Party</SBadge>
     } else {
       return (
-        // `${website} shared ${label} data with ${urls.length} ${
-        //   urls.length == 1 ? "company" : "companies"
-        // }`;
         <SBadge>
-          Shared with {urls.length} {urls.length > 1 ? "sites" : "site"}
+          {urls.length} {urls.length > 1 ? "Third Parties" : "Third Party"}
         </SBadge>
-      );
+      )
     }
-  };
+  }
 
   /**
    * Get third party websites and render badges
    * Render max 2 badges
    */
   const getThirdParties = () => {
-    let parentCompanies = getParents(requests);
+    const More = ({ amount }) => {
+      if (amount > 0) {
+        return (
+          <SMore>
+            <Icons.Plus size={18} /> {amount}
+            {" more"}
+          </SMore>
+        )
+      } else return null
+    }
+
+    const ThirdPartyContent = () => {
+      const websites = Object.keys(requests)
+      const parents = getParents(requests)
+      const companiesWithIcons = Object.keys(parents).filter(
+        (company) => parents[company].hasIcon
+      )
+
+      if (companiesWithIcons.length >= 1) {
+        companiesWithIcons.length =
+          companiesWithIcons.length > 3 ? 3 : companiesWithIcons.length
+        let numOfSitesWithIcons = 0
+        companiesWithIcons.forEach((company) => {
+          numOfSitesWithIcons += parents[company].websites.length
+        })
+        return (
+          <SLogo>
+            {companiesWithIcons.map((company) => {
+              if (company)
+                return (
+                  <CompanyLogo
+                    parent={company}
+                    key={company}
+                    margin={"0px 6px 0px 6px"}
+                    data-for="default"
+                    data-tip={parents[company].websites.join("<br/>")}
+                  />
+                )
+            })}
+            <More amount={websites.length - numOfSitesWithIcons} />
+          </SLogo>
+        )
+      } else if (Object.keys(parents).length >= 1) {
+        const displayedCompanyName = Object.keys(parents)[0]
+        return (
+          <SLogo>
+            <div
+              data-for="default"
+              data-tip={parents[displayedCompanyName].websites.join("<br/>")}
+            >
+              {displayedCompanyName.charAt(0).toUpperCase() +
+                displayedCompanyName.substring(1)}
+            </div>
+            <More
+              amount={
+                websites.length - parents[displayedCompanyName].websites.length
+              }
+            />
+          </SLogo>
+        )
+      } else
+        return (
+          <SLogo>
+            {websites[0]}
+            <More amount={websites.length - 1} />
+          </SLogo>
+        )
+    }
+
     return (
       <>
         <SSeperator marginTop="16px" marginBottom="0px" />
-        <SLogo>
-          {parentCompanies.map((company) => (
-            <CompanyLogo
-              parent={company}
-              key={company}
-              margin={"8px 4px 0px 4px"}
-            />
-          ))}
-        </SLogo>
+        <ThirdPartyContent />
       </>
-    );
-  };
+    )
+  }
 
   return (
     <SCard margin={margin} onClick={onTap} popup={popup}>
-      <SHeader>
-        <SHeaderLeading>
-          {Icons.getLabelIcon(label)}
-          <SHeaderTitle>{privacyLabels[label]["displayName"]}</SHeaderTitle>
-        </SHeaderLeading>
-        <SHeaderTrailing>
-          <Icons.ChevronRight size="24px" />
-        </SHeaderTrailing>
-      </SHeader>
-      <SDescription>{getDescription()}</SDescription>
-      {getThirdParties()}
+      {requests == "empty" ? (
+        <SkeletonTheme
+          color="var(--cardColor)"
+          highlightColor="var(--cardLoaderColor)"
+        >
+          <Skeleton height={"140px"} style={{ borderRadius: "16px" }} />
+        </SkeletonTheme>
+      ) : (
+        <SContent>
+          <SHeader>
+            <SHeaderLeading>
+              {Icons.getLabelIcon(label)}
+              <SHeaderTitle>{privacyLabels[label]["displayName"]}</SHeaderTitle>
+            </SHeaderLeading>
+            <SHeaderTrailing>
+              <Icons.ChevronRight size="24px" />
+            </SHeaderTrailing>
+          </SHeader>
+          <SDescription>{getDescription()}</SDescription>
+          {getThirdParties()}
+        </SContent>
+      )}
     </SCard>
-  );
-};
+  )
+}
 
-export default LabelCard;
+export default LabelCard

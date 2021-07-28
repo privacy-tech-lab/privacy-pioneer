@@ -17,6 +17,9 @@ import Item from "./components/item";
 
 /**
  * Detailed view of label and third parties
+ * @param {string} label associated label
+ * @param {string} website websites we are looking at
+ * @param {Array<object>} requests evidence objects we created
  */
 const LabelDetail = ({ label, website, requests }) => {
   const urls = Object.keys(requests); // detected request urls containing identified data

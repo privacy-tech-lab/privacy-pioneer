@@ -1,7 +1,8 @@
 {
   "name": "integrated-privacy-analysis",
   "version": "0.0.1",
-  "permissions": ["webRequest", "<all_urls>", "webRequestBlocking", "geolocation", "storage", "tabs", "history"],
+  "permissions": ["webRequest", "<all_urls>", "webRequestBlocking", "geolocation", 
+    "storage", "tabs", "history", "downloads"],
   "manifest_version": 2,
   "background": {
     "scripts": ["bundle.background.js"]

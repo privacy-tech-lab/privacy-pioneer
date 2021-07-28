@@ -32,15 +32,15 @@ export class Request {
     type,
     urlClassification,
   }) {
-    this.id = id;
-    this.requestHeaders = requestHeaders;
-    this.responseHeaders = responseHeaders;
-    this.responseData = responseData;
-    this.requestBody = requestBody;
-    this.details = details;
-    this.error = error;
-    this.type = type;
-    this.urlClassification = urlClassification;
+    this.id = id
+    this.requestHeaders = requestHeaders
+    this.responseHeaders = responseHeaders
+    this.responseData = responseData
+    this.requestBody = requestBody
+    this.details = details
+    this.error = error
+    this.type = type
+    this.urlClassification = urlClassification
   }
 }
 
@@ -55,7 +55,7 @@ export const resourceTypeEnum = Object.freeze({
   subFrame: "sub_frame",
   WebSocket: "websocket",
   mainFrame: "main_frame",
-});
+})
 
 /**
  * An evidence object created from a request
@@ -69,6 +69,7 @@ export const resourceTypeEnum = Object.freeze({
  * @property {Array|undefined} index A length 2 array with the indexes of the evidence or undefined if not applicable
  * @property {boolean} firstPartyRoot A boolean indicating if the evidence was generated with a first party root (the rootUrl of the request is the same as the website that generated the request)
  * @property {string|null} parentCompany If we have identified a parent company for this url, we store it here for the frontend. Else, null.
+ * @property {string|undefined} watchlistHash If the evidence is from our watchlist, this is the id of that item. Used for deletion of evidence on deletion of watchlist item
  * @property {string|undefined} extraDetail Extra details as needed. Currently only used for encoded email's original email
  */
 export class Evidence {
@@ -82,18 +83,20 @@ export class Evidence {
     index,
     firstPartyRoot,
     parentCompany,
+    watchlistHash,
     extraDetail,
   }) {
-    this.timestamp = timestamp;
-    this.permission = permission;
-    this.rootUrl = rootUrl;
-    this.snippet = snippet;
-    this.requestUrl = requestUrl;
-    this.typ = typ;
-    this.index = index === undefined ? -1 : index;
-    this.firstPartyRoot = firstPartyRoot;
-    this.parentCompany = parentCompany;
-    this.extraDetail = extraDetail;
+    this.timestamp = timestamp
+    this.permission = permission
+    this.rootUrl = rootUrl
+    this.snippet = snippet
+    this.requestUrl = requestUrl
+    this.typ = typ
+    this.index = index === undefined ? -1 : index
+    this.firstPartyRoot = firstPartyRoot
+    this.parentCompany = parentCompany
+    this.watchlistHash = watchlistHash
+    this.extraDetail = extraDetail
   }
 }
 
@@ -103,7 +106,15 @@ export class Evidence {
 export const storeEnum = Object.freeze({
   firstParty: "firstPartyEvidence",
   thirdParty: "thirdPartyEvidence",
-});
+})
+
+/**
+ * @enum {string} Enum used to reference file formats that are available for export
+ */
+export const exportTypeEnum = Object.freeze({
+  JSON: "JSON",
+  TSV: "tsv",
+})
 
 /**
  * permissions are the broader category that types belong to (see typeEnum)
@@ -114,7 +125,7 @@ export const permissionEnum = Object.freeze({
   location: "location",
   watchlist: "watchlist",
   tracking: "tracking",
-});
+})
 
 /**
  * All types fall under a permission (see permissionEnum)
@@ -128,7 +139,7 @@ export const typeEnum = Object.freeze({
 
   // location types
   coarseLocation: "coarseLocation",
-  tightLocation: "tightLocation",
+  fineLocation: "fineLocation",
   zipCode: "zipCode",
   streetAddress: "streetAddress",
   city: "city",
@@ -145,7 +156,7 @@ export const typeEnum = Object.freeze({
   possiblePixel: "possiblePixel",
   ipAddress: "ipAddress",
   fingerprinting: "fingerprinting",
-});
+})
 
 /**
  * An object containing the keyword types for the watchlist and information to populate defaults.
@@ -189,7 +200,7 @@ export const keywordTypes = Object.freeze({
     toolTip:
       "Google: What's my IP?. <br/> We will only flag instances where your IP is shared with a 3rd party.<br/> All websites you connect to have access to your IP address.",
   },
-});
+})
 
 /**
  * An object used by the front end to create labels. Before displaying evidence pulled from the DB, the front-end checks that the
@@ -222,12 +233,13 @@ export const privacyLabels = Object.freeze({
     types: {
       coarseLocation: {
         displayName: "Coarse Location",
-        description: "",
-      },
-      tightLocation: {
-        displayName: "Tight Location",
         description:
-          "Your Tight Location (lattitude and longitude coordinates) were found in a request.",
+          "Your Coarse Location (lattitude and longitude coordinates within 1 degree) were found in a request.",
+      },
+      fineLocation: {
+        displayName: "Fine Location",
+        description:
+          "Your Fine Location (lattitude and longitude coordinates) were found in a request.",
       },
       zipCode: {
         displayName: "Zip Code",
@@ -298,4 +310,4 @@ export const privacyLabels = Object.freeze({
       },
     },
   },
-});
+})

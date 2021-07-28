@@ -72,17 +72,10 @@ export const SNavAction = styled.div`
   ${(props) =>
     props.active
       ? css`
-          color: var(--primaryBrandColor);
+          color: var(--primaryHighlightColor);
           path,
           circle {
-            fill: var(--primaryBrandColor);
-          }
-          @media (prefers-color-scheme: dark) {
-            color: var(--primaryBrandTintColor);
-            path,
-            circle {
-              fill: var(--primaryBrandTintColor);
-            }
+            fill: var(--primaryHighlightColor);
           }
         `
       : css`
