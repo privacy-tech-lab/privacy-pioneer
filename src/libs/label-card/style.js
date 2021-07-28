@@ -88,7 +88,7 @@ export const SMore = styled.div`
   align-items: center;
   border-radius: 8px;
   padding: 2px 4px;
-  background-color: var(--primaryBrandTintColor);
+  background-color: var(--primaryHighlightColor);
   color: var(--tintTextColor);
   margin-left: 12px;
   font-size: var(--headline);

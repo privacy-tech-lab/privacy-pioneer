@@ -17,6 +17,7 @@ import { privacyLabels } from "../../background/analysis/classModels"
 import { CompanyLogo } from "../website-logo"
 import { getParents } from "../company-icons/getCompany.js"
 import Skeleton, { SkeletonTheme } from "react-loading-skeleton"
+
 /**
  * Card that briefly summarizes label and description for website
  */
@@ -143,7 +144,7 @@ const LabelCard = ({ requests, website, label, margin, onTap, popup }) => {
           color="var(--cardColor)"
           highlightColor="var(--cardLoaderColor)"
         >
-          <Skeleton height={"140px"} />
+          <Skeleton height={"140px"} style={{ borderRadius: "16px" }} />
         </SkeletonTheme>
       ) : (
         <SContent>
