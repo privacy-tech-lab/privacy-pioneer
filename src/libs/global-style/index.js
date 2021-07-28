@@ -1,5 +1,5 @@
-import { createGlobalStyle, css } from "styled-components";
-import { getTheme, settingsEnum } from "../settings";
+import { createGlobalStyle, css } from "styled-components"
+import { getTheme, settingsEnum } from "../settings"
 
 /**
  * Global style targeted for popup
@@ -15,7 +15,7 @@ const Popup = css`
     font-family: "Source Sans Pro", sans-serif;
     line-height: normal;
   }
-`;
+`
 
 /**
  * Global style targeted for options page
@@ -35,7 +35,7 @@ const Options = css`
     color: var(--primaryTextColor);
     font-size: var(--body1);
   }
-`;
+`
 
 /**
  * Styled component that creates global style
@@ -49,17 +49,18 @@ const defaultTheme = css`
     // Colors
     --primaryBrandColor: #6b219f;
     --primaryBrandTintColor: #f2e8f9;
-    --backgroundColor: #fcffff; 
+    --backgroundColor: #fcffff;
     --primaryTextColor: #000000;
     --secondaryTextColor: #3c3c43;
-    --cardColor: #ededed;
+    --cardColor: #e0e0e0;
+    --cardLoaderColor: #ebebeb;
     --textFieldColor: #f2e8f9;
     --inputTextFieldColor: #c6cdd2;
     --seperatorColor: #c6c6c8;
     --tintTextColor: white;
     --primaryHighlightColor: #6b219f;
   }
-`;
+`
 
 const darkTheme = css`
   :root {
@@ -69,25 +70,26 @@ const darkTheme = css`
     --primaryTextColor: #ffffff;
     --secondaryTextColor: #ebebf5;
     --cardColor: #2c2c2e;
+    --cardLoaderColor: #323234;
     --textFieldColor: #3a3a3c;
     --inputTextFieldColor: #3a3a3c;
     --seperatorColor: #38383a;
     --tintTextColor: black;
     --primaryHighlightColor: #f2e8f9;
   }
-`;
+`
 
 const systemTheme = css`
   ${defaultTheme}
   @media (prefers-color-scheme: dark) {
     ${darkTheme}
   }
-`;
+`
 const GlobalStyle = createGlobalStyle`
   ${(props) => {
-    if (props.theme == settingsEnum.light) return defaultTheme;
-    else if (props.theme == settingsEnum.dark) return darkTheme;
-    else return systemTheme;
+    if (props.theme == settingsEnum.light) return defaultTheme
+    else if (props.theme == settingsEnum.dark) return darkTheme
+    else return systemTheme
   }}
   :root{
     // Font sizes
@@ -103,6 +105,6 @@ const GlobalStyle = createGlobalStyle`
   path, circle {
     fill: var(--primaryTextColor);
   }
-`;
+`
 
-export default GlobalStyle;
+export default GlobalStyle

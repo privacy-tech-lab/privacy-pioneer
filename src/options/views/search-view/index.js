@@ -1,28 +1,23 @@
-import React, { useEffect, useState } from "react";
-import Scaffold from "../../components/scaffold";
-import { SBackButton, SInput, SInputContainer, STitle, STop } from "./style";
-import { SContainer, SSubtitle } from "./style";
-import * as Icons from "../../../libs/icons";
-import { Modal } from "bootstrap";
-import LabelModal from "../home-view/components/detail-modal";
-import WebsiteLabelList from "../../components/website-label-list";
-import { getLabels, getWebsites } from "../../../libs/indexed-db/getIdbData.js";
-import { useHistory, useLocation } from "react-router";
+import React, { useEffect, useState } from "react"
+import Scaffold from "../../components/scaffold"
+import { SBackButton, SInput, SInputContainer, STitle, STop } from "./style"
+import { SContainer, SSubtitle } from "./style"
+import * as Icons from "../../../libs/icons"
+import { Modal } from "bootstrap"
+import LabelModal from "../home-view/components/detail-modal"
+import WebsiteLabelList from "../../components/website-label-list"
+import { getLabels, getWebsites } from "../../../libs/indexed-db/getIdbData.js"
+import { useHistory, useLocation } from "react-router"
 
 /**
  * Search view allowing user to search from identified labels
  */
 const SearchView = () => {
-  const location = useLocation();
-  const [allWebsites, setAllWebsites] = useState({});
-  const [filteredSites, setFilter] = useState(
-    typeof location.state != "undefined" ? location.state[0] : {}
-  ); // all websites in DB (passed from previous page)
-  const [webLabels, setWebLabels] = useState(
-    typeof location.state != "undefined" ? location.state[1] : {}
-  ); // all labels in DB (passed from previous page)
-  const [modal, setModal] = useState({ show: false });
-  const history = useHistory();
+  const [allWebsites, setAllWebsites] = useState({})
+  const [filteredSites, setFilter] = useState({}) // all websites in DB (passed from previous page)
+  const [webLabels, setWebLabels] = useState({}) // all labels in DB (passed from previous page)
+  const [modal, setModal] = useState({ show: false })
+  const history = useHistory()
 
   /**
    * Filter websites based on user input string from text field
@@ -31,37 +26,28 @@ const SearchView = () => {
   const filter = (keyString) => {
     const filteredKeys = Object.keys(allWebsites).filter((k) =>
       k.includes(keyString)
-    );
-    var filteredWebsites = {};
+    )
+    var filteredWebsites = {}
     filteredKeys.forEach(
       (websiteName) =>
         (filteredWebsites[websiteName] = allWebsites[websiteName])
-    );
-    setFilter(filteredWebsites);
-  };
+    )
+    setFilter(filteredWebsites)
+  }
 
   const handleTap = (items) => {
-    const modal = new Modal(document.getElementById("detail-modal"));
-    setModal(items);
-    modal.show();
-  };
+    const modal = new Modal(document.getElementById("detail-modal"))
+    setModal(items)
+    modal.show()
+  }
 
   useEffect(() => {
     getWebsites().then((websites) => {
-      setAllWebsites(websites);
-
-      // we only call the setFilter and setWebLabels hooks if we weren't passed the data
-      // from the previous page
-      if (typeof location.state == "undefined") {
-        setFilter(websites);
-      }
-      if (typeof location.state == "undefined") {
-        getLabels().then((res) => {
-          setWebLabels(res.byWebsite);
-        });
-      }
-    });
-  }, []);
+      setAllWebsites(websites)
+      setFilter(websites)
+      getLabels().then((labels) => setWebLabels(labels))
+    })
+  }, [])
 
   return (
     <React.Fragment>
@@ -100,7 +86,7 @@ const SearchView = () => {
         </SContainer>
       </Scaffold>
     </React.Fragment>
-  );
-};
+  )
+}
 
-export default SearchView;
+export default SearchView
