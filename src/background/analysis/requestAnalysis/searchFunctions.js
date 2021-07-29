@@ -295,18 +295,24 @@ function regexSearch(strReq, keywordObj, rootUrl, reqUrl, type, perm = permissio
   } else if (keyword instanceof RegExp){
     let res = strReq.search(keyword)
     if (res != -1){
-      let kString = keyword.toString()
-      // The length of the keyword is relative to the length of the regex, so we need to eliminate the extra characters used by the regex
-      let len = kString.length - 3;
-      // If we are conditionally searching for special chars due to spaces in the state (eg. 'New York' as /New.?York/i), we should decrement length by 1
-      if (kString.search(/\?/) != -1) {
-        len -= 1
+      if (type == typeEnum.state){
+        let kString = keyword.toString()
+        // The length of the keyword is relative to the length of the regex, so we need to eliminate the extra characters used by the regex
+        let len = kString.length - 3;
+        // If we are conditionally searching for special chars due to spaces in the state (eg. 'New York' as /New.?York/i), we should decrement length by 1
+        if (kString.search(/\?/) != -1) {
+          len -= 1
+        }
+        // If the last char in the string is not matching up with what it should be due to a lack of special char (eg. "NEWYORK/" ends with '/' instead of 'K'), decrement length by 1
+        if (kString[kString.length - 3] != strReq[res + len -1]){
+          len -= 1
+        }
+        if (rootUrl) { output.push(createEvidenceObj(perm, rootUrl, strReq, reqUrl, type, [res, res + len], keywordIDWatch)) }
+      } else if (type == typeEnum.ipAddress){
+        const ipLen = keywordObj.ipLen
+        res += 1
+        output.push(createEvidenceObj(perm, rootUrl, strReq, reqUrl, type, [res, res + ipLen], keywordIDWatch))
       }
-      // If the last char in the string is not matching up with what it should be due to a lack of special char (eg. "NEWYORK/" ends with '/' instead of 'K'), decrement length by 1
-      if (kString[kString.length - 3] != strReq[res + len -1]){
-        len -= 1
-      }
-      if (rootUrl) { output.push(createEvidenceObj(perm, rootUrl, strReq, reqUrl, type, [res, res + len], keywordIDWatch)) }
     }
   }
   return output
@@ -425,8 +431,28 @@ function ipSearch(strReq, ip, rootUrl, reqUrl) {
     return
   }
 
-  //otherwise just do a standard text search
-  return regexSearch(strReq, ip, rootUrl, reqUrl, typeEnum.ipAddress, permissionEnum.tracking) 
+  const ipAddress = ip.keyword
+
+  //otherwise create a RegExp of the string
+  var strIP = '\\D'
+  for (let i = 0; i < ipAddress.length; i++){
+    if (ipAddress[i].search(/\D/)) {
+      strIP += ipAddress[i]
+    } else {
+      strIP += '\\D'
+    }
+  }
+  strIP += '\\D'
+  let ipRegex = new RegExp(strIP)
+
+  // build a new object so regexSearch can work correctly
+  const ipObj = {
+    keyword: ipRegex,
+    keywordHash: ip.keywordHash,
+    ipLen: ipAddress.length
+  }
+
+  return regexSearch(strReq, ipObj, rootUrl, reqUrl, typeEnum.ipAddress, permissionEnum.tracking) 
 }
 
 
