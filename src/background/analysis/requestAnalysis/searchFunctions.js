@@ -274,8 +274,9 @@ function coordinateSearch(strReq, locData, rootUrl, reqUrl) {
  * @returns {Array<Array>|Array} An array of arrays with the search results [] if no result 
  *
  */
-function regexSearch(strReq, keyword, rootUrl, reqUrl, type, perm = permissionEnum.watchlist ) {
-  let keywordIDWatch = watchlistHashGen(type, keyword)
+function regexSearch(strReq, keywordObj, rootUrl, reqUrl, type, perm = permissionEnum.watchlist ) {
+  const keywordIDWatch = keywordObj.keywordHash
+  const keyword = keywordObj.keyword
   var output = []
   if (typeof keyword == 'string'){
     let fixed = escapeRegExp(keyword)
@@ -447,14 +448,15 @@ function encodedEmailSearch(strReq, networkKeywords, rootUrl, reqUrl) {
   const encodedObj = networkKeywords[permissionEnum.watchlist][typeEnum.encodedEmail]
   const emails = Object.keys(encodedObj)
   emails.forEach(email => {
-    let emailIDWatch = watchlistHashGen(typeEnum.emailAddress, email)
     let encodeLst = encodedObj[email]
     encodeLst.forEach(encodedEmail => {
-      let fixed = escapeRegExp(encodedEmail)
+      const encoded = encodedEmail.keyword
+      const hashed = encodedEmail.keywordHash
+      let fixed = escapeRegExp(encoded)
       let re = new RegExp(`${fixed}`, "i");
       let output = strReq.search(re)
       if (output != -1) {
-       output.push(createEvidenceObj(permissionEnum.watchlist, rootUrl, strReq, reqUrl, typeEnum.encodedEmail, [output, output+encodedEmail.length], emailIDWatch, email))
+       output.push(createEvidenceObj(permissionEnum.watchlist, rootUrl, strReq, reqUrl, typeEnum.encodedEmail, [output, output+encoded.length], hashed, email))
       }
     })
   })
