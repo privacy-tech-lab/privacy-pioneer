@@ -275,6 +275,7 @@ function coordinateSearch(strReq, locData, rootUrl, reqUrl) {
  *
  */
 function regexSearch(strReq, keywordObj, rootUrl, reqUrl, type, perm = permissionEnum.watchlist ) {
+
   const keywordIDWatch = keywordObj.keywordHash
   const keyword = keywordObj.keyword
   var output = []
@@ -286,18 +287,15 @@ function regexSearch(strReq, keywordObj, rootUrl, reqUrl, type, perm = permissio
   } 
   else if (keyword instanceof RegExp) {
     const res = strReq.match(keyword)
-    if (res != null){
-      const len = res[0].length
-      const startIndex = res.index
-      if (type == typeEnum.zipCode){
-        // length adjustments because our zipRegex requires non-digits on either end
+    if (res != null) {
+      var len = res[0].length
+      var startIndex = res.index
+      // update indexes based on how the regex was structured
+      if (type == typeEnum.zipCode) {
         startIndex += 1
         len -= 2
-        if (rootUrl) { output.push(createEvidenceObj(perm, rootUrl, strReq, reqUrl, type, [startIndex, startIndex + len], keywordIDWatch)) }
-      } 
-      else {
-        if (rootUrl) { output.push(createEvidenceObj(perm, rootUrl, strReq, reqUrl, type, [startIndex, startIndex + len], keywordIDWatch)) }
       }
+      if (rootUrl) { output.push(createEvidenceObj(perm, rootUrl, strReq, reqUrl, type, [startIndex, startIndex + len], keywordIDWatch)) }
     }
   }
   return output

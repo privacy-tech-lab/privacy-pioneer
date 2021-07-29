@@ -80,7 +80,7 @@ async function importData() {
             [abrev, state] = getState(zip)
             if (typeof state !== 'undefined') { userStateArr.push(state) }
         } )
-        if ( userState === undefined || userState.length == 0 ) {
+        if ( userStateArr === undefined || userStateArr.length == 0 ) {
             // invalid zip input
         }
         else { locElems[typeEnum.state] = userStateArr }
