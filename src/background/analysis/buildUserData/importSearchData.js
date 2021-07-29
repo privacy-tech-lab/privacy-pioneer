@@ -6,11 +6,11 @@ both the URL and the keyword list for words and URLs to look for in the
 network requests
 */
 import { getLocationData, filterGeocodeResponse } from "./getLocationData.js"
-import { buildPhone, getState } from '../buildUserData/structuredRoutines.js'
+import { buildPhone, getState, buildIpRegex, buildZipRegex } from '../buildUserData/structuredRoutines.js'
 import { typeEnum, permissionEnum } from "../classModels.js"
 import {setEmail, digestMessage, hexToBase64} from '../requestAnalysis/encodedEmail.js';
 import { getWatchlistDict, hashUserDictValues, createKeywordObj } from "./structureUserData.js";
-import { watchlistHashGen } from "../utility/util.js";
+import { createEvidenceObj, watchlistHashGen } from "../utility/util.js";
 
 // import keywords, services JSONs
 const keywords = require("../../../assets/keywords.json");
@@ -69,18 +69,23 @@ async function importData() {
 
     if (typeEnum.zipCode in user_store_dict) {
         const userZip = user_store_dict[typeEnum.zipCode]
-        locElems[typeEnum.zipCode] = userZip
-        var userState = []
-
+        var userStateArr = []
+        var userZipArr = []
         userZip.forEach( zip => {
+            const origHash = watchlistHashGen(typeEnum.zipCode, zip)
+            const zipRegex = buildZipRegex(zip)
+            const zipObj = createKeywordObj(zipRegex, origHash)
+            userZipArr.push(zipObj)
             let abrev, state;
             [abrev, state] = getState(zip)
-            if (typeof state !== 'undefined') { userState.push(state) }
+            if (typeof state !== 'undefined') { userStateArr.push(state) }
         } )
-        if ( userState === undefined || userState.length == 0 ) {
+        if ( userStateArr === undefined || userStateArr.length == 0 ) {
             // invalid zip input
         }
-        else { locElems[typeEnum.state] = userState }
+        else { locElems[typeEnum.state] = userStateArr }
+
+        locElems[typeEnum.zipCode] = userZipArr
     }
 
     if (typeEnum.city in user_store_dict) {
@@ -117,7 +122,14 @@ async function importData() {
     }
 
     if (typeEnum.ipAddress in user_store_dict) {
-        networkKeywords[permissionEnum.watchlist][typeEnum.ipAddress] = user_store_dict[typeEnum.ipAddress]
+        var ipArr = []
+        for ( const ip of user_store_dict[typeEnum.ipAddress] ) {
+            const origHash = watchlistHashGen(typeEnum.ipAddress, ip)
+            const ipRegex = buildIpRegex(ip)
+            const ipObj = createKeywordObj(ipRegex, typeEnum.ipAddress, origHash)
+            ipArr.push(ipObj)
+        }
+        networkKeywords[permissionEnum.watchlist][typeEnum.ipAddress] = ipArr
     }
 
     // build tracking info
