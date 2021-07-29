@@ -132,7 +132,7 @@ function updateFetchedDict(evidenceDict, e) {
       // if type is in the permission
       if (t in evidence[perm]) {
         let hardNo = reqUrl in evidence[perm][t];
-        let belowEvidenceCap = (Object.keys(evidence[perm][t]).length < 5)
+        let belowEvidenceCap = true
         // if we have less than 5 different reqUrl's for this permission and this is a unique reqUrl, we save the evidence
         if ( (pushThrough || (belowEvidenceCap)) && !hardNo) {
           evidence[perm][t][reqUrl] = e
