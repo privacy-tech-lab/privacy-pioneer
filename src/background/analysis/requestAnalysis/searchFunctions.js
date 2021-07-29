@@ -292,7 +292,7 @@ function regexSearch(strReq, keywordObj, rootUrl, reqUrl, type, perm = permissio
       res = strReq.search(re)
     }
     if (res != -1) { output.push(createEvidenceObj(perm, rootUrl, strReq, reqUrl, type, [res, res + keyword.length], keywordIDWatch)) }
-  } else if (keyword instanceof RegExp){
+  } else if (keyword instanceof RegExp) {
     let res = strReq.search(keyword)
     if (res != -1){
       if (type == typeEnum.state){
@@ -429,27 +429,6 @@ function ipSearch(strReq, ip, rootUrl, reqUrl) {
   // we're only interested in third party requests
   if ( getHostname(rootUrl) === getHostname(reqUrl) ) {
     return
-  }
-
-  const ipAddress = ip.keyword
-
-  //otherwise create a RegExp of the string
-  var strIP = '\\D'
-  for (let i = 0; i < ipAddress.length; i++){
-    if (ipAddress[i].search(/\D/)) {
-      strIP += ipAddress[i]
-    } else {
-      strIP += '\\D'
-    }
-  }
-  strIP += '\\D'
-  let ipRegex = new RegExp(strIP)
-
-  // build a new object so regexSearch can work correctly
-  const ipObj = {
-    keyword: ipRegex,
-    keywordHash: ip.keywordHash,
-    ipLen: ipAddress.length
   }
 
   return regexSearch(strReq, ipObj, rootUrl, reqUrl, typeEnum.ipAddress, permissionEnum.tracking) 

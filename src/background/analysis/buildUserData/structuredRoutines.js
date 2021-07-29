@@ -246,4 +246,32 @@ function buildPhone(userNumber) {
   }
 
 
-export { buildPhone, getState }
+/**
+ * Turns an IP into a regex that supports wildcard separators
+ * @param {string} ipAddress
+ * @returns {RegExp} ip param as a regex
+ */
+function buildIpRegex(ipAddress) {
+
+    var buildRegexString = []
+
+    for ( let i = 0; i < ipAddress.length; i ++) {
+
+        const c = ipAddress.charAt(i)
+        // add digits regularly
+        if ( c >= '0' && c <= '9' ) {
+            buildRegexString.push(c)
+        }
+        // optional non-digit otherwise
+        else {
+            buildRegexString.push('\D?')
+        }
+    }
+
+    const strIp = buildRegexString.join('')
+    return new RegExp(strIp)
+
+}
+
+
+export { buildPhone, getState, buildIpRegex }
