@@ -280,38 +280,23 @@ function regexSearch(strReq, keywordObj, rootUrl, reqUrl, type, perm = permissio
   var output = []
   if (typeof keyword == 'string'){
     let fixed = escapeRegExp(keyword)
-    let re;
-    let res = 0;
-    if (type == typeEnum.zipCode){
-      re = new RegExp(`[^0-9]${fixed}[^0-9]`)
-      // since "a12345a" is a valid search, we would need to add one to the search result so that we display "12345", not "a1234"
-      let zipSearch = strReq.search(re)
-      res = zipSearch != -1 ? zipSearch+1 : -1
-    } else {
-      re = new RegExp(`${fixed}`, "i");
-      res = strReq.search(re)
-    }
+    const re = new RegExp(`${fixed}`, "i");
+    const res = strReq.search(re)
     if (res != -1) { output.push(createEvidenceObj(perm, rootUrl, strReq, reqUrl, type, [res, res + keyword.length], keywordIDWatch)) }
-  } else if (keyword instanceof RegExp) {
-    let res = strReq.search(keyword)
-    if (res != -1){
-      if (type == typeEnum.state){
-        let kString = keyword.toString()
-        // The length of the keyword is relative to the length of the regex, so we need to eliminate the extra characters used by the regex
-        let len = kString.length - 3;
-        // If we are conditionally searching for special chars due to spaces in the state (eg. 'New York' as /New.?York/i), we should decrement length by 1
-        if (kString.search(/\?/) != -1) {
-          len -= 1
-        }
-        // If the last char in the string is not matching up with what it should be due to a lack of special char (eg. "NEWYORK/" ends with '/' instead of 'K'), decrement length by 1
-        if (kString[kString.length - 3] != strReq[res + len -1]){
-          len -= 1
-        }
-        if (rootUrl) { output.push(createEvidenceObj(perm, rootUrl, strReq, reqUrl, type, [res, res + len], keywordIDWatch)) }
-      } else if (type == typeEnum.ipAddress){
-        const ipLen = keywordObj.ipLen
-        res += 1
-        output.push(createEvidenceObj(perm, rootUrl, strReq, reqUrl, type, [res, res + ipLen], keywordIDWatch))
+  } 
+  else if (keyword instanceof RegExp) {
+    const res = strReq.match(keyword)
+    if (res != null){
+      const len = res[0].length
+      const startIndex = res.index
+      if (type == typeEnum.zipCode){
+        // length adjustments because our zipRegex requires non-digits on either end
+        startIndex += 1
+        len -= 2
+        if (rootUrl) { output.push(createEvidenceObj(perm, rootUrl, strReq, reqUrl, type, [startIndex, startIndex + len], keywordIDWatch)) }
+      } 
+      else {
+        if (rootUrl) { output.push(createEvidenceObj(perm, rootUrl, strReq, reqUrl, type, [startIndex, startIndex + len], keywordIDWatch)) }
       }
     }
   }
@@ -423,7 +408,7 @@ function pixelSearch(strReq, networkKeywords, rootUrl, reqUrl) {
  * @param {string} reqUrl The request url as a string
  * @returns {Array<Array>|Array} An array of arrays with the search results [] if no result 
  */
-function ipSearch(strReq, ip, rootUrl, reqUrl) {
+function ipSearch(strReq, ipObj, rootUrl, reqUrl) {
 
   if ( rootUrl === undefined || reqUrl === undefined ) { return }
   // we're only interested in third party requests

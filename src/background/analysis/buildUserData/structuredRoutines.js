@@ -264,7 +264,7 @@ function buildIpRegex(ipAddress) {
         }
         // optional non-digit otherwise
         else {
-            buildRegexString.push('\D?')
+            buildRegexString.push('\\D?')
         }
     }
 
@@ -273,5 +273,9 @@ function buildIpRegex(ipAddress) {
 
 }
 
+function buildZipRegex(zip) {
+    return new RegExp(`[^0-9]${zip}[^0-9]`)
+}
 
-export { buildPhone, getState, buildIpRegex }
+
+export { buildPhone, getState, buildIpRegex, buildZipRegex }
