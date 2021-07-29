@@ -88,9 +88,6 @@ function createKeywordObj(keyword, typ, hash = null, ) {
 
 function hashUserDictValues( networkKeywords ) {
 
-
-    console.log(networkKeywords)
-
     const permSet = new Set( [ permissionEnum.location, permissionEnum.watchlist ] );
     const excludedSet = new Set( [ typeEnum.phoneNumber, typeEnum.encodedEmail ]) // these get hashed in importData
 
