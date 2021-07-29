@@ -40,7 +40,7 @@ const LabelCard = ({ requests, website, label, margin, onTap, popup }) => {
           <SBadge>First Party</SBadge>
           <SBadge>
             {urls.length - 1}
-            {urls.length - 1 > 1 ? " Thrid Parties" : " Thrid Party"}
+            {urls.length - 1 > 1 ? " Third Parties" : " Third Party"}
           </SBadge>
         </div>
       )

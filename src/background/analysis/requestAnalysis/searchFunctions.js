@@ -360,17 +360,10 @@ function pixelSearch(strReq, networkKeywords, rootUrl, reqUrl) {
   var output = []
   const pixelUrls = networkKeywords[permissionEnum.tracking][typeEnum.trackingPixel]
   for (let url of pixelUrls) {
-    let searchIndex = strReq.indexOf(url)
+    let searchIndex = reqUrl.indexOf(url)
     if (searchIndex != -1) {
-      let reqUrlIndex = strReq.indexOf(reqUrl)
-      // preference to show the reqUrl on the front end
-      if (reqUrlIndex != -1) {
+        let reqUrlIndex = strReq.indexOf(reqUrl)
         output.push(createEvidenceObj(permissionEnum.tracking, rootUrl, strReq, reqUrl, typeEnum.trackingPixel, [reqUrlIndex, reqUrlIndex + reqUrl.length]))
-      }
-      // otherwise show the url from the pixel list on the front end
-      else {
-        output.push(createEvidenceObj(permissionEnum.tracking, rootUrl, strReq, reqUrl, typeEnum.trackingPixel, [searchIndex, searchIndex + url.length]))
-      }  
     }
   }
   return output
