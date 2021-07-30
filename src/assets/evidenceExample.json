@@ -15,8 +15,8 @@
     "dataJson": {
         "invasive_site.com": {
             "monetization": {
-                "advertising": {
-                    "googlesyndication.com": {
+                "googlesyndication.com": {
+                    "advertising": {
                         "timestamp": 1627654159307,
                         "permission": "monetization",
                         "rootUrl": "https://www.invasive_site.com",
@@ -28,8 +28,8 @@
                         "parentCompany": "Google"
                     }
                 },
-                "analytics": {
-                    "other_site.com": {
+                "other_site.com": {
+                    "analytics": {
                         "timestamp": 1627654159307,
                         "permission": "monetization",
                         "rootUrl": "https://www.invasive_site.com",
@@ -41,8 +41,8 @@
                         "parentCompany": null
                     }
                 },
-                "social": {
-                    "facebook.com": {
+                "facebook.com": {
+                    "social": {
                         "timestamp": 1627654159307,
                         "permission": "monetization",
                         "rootUrl": "https://www.invasive_site.com",
@@ -55,9 +55,9 @@
                     }
                 }
             },
-            "tracking":{
-                "trackingPixel": {
-                    "facebook.com": {
+            "tracking": {
+                "facebook.com": {
+                    "trackingPixel": {
                         "timestamp": 1627654152328,
                         "permission": "tracking",
                         "rootUrl": "https://www.invasive_site.com/",
@@ -65,8 +65,8 @@
                         "requestUrl": "https://www.facebook.com/tr/?id=716354627384627&ev=PageView&dl=https%3A%2F%2Fwww.get_location.com%2F&rl=https%3A%2F%2Fwww.google.com%2F&if=false&ts=71836254637281&sw=8284&sh=1763&v=2.9.16&r=stable&ec=0&o=29&fbp=fb.1.73826573948170.7183526478&it=8174627485926&coo=false&dpo=LQU&dpico=0&dpost=0&rqm=GET",
                         "typ": "trackingPixel",
                         "index": [
-                            301,
-                            601
+                            300,
+                            600
                         ],
                         "firstPartyRoot": true,
                         "parentCompany": "Facebook"
@@ -76,8 +76,8 @@
         },
         "get_location.com": {
             "location": {
-                "fineLocation": {
-                    "onetrust.com": {
+                "onetrust.com": {
+                    "fineLocation": {
                         "timestamp": 1627654148121,
                         "permission": "location",
                         "rootUrl": "https://get_location.com",
@@ -86,14 +86,12 @@
                         "typ": "fineLocation",
                         "index": [
                             272,
-                            300
+                            280
                         ],
                         "firstPartyRoot": true,
                         "parentCompany": null
-                    }
-                },
-                "zipCode": {
-                    "onetrust.com": {
+                    },
+                    "zipCode": {
                         "timestamp": 1627654148121,
                         "permission": "location",
                         "rootUrl": "https://get_location.com",
@@ -106,10 +104,8 @@
                         ],
                         "firstPartyRoot": true,
                         "parentCompany": null
-                    }
-                },
-                "state": {
-                    "onetrust.com": {
+                    },
+                    "state": {
                         "timestamp": 1627654148121,
                         "permission": "location",
                         "rootUrl": "https://get_location.com",
