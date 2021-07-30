@@ -101,6 +101,18 @@ export class Evidence {
 }
 
 /**
+ * @class KeywordObject
+ * @property {string|RegExp} keyword A keyword we search for
+ * @property {number} keywordHash The keywords asssociated hash
+ */
+export class KeywordObject {
+  constructor({ keyword, keywordHash }) {
+    this.keyword = keyword
+    this.keywordHash = keywordHash
+  }
+}
+
+/**
  * @enum {string} Enum used to reference which evidenceKeyval object store you want
  */
 export const storeEnum = Object.freeze({
