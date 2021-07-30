@@ -144,6 +144,7 @@ export const ThemeSelection = ({ changeTheme }) => {
 export const ExportData = () => {
   const [showDropdown, setDropdown] = useState(false)
   const [timeRange, setTimeRange] = useState(timeRangeEnum.allTime)
+  const [dropdownTitle, setTitle] = useState('All Time')
   const dropdownRef = useRef()
   const blur = (event) => {
     if (!dropdownRef.current.contains(event.target)) {
@@ -161,27 +162,45 @@ export const ExportData = () => {
         ref={dropdownRef}
       >
         <SDropdownOptions show={showDropdown}>
-          <SDropdownItem onClick = { () => setTimeRange(timeRangeEnum.allTime)}>
+          <SDropdownItem onClick = { () => {
+            setTimeRange(timeRangeEnum.allTime);
+            setTitle('All Time');
+          }}>
             All Time 
           </SDropdownItem>
-          <SDropdownItem onClick = { () => setTimeRange(timeRangeEnum.lastMonth)}>
+          <SDropdownItem onClick = { () => {
+            setTimeRange(timeRangeEnum.lastMonth);
+            setTitle('Last Month');
+          }}>
             Last Month
           </SDropdownItem>
-          <SDropdownItem onClick = { () => setTimeRange(timeRangeEnum.lastWeek)}>
+          <SDropdownItem onClick = { () => {
+            setTimeRange(timeRangeEnum.lastWeek);
+            setTitle('Last Week');
+          }}>
             Last Week
           </SDropdownItem>
-          <SDropdownItem onClick = { () => setTimeRange(timeRangeEnum.lastDay)}>
+          <SDropdownItem onClick = { () => {
+            setTimeRange(timeRangeEnum.lastDay);
+            setTitle('Last Day');
+          }}>
             Last Day
           </SDropdownItem>
-          <SDropdownItem onClick = { () => setTimeRange(timeRangeEnum.lastHour)}>
+          <SDropdownItem onClick = { () => {
+            setTimeRange(timeRangeEnum.lastHour);
+            setTitle('Last Hour');
+          }}>
             Last Hour
           </SDropdownItem>
-          <SDropdownItem onClick = { () => setTimeRange(timeRangeEnum.lastMinute)}>
+          <SDropdownItem onClick = { () => {
+            setTimeRange(timeRangeEnum.lastMinute);
+            setTitle('Last Minute');
+          }}>
             Last Minute
           </SDropdownItem>
         </SDropdownOptions>
         <SDropdownSelection>
-          Select Time Range
+          {dropdownTitle}
           <Icons.ChevronDown size="24px" />
         </SDropdownSelection>
       </SDropdown>
