@@ -175,13 +175,13 @@ const Evidence = ({ collapseId, request, label, type }) => {
               </pre>
             </SEvidenceDescription>
         <SHeader marginTop="16px">◉ Request URL </SHeader>
-        <SBody>
-          <pre>
-            <code>{request != null ? request["requestUrl"] : ""}&nbsp;</code>
-          </pre>
-        </SBody>
         {data ?
           <div>
+            <SBody>
+              <pre>
+                <code>{request != null ? request["requestUrl"] : ""}&nbsp;</code>
+              </pre>
+            </SBody>
             <SHeader marginTop="16px" marginBottom="8px">
               ◉ Data Snippet
             </SHeader>
@@ -195,7 +195,14 @@ const Evidence = ({ collapseId, request, label, type }) => {
               </pre>
             </SCodeBlock>
           </div> 
-        : null} 
+        : <SCodeBlock>
+            <pre>
+              <code>
+                {request != null ? request["requestUrl"] : ""}&nbsp;
+              </code>
+            </pre>
+          </SCodeBlock>
+        } 
       </SContainer>
     </SCollapse>
   )
