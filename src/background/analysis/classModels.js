@@ -133,6 +133,19 @@ export const exportTypeEnum = Object.freeze({
 });
 
 /**
+ * @enum {number} Enum used to convert times to milliseconds. (Date.now uses milliseconds)
+ * allTime uses a 50 year bound.
+ */
+export const timeRangeEnum = Object.freeze({
+  lastMinute: 60000,
+  lastHour: 3.6e+6,
+  lastDay: 8.64e+7,
+  lastWeek: 6.048e+8,
+  lastMonth: 2.628e+9,
+  allTime: 1.577e+12,
+})
+
+/**
  * permissions are the broader category that types belong to (see typeEnum)
  * @enum {string} Enum used to reference permissions. Type: String
  */

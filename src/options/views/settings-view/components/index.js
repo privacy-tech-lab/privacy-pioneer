@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from "react"
-import { permissionEnum } from "../../../../background/analysis/classModels"
+import { permissionEnum, timeRangeEnum } from "../../../../background/analysis/classModels"
 import * as Icons from "../../../../libs/icons"
 import {
   deleteEvidenceDB,
@@ -143,6 +143,7 @@ export const ThemeSelection = ({ changeTheme }) => {
 }
 export const ExportData = () => {
   const [showDropdown, setDropdown] = useState(false)
+  const [timeRange, setTimeRange] = useState(timeRangeEnum.allTime)
   const dropdownRef = useRef()
   const blur = (event) => {
     if (!dropdownRef.current.contains(event.target)) {
@@ -160,10 +161,24 @@ export const ExportData = () => {
         ref={dropdownRef}
       >
         <SDropdownOptions show={showDropdown}>
-          <SDropdownItem>Test</SDropdownItem>
-          <SDropdownItem>Test</SDropdownItem>
-          <SDropdownItem>Hello Test</SDropdownItem>
-          <SDropdownItem>Test</SDropdownItem>
+          <SDropdownItem onClick = { () => setTimeRange(timeRangeEnum.allTime)}>
+            All Time 
+          </SDropdownItem>
+          <SDropdownItem onClick = { () => setTimeRange(timeRangeEnum.lastMonth)}>
+            Last Month
+          </SDropdownItem>
+          <SDropdownItem onClick = { () => setTimeRange(timeRangeEnum.lastWeek)}>
+            Last Week
+          </SDropdownItem>
+          <SDropdownItem onClick = { () => setTimeRange(timeRangeEnum.lastDay)}>
+            Last Day
+          </SDropdownItem>
+          <SDropdownItem onClick = { () => setTimeRange(timeRangeEnum.lastHour)}>
+            Last Hour
+          </SDropdownItem>
+          <SDropdownItem onClick = { () => setTimeRange(timeRangeEnum.lastMinute)}>
+            Last Minute
+          </SDropdownItem>
         </SDropdownOptions>
         <SDropdownSelection>
           Select Time Range
@@ -171,12 +186,12 @@ export const ExportData = () => {
         </SDropdownSelection>
       </SDropdown>
       <SExportButton
-        onClick = { () => initiateDownload(exportTypeEnum.TSV)}
+        onClick = { () => { initiateDownload(exportTypeEnum.TSV, timeRange) }}
       >
         TSV 
       </SExportButton>
       <SExportButton
-        onClick = { () => initiateDownload(exportTypeEnum.JSON)}
+        onClick = { () => initiateDownload(exportTypeEnum.JSON, timeRange)}
       >
         JSON 
       </SExportButton>

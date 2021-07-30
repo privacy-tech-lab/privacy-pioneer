@@ -4,15 +4,16 @@ import { buildTsvString } from "./createExportString.js";
 
 /**
  * Gets all evidence and returns an array of Evidence objects. No params. 
+ * @param {number} timeStampLB no evidence created before this number (date) should be exported
  * @returns {Promise<Array<Evidence>>} An array of all the evidence objects in the IndexedDB
  */
-async function buildEvidenceAsArray() {
+async function buildEvidenceAsArray(timeStampLB) {
 
     var evidenceArr = []
 
     // update the arr with the evidences in both stores
-    evidenceArr = await walkStoreAndBuildArr(storeEnum.firstParty, evidenceArr)
-    evidenceArr = await walkStoreAndBuildArr(storeEnum.thirdParty, evidenceArr)
+    evidenceArr = await walkStoreAndBuildArr(storeEnum.firstParty, evidenceArr, timeStampLB)
+    evidenceArr = await walkStoreAndBuildArr(storeEnum.thirdParty, evidenceArr, timeStampLB)
 
     return evidenceArr
 }
@@ -24,7 +25,7 @@ async function buildEvidenceAsArray() {
  * @param {Array} evidenceObjectArr The array we are building
  * @returns {Promise<Array<Evidence>>} 
  */
-async function walkStoreAndBuildArr(store, evidenceObjectArr) {
+async function walkStoreAndBuildArr(store, evidenceObjectArr, timeStampLB) {
 
     const allKeys = await evidenceKeyval.keys(store);
 
@@ -34,7 +35,9 @@ async function walkStoreAndBuildArr(store, evidenceObjectArr) {
         for (const [permLevel, typeLevel] of Object.entries(evidenceDict)) {
             for (const [type, reqUrlLevel] of Object.entries(typeLevel)){
                 for (const [reqUrl, evidenceObject] of Object.entries(reqUrlLevel)){
-                    evidenceObjectArr.push(evidenceObject)
+                    if (evidenceObject.timestamp > timeStampLB){
+                        evidenceObjectArr.push(evidenceObject)
+                    }
                 }
             }
         }
@@ -75,11 +78,12 @@ function createTsvBlob(arr) {
 /**
  * Creates the blob to be downloaded by the user. Defaults to CSV because output is much smaller.
  * @param {string} blobType A string specifying what kind of blob to create
+ * @param {number} timeStampLB no evidence created before this number (date) should be exported
  * @returns {Promise<Blob>}
  */
-async function createBlob(blobType = exportTypeEnum.TSV) {
+async function createBlob(blobType = exportTypeEnum.TSV, timeStampLB) {
 
-    const dataArr = await buildEvidenceAsArray()
+    const dataArr = await buildEvidenceAsArray(timeStampLB)
     
     switch (blobType) {
         case exportTypeEnum.JSON:
