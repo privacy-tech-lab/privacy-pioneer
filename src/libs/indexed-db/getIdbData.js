@@ -157,9 +157,7 @@ export const getLabels = async () => {
   let res = {}
   var labels = await getAllWebsiteLabels()
   const websites = Object.keys(await getWebsites())
-  console.log(websites[0])
   if (websites[0] == "invasive_site.com") {
-    console.log('in labels')
     labels = exData.dataJson
   }
   const excludedLabels = await getExcludedLabels()
