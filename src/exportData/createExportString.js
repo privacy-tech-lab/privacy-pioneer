@@ -1,3 +1,8 @@
+/*
+Licensed per https://github.com/privacy-tech-lab/integrated-privacy-analysis/blob/main/LICENSE
+privacy-tech-lab, https://www.privacytechlab.org/
+*/
+
 /**
  * Converts an array of Evidence Objects into a csv string.
  * Only adds snippets for Evidence with indexes

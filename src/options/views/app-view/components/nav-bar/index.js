@@ -1,3 +1,8 @@
+/*
+Licensed per https://github.com/privacy-tech-lab/integrated-privacy-analysis/blob/main/LICENSE
+privacy-tech-lab, https://www.privacytechlab.org/
+*/
+
 import React, { useEffect, useState } from "react"
 import { useHistory, useLocation } from "react-router"
 import logo from "../../../../../assets/icon-48.png"

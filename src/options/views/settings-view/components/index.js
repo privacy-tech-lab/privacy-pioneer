@@ -1,3 +1,8 @@
+/*
+Licensed per https://github.com/privacy-tech-lab/integrated-privacy-analysis/blob/main/LICENSE
+privacy-tech-lab, https://www.privacytechlab.org/
+*/
+
 import React, { useEffect, useRef, useState } from "react"
 import { permissionEnum } from "../../../../background/analysis/classModels"
 import * as Icons from "../../../../libs/icons"

@@ -1,4 +1,9 @@
 /*
+Licensed per https://github.com/privacy-tech-lab/integrated-privacy-analysis/blob/main/LICENSE
+privacy-tech-lab, https://www.privacytechlab.org/
+*/
+
+/*
 searchFunctions.js
 ================================================================================
 - searchFunctions.js contains all functions used to search through network

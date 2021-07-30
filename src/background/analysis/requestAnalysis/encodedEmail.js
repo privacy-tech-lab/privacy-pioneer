@@ -1,4 +1,9 @@
-/**
+/*
+Licensed per https://github.com/privacy-tech-lab/integrated-privacy-analysis/blob/main/LICENSE
+privacy-tech-lab, https://www.privacytechlab.org/
+*/
+
+/*
  * Removes ".", "+" and everything after from the email
  * 
  * Defined in encodedEmail.js
