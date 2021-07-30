@@ -41,17 +41,17 @@
                         "parentCompany": null
                     }
                 },
-                "facebook.com": {
+                "connectedads.com": {
                     "social": {
                         "timestamp": 1627654159307,
                         "permission": "monetization",
                         "rootUrl": "https://www.invasive_site.com",
                         "snippet": null,
-                        "requestUrl": "https://facebook.com",
+                        "requestUrl": "https://connectedads.com/?id=71936283",
                         "typ": "social",
                         "index": -1,
                         "firstPartyRoot": true,
-                        "parentCompany": "Facebook"
+                        "parentCompany": "AddThis"
                     }
                 }
             },
