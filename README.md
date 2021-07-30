@@ -24,6 +24,8 @@ If such a string is sent via an HTTP POST request, it can be concluded that a si
 
 Currently, we only support Firefox.
 
+This browser extension is developed and maintained by Owen Kaplan, Daniel Goldelman, Logan Brown, and Sebastian Zimmeck of the [privacy-tech-lab](https://www.privacytechlab.org/). Earlier contributors are Rafael Goldstein and David Baraka.
+
 ## Development
 
 Ensure that you have [node and npm](https://www.npmjs.com/get-npm) installed.
