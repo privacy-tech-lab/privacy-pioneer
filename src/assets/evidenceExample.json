@@ -1,0 +1,130 @@
+{
+    "labelArrayPerSite": {
+        "invasive_site.com": {
+            "labels": [
+                "monetization",
+                "tracking"
+            ]
+        },
+        "get_location.com": {
+            "labels": [
+                "location"
+            ]
+        }
+    },
+    "dataJson": {
+        "invasive_site.com": {
+            "monetization": {
+                "advertising": {
+                    "googlesyndication.com": {
+                        "timestamp": 1627654159307,
+                        "permission": "monetization",
+                        "rootUrl": "https://www.invasive_site.com",
+                        "snippet": null,
+                        "requestUrl": "https://pagead2.googlesyndication.com/pagead/sodar",
+                        "typ": "advertising",
+                        "index": -1,
+                        "firstPartyRoot": true,
+                        "parentCompany": "Google"
+                    }
+                },
+                "analytics": {
+                    "other_site.com": {
+                        "timestamp": 1627654159307,
+                        "permission": "monetization",
+                        "rootUrl": "https://www.invasive_site.com",
+                        "snippet": null,
+                        "requestUrl": "https://other_site.com",
+                        "typ": "analytics",
+                        "index": -1,
+                        "firstPartyRoot": true,
+                        "parentCompany": null
+                    }
+                },
+                "social": {
+                    "facebook.com": {
+                        "timestamp": 1627654159307,
+                        "permission": "monetization",
+                        "rootUrl": "https://www.invasive_site.com",
+                        "snippet": null,
+                        "requestUrl": "https://facebook.com",
+                        "typ": "social",
+                        "index": -1,
+                        "firstPartyRoot": true,
+                        "parentCompany": "Facebook"
+                    }
+                }
+            },
+            "tracking":{
+                "trackingPixel": {
+                    "facebook.com": {
+                        "timestamp": 1627654152328,
+                        "permission": "tracking",
+                        "rootUrl": "https://www.invasive_site.com/",
+                        "snippet": "refox-Spdy\",\"value\":\"h2\"}],\"responseData\":\"GIF89a\\u0001\\u0000\\u0001\\u0000�\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000!�\\u0004\\u0001\\u0000\\u0000\\u0000\\u0000,\\u0000\\u0000\\u0000\\u0000\\u0001\\u0000\\u0001\\u0000\\u0000\\u0002\\u0002D\\u0001\\u0000;\\n\",\"requestBody\":null,\"details\":{\"requestId\":\"393\",\"url\":\"https://www.facebook.com/tr/?id=716354627384627&ev=PageView&dl=https%3A%2F%2Fwww.get_location.com%2F&rl=https%3A%2F%2Fwww.google.com%2F&if=false&ts=71836254637281&sw=8284&sh=1763&v=2.9.16&r=stable&ec=0&o=29&fbp=fb.1.73826573948170.7183526478&it=8174627485926&coo=false&dpo=LQU&dpico=0&dpost=0&rqm=GET\",\"originUrl\":\"https://www.get_location.com/\",\"documentUrl\":\"https://www.get_location.com/\",\"method\":\"GET\",\"type\":\"image\",\"timeStamp\":1627654152038,\"tabId\":2,\"frameId\":0,\"parentFrameId\":-1,\"incognito\":false,\"thirdParty\":true,\"cookieStoreId\":\"firefox-default\",\"requestBody\":null,\"proxyInfo\":null,\"ip\":null",
+                        "requestUrl": "https://www.facebook.com/tr/?id=716354627384627&ev=PageView&dl=https%3A%2F%2Fwww.get_location.com%2F&rl=https%3A%2F%2Fwww.google.com%2F&if=false&ts=71836254637281&sw=8284&sh=1763&v=2.9.16&r=stable&ec=0&o=29&fbp=fb.1.73826573948170.7183526478&it=8174627485926&coo=false&dpo=LQU&dpico=0&dpost=0&rqm=GET",
+                        "typ": "trackingPixel",
+                        "index": [
+                            301,
+                            601
+                        ],
+                        "firstPartyRoot": true,
+                        "parentCompany": "Facebook"
+                    }
+                }
+            }
+        },
+        "get_location.com": {
+            "location": {
+                "fineLocation": {
+                    "onetrust.com": {
+                        "timestamp": 1627654148121,
+                        "permission": "location",
+                        "rootUrl": "https://get_location.com",
+                        "snippet": "alue\":\"61hc7638492hck71-MLA\"},{\"name\":\"content-encoding\",\"value\":\"gzip\"},{\"name\":\"X-Firefox-Spdy\",\"value\":\"h2\"}],\"responseData\":\"dnsfeed({\\\"country\\\":\\\"US\\\",\\\"state\\\":\\\"NY\\\",\\\"stateName\\\":\\\"New York\\\",\\\"zipcode\\\":\\\"10013\\\",\\\"timezone\\\":\\\"America/New_York\\\",\\\"latitude\\\":\\\"40.72182\\\",\\\"longitude\\\":\\\"-74.00940\\\",\\\"city\\\":\\\"New York\\\",\\\"continent\\\":\\\"NA\\\"})\",\"requestBody\":null,\"details\":{\"requestId\":\"203\",\"url\":\"https://geolocation.onetrust.com/cookieconsentpub/v1/geo/location/dnsfeed\",\"originUrl\":\"https://www.get_location.com/\",\"documentUrl\":\"https://www.get_location.com/\",\"method\":\"GET\",\"type\":\"script\",\"tim",
+                        "requestUrl": "https://geolocation.onetrust.com/cookieconsentpub/v1/geo/location/dnsfeed",
+                        "typ": "fineLocation",
+                        "index": [
+                            272,
+                            300
+                        ],
+                        "firstPartyRoot": true,
+                        "parentCompany": null
+                    }
+                },
+                "zipCode": {
+                    "onetrust.com": {
+                        "timestamp": 1627654148121,
+                        "permission": "location",
+                        "rootUrl": "https://get_location.com",
+                        "snippet": "alue\":\"61hc7638492hck71-MLA\"},{\"name\":\"content-encoding\",\"value\":\"gzip\"},{\"name\":\"X-Firefox-Spdy\",\"value\":\"h2\"}],\"responseData\":\"dnsfeed({\\\"country\\\":\\\"US\\\",\\\"state\\\":\\\"NY\\\",\\\"stateName\\\":\\\"New York\\\",\\\"zipcode\\\":\\\"10013\\\",\\\"timezone\\\":\\\"America/New_York\\\",\\\"latitude\\\":\\\"40.72182\\\",\\\"longitude\\\":\\\"-74.00940\\\",\\\"city\\\":\\\"New York\\\",\\\"continent\\\":\\\"NA\\\"})\",\"requestBody\":null,\"details\":{\"requestId\":\"203\",\"url\":\"https://geolocation.onetrust.com/cookieconsentpub/v1/geo/location/dnsfeed\",\"originUrl\":\"https://www.get_location.com/\",\"documentUrl\":\"https://www.get_location.com/\",\"method\":\"GET\",\"type\":\"script\",\"tim",
+                        "requestUrl": "https://geolocation.onetrust.com/cookieconsentpub/v1/geo/location/dnsfeed",
+                        "typ": "zipCode",
+                        "index": [
+                            215,
+                            220
+                        ],
+                        "firstPartyRoot": true,
+                        "parentCompany": null
+                    }
+                },
+                "state": {
+                    "onetrust.com": {
+                        "timestamp": 1627654148121,
+                        "permission": "location",
+                        "rootUrl": "https://get_location.com",
+                        "snippet": "alue\":\"61hc7638492hck71-MLA\"},{\"name\":\"content-encoding\",\"value\":\"gzip\"},{\"name\":\"X-Firefox-Spdy\",\"value\":\"h2\"}],\"responseData\":\"dnsfeed({\\\"country\\\":\\\"US\\\",\\\"state\\\":\\\"NY\\\",\\\"stateName\\\":\\\"New York\\\",\\\"zipcode\\\":\\\"10013\\\",\\\"timezone\\\":\\\"America/New_York\\\",\\\"latitude\\\":\\\"40.72182\\\",\\\"longitude\\\":\\\"-74.00940\\\",\\\"city\\\":\\\"New York\\\",\\\"continent\\\":\\\"NA\\\"})\",\"requestBody\":null,\"details\":{\"requestId\":\"203\",\"url\":\"https://geolocation.onetrust.com/cookieconsentpub/v1/geo/location/dnsfeed\",\"originUrl\":\"https://www.get_location.com/\",\"documentUrl\":\"https://www.get_location.com/\",\"method\":\"GET\",\"type\":\"script\",\"tim",
+                        "requestUrl": "https://geolocation.onetrust.com/cookieconsentpub/v1/geo/location/dnsfeed",
+                        "typ": "state",
+                        "index": [
+                            190,
+                            198
+                        ],
+                        "firstPartyRoot": true,
+                        "parentCompany": null
+                    }
+                }
+            }
+        }
+    }
+}

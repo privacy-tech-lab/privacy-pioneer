@@ -5,6 +5,7 @@ import {
   storeEnum,
 } from "../../background/analysis/classModels"
 import { getExcludedLabels } from "../settings/index.js"
+const exData = require("../../assets/evidenceExample.json")
 
 /**
  * Get identified labels of website from indexedDB
@@ -112,6 +113,7 @@ export const getWebsites = async () => {
     await buildLabels(storeEnum.thirdParty, unsortedResult, excludedLabels) // third party labels
 
     const sortedResult = sortEvidence(unsortedResult)
+    if (Object.keys(sortedResult).length == 0) return exData.labelArrayPerSite
     return sortedResult
   } catch (error) {
     return {}
@@ -151,7 +153,8 @@ const sortEvidence = (websites) => {
 
 export const getLabels = async () => {
   let res = {}
-  const labels = await getAllWebsiteLabels()
+  var labels = await getAllWebsiteLabels()
+  if (Object.keys(labels).length == 0) labels = exData.dataJson
   const websites = Object.keys(await getWebsites())
   const excludedLabels = await getExcludedLabels()
 
