@@ -77,11 +77,9 @@ const HomeView = () => {
               onClick={() =>
                 history.push({
                   pathname: "/search",
-                  state: [websites, webLabels], //fixes race condition bug by passing this information to next page
                 })
               }
-              data-tip="See all browsing history, including evidence originating from 3rd parties"
-              data-for="default"
+              data-rh="See all browsing history, including evidence originating from 3rd parties"
             >
               See All
             </SButtonText>

@@ -1,6 +1,6 @@
 import React from "react"
-import styled, { css } from "styled-components"
-import { CompanyLogoSVG, Twitter } from "../company-icons"
+import styled from "styled-components"
+import { CompanyLogoSVG } from "../company-icons"
 
 /**
  * Generally this would be in a style.js file

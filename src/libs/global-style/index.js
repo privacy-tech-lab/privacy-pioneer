@@ -37,6 +37,32 @@ const Options = css`
   }
 `
 
+const tooltipStyles = css`
+  .react-hint__content {
+    padding: 10px;
+    border-radius: 5px;
+    background: var(--primaryBrandColor);
+    text-align: center;
+    width: max-content;
+    max-width: 350px;
+  }
+  .react-hint--left:after {
+    left: auto;
+    border-right: none;
+    border-left-color: var(--primaryBrandColor);
+  }
+  .react-hint--bottom:after {
+    bottom: auto;
+    border-top: none;
+    border-bottom-color: var(--primaryBrandColor);
+  }
+  .react-hint--right:after {
+    right: auto;
+    border-left: none;
+    border-right-color: var(--primaryBrandColor);
+  }
+`
+
 /**
  * Styled component that creates global style
  * Variables can be accesed in other styled components
@@ -99,6 +125,7 @@ const GlobalStyle = createGlobalStyle`
     --body1: 16px;
     --body2: 14px;
   }
+  ${tooltipStyles}
 
   ${(props) => (props.popup ? Popup : Options)}
 

@@ -10,6 +10,8 @@ import SearchView from "../search-view"
 import GlobalStyle from "../../../libs/global-style"
 import { getTheme, settingsEnum } from "../../../libs/settings"
 import ReactTooltip from "react-tooltip"
+import ReactHintFactory from "react-hint"
+import "react-hint/css/index.css"
 
 /**
  * Root node of application that handles routing
@@ -19,6 +21,7 @@ import ReactTooltip from "react-tooltip"
 const AppView = () => {
   const location = useLocation()
   const [theme, setTheme] = useState(settingsEnum.sameAsSystem)
+  const ReactHint = ReactHintFactory(React)
 
   useEffect(
     () =>
@@ -30,14 +33,7 @@ const AppView = () => {
 
   return (
     <React.Fragment>
-      <ReactTooltip
-        textColor="var(--primaryBrandColor)"
-        backgroundColor="var(--primaryBrandTintColor)"
-        effect="solid"
-        id="default"
-        delayShow="500"
-        multiline
-      />
+      <ReactHint position="bottom" events delay={{ show: 300 }} />
       <GlobalStyle theme={theme} />
       <NavBar />
       <AnimatePresence exitBeforeEnter>

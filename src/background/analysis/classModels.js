@@ -181,7 +181,7 @@ export const keywordTypes = Object.freeze({
     displayName: "General",
     placeholder: "Keyword",
     toolTip:
-      "We will flag instances where the entered <br/> keyword is shared with a 3rd party.",
+      "We will flag instances where the entered keyword is shared with a 3rd party.",
   },
   location: {
     displayName: "Street Address",
@@ -192,25 +192,25 @@ export const keywordTypes = Object.freeze({
       zipCode: "06459",
     },
     toolTip:
-      "We will flag instances where the entered <br/> location data is shared with a 3rd party.",
+      "We will flag instances where the entered location data is shared with a 3rd party.",
   },
   phoneNumber: {
     displayName: "Phone Number",
     placeholder: "+1 (860) 685-2000",
     toolTip:
-      "We will flag instances where the entered <br/> phone number is shared with a 3rd party.",
+      "We will flag instances where the entered phone number is shared with a 3rd party.",
   },
   emailAddress: {
     displayName: "Email Address",
     placeholder: "jdoe@wesleyan.edu",
     toolTip:
-      "We will flag instances where the entered <br/> email is shared with a 3rd party, <br/> both in the form you write it <br/> and in an alternate representation (The Trade Desk's UID)",
+      "We will flag instances where the entered email is shared with a 3rd party,  both in the form you write it  and in an alternate representation (The Trade Desk's UID)",
   },
   ipAddress: {
     displayName: "IP Address",
     placeholder: "999.99.999.999",
     toolTip:
-      "Google: What's my IP?. <br/> We will only flag instances where your IP is shared with a 3rd party.<br/> All websites you connect to have access to your IP address.",
+      "Google: What's my IP?.  We will only flag instances where your IP is shared with a 3rd party. All websites you connect to have access to your IP address.",
   },
 })
 

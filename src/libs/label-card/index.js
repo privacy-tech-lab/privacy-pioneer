@@ -14,7 +14,7 @@ import {
   SContent,
 } from "./style"
 import { privacyLabels } from "../../background/analysis/classModels"
-import { CompanyLogo } from "../website-logo"
+import WebsiteLogo, { CompanyLogo } from "../website-logo"
 import { getParents } from "../company-icons/getCompany.js"
 import Skeleton, { SkeletonTheme } from "react-loading-skeleton"
 
@@ -94,36 +94,20 @@ const LabelCard = ({ requests, website, label, margin, onTap, popup }) => {
                     parent={company}
                     key={company}
                     margin={"0px 6px 0px 6px"}
-                    data-for="default"
-                    data-tip={parents[company].websites.join("<br/>")}
                   />
                 )
             })}
             <More amount={websites.length - numOfSitesWithIcons} />
           </SLogo>
         )
-      } else if (Object.keys(parents).length >= 1) {
-        const displayedCompanyName = Object.keys(parents)[0]
-        return (
-          <SLogo>
-            <div
-              data-for="default"
-              data-tip={parents[displayedCompanyName].websites.join("<br/>")}
-            >
-              {displayedCompanyName.charAt(0).toUpperCase() +
-                displayedCompanyName.substring(1)}
-            </div>
-            <More
-              amount={
-                websites.length - parents[displayedCompanyName].websites.length
-              }
-            />
-          </SLogo>
-        )
       } else
         return (
           <SLogo>
-            {websites[0]}
+            {websites.map((website) => (
+              <div data-rh={website}>
+                <WebsiteLogo website={website} margin={"0px 6px 0px 6px"} />
+              </div>
+            ))}
             <More amount={websites.length - 1} />
           </SLogo>
         )

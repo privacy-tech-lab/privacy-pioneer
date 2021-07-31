@@ -103,7 +103,6 @@ const WatchlistView = () => {
               }}
             >
               <SAddButton
-                data-tip="keyword"
                 onClick={() => {
                   configModal({ show: true })
                   const modal = new Modal(document.getElementById("edit-modal"))
@@ -115,8 +114,6 @@ const WatchlistView = () => {
               </SAddButton>
 
               <SAddButton
-                data-tip
-                data-for="addip"
                 onClick={() => {
                   confirm(
                     "We use an external API from ip-api.com that holds your ip address for one minute, and then deletes it from their database. Click 'OK' to add your public IP address to your watchlist. \n\nAlternatively, you can search 'What's my IP?', then copy and paste the result into our IP address keyword form."
