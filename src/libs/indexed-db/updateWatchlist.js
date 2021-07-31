@@ -1,3 +1,8 @@
+/*
+Licensed per https://github.com/privacy-tech-lab/integrated-privacy-analysis/blob/main/LICENSE
+privacy-tech-lab, https://www.privacytechlab.org/
+*/
+
 import { watchlistKeyval } from "./openDB.js";
 import { evidenceKeyval as evidenceIDB } from "../../background/analysis/interactDB/openDB.js";
 import { watchlistHashGen } from "../../background/analysis/utility/util.js";

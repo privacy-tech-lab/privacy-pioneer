@@ -1,4 +1,9 @@
 /*
+Licensed per https://github.com/privacy-tech-lab/integrated-privacy-analysis/blob/main/LICENSE
+privacy-tech-lab, https://www.privacytechlab.org/
+*/
+
+/*
 classModels.js
 ================================================================================
 - classModels.js defines important classes, objects, and enums that we use throughout

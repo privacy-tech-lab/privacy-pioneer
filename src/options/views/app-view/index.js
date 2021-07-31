@@ -1,3 +1,8 @@
+/*
+Licensed per https://github.com/privacy-tech-lab/integrated-privacy-analysis/blob/main/LICENSE
+privacy-tech-lab, https://www.privacytechlab.org/
+*/
+
 import React, { useEffect, useState } from "react"
 import { Route, Switch, useLocation } from "react-router-dom"
 import { AnimatePresence } from "framer-motion"
@@ -9,7 +14,6 @@ import SettingsView from "../settings-view"
 import SearchView from "../search-view"
 import GlobalStyle from "../../../libs/global-style"
 import { getTheme, settingsEnum } from "../../../libs/settings"
-import ReactTooltip from "react-tooltip"
 import ReactHintFactory from "react-hint"
 import "react-hint/css/index.css"
 

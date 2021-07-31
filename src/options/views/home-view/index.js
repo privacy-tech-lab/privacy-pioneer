@@ -1,3 +1,8 @@
+/*
+Licensed per https://github.com/privacy-tech-lab/integrated-privacy-analysis/blob/main/LICENSE
+privacy-tech-lab, https://www.privacytechlab.org/
+*/
+
 import React, { useEffect, useState } from "react"
 import { useHistory } from "react-router"
 import { getWebsites, getLabels } from "../../../libs/indexed-db/getIdbData.js"

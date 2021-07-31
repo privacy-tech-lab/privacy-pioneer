@@ -1,4 +1,9 @@
 /*
+Licensed per https://github.com/privacy-tech-lab/integrated-privacy-analysis/blob/main/LICENSE
+privacy-tech-lab, https://www.privacytechlab.org/
+*/
+
+/*
 importSearchData.js
 ================================================================================
 - importSearchData.js is the file that handles all the get functions to create

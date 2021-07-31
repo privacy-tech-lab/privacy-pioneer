@@ -1,5 +1,9 @@
-import { PhoneNumberUtil } from "google-libphonenumber";
+/*
+Licensed per https://github.com/privacy-tech-lab/integrated-privacy-analysis/blob/main/LICENSE
+privacy-tech-lab, https://www.privacytechlab.org/
+*/
 
+import { PhoneNumberUtil } from "google-libphonenumber";
 
 /**
  * Uses google's libphonenumber library to reformat the user's phone number
