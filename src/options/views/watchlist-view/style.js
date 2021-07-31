@@ -1,13 +1,9 @@
-<<<<<<< HEAD
-import styled from "styled-components"
-=======
 /*
 Licensed per https://github.com/privacy-tech-lab/integrated-privacy-analysis/blob/main/LICENSE
 privacy-tech-lab, https://www.privacytechlab.org/
 */
 
-import styled from "styled-components";
->>>>>>> 241031c624d314ff27ccd3990c2ddf3e57c8ad9d
+import styled from "styled-components"
 
 export const SContainer = styled.section`
   ${(props) => (props.marginTop ? "margin-top: 32px;" : "margin-top: 0px;")}
