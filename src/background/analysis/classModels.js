@@ -134,6 +134,37 @@ export const exportTypeEnum = Object.freeze({
 })
 
 /**
+ * @enum {number} Enum used to convert times to milliseconds. (Date.now uses milliseconds)
+ * allTime uses a 50 year bound.
+ */
+export const timeRangeEnum = Object.freeze({
+  lastMinute: {
+    timestamp: 60000,
+    title: "Last Minute",
+  },
+  lastHour: {
+    timestamp: 3.6e6,
+    title: "Last Hour",
+  },
+  lastDay: {
+    timestamp: 8.64e7,
+    title: "Last Day",
+  },
+  lastWeek: {
+    timestamp: 6.048e8,
+    title: "Last Week",
+  },
+  lastMonth: {
+    timestamp: 2.628e9,
+    title: "Last Month",
+  },
+  allTime: {
+    timestamp: 1.577e12,
+    title: "All Time",
+  },
+})
+
+/**
  * permissions are the broader category that types belong to (see typeEnum)
  * @enum {string} Enum used to reference permissions. Type: String
  */
@@ -215,7 +246,7 @@ export const keywordTypes = Object.freeze({
     displayName: "IP Address",
     placeholder: "999.99.999.999",
     toolTip:
-      "Google: What's my IP?.  We will only flag instances where your IP is shared with a 3rd party. All websites you connect to have access to your IP address.",
+      "Google: What's my IP?. We will only flag instances where your IP is shared with a 3rd party. All websites you connect to have access to your IP address.",
   },
 })
 

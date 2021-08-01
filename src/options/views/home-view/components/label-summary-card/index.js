@@ -7,7 +7,6 @@ import React from "react"
 import { privacyLabels } from "../../../../../background/analysis/classModels"
 import * as Icons from "../../../../../libs/icons"
 import { SContainer, SFooter, SHeader, SLabel, STotal } from "./style"
-import ReactTooltip from "react-tooltip"
 
 /**
  * Summary card that highlights notable stat from identified label
@@ -44,14 +43,6 @@ const LabelSummaryCardList = ({ labels }) => {
     )
     return (
       <>
-        <ReactTooltip
-          place="bottom"
-          effect="solid"
-          textColor="var(--primaryBrandColor)"
-          backgroundColor="var(--primaryBrandTintColor)"
-          delayShow="500"
-          id="labelCard"
-        />
         <LabelSummaryCard
           key={labeltype}
           labeltype={labeltype}

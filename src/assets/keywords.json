@@ -1,95 +1,91 @@
-// Licensed per https://github.com/privacy-tech-lab/integrated-privacy-analysis/blob/main/LICENSE
-// privacy-tech-lab, https://www.privacytechlab.org/
-
 {
-    "LOCATION": {
-        "URLs": [
-            "googleapis.com/geolocation",
-            "jkosgei-free-ip-geolocation",
-            "geocodeapi",
-            "yandexgeocoderraygorodskijv1",
-            "devru-latitude-longitude-find",
-            "google-maps-time-zone",
-            "geo",
-            "ip-geolocation-ipwhois-io",
-            "telize"
-        ]
-    },
-    "PIXEL": {
-        "URLs": [
-            "facebook.com/tr/",
-            "ct.pinterest.com",
-            "af.monetate.net",
-            "csm.va.us.criteo.net",
-            "google-analytics.com",
-            "dpm.demdex.net",
-            "google.ca",
-            "a.tribalfusion.com",
-            "data.photorank.me",
-            "stats.g.doubleclick.net",
-            "vfcorp.dl.sc.omtrdc.net",
-            "ib.adnxs.com",
-            "idsync.rlcdn.com",
-            "p.brsrvr.com",
-            "adservice.google.com"
-        ]
-    },
-    "FINGERPRINT": {
-        "fpLibraryList": [
-          "fingerprint",
- 
-          "Fingerprint2",
- 
-          "fingerprintID",
- 
-          "https://github.com/Valve/fingerprintjs2",
- 
-          "http://valve.github.io",
- 
-          "getFPParams",
- 
-          "getCanvasFp",
- 
-          "fingerprintjs2",
- 
-          "swfContainerId",
- 
-          "swfPath",
- 
-          "flash/compiled/FontList.swf",
- 
-          "Fingerprint2.x64hash128",
- 
-          "hasFingerprint",
- 
-          "window._sift",
- 
-          "https://cdn.sift.com/s.js",
- 
-          "_castle('setAppId'",
- 
-          "c$jscomp$0.config.F.Fonts",
- 
-          "c$jscomp$0.config.F.Flash",
- 
-          "window.Fingerprint2.FP2Options",
- 
-          "c.prototype.getCanvas",
- 
-          "http://admicro.vn/",
- 
-          "visitorFingerprint",
- 
-          "payload.push(btoa(gl.getParameter(debugInfo.UNMASKED_RENDERER_WEBGL)))"
+  "LOCATION": {
+    "URLs": [
+      "googleapis.com/geolocation",
+      "jkosgei-free-ip-geolocation",
+      "geocodeapi",
+      "yandexgeocoderraygorodskijv1",
+      "devru-latitude-longitude-find",
+      "google-maps-time-zone",
+      "geo",
+      "ip-geolocation-ipwhois-io",
+      "telize"
+    ]
+  },
+  "PIXEL": {
+    "URLs": [
+      "facebook.com/tr/",
+      "ct.pinterest.com",
+      "af.monetate.net",
+      "csm.va.us.criteo.net",
+      "google-analytics.com",
+      "dpm.demdex.net",
+      "google.ca",
+      "a.tribalfusion.com",
+      "data.photorank.me",
+      "stats.g.doubleclick.net",
+      "vfcorp.dl.sc.omtrdc.net",
+      "ib.adnxs.com",
+      "idsync.rlcdn.com",
+      "p.brsrvr.com",
+      "adservice.google.com"
+    ]
+  },
+  "FINGERPRINT": {
+    "fpLibraryList": [
+      "fingerprint",
 
-        ],
-        "fpJSONList": [
-          "OfflineAudioContext.createOscillator",
-          "OfflineAudioContext.createDynamicsCompressor",
-          "OfflineAudioContext.destination",
-          "OfflineAudioContext.startRendering",
- 
-          "HTMLCanvasElement.toDataURL"
-        ]
-    }
+      "Fingerprint2",
+
+      "fingerprintID",
+
+      "https://github.com/Valve/fingerprintjs2",
+
+      "http://valve.github.io",
+
+      "getFPParams",
+
+      "getCanvasFp",
+
+      "fingerprintjs2",
+
+      "swfContainerId",
+
+      "swfPath",
+
+      "flash/compiled/FontList.swf",
+
+      "Fingerprint2.x64hash128",
+
+      "hasFingerprint",
+
+      "window._sift",
+
+      "https://cdn.sift.com/s.js",
+
+      "_castle('setAppId'",
+
+      "c$jscomp$0.config.F.Fonts",
+
+      "c$jscomp$0.config.F.Flash",
+
+      "window.Fingerprint2.FP2Options",
+
+      "c.prototype.getCanvas",
+
+      "http://admicro.vn/",
+
+      "visitorFingerprint",
+
+      "payload.push(btoa(gl.getParameter(debugInfo.UNMASKED_RENDERER_WEBGL)))"
+    ],
+    "fpJSONList": [
+      "OfflineAudioContext.createOscillator",
+      "OfflineAudioContext.createDynamicsCompressor",
+      "OfflineAudioContext.destination",
+      "OfflineAudioContext.startRendering",
+
+      "HTMLCanvasElement.toDataURL"
+    ]
+  }
 }

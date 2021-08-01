@@ -33,7 +33,6 @@ import {
 import { Modal } from "bootstrap"
 import Form from "./components/forms"
 import inputValidator from "./components/input-validators"
-import ReactTooltip from "react-tooltip"
 
 /**
  * Popup modal to create/edit keyword
@@ -120,15 +119,6 @@ const EditModal = ({ keywordType, keyword, edit, id, updateList }) => {
 
   return (
     <>
-      <ReactTooltip
-        id="editModal"
-        effect="solid"
-        place="right"
-        backgroundColor="var(--primaryBrandTintColor)"
-        textColor="var(--primaryBrandColor)"
-        delayShow="500"
-        multiline
-      />
       <SContent className="modal-content">
         <SModal>
           <SNavigationBar>
