@@ -161,6 +161,7 @@ export const SDropdownSelection = styled.div`
   background-color: var(--textFieldColor);
   margin-top: 12px;
   margin-right: 12px;
+  width: 125px;
   :hover {
     filter: brightness(0.95);
   }
