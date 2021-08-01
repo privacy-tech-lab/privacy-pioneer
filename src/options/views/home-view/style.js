@@ -3,31 +3,31 @@ Licensed per https://github.com/privacy-tech-lab/integrated-privacy-analysis/blo
 privacy-tech-lab, https://www.privacytechlab.org/
 */
 
-import styled from "styled-components";
+import styled from "styled-components"
 
 export const SContainer = styled.section`
   ${(props) => (props.marginTop ? "margin-top: 32px;" : "margin-top: 0px;")}
-`;
+`
 
 export const STitle = styled.div`
   font-size: var(--title1);
   font-weight: bold;
-`;
+`
 
 export const SSubtitle = styled.div`
   color: var(--secondaryTextColor);
-`;
+`
 
 export const SCardGroup = styled.div`
   display: flex;
   flex-direction: row;
-`;
+`
 
 export const SSectionContainer = styled.div`
   display: flex;
   flex-direction: row;
   justify-content: space-between;
-`;
+`
 
 export const SButtonText = styled.div`
   font-weight: bold;
@@ -41,4 +41,4 @@ export const SButtonText = styled.div`
   :active {
     filter: brightness(1.05);
   }
-`;
+`

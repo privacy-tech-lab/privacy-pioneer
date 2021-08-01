@@ -16,6 +16,16 @@ import GlobalStyle from "../../../libs/global-style"
 import { getTheme, settingsEnum } from "../../../libs/settings"
 import ReactHintFactory from "react-hint"
 import "react-hint/css/index.css"
+import styled from "styled-components"
+
+const SHint = styled.div`
+  padding: 10px;
+  border-radius: 5px;
+  background: var(--primaryBrandColor);
+  text-align: center;
+  width: max-content;
+  max-width: ${(props) => (props.multiline ? "350px" : "none")};
+`
 
 /**
  * Root node of application that handles routing
@@ -37,7 +47,19 @@ const AppView = () => {
 
   return (
     <React.Fragment>
-      <ReactHint position="bottom" events delay={{ show: 300 }} />
+      <ReactHint
+        attribute="data-custom"
+        position="bottom"
+        events={{ hover: true }}
+        delay={{ show: 300 }}
+        onRenderContent={(target, content) => {
+          return (
+            <SHint multiline={target.dataset.customMultiline}>
+              {target.dataset.customInfo}
+            </SHint>
+          )
+        }}
+      />
       <GlobalStyle theme={theme} />
       <NavBar />
       <AnimatePresence exitBeforeEnter>

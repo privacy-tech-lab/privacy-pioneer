@@ -143,8 +143,10 @@ const EditModal = ({ keywordType, keyword, edit, id, updateList }) => {
               <SDropdownOptions show={showDropdown}>
                 {Object.keys(keywordTypes).map((key, index) => (
                   <SDropdownItem
-                    data-rh={keywordTypes[key]["toolTip"]}
-                    data-rh-at="right"
+                    data-custom
+                    data-custom-info={keywordTypes[key]["toolTip"]}
+                    data-custom-at="right"
+                    data-custom-multiline
                     onClick={() => {
                       setKeywordType(key)
                       setInputValid(true)

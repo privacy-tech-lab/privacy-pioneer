@@ -109,7 +109,7 @@ const LabelCard = ({ requests, website, label, margin, onTap, popup }) => {
         return (
           <SLogo>
             {websites.map((website) => (
-              <div data-rh={website}>
+              <div data-custom data-custom-info={website}>
                 <WebsiteLogo website={website} margin={"0px 6px 0px 6px"} />
               </div>
             ))}

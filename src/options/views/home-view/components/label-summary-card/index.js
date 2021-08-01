@@ -15,7 +15,8 @@ const LabelSummaryCard = ({ labeltype, websiteTotal }) => {
   return (
     <SContainer
       labeltype={labeltype}
-      data-rh={privacyLabels[labeltype]["description"]}
+      data-custom
+      data-custom-info={privacyLabels[labeltype]["description"]}
       data-for="labelCard"
     >
       <SHeader>
@@ -42,13 +43,11 @@ const LabelSummaryCardList = ({ labels }) => {
       (website) => (numOfWebsites += Object.keys(website).length)
     )
     return (
-      <>
-        <LabelSummaryCard
-          key={labeltype}
-          labeltype={labeltype}
-          websiteTotal={numOfWebsites}
-        />
-      </>
+      <LabelSummaryCard
+        key={labeltype}
+        labeltype={labeltype}
+        websiteTotal={numOfWebsites}
+      />
     )
   })
 }

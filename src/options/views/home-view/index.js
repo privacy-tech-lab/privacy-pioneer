@@ -84,7 +84,9 @@ const HomeView = () => {
                   pathname: "/search",
                 })
               }
-              data-rh="See all browsing history, including evidence originating from 3rd parties"
+              data-custom
+              data-custom-info="See all browsing history, including evidence originating from 3rd parties"
+              data-custom-at="left"
             >
               See All
             </SButtonText>
