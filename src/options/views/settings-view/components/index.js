@@ -1,5 +1,8 @@
 import React, { useEffect, useRef, useState } from "react"
-import { permissionEnum, timeRangeEnum } from "../../../../background/analysis/classModels"
+import {
+  permissionEnum,
+  timeRangeEnum,
+} from "../../../../background/analysis/classModels"
 import * as Icons from "../../../../libs/icons"
 import {
   deleteEvidenceDB,
@@ -144,7 +147,7 @@ export const ThemeSelection = ({ changeTheme }) => {
 export const ExportData = () => {
   const [showDropdown, setDropdown] = useState(false)
   const [timeRange, setTimeRange] = useState(timeRangeEnum.allTime)
-  const [dropdownTitle, setTitle] = useState('All Time')
+  const [dropdownTitle, setTitle] = useState("All Time")
   const dropdownRef = useRef()
   const blur = (event) => {
     if (!dropdownRef.current.contains(event.target)) {
@@ -162,42 +165,17 @@ export const ExportData = () => {
         ref={dropdownRef}
       >
         <SDropdownOptions show={showDropdown}>
-          <SDropdownItem onClick = { () => {
-            setTimeRange(timeRangeEnum.allTime);
-            setTitle('All Time');
-          }}>
-            All Time 
-          </SDropdownItem>
-          <SDropdownItem onClick = { () => {
-            setTimeRange(timeRangeEnum.lastMonth);
-            setTitle('Last Month');
-          }}>
-            Last Month
-          </SDropdownItem>
-          <SDropdownItem onClick = { () => {
-            setTimeRange(timeRangeEnum.lastWeek);
-            setTitle('Last Week');
-          }}>
-            Last Week
-          </SDropdownItem>
-          <SDropdownItem onClick = { () => {
-            setTimeRange(timeRangeEnum.lastDay);
-            setTitle('Last Day');
-          }}>
-            Last Day
-          </SDropdownItem>
-          <SDropdownItem onClick = { () => {
-            setTimeRange(timeRangeEnum.lastHour);
-            setTitle('Last Hour');
-          }}>
-            Last Hour
-          </SDropdownItem>
-          <SDropdownItem onClick = { () => {
-            setTimeRange(timeRangeEnum.lastMinute);
-            setTitle('Last Minute');
-          }}>
-            Last Minute
-          </SDropdownItem>
+          {Object.values(timeRangeEnum).map(({ timestamp, title }) => (
+            <SDropdownItem
+              onClick={() => {
+                setTimeRange(timestamp)
+                setTitle(title)
+              }}
+              key={title}
+            >
+              {title}
+            </SDropdownItem>
+          ))}
         </SDropdownOptions>
         <SDropdownSelection>
           {dropdownTitle}
@@ -205,14 +183,16 @@ export const ExportData = () => {
         </SDropdownSelection>
       </SDropdown>
       <SExportButton
-        onClick = { () => { initiateDownload(exportTypeEnum.TSV, timeRange) }}
+        onClick={() => {
+          initiateDownload(exportTypeEnum.TSV, timeRange)
+        }}
       >
-        TSV 
+        TSV
       </SExportButton>
       <SExportButton
-        onClick = { () => initiateDownload(exportTypeEnum.JSON, timeRange)}
+        onClick={() => initiateDownload(exportTypeEnum.JSON, timeRange)}
       >
-        JSON 
+        JSON
       </SExportButton>
     </SExportSection>
   )
