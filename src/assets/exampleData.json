@@ -8,7 +8,8 @@
         },
         "get_location.com": {
             "labels": [
-                "location"
+                "location",
+                "watchlist"
             ]
         }
     },
@@ -41,13 +42,13 @@
                         "parentCompany": null
                     }
                 },
-                "connectedads.com": {
+                "addthis.com": {
                     "social": {
                         "timestamp": 1627654159307,
                         "permission": "monetization",
                         "rootUrl": "https://www.invasive_site.com",
                         "snippet": null,
-                        "requestUrl": "https://connectedads.com/?id=71936283",
+                        "requestUrl": "https://x.dlx.addthis.com/e/live_intent_sync?na_exid=&us_privacy=1---&rd=Y",
                         "typ": "social",
                         "index": -1,
                         "firstPartyRoot": true,
@@ -70,6 +71,24 @@
                         ],
                         "firstPartyRoot": true,
                         "parentCompany": "Facebook"
+                    }
+                },
+                "media.net": {
+                    "ipAddress": {
+                        "extraDetail": null,
+                        "firstPartyRoot": true,
+                        "index": [
+                            318,
+                            325
+                        ],
+                        "parentCompany": "media",
+                        "permission": "location",
+                        "requestUrl": "https://cdneast2-xch.media.net/AdExchange/rtbsspub?&prvReqId8PRVCXX19&coppa=0&isRefresh=0&encryptionVersion=0.0&switch=1",
+                        "rootUrl": "https://www.invasive_site.com",
+                        "snippet": "aichele8cyf6e72k4839s.&bp=1.6173652648593&cf=283726483&fq=0&td_s=invasive_site.com&rcats=7sp,aeg,vas&mcat=peer39-82743&mste=invasive_site.com&mfld=4&mssi=None&mfsi=jche7u2h36s&uhow=11&agsa=&rgz=10013&svbttd=1&dt=PC&osf=OSX&os=Other&br=Firefox&rlangs=en&mlang=&svpid=9294&did=&rcxt=Other&tmpc=23.16&daid=&vp=0&ip=1.1.1.1&osi=&osv=&bffi=41&mk=Mozilla&mdl=Firefox%20-%20OS%20X&c=LEHCELEGNCGgelkcue728934jncgKWKUHGCEKE.&dur=LKUCGELIAKJGFKEAJBCYFkjblayglcuyegjbfe7289467lkajbKUGFEKJBXYGE83KJCG73FRNkwgce",
+                        "timestamp": 1627850161138,
+                        "typ": "ipAddress",
+                        "watchlistHash": null
                     }
                 }
             }
@@ -120,7 +139,39 @@
                         "parentCompany": null
                     }
                 }
+            },
+            "watchlist": {
+                "get_location.com": {
+                    "emailAddress": {
+                        "extraDetail": null,
+                        "firstPartyRoot": true,
+                        "index": [
+                            200,
+                            215
+                        ],
+                        "parentCompany": null,
+                        "permission": "watchlist",
+                        "requestUrl": "https://www.get_location.com/glc.js?id=JAL-83HC73",
+                        "rootUrl": "https://www.get_location.com",
+                        "snippet": "callMethod?a.callMethod.apply(a,arguments):a.queue.push(arguments)},b._fbq||(b._fbq=a),a.push=a,a.loaded=!0,a.version=\\\\\\\"2.0\\\\\\\",a.queue=[],c=e.createElement(f),c.async=!0,c.src=g,d=e.getElementsByTagName(f)[0],d.parentNode.insertBefore(c,d))}(window,document,\\\\\\\"script\\\\\\\",\\\\\\\"https:\\\\/\\\\/connect.facebook.net\\\\/en_US\\\\/fbevents.js\\\\\\\"),BP.UserStorage.get().then(function(b){b.fbLduEnabled?fbq(\\\\\\\"dataProcessingOptions\\\\\\\",[\\\\\\\"LDU\\\\\\\"],0,0):fbq(\\\\\\\"dataProcessingOptions\\\\\\\",\\\\n[]);fbq(\\\\\\\"init\\\\\\\",\\\",[\\\"escape\\\",[\\\"macro\\\",53],8,16],\\\");gtm.onHtmlSuccess(\\\",[\\\"escape\\\",[\\\"macro\\\",54],8,16],\\\")}))}cat",
+                        "timestamp": 1627851104916,
+                        "typ": "emailAddress",
+                        "watchlistHash": null
+                    }
+                }
             }
         }
-    }
+    },
+    "exWatchlist": [
+        {
+            "id": "-1077641971",
+            "keyword": "1.1.1.1",
+            "type": "ipAddress"
+        },
+        {
+            "id": "-1059260752",
+            "keyword": "my_email@email.com",
+            "type": "emailAddress"
+        }
+    ]
 }

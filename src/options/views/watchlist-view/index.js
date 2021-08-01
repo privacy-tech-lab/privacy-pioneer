@@ -19,6 +19,8 @@ import {
 } from "../../../background/analysis/classModels";
 import { saveKeyword } from "../../../libs/indexed-db/updateWatchlist.js";
 
+const exData = require('../../../assets/exampleData.json').exWatchlist
+
 /**
  * Watchlist page view allowing user to add/modify keywords
  */
@@ -133,7 +135,21 @@ const WatchlistView = () => {
             <div>TYPE</div>
           </SListHeader>
           <SListContent>
-            {items.map((item) => (
+            {items.length != 0 ? items.map((item) => (
+              <ListItem
+                key={item.id}
+                id={item.id}
+                type={item.type}
+                keyword={
+                  item.type != permissionEnum.location
+                    ? item.keyword
+                    : item.location.display
+                }
+                location={item.location}
+                configModal={configModal}
+                updateList={updateList}
+              />
+            )):exData.map((item) => (
               <ListItem
                 key={item.id}
                 id={item.id}
