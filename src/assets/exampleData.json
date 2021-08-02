@@ -138,6 +138,22 @@
                         "firstPartyRoot": true,
                         "parentCompany": null
                     }
+                },
+                "get_location.com": {
+                    "state": {
+                        "timestamp": 1627654148121,
+                        "permission": "location",
+                        "rootUrl": "https://get_location.com",
+                        "snippet": "alue\":\"ksue738462hd739f-MLA\"},{\"name\":\"content-encoding\",\"value\":\"gzip\"},{\"name\":\"X-Firefox-Spdy\",\"value\":\"h2\"}],\"responseData\":\"acsfeed({\\\"alkcgek\\\":\\\"12183628463\\\",\\\"acleuxhef\\\":\\\"927d93764yfoc83yr\\\",\\\"country\\\":\\\"US\\\",\\\"state\\\":\\\"NY\\\",\\\"stateName\\\":\\\"New York\\\",\\\"timezone\\\":\\\"America/New_York\\\",\\\"city\\\":\\\"New York\\\",\\\"continent\\\":\\\"NA\\\"})\",\"requestBody\":null,\"details\":{\"requestId\":\"203\",\"url\":\"https://get_location.com/achelcuehf/v1/acsfeed\",\"originUrl\":\"https://www.get_location.com/\",\"documentUrl\":\"https://www.get_location.com/\",\"method\":\"GET\",\"type\":\"script\",\"tim",
+                        "requestUrl": "https://get_location.com/achelcuehf/v1/acsfeed",
+                        "typ": "state",
+                        "index": [
+                            254,
+                            262
+                        ],
+                        "firstPartyRoot": true,
+                        "parentCompany": null
+                    }
                 }
             },
             "watchlist": {
