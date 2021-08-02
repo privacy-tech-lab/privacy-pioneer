@@ -94,28 +94,6 @@ async function addToEvidenceStore(evidenceToAdd, firstParty, parent, rootU, requ
  */
 function updateFetchedDict(evidenceDict, e) {
     
-    /**
-    * Used to push evidence through (override evidence cap of 4 per type)
-    * that will create multiple labels for one request URL
-    * 
-    * Defined, used in addEvidence.js
-    *
-    * @param {Object} currDict object with the dexisting evidence for a permission
-    * @param {string} typ the type that we're currently trying to add
-    * @returns {Set} The urls that already have evidence within this permission
-    */
-   function getReqUrlsWithDifferentTypes(currDict, typ) {
-
-    var reqUrlSet = new Set()
-
-    for ( const [type, reqUrlObject] of Object.entries(currDict) ) {
-      for ( const reqUrl of Object.keys(reqUrlObject)) {
-        if (typ != type) { reqUrlSet.add(reqUrl) }
-      }
-    }
-    return reqUrlSet
-  }
-
   // vars from the evidence object we are adding
   var evidence = evidenceDict
   const reqUrl = getHostname(e.requestUrl)
@@ -125,16 +103,12 @@ function updateFetchedDict(evidenceDict, e) {
   // if we have this rootUrl in evidence already we check if we already have store_label
   if (Object.keys(evidence).length !== 0) {
     if (perm in evidence) {
-      var pushThrough = false
-      let reqUrlSet = getReqUrlsWithDifferentTypes(evidence[perm], t)
-      if (reqUrlSet.has(reqUrl)) { pushThrough = true; }
 
       // if type is in the permission
       if (t in evidence[perm]) {
-        let hardNo = reqUrl in evidence[perm][t];
-        let belowEvidenceCap = true
+        let hardNo = reqUrl in evidence[perm][t]; //we have exactly this evidence already
         // if we have less than 5 different reqUrl's for this permission and this is a unique reqUrl, we save the evidence
-        if ( (pushThrough || (belowEvidenceCap)) && !hardNo) {
+        if ( !hardNo) {
           evidence[perm][t][reqUrl] = e
         }
         else { return evidence }
