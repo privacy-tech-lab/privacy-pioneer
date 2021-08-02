@@ -8,6 +8,8 @@ import styled from "styled-components";
 import { getParent, getParents } from "../company-icons/getCompany.js";
 import WebsiteLogo, { CompanyLogo } from "../website-logo";
 
+const exSites = require('../../assets/exampleData.json').exModels
+
 /**
  * Generally this would be in a style.js file
  * Since it belongs to such a simple component, it's here.
@@ -39,7 +41,7 @@ const SExample = styled.div`
  * @param {string|null} showParent the parent company of the site
  */
 const WebsiteBadge = ({ website, showParent }) => {
-  if (['invasive_site.com', 'get_location.com'].includes(website)){
+  if ([exSites.invasive_site, exSites.get_location].includes(website)){
     var exampleSite = true
   }
   const parent = getParent(website);

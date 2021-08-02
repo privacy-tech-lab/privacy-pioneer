@@ -193,5 +193,9 @@
             "keyword": "my_email@email.com (Example Watchlist Entry)",
             "type": "emailAddress"
         }
-    ]
+    ],
+    "exModels": {
+        "invasive_site": "invasive_site.com",
+        "get_location": "get_location.com"
+    }
 }
