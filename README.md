@@ -111,9 +111,20 @@ Our extension is analyzing the following privacy practices for each first and th
 
 An overview of the architecture of our extension is available [separately](https://github.com/privacy-tech-lab/integrated-privacy-analysis/blob/main/architecture_overview.md).
 
-## Third Party Libraries
+## Third Party Libraries and Resources
 
-This project uses various [third party libraries](https://github.com/privacy-tech-lab/integrated-privacy-analysis/blob/main/package.json). We thank the developers.
+This project uses various [third party libraries](https://github.com/privacy-tech-lab/integrated-privacy-analysis/blob/main/package.json).
+
+In addition, this project uses the following resources.
+
+- [Disconnect Tracker Protection lists](https://github.com/disconnectme/disconnect-tracking-protection)
+- [Eva Icons](https://akveo.github.io/eva-icons/#/)
+- [iconmonstr](https://iconmonstr.com/)
+- [Ion Icons](https://ionicons.com)
+- [Radar Icon](https://www.svgrepo.com/svg/167040/radar)
+- [Simple Icons](https://github.com/simple-icons/simple-icons)
+
+We thank the developers.
 
 <p align="center">
   <a href="https://www.privacytechlab.org/"><img src="https://github.com/privacy-tech-lab/integrated-privacy-analysis/blob/main/plt_logo.png" width="200px" height="200px" alt="privacy-tech-lab logo"></a>
