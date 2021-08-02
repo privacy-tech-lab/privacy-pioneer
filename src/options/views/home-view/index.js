@@ -16,6 +16,8 @@ import {
   STitle,
 } from "./style";
 
+const exData = require('../../../assets/exampleData.json')
+
 /**
  * Home page view containing overview and recently identified labels
  */
@@ -29,9 +31,18 @@ const HomeView = () => {
   useEffect(
     () =>
       getWebsites().then((websites) => {
-        setWebsites(websites);
+        if (Object.keys(websites).length == 0){
+          setWebsites(exData.labelArrayPerSite)
+          var check = true
+        } else {
+          setWebsites(websites);
+        }
         getLabels().then((labels) => {
-          setLabels(labels);
+          if (check){
+            setLabels(exData.dataJson);
+          } else {
+            setLabels(labels);
+          }
         }),
           document
             .getElementById("detail-modal")

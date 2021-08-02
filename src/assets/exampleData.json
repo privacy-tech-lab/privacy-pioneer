@@ -14,8 +14,8 @@
         }
     },
     "dataJson": {
-        "invasive_site.com": {
-            "monetization": {
+        "monetization": {
+            "invasive_site.com": {
                 "googlesyndication.com": {
                     "advertising": {
                         "timestamp": 1627654159307,
@@ -55,8 +55,10 @@
                         "parentCompany": "AddThis"
                     }
                 }
-            },
-            "tracking": {
+            }
+        },
+        "tracking": {
+            "invasive_site.com":{
                 "facebook.com": {
                     "trackingPixel": {
                         "timestamp": 1627654152328,
@@ -93,8 +95,8 @@
                 }
             }
         },
-        "get_location.com": {
-            "location": {
+        "location": {
+            "get_location.com": {
                 "onetrust.com": {
                     "fineLocation": {
                         "timestamp": 1627654148121,
@@ -155,8 +157,10 @@
                         "parentCompany": null
                     }
                 }
-            },
-            "watchlist": {
+            }
+        },
+        "watchlist": {
+            "get_location.com":{
                 "get_location.com": {
                     "emailAddress": {
                         "extraDetail": null,
