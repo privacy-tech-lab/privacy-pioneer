@@ -32,7 +32,6 @@ const HomeView = () => {
   const [labels, setLabels] = useState({});
   const [modal, setModal] = useState({ show: false });
   const entries = Object.entries(websites);
-  const [exDataShow, setExDataShow] = useState(false);
 
   useEffect(
     () =>
@@ -40,10 +39,8 @@ const HomeView = () => {
         if (Object.keys(websites).length == 0){
           setWebsites(exData.labelArrayPerSite)
           var check = true
-          setExDataShow(true)
         } else {
           setWebsites(websites);
-          setExDataShow(false)
         }
         getLabels().then((labels) => {
           if (check){

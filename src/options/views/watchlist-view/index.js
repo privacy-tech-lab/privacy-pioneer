@@ -140,21 +140,8 @@ const WatchlistView = () => {
             <div>TYPE</div>
           </SListHeader>
           <SListContent>
-            {items.length != 0 ? items.map((item) => (
-              <ListItem
-                key={item.id}
-                id={item.id}
-                type={item.type}
-                keyword={
-                  item.type != permissionEnum.location
-                    ? item.keyword
-                    : item.location.display
-                }
-                location={item.location}
-                configModal={configModal}
-                updateList={updateList}
-              />
-            )):exData.map((item) => (
+            {items.length == 0 ? setItems(exData) : null}
+            {items.map((item) => (
               <ListItem
                 key={item.id}
                 id={item.id}

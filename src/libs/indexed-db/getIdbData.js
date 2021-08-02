@@ -117,7 +117,6 @@ export const getWebsites = async () => {
     await buildLabels(storeEnum.thirdParty, unsortedResult, excludedLabels) // third party labels
 
     const sortedResult = sortEvidence(unsortedResult)
-
     return sortedResult
   } catch (error) {
     return {}
@@ -157,7 +156,7 @@ const sortEvidence = (websites) => {
 
 export const getLabels = async () => {
   let res = {}
-  var labels = await getAllWebsiteLabels()
+  const labels = await getAllWebsiteLabels()
   const websites = Object.keys(await getWebsites())
   const excludedLabels = await getExcludedLabels()
 
