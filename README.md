@@ -10,21 +10,21 @@
   <img alt="GitHub forks" src="https://img.shields.io/github/forks/privacy-tech-lab/integrated-privacy-analysis?style=social">
 </p>
 
-# integrated-privacy-analysis
+# Privacy Pioneer
 
 <p align="center">
   <a href="https://addons.mozilla.org/en-US/firefox/user/12247904/"><img src="https://github.com/privacy-tech-lab/integrated-privacy-analysis/blob/main/firefox-add-ons-badge.png" width="172px" alt="Firefox Add Ons badge"></a>
 <p>
 
-The idea of this browser extension is to helps users to understand the privacy implications of their visits to websites. For example, the following URL-encoded string contains the latitude and longitude of a device:
+The idea of Privacy Pioneer is to help users understand the privacy implications of their visits to websites. For example, the following URL-encoded string contains the latitude and longitude of a device:
 
 > https%3A%2F%2Fwww.example.com%2Flocation%3Flat%3D32.715736%26lon%3D%20-117.161087
 
-If such a string is sent via an HTTP POST request, it can be concluded that a site is collecting location data. Observing such behaviors, a privacy profile of a site is created to help users get a better understanding of their privacy.
+If such a string is sent via an HTTP POST request, it can be concluded that a site is collecting location data. Observing such behaviors, a privacy label of a site is created to help users get a better understanding of their privacy.
 
 Currently, we only support Firefox.
 
-This browser extension is developed and maintained by **Owen Kaplan (@notowen333)**, **Daniel Goldelman (@danielgoldelman)**, **Logan Brown (@Lr-Brown)**, and **Sebastian Zimmeck (@SebastianZimmeck)** of the [privacy-tech-lab](https://www.privacytechlab.org/). **Rafael Goldstein (@rgoldstein01)** and **David Baraka (@davebaraka)** contributed earlier.
+Privacy Pioneer is developed and maintained by **Owen Kaplan (@notowen333)**, **Daniel Goldelman (@danielgoldelman)**, **Logan Brown (@Lr-Brown)**, and **Sebastian Zimmeck (@SebastianZimmeck)** of the [privacy-tech-lab](https://www.privacytechlab.org/). **Rafael Goldstein (@rgoldstein01)** and **David Baraka (@davebaraka)** contributed earlier.
 
 Contact us with any questions or comments at sebastian@privacytechlab.org.
 
@@ -44,7 +44,7 @@ To start the project, run:
 npm start
 ```
 
-- Runs the extension in development mode
+- Runs Privacy Pioneer in development mode
 - The popup, options, and background page will reload if you make edits
 - You will also see any lint errors in the console
 
@@ -54,7 +54,7 @@ A `dev` folder will be generated in the root directory, housing the generated ex
 
 ## Production
 
-Build the extension for production to the `dist` folder by running:
+Build Privacy Pioneer for production to the `dist` folder by running:
 
 ```bash
 npm run build
@@ -85,7 +85,7 @@ The `src/libs/indexed-db` directory, contains functions that communicate to the 
 
 ## Privacy Practice Analysis
 
-Our extension is analyzing the following privacy practices for each first and third party website.
+Privacy Pioneer is analyzing the following privacy practices for each first and third party website.
 
 - Monetization
   - Advertising (from Disconnect)
@@ -109,13 +109,13 @@ Our extension is analyzing the following privacy practices for each first and th
 
 ## Extension Architecture
 
-An overview of the architecture of our extension is available [separately](https://github.com/privacy-tech-lab/integrated-privacy-analysis/blob/main/architecture_overview.md).
+An overview of the architecture of Privacy Pioneer is available [separately](https://github.com/privacy-tech-lab/integrated-privacy-analysis/blob/main/architecture_overview.md).
 
 ## Third Party Libraries and Resources
 
-This project uses various [third party libraries](https://github.com/privacy-tech-lab/integrated-privacy-analysis/blob/main/package.json).
+Privacy Pioneer uses various [third party libraries](https://github.com/privacy-tech-lab/integrated-privacy-analysis/blob/main/package.json).
 
-In addition, this project uses the following resources.
+It also uses the following resources.
 
 - [Disconnect Tracker Protection lists](https://github.com/disconnectme/disconnect-tracking-protection)
 - [Eva Icons](https://akveo.github.io/eva-icons/#/)
