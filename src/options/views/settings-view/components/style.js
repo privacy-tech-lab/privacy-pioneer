@@ -1,3 +1,8 @@
+/*
+Licensed per https://github.com/privacy-tech-lab/integrated-privacy-analysis/blob/main/LICENSE
+privacy-tech-lab, https://www.privacytechlab.org/
+*/
+
 import styled from "styled-components"
 import { motion } from "framer-motion"
 
@@ -156,6 +161,7 @@ export const SDropdownSelection = styled.div`
   background-color: var(--textFieldColor);
   margin-top: 12px;
   margin-right: 12px;
+  width: 125px;
   :hover {
     filter: brightness(0.95);
   }

@@ -1,5 +1,13 @@
+/*
+Licensed per https://github.com/privacy-tech-lab/integrated-privacy-analysis/blob/main/LICENSE
+privacy-tech-lab, https://www.privacytechlab.org/
+*/
+
 import React, { useEffect, useRef, useState } from "react"
-import { permissionEnum } from "../../../../background/analysis/classModels"
+import {
+  permissionEnum,
+  timeRangeEnum,
+} from "../../../../background/analysis/classModels"
 import * as Icons from "../../../../libs/icons"
 import {
   deleteEvidenceDB,
@@ -143,6 +151,8 @@ export const ThemeSelection = ({ changeTheme }) => {
 }
 export const ExportData = () => {
   const [showDropdown, setDropdown] = useState(false)
+  const [timeRange, setTimeRange] = useState(timeRangeEnum.allTime)
+  const [dropdownTitle, setTitle] = useState("All Time")
   const dropdownRef = useRef()
   const blur = (event) => {
     if (!dropdownRef.current.contains(event.target)) {
@@ -160,25 +170,34 @@ export const ExportData = () => {
         ref={dropdownRef}
       >
         <SDropdownOptions show={showDropdown}>
-          <SDropdownItem>Test</SDropdownItem>
-          <SDropdownItem>Test</SDropdownItem>
-          <SDropdownItem>Hello Test</SDropdownItem>
-          <SDropdownItem>Test</SDropdownItem>
+          {Object.values(timeRangeEnum).map(({ timestamp, title }) => (
+            <SDropdownItem
+              onClick={() => {
+                setTimeRange(timestamp)
+                setTitle(title)
+              }}
+              key={title}
+            >
+              {title}
+            </SDropdownItem>
+          ))}
         </SDropdownOptions>
         <SDropdownSelection>
-          Select Time Range
+          {dropdownTitle}
           <Icons.ChevronDown size="24px" />
         </SDropdownSelection>
       </SDropdown>
       <SExportButton
-        onClick = { () => initiateDownload(exportTypeEnum.TSV)}
+        onClick={() => {
+          initiateDownload(exportTypeEnum.TSV, timeRange)
+        }}
       >
-        TSV 
+        TSV
       </SExportButton>
       <SExportButton
-        onClick = { () => initiateDownload(exportTypeEnum.JSON)}
+        onClick={() => initiateDownload(exportTypeEnum.JSON, timeRange)}
       >
-        JSON 
+        JSON
       </SExportButton>
     </SExportSection>
   )

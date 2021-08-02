@@ -1,6 +1,11 @@
+/*
+Licensed per https://github.com/privacy-tech-lab/integrated-privacy-analysis/blob/main/LICENSE
+privacy-tech-lab, https://www.privacytechlab.org/
+*/
+
 import React, { useEffect, useState } from "react"
 import { privacyLabels } from "../../../../background/analysis/classModels"
-import { SContainer, SHeader, SCollapse, SCodeBlock, SBody, SEvidenceDescription } from "./style"
+import { SContainer, SHeader, SCollapse, SCodeBlock, SBody, SBodyMod, SEvidenceDescription } from "./style"
 
 /**
  * 'Collapse' containing evidence/extra info about identified label type
@@ -114,7 +119,7 @@ const Evidence = ({ collapseId, request, label, type }) => {
         specificDescription.leading = `‣ The URL that initiated this HTTP request is known to practice `;
         specificDescription.highlight = `${displayType}`;
         specificDescription.trailing = `.`;
-        specificDescription.signOff = `${handEmoji} request URL below`;
+        specificDescription.signOff = `${handEmoji} Request URL below`;
       }
 
       // description for when the evidence came with an index in the strReq
@@ -175,13 +180,13 @@ const Evidence = ({ collapseId, request, label, type }) => {
               </pre>
             </SEvidenceDescription>
         <SHeader marginTop="16px">◉ Request URL </SHeader>
-        <SBody>
-          <pre>
-            <code>{request != null ? request["requestUrl"] : ""}&nbsp;</code>
-          </pre>
-        </SBody>
         {data ?
           <div>
+            <SBody>
+              <pre>
+                <code>{request != null ? request["requestUrl"] : ""}&nbsp;</code>
+              </pre>
+            </SBody>
             <SHeader marginTop="16px" marginBottom="8px">
               ◉ Data Snippet
             </SHeader>
@@ -195,7 +200,14 @@ const Evidence = ({ collapseId, request, label, type }) => {
               </pre>
             </SCodeBlock>
           </div> 
-        : null} 
+        : <SBodyMod>
+            <pre>
+              <code>
+                {request != null ? request["requestUrl"] : ""}&nbsp;
+              </code>
+            </pre>
+          </SBodyMod>
+        } 
       </SContainer>
     </SCollapse>
   )

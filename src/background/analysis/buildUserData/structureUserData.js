@@ -1,3 +1,8 @@
+/*
+Licensed per https://github.com/privacy-tech-lab/integrated-privacy-analysis/blob/main/LICENSE
+privacy-tech-lab, https://www.privacytechlab.org/
+*/
+
 import { typeEnum, permissionEnum, KeywordObject } from "../classModels.js";
 import { watchlistKeyval } from '../../../libs/indexed-db/openDB.js';
 import { watchlistHashGen } from "../utility/util.js";

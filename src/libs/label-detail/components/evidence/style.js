@@ -1,3 +1,8 @@
+/*
+Licensed per https://github.com/privacy-tech-lab/integrated-privacy-analysis/blob/main/LICENSE
+privacy-tech-lab, https://www.privacytechlab.org/
+*/
+
 import { motion } from "framer-motion"
 import styled from "styled-components"
 
@@ -56,6 +61,26 @@ export const SBody = styled.div`
   code {
     white-space: nowrap !important;
   }
+`
+
+export const SBodyMod = styled.div`
+overflow: scroll;
+max-height: 100px;
+pre {
+  margin: 0px;
+  font-size: 12px;
+  line-height: 150%;
+  font-family: monospace;
+  white-space: pre;
+  white-space: pre-wrap;
+  white-space: -moz-pre-wrap;
+  white-space: -o-pre-wrap;
+  width: 100%;
+  display: block;
+  padding: 8px;
+  background: var(--textFieldColor);
+  border-radius: 8px;
+}
 `
 
 export const SEvidenceDescription = styled.div`

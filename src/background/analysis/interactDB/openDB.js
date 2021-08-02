@@ -1,4 +1,9 @@
 /*
+Licensed per https://github.com/privacy-tech-lab/integrated-privacy-analysis/blob/main/LICENSE
+privacy-tech-lab, https://www.privacytechlab.org/
+*/
+
+/*
 requestModel.js
 ================================================================================
 - requestModel.js defines a structure of a network request
