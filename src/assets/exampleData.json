@@ -90,7 +90,7 @@
                         "snippet": "aichele8cyf6e72k4839s.&bp=1.6173652648593&cf=283726483&fq=0&td_s=invasive_site.com&rcats=7sp,aeg,vas&mcat=peer39-82743&mste=invasive_site.com&mfld=4&mssi=None&mfsi=jche7u2h36s&uhow=11&agsa=&rgz=10013&svbttd=1&dt=PC&osf=OSX&os=Other&br=Firefox&rlangs=en&mlang=&svpid=9294&did=&rcxt=Other&tmpc=23.16&daid=&vp=0&ip=1.1.1.1&osi=&osv=&bffi=41&mk=Mozilla&mdl=Firefox%20-%20OS%20X&c=LEHCELEGNCGgelkcue728934jncgKWKUHGCEKE.&dur=LKUCGELIAKJGFKEAJBCYFkjblayglcuyegjbfe7289467lkajbKUGFEKJBXYGE83KJCG73FRNkwgce",
                         "timestamp": 1627850161138,
                         "typ": "ipAddress",
-                        "watchlistHash": null
+                        "watchlistHash": 1
                     }
                 }
             }
@@ -176,7 +176,7 @@
                         "snippet": "83HCI37WWHCIWEG3KCJH379.839\\;callStruct?a.callStruct.apply(a,arguments):a.queue.push(arguments)},b._alcbe||(b.leocuebg=a),d=e.getElementsByTagName(f)[0],d.parentNode.insertBefore(c,d))}(window,document,\\\\\\\"script\\\\\\\",\\\\\\\"https:\\\\/\\\\/connect.extraSite.net\\\\/en_US\\\\/eventSite_letiebclkebcu8886394.js\\\\\\\")e.sendEmail(\\my_email@email.com\\),ALG.UserStorage.get().then(function(b){b.lcoeugenbcle?fca(\\\"dataProcessingOptions\\\",[\\\"LAU\\\"],0,2):fca(\\\\\\\"dataProcessingOptions\\\\\\\",\\\\n[]);fca(\\\\\\\"init\\\\\\\",\\\",[\\\"runner\\\",[\\\"micro\\\",53],8,16],\\\");gtg.onHtmlSuccess(\\\",[\\\"runner\\\",[\\\"micro\\\",54],8,16],\\\")})))",
                         "timestamp": 1627851104916,
                         "typ": "emailAddress",
-                        "watchlistHash": null
+                        "watchlistHash": 2
                     }
                 }
             }
@@ -184,13 +184,13 @@
     },
     "exWatchlist": [
         {
-            "id": "-1077641971",
-            "keyword": "1.1.1.1",
+            "id": "1",
+            "keyword": "1.1.1.1 (Example Watchlist Entry)",
             "type": "ipAddress"
         },
         {
-            "id": "-1059260752",
-            "keyword": "my_email@email.com",
+            "id": "2",
+            "keyword": "my_email@email.com (Example Watchlist Entry)",
             "type": "emailAddress"
         }
     ]

@@ -9,6 +9,8 @@ import WebsiteLabelList from "../../components/website-label-list"
 import { getLabels, getWebsites } from "../../../libs/indexed-db/getIdbData.js"
 import { useHistory, useLocation } from "react-router"
 
+const exData = require('../../../assets/exampleData.json')
+
 /**
  * Search view allowing user to search from identified labels
  */
@@ -43,9 +45,21 @@ const SearchView = () => {
 
   useEffect(() => {
     getWebsites().then((websites) => {
-      setAllWebsites(websites)
-      setFilter(websites)
-      getLabels().then((labels) => setWebLabels(labels))
+      if (Object.keys(websites).length == 0){
+        setAllWebsites(exData.labelArrayPerSite);
+        setFilter(exData.labelArrayPerSite);
+        var check = true
+      } else {
+        setAllWebsites(websites);
+        setFilter(websites)
+      }
+      getLabels().then((labels) => {
+        if (check){
+          setWebLabels(exData.dataJson);
+        } else {
+          setWebLabels(labels);
+        }
+      })
     })
   }, [])
 
@@ -69,7 +83,7 @@ const SearchView = () => {
             <STitle>History</STitle>
           </STop>
           <SSubtitle>
-            See browsed webistes accessing and sharing your personal information
+            See browsed websites accessing and sharing your personal information
           </SSubtitle>
           <SInputContainer>
             <Icons.Search size="24px" />
