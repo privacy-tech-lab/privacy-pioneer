@@ -95,27 +95,36 @@ const LabelCard = ({ requests, website, label, margin, onTap, popup }) => {
             {companiesWithIcons.map((company) => {
               if (company)
                 return (
-                  <CompanyLogo
-                    parent={company}
-                    key={company}
-                    margin={"0px 6px 0px 6px"}
-                  />
+                  <div data-custom data-custom-info={company}>
+                    <CompanyLogo
+                      parent={company}
+                      key={company}
+                      margin={"0px 6px 0px 6px"}
+                    />
+                  </div>
                 )
             })}
             <More amount={websites.length - numOfSitesWithIcons} />
           </SLogo>
         )
-      } else
+      } else {
+        const WebsiteLogoList =
+          websites.length > 3 ? websites.slice(0, 3) : websites
         return (
           <SLogo>
-            {websites.map((website) => (
+            {WebsiteLogoList.map((website) => (
               <div data-custom data-custom-info={website}>
-                <WebsiteLogo website={website} margin={"0px 6px 0px 6px"} />
+                <WebsiteLogo
+                  website={website}
+                  margin={"0px 6px 0px 6px"}
+                  color="var(--primaryBrandColor)"
+                />
               </div>
             ))}
-            <More amount={websites.length - 1} />
+            <More amount={websites.length - WebsiteLogoList.length} />
           </SLogo>
         )
+      }
     }
 
     return (

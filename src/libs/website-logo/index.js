@@ -18,13 +18,21 @@ const SWebsiteLogo = styled.div`
   height: ${(props) => (props.large ? "64px" : "24px")};
   width: ${(props) => (props.large ? "64px" : "24px")};
   margin: ${(props) => (props.margin ? props.margin : "0px")};
-  border-radius: ${(props) => (props.letter ? "50%" : "0px")};
+  border-radius: 50%;
   background-color: ${(props) =>
-    props.letter ? "var(--primaryBrandTintColor)" : "none"};
+    props.color ? props.color : "var(--primaryBrandTintColor)"};
+`
+const SCompanyLogo = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: ${(props) => (props.large ? "64px" : "24px")};
+  width: ${(props) => (props.large ? "64px" : "24px")};
+  margin: ${(props) => (props.margin ? props.margin : "0px")};
 `
 
 const SLetterLogo = styled.div`
-  color: var(--primaryBrandColor);
+  color: ${(props) => (props.color ? "white" : "var(--primaryBrandColor)")};
   font-weight: bold;
   font-size: ${(props) => (props.large ? "32px" : "16px")};
 `
@@ -32,10 +40,12 @@ const SLetterLogo = styled.div`
 /**
  * Displays website logo (which is the first letter of website)
  */
-const WebsiteLogo = ({ website, large, margin }) => {
+const WebsiteLogo = ({ website, large, margin, color }) => {
   return (
-    <SWebsiteLogo margin={margin} large={large} letter>
-      <SLetterLogo large={large}>{website.charAt(0).toUpperCase()}</SLetterLogo>
+    <SWebsiteLogo margin={margin} large={large} color={color}>
+      <SLetterLogo large={large} color={color}>
+        {website.charAt(0).toUpperCase()}
+      </SLetterLogo>
     </SWebsiteLogo>
   )
 }
@@ -44,10 +54,10 @@ export const CompanyLogo = ({ parent, large, margin }) => {
   const Logo = CompanyLogoSVG[parent]
   if (Logo) {
     return (
-      <SWebsiteLogo margin={margin} large={large}>
+      <SCompanyLogo margin={margin} large={large}>
         {" "}
         <Logo size={"24px"} />
-      </SWebsiteLogo>
+      </SCompanyLogo>
     )
   } else {
     return null

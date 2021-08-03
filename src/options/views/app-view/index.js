@@ -19,11 +19,13 @@ import "react-hint/css/index.css"
 import styled from "styled-components"
 
 const SHint = styled.div`
-  padding: 10px;
+  padding: 8px;
   border-radius: 5px;
   background: var(--primaryBrandColor);
+  font-size: var(--body1);
   text-align: center;
   width: max-content;
+  color: white;
   max-width: ${(props) => (props.multiline ? "350px" : "none")};
 `
 
