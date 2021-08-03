@@ -13,6 +13,26 @@ import LabelModal from "../home-view/components/detail-modal"
 import WebsiteLabelList from "../../components/website-label-list"
 import { getLabels, getWebsites } from "../../../libs/indexed-db/getIdbData.js"
 import { useHistory, useLocation } from "react-router"
+import { permissionEnum } from "../../../background/analysis/classModels"
+
+const filterKeywordEnum = Object.freeze({
+  permissionMonetization: {
+    searchString: "permission:monetization",
+    permission: permissionEnum.monetization,
+  },
+  permissionLocation: {
+    searchString: "permission:location",
+    permission: permissionEnum.location,
+  },
+  permissionWatchlist: {
+    searchString: "permission:watchlist",
+    permission: permissionEnum.watchlist,
+  },
+  permissionTracking: {
+    searchString: "permission:tracking",
+    permission: permissionEnum.tracking,
+  }
+})
 
 /**
  * Search view allowing user to search from identified labels
@@ -29,16 +49,62 @@ const SearchView = () => {
    * @param {string} keyString string the user entered
    */
   const filter = (keyString) => {
+
+    var startIndex = -1
+    Object.values(filterKeywordEnum).map(({searchString, permission}) => {
+      if (keyString.includes(searchString)) {
+        startIndex = Math.max(startIndex, keyString.indexOf(searchString) + searchString.length)
+      }
+    })
+    if (startIndex != -1) { keyString = keyString.slice(startIndex + 1) }
+    console.log(keyString);
+
     const filteredKeys = Object.keys(allWebsites).filter((k) =>
       k.includes(keyString)
     )
+
     var filteredWebsites = {}
-    filteredKeys.forEach(
-      (websiteName) =>
-        (filteredWebsites[websiteName] = allWebsites[websiteName])
-    )
+    for ( const [perm, websiteLevel] of Object.entries(webLabels)) {
+      if (Object.keys(websiteLevel).length > 0) {
+        for ( const website of Object.keys(websiteLevel)) {
+          if (filteredKeys.includes(website)) filteredWebsites[website] = allWebsites[website]
+        }
+      }
+    }
+
     setFilter(filteredWebsites)
   }
+
+  
+  const filterLabels = (keyString) => {
+
+    var filterArr = [ 
+      permissionEnum.location,
+      permissionEnum.monetization,
+      permissionEnum.tracking,
+      permissionEnum.watchlist
+    ]
+
+    Object.values(filterKeywordEnum).map(({searchString, permission}) => {
+      if (keyString.includes(searchString)) {
+        const removeIndex = filterArr.indexOf(permission)
+        filterArr.splice(removeIndex, 1)
+      }
+    })
+
+    if (filterArr.length !== 4) { 
+      getLabels(filterArr).then( (labels) => {
+        setWebLabels(labels)
+        Object.values(filterKeywordEnum).map(({searchString, permission}) => {
+          // if (keyString === searchString) { filter("") }
+        })
+      })
+    }
+    else {
+      getLabels().then((labels => setWebLabels(labels)));
+    }
+  }
+
 
   const handleTap = (items) => {
     const modal = new Modal(document.getElementById("detail-modal"))
@@ -80,7 +146,11 @@ const SearchView = () => {
             <Icons.Search size="24px" />
             <SInput
               placeholder="Search"
-              onChange={(e) => filter(e.target.value)}
+              onChange={(e) => {
+                filter(e.target.value);
+                filterLabels(e.target.value);
+              }
+            }
             />
           </SInputContainer>
           <WebsiteLabelList

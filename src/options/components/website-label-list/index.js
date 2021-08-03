@@ -17,8 +17,9 @@ import { SContainer, SItem, SLabel, SLabelGroup, SSeperator } from "./style"
  */
 const LabelCards = ({ website, handleTap, allLabels, webLabels }) => {
   return webLabels.map((label, index) => {
-    const requests =
-      Object.entries(allLabels).length > 0 ? allLabels[label][website] : "empty"
+    var requests =
+      Object.entries(allLabels).length > 0 ? allLabels[label][website] : "loading"
+    if ( !label in allLabels ) { requests = "hide" }
     return (
       <LabelCard
         key={index}
