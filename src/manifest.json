@@ -1,5 +1,5 @@
 {
-  "name": "integrated-privacy-analysis",
+  "name": "privacy-pioneer",
   "version": "0.0.1",
   "permissions": ["webRequest", "<all_urls>", "webRequestBlocking", "geolocation", 
     "storage", "tabs", "history", "downloads"],
@@ -8,7 +8,7 @@
     "scripts": ["bundle.background.js"]
   },
   "browser_action": {
-    "default_title": "Integrated Privacy Analysis",
+    "default_title": "Privacy Pioneer",
     "default_popup": "popup.html",
     "browser_style": true
   },
