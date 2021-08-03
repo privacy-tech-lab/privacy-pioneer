@@ -1,5 +1,5 @@
 /*
-Licensed per https://github.com/privacy-tech-lab/integrated-privacy-analysis/blob/main/LICENSE
+Licensed per https://github.com/privacy-tech-lab/privacy-pioneer/blob/main/LICENSE
 privacy-tech-lab, https://www.privacytechlab.org/
 */
 
@@ -120,7 +120,7 @@ const WebsiteView = () => {
           leading={
             <SLeading>
               <SBrandIcon />{" "}
-              <SBrandTitle>Integrated Privacy Analysis</SBrandTitle>
+              <SBrandTitle>Privacy Pioneer</SBrandTitle>
             </SLeading>
           }
           trailing={

@@ -1,5 +1,5 @@
 /*
-Licensed per https://github.com/privacy-tech-lab/integrated-privacy-analysis/blob/main/LICENSE
+Licensed per https://github.com/privacy-tech-lab/privacy-pioneer/blob/main/LICENSE
 privacy-tech-lab, https://www.privacytechlab.org/
 */
 
@@ -53,7 +53,7 @@ const NavBar = () => {
       <SLeading>
         <SLeadingContainer onClick={() => configureRoute("/")}>
           <SBrandIcon src={logo} alt="Logo" />
-          <SBrandTitle>Integrated Privacy Analysis</SBrandTitle>
+          <SBrandTitle>Privacy Pioneer</SBrandTitle>
         </SLeadingContainer>
       </SLeading>
       <STrailing>

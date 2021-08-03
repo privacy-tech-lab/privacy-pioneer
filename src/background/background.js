@@ -1,5 +1,5 @@
 /*
-Licensed per https://github.com/privacy-tech-lab/integrated-privacy-analysis/blob/main/LICENSE
+Licensed per https://github.com/privacy-tech-lab/privacy-pioneer/blob/main/LICENSE
 privacy-tech-lab, https://www.privacytechlab.org/
 */
 
@@ -137,7 +137,7 @@ browser.downloads.onChanged.addListener(async function (downloadDelta) {
     const url = downloadItem.url
     const filename = downloadItem.filename
     // we only revoke the URL if it is the download we initiated
-    if (filename.includes("integrated_privacy_analysis_data")) {
+    if (filename.includes("privacy_pioneer_data")) {
       URL.revokeObjectURL(url) // revoke the url.
     }
   }

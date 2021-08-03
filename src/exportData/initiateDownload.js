@@ -1,5 +1,5 @@
 /*
-Licensed per https://github.com/privacy-tech-lab/integrated-privacy-analysis/blob/main/LICENSE
+Licensed per https://github.com/privacy-tech-lab/privacy-pioneer/blob/main/LICENSE
 privacy-tech-lab, https://www.privacytechlab.org/
 */
 
@@ -43,7 +43,7 @@ async function initiateDownload(exportDataType = exportTypeEnum.TSV, timeRange =
 
     var downloading = browser.downloads.download({
         url: downloadURL,
-        filename: `integrated_privacy_analysis_data.${exportDataType}`,
+        filename: `privacy_pioneer_data.${exportDataType}`,
     });
 }
 

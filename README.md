@@ -1,30 +1,30 @@
 <p align="center">
-  <img alt="GitHub release (latest by date)" src="https://img.shields.io/github/v/release/privacy-tech-lab/integrated-privacy-analysis">
-  <img alt="GitHub Release Date" src="https://img.shields.io/github/release-date/privacy-tech-lab/integrated-privacy-analysis">
-  <img alt="GitHub last commit" src="https://img.shields.io/github/last-commit/privacy-tech-lab/integrated-privacy-analysis">
-  <img alt="GitHub issues" src="https://img.shields.io/github/issues-raw/privacy-tech-lab/integrated-privacy-analysis">
-  <img alt="GitHub closed issues" src="https://img.shields.io/github/issues-closed-raw/privacy-tech-lab/integrated-privacy-analysis">
-  <img alt="GitHub" src="https://img.shields.io/github/license/privacy-tech-lab/integrated-privacy-analysis">
-  <img alt="GitHub watchers" src="https://img.shields.io/github/watchers/privacy-tech-lab/integrated-privacy-analysis?style=social">
-  <img alt="GitHub Repo stars" src="https://img.shields.io/github/stars/privacy-tech-lab/integrated-privacy-analysis?style=social">
-  <img alt="GitHub forks" src="https://img.shields.io/github/forks/privacy-tech-lab/integrated-privacy-analysis?style=social">
+  <img alt="GitHub release (latest by date)" src="https://img.shields.io/github/v/release/privacy-tech-lab/privacy-pioneer">
+  <img alt="GitHub Release Date" src="https://img.shields.io/github/release-date/privacy-tech-lab/privacy-pioneer">
+  <img alt="GitHub last commit" src="https://img.shields.io/github/last-commit/privacy-tech-lab/privacy-pioneer">
+  <img alt="GitHub issues" src="https://img.shields.io/github/issues-raw/privacy-tech-lab/privacy-pioneer">
+  <img alt="GitHub closed issues" src="https://img.shields.io/github/issues-closed-raw/privacy-tech-lab/privacy-pioneer">
+  <img alt="GitHub" src="https://img.shields.io/github/license/privacy-tech-lab/privacy-pioneer">
+  <img alt="GitHub watchers" src="https://img.shields.io/github/watchers/privacy-tech-lab/privacy-pioneer?style=social">
+  <img alt="GitHub Repo stars" src="https://img.shields.io/github/stars/privacy-tech-lab/privacy-pioneer?style=social">
+  <img alt="GitHub forks" src="https://img.shields.io/github/forks/privacy-tech-lab/privacy-pioneer?style=social">
 </p>
 
-# integrated-privacy-analysis
+# Privacy Pioneer
 
 <p align="center">
-  <a href="https://addons.mozilla.org/en-US/firefox/user/12247904/"><img src="https://github.com/privacy-tech-lab/integrated-privacy-analysis/blob/main/firefox-add-ons-badge.png" width="172px" alt="Firefox Add Ons badge"></a>
+  <a href="https://addons.mozilla.org/en-US/firefox/user/12247904/"><img src="https://github.com/privacy-tech-lab/privacy-pioneer/blob/main/firefox-add-ons-badge.png" width="172px" alt="Firefox Add Ons badge"></a>
 <p>
 
-The idea of this browser extension is to helps users to understand the privacy implications of their visits to websites. For example, the following URL-encoded string contains the latitude and longitude of a device:
+The idea of Privacy Pioneer is to help users understand the privacy implications of their visits to websites. For example, the following URL-encoded string contains the latitude and longitude of a device:
 
 > https%3A%2F%2Fwww.example.com%2Flocation%3Flat%3D32.715736%26lon%3D%20-117.161087
 
-If such a string is sent via an HTTP POST request, it can be concluded that a site is collecting location data. Observing such behaviors, a privacy profile of a site is created to help users get a better understanding of their privacy.
+If such a string is sent via an HTTP POST request, it can be concluded that a site is collecting location data. Observing such behaviors, a privacy label of a site is created to help users get a better understanding of their privacy.
 
 Currently, we only support Firefox.
 
-This browser extension is developed and maintained by **Owen Kaplan (@notowen333)**, **Daniel Goldelman (@danielgoldelman)**, **Logan Brown (@Lr-Brown)**, and **Sebastian Zimmeck (@SebastianZimmeck)** of the [privacy-tech-lab](https://www.privacytechlab.org/). **Rafael Goldstein (@rgoldstein01)** and **David Baraka (@davebaraka)** contributed earlier.
+Privacy Pioneer is developed and maintained by **Owen Kaplan (@notowen333)**, **Daniel Goldelman (@danielgoldelman)**, **Logan Brown (@Lr-Brown)**, and **Sebastian Zimmeck (@SebastianZimmeck)** of the [privacy-tech-lab](https://www.privacytechlab.org/). **Rafael Goldstein (@rgoldstein01)** and **David Baraka (@davebaraka)** contributed earlier.
 
 Contact us with any questions or comments at sebastian@privacytechlab.org.
 
@@ -32,7 +32,7 @@ Contact us with any questions or comments at sebastian@privacytechlab.org.
 
 Ensure that you have [node and npm](https://www.npmjs.com/get-npm) installed.
 
-In the root directory of the project, start by [installing the dependencies by running](https://github.com/privacy-tech-lab/integrated-privacy-analysis/issues/249#issuecomment-885723394):
+In the root directory of the project, start by [installing the dependencies by running](https://github.com/privacy-tech-lab/privacy-pioneer/issues/249#issuecomment-885723394):
 
 ```bash
 npm install --production=false
@@ -44,17 +44,17 @@ To start the project, run:
 npm start
 ```
 
-- Runs the extension in development mode
+- Runs Privacy Pioneer in development mode
 - The popup, options, and background page will reload if you make edits
 - You will also see any lint errors in the console
 
-A `dev` folder will be generated in the root directory, housing the generated extension files. Firefox should automatically open with the extension installed. If not, you can follow the instructions [here](https://github.com/privacy-tech-lab/integrated-privacy-analysis/issues/12#issuecomment-776985944), where `dev` will be the new `src` folder.
+A `dev` folder will be generated in the root directory, housing the generated extension files. Firefox should automatically open with the extension installed. If not, you can follow the instructions [here](https://github.com/privacy-tech-lab/privacy-pioneer/issues/12#issuecomment-776985944), where `dev` will be the new `src` folder.
 
 **NOTE:** If you experience errors regarding missing dependencies (usually due to a newly incorporated node package), delete the `node_modules` folder and then re-run the installation steps above. You may also want to delete `package-lock.json` along with the `node_modules` folder as a second attempt to solve this issue.
 
 ## Production
 
-Build the extension for production to the `dist` folder by running:
+Build Privacy Pioneer for production to the `dist` folder by running:
 
 ```bash
 npm run build
@@ -85,7 +85,7 @@ The `src/libs/indexed-db` directory, contains functions that communicate to the 
 
 ## Privacy Practice Analysis
 
-Our extension is analyzing the following privacy practices for each first and third party website.
+Privacy Pioneer is analyzing the following privacy practices for each first and third party website.
 
 - Monetization
   - Advertising (from Disconnect)
@@ -109,12 +109,23 @@ Our extension is analyzing the following privacy practices for each first and th
 
 ## Extension Architecture
 
-An overview of the architecture of our extension is available [separately](https://github.com/privacy-tech-lab/integrated-privacy-analysis/blob/main/architecture_overview.md).
+An overview of the architecture of Privacy Pioneer is available [separately](https://github.com/privacy-tech-lab/privacy-pioneer/blob/main/architecture_overview.md).
 
-## Third Party Libraries
+## Third Party Libraries and Resources
 
-This project uses various [third party libraries](https://github.com/privacy-tech-lab/integrated-privacy-analysis/blob/main/package.json). We thank the developers.
+Privacy Pioneer uses various [third party libraries](https://github.com/privacy-tech-lab/privacy-pioneer/blob/main/package.json).
+
+It also uses the following resources.
+
+- [Disconnect Tracker Protection lists](https://github.com/disconnectme/disconnect-tracking-protection)
+- [Eva Icons](https://akveo.github.io/eva-icons/#/)
+- [iconmonstr](https://iconmonstr.com/)
+- [Ion Icons](https://ionicons.com)
+- [Radar Icon](https://www.svgrepo.com/svg/167040/radar)
+- [Simple Icons](https://github.com/simple-icons/simple-icons)
+
+We thank the developers.
 
 <p align="center">
-  <a href="https://www.privacytechlab.org/"><img src="https://github.com/privacy-tech-lab/integrated-privacy-analysis/blob/main/plt_logo.png" width="200px" height="200px" alt="privacy-tech-lab logo"></a>
+  <a href="https://www.privacytechlab.org/"><img src="https://github.com/privacy-tech-lab/privacy-pioneer/blob/main/plt_logo.png" width="200px" height="200px" alt="privacy-tech-lab logo"></a>
 <p>

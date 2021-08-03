@@ -1,5 +1,5 @@
 {
-  "name": "integrated-privacy-analysis",
+  "name": "privacy-pioneer",
   "version": "0.0.1",
   "scripts": {
     "prestart": "rimraf dev",
@@ -10,7 +10,7 @@
     "prebuild": "rimraf dist",
     "build": "webpack -c webpack.config.babel.js --mode production"
   },
-  "repository": "https://github.com/privacy-tech-lab/integrated-privacy-analysis",
+  "repository": "https://github.com/privacy-tech-lab/privacy-pioneer",
   "license": "MIT",
   "eslintConfig": {
     "extends": "react-app",

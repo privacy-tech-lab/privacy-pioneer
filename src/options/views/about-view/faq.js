@@ -1,5 +1,5 @@
 /*
-Licensed per https://github.com/privacy-tech-lab/integrated-privacy-analysis/blob/main/LICENSE
+Licensed per https://github.com/privacy-tech-lab/privacy-pioneer/blob/main/LICENSE
 privacy-tech-lab, https://www.privacytechlab.org/
 */
 
@@ -86,7 +86,7 @@ export const FAQ = {
         license
       </a>
       . The ___ source code can be found on the{" "}
-      <a href="https://github.com/privacy-tech-lab/integrated-privacy-analysis" target="_blank">
+      <a href="https://github.com/privacy-tech-lab/privacy-pioneer" target="_blank">
         {" "}
         privacy-tech-lab’s ___ GitHub
       </a>
