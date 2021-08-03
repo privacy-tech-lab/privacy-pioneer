@@ -120,7 +120,7 @@ const WebsiteView = () => {
           leading={
             <SLeading>
               <SBrandIcon />{" "}
-              <SBrandTitle>Integrated Privacy Analysis</SBrandTitle>
+              <SBrandTitle>Privacy Pioneer</SBrandTitle>
             </SLeading>
           }
           trailing={

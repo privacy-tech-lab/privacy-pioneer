@@ -43,7 +43,7 @@ async function initiateDownload(exportDataType = exportTypeEnum.TSV, timeRange =
 
     var downloading = browser.downloads.download({
         url: downloadURL,
-        filename: `integrated_privacy_analysis_data.${exportDataType}`,
+        filename: `privacy_pioneer_data.${exportDataType}`,
     });
 }
 

@@ -86,7 +86,7 @@ export const FAQ = {
         license
       </a>
       . The ___ source code can be found on the{" "}
-      <a href="https://github.com/privacy-tech-lab/integrated-privacy-analysis" target="_blank">
+      <a href="https://github.com/privacy-tech-lab/privacy-pioneer" target="_blank">
         {" "}
         privacy-tech-lab’s ___ GitHub
       </a>
