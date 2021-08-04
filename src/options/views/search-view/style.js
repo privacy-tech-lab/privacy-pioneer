@@ -27,13 +27,11 @@ export const SSubtitle = styled.div`
 
 export const SInput = styled.input`
   padding-top: 8px;
-  padding-left: 36px;
-  padding-right: 8px;
   padding-bottom: 8px;
-  margin-top: 32px;
-  width: 50%;
+  padding-left: 30px;
+  width: 100%;
   background-color: var(--cardColor);
-  border-radius: 8px;
+  border-radius: 6px;
   border: 0px solid #eee;
   outline: none;
   font-size: var(--body1);
@@ -50,8 +48,8 @@ export const SInputContainer = styled.div`
     fill: var(--secondaryTextColor);
   }
   svg {
-    margin-top: 36px;
-    margin-left: 8px;
+    padding-left: 5px;
+    text-align: center;
     position: absolute;
   }
 `;
@@ -61,3 +59,18 @@ export const SBackButton = styled(motion.div)`
   cursor: pointer;
   display: flex;
 `;
+
+export const SFilterButton = styled(motion.div)`
+  cursor: pointer;
+  padding-left: 8px;
+  display: flex;
+`
+
+export const SSearchContainer = styled.div`
+  padding-top: 16px;
+  padding-bottom: 16px;
+  margin-top: 32px;
+  display: inline-flex;
+  flex-direction: row;
+  justify-content: left;
+`

@@ -5,7 +5,7 @@ privacy-tech-lab, https://www.privacytechlab.org/
 
 import React, { useEffect, useState } from "react"
 import Scaffold from "../../components/scaffold"
-import { SBackButton, SInput, SInputContainer, STitle, STop } from "./style"
+import { SBackButton, SFilterButton, SInput, SInputContainer, SSearchContainer, STitle, STop } from "./style"
 import { SContainer, SSubtitle } from "./style"
 import * as Icons from "../../../libs/icons"
 import { Modal } from "bootstrap"
@@ -32,6 +32,7 @@ const SearchView = () => {
       permissionEnum.watchlist
     ]
   ) // used for permission filtering
+  const [searchQuery, setSearchQuery] = useState('')
   const [modal, setModal] = useState({ show: false })
   const history = useHistory()
   const location = useLocation()
@@ -133,6 +134,7 @@ const SearchView = () => {
       setFilter(websites)
       getLabels().then((labels) => {setWebLabels(labels)})
     })
+    setSearchQuery(passedSearch)
   }, [])
 
   return (
@@ -157,18 +159,28 @@ const SearchView = () => {
           <SSubtitle>
             See browsed webistes accessing and sharing your personal information
           </SSubtitle>
-          <SInputContainer>
-            <Icons.Search size="24px" />
-            <SInput
-              placeholder="Search"
-              onChange={(e) => {
-                filterLabels(e.target.value);
-                filter(e.target.value);
+          <SSearchContainer>
+            <SInputContainer>
+              <Icons.Search size = {24}/>
+              <SInput
+                placeholder="Search"
+                onChange={(e) => {
+                  filterLabels(e.target.value);
+                  filter(e.target.value);
+                  setSearchQuery(e.target.value)
+                  }
                 }
-              }
-              defaultValue = {passedSearch}
-            />
-          </SInputContainer>
+                defaultValue = {passedSearch}
+              />
+            </SInputContainer>
+            <SFilterButton
+              onClick = {() => {
+                filterLabels(searchQuery)
+                filter(searchQuery)
+              }}
+              > <Icons.Filter size={24} /> 
+            </SFilterButton>
+          </SSearchContainer>
           <WebsiteLabelList
             websites={filteredSites}
             allLabels={webLabels}
