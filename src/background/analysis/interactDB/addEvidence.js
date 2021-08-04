@@ -70,7 +70,13 @@ async function addToEvidenceStore(evidenceToAdd, firstParty, parent, rootU, requ
       if (requestU == 'http://ip-api.com/json/'){ return new Promise( function(resolve, reject) {
         resolve('whitelist IP API');
       }) };
-      
+
+      let keys = Object.keys(evidenceObject);
+      for (let key of keys) {
+        if (!evidenceObject[key]) {
+          delete evidenceObject[key];
+        }
+      }
       evidence = updateFetchedDict(evidence, evidenceObject)
     }
   }
