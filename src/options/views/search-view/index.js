@@ -13,26 +13,8 @@ import LabelModal from "../home-view/components/detail-modal"
 import WebsiteLabelList from "../../components/website-label-list"
 import { getLabels, getWebsites } from "../../../libs/indexed-db/getIdbData.js"
 import { useHistory, useLocation } from "react-router"
-import { permissionEnum } from "../../../background/analysis/classModels"
+import { permissionEnum, filterKeywordEnum } from "../../../background/analysis/classModels"
 
-const filterKeywordEnum = Object.freeze({
-  permissionMonetization: {
-    searchString: "permission:monetization",
-    permission: permissionEnum.monetization,
-  },
-  permissionLocation: {
-    searchString: "permission:location",
-    permission: permissionEnum.location,
-  },
-  permissionWatchlist: {
-    searchString: "permission:watchlist",
-    permission: permissionEnum.watchlist,
-  },
-  permissionTracking: {
-    searchString: "permission:tracking",
-    permission: permissionEnum.tracking,
-  }
-})
 
 /**
  * Search view allowing user to search from identified labels
@@ -41,6 +23,15 @@ const SearchView = () => {
   const [allWebsites, setAllWebsites] = useState({})
   const [filteredSites, setFilter] = useState({}) // all websites in DB (passed from previous page)
   const [webLabels, setWebLabels] = useState({}) // all labels in DB (passed from previous page)
+  const [indexStack, setIndexStack] = useState([]) //used for permission filtering
+  const [filterList, setFilterList] = useState(
+    [
+      permissionEnum.location,
+      permissionEnum.monetization,
+      permissionEnum.tracking,
+      permissionEnum.watchlist
+    ]
+  ) // used for permission filtering
   const [modal, setModal] = useState({ show: false })
   const history = useHistory()
 
@@ -48,23 +39,19 @@ const SearchView = () => {
    * Filter websites based on user input string from text field
    * @param {string} keyString string the user entered
    */
-  const filter = (keyString) => {
+  const filter = (keyString, labels = webLabels) => {
 
-    var startIndex = -1
-    Object.values(filterKeywordEnum).map(({searchString, permission}) => {
-      if (keyString.includes(searchString)) {
-        startIndex = Math.max(startIndex, keyString.indexOf(searchString) + searchString.length)
-      }
-    })
-    if (startIndex != -1) { keyString = keyString.slice(startIndex + 1) }
-    console.log(keyString);
+    // filter the string after the permission filters have been set
+    if (indexStack.length > 0) {
+      keyString = keyString.slice(indexStack[indexStack.length - 1][0] + 1)
+    }
 
     const filteredKeys = Object.keys(allWebsites).filter((k) =>
       k.includes(keyString)
     )
 
     var filteredWebsites = {}
-    for ( const [perm, websiteLevel] of Object.entries(webLabels)) {
+    for ( const [perm, websiteLevel] of Object.entries(labels)) {
       if (Object.keys(websiteLevel).length > 0) {
         for ( const website of Object.keys(websiteLevel)) {
           if (filteredKeys.includes(website)) filteredWebsites[website] = allWebsites[website]
@@ -78,30 +65,55 @@ const SearchView = () => {
   
   const filterLabels = (keyString) => {
 
-    var filterArr = [ 
-      permissionEnum.location,
-      permissionEnum.monetization,
-      permissionEnum.tracking,
-      permissionEnum.watchlist
-    ]
+    var stackChanged = false
+    var filterArr = filterList
+    var updatedStack = indexStack
 
+    // clear removed filters
+    while ( updatedStack.length > 0 && keyString.length < updatedStack[updatedStack.length - 1][0]) {
+      let popIndex, popPerm
+      [popIndex, popPerm] = updatedStack.pop()
+      filterArr.push(popPerm)
+      setFilterList(filterArr)
+      stackChanged = true
+      getLabels(filterArr).then( labels => {
+        setWebLabels(labels)
+        filter(keyString, labels)
+      })
+    }
+
+    // set search query to after the position of the most recent filter
+    var keyString_ = keyString
+    if (updatedStack.length > 0) { 
+      keyString_ = keyString.slice(updatedStack[updatedStack.length - 1][0]) 
+    }
+
+    // check for filters
     Object.values(filterKeywordEnum).map(({searchString, permission}) => {
-      if (keyString.includes(searchString)) {
+      if (keyString_.includes(searchString)) {
         const removeIndex = filterArr.indexOf(permission)
         filterArr.splice(removeIndex, 1)
+        setFilterList(filterArr)
+        updatedStack.push([keyString.length, permission])
+        setIndexStack(updatedStack)
       }
     })
 
-    if (filterArr.length !== 4) { 
+    // apply permission filters
+    if (updatedStack.length > 0 && keyString.length <= updatedStack[updatedStack.length - 1][0] ) { 
       getLabels(filterArr).then( (labels) => {
         setWebLabels(labels)
-        Object.values(filterKeywordEnum).map(({searchString, permission}) => {
-          // if (keyString === searchString) { filter("") }
-        })
+        filter(keyString, labels)
       })
     }
-    else {
-      getLabels().then((labels => setWebLabels(labels)));
+
+    // clear all permission filters
+    if (stackChanged && updatedStack.length == 0) {
+      getLabels().then( (labels) => {
+        setWebLabels(labels)
+        setFilter(allWebsites)
+        filter(keyString, labels)
+      })
     }
   }
 

@@ -207,6 +207,29 @@ export const typeEnum = Object.freeze({
 })
 
 /**
+ * Used by the see all page to filter label results
+ * @enum {string} strings used to query permission filters in search view
+ */
+ export const filterKeywordEnum = Object.freeze({
+  permissionMonetization: {
+    searchString: "permission:monetization",
+    permission: permissionEnum.monetization,
+  },
+  permissionLocation: {
+    searchString: "permission:location",
+    permission: permissionEnum.location,
+  },
+  permissionWatchlist: {
+    searchString: "permission:watchlist",
+    permission: permissionEnum.watchlist,
+  },
+  permissionTracking: {
+    searchString: "permission:tracking",
+    permission: permissionEnum.tracking,
+  }
+})
+
+/**
  * An object containing the keyword types for the watchlist and information to populate defaults.
  * @typedef keywordTypes
  * @type {object}
