@@ -6,13 +6,31 @@ privacy-tech-lab, https://www.privacytechlab.org/
 import React from "react"
 import * as Icons from "../../../../../libs/icons"
 import { SContainer, SFooter, SHeader, SLabel, STotal } from "./style"
+import { filterKeywordEnum } from "../../../../../background/analysis/classModels"
+import { useHistory } from "react-router"
+
+const mapping = { 
+  "location": filterKeywordEnum.permissionLocation.searchString,
+  "monetization": filterKeywordEnum.permissionMonetization.searchString,
+  "tracking": filterKeywordEnum.permissionTracking.searchString,
+  "watchlist": filterKeywordEnum.permissionWatchlist.searchString,
+} 
 
 /**
  * Summary card that highlights notable stat from identified label
  */
 const LabelSummaryCard = ({ labeltype, websiteTotal }) => {
+  const history = useHistory()
   return (
-    <SContainer labeltype={labeltype}>
+    <SContainer 
+      labeltype={labeltype}
+      onClick = { () => {history.push({
+        pathname: '/search',
+        state: mapping[labeltype]
+        })
+      }
+    }
+    >
       <SHeader>
         <STotal>{websiteTotal}</STotal>
         <SLabel>
@@ -41,6 +59,7 @@ const LabelSummaryCardList = ({ labels }) => {
         key={labeltype}
         labeltype={labeltype}
         websiteTotal={numOfWebsites}
+
       />
     )
   })

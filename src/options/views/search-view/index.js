@@ -34,6 +34,8 @@ const SearchView = () => {
   ) // used for permission filtering
   const [modal, setModal] = useState({ show: false })
   const history = useHistory()
+  const location = useLocation()
+  const passedSearch = location.state === undefined ? "" : location.state
 
   /**
    * Filter websites based on user input string from text field
@@ -61,7 +63,6 @@ const SearchView = () => {
 
     setFilter(filteredWebsites)
   }
-
   
   const filterLabels = (keyString) => {
 
@@ -83,14 +84,14 @@ const SearchView = () => {
     }
 
     // set search query to after the position of the most recent filter
-    var keyString_ = keyString
+    var keyStringToSearch = keyString
     if (updatedStack.length > 0) { 
-      keyString_ = keyString.slice(updatedStack[updatedStack.length - 1][0]) 
+      keyStringToSearch = keyString.slice(updatedStack[updatedStack.length - 1][0]) 
     }
 
     // check for filters
     Object.values(filterKeywordEnum).map(({searchString, permission}) => {
-      if (keyString_.includes(searchString)) {
+      if (keyStringToSearch.includes(searchString)) {
         const removeIndex = filterArr.indexOf(permission)
         filterArr.splice(removeIndex, 1)
         setFilterList(filterArr)
@@ -124,11 +125,13 @@ const SearchView = () => {
     modal.show()
   }
 
+
+
   useEffect(() => {
     getWebsites().then((websites) => {
       setAllWebsites(websites)
       setFilter(websites)
-      getLabels().then((labels) => setWebLabels(labels))
+      getLabels().then((labels) => {setWebLabels(labels)})
     })
   }, [])
 
@@ -159,10 +162,11 @@ const SearchView = () => {
             <SInput
               placeholder="Search"
               onChange={(e) => {
-                filter(e.target.value);
                 filterLabels(e.target.value);
+                filter(e.target.value);
+                }
               }
-            }
+              defaultValue = {passedSearch}
             />
           </SInputContainer>
           <WebsiteLabelList

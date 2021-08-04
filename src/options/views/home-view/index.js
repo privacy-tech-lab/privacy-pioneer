@@ -82,7 +82,7 @@ const HomeView = () => {
               onClick={() =>
                 history.push({
                   pathname: "/search",
-                  state: [websites, labels], //fixes race condition bug by passing this information to next page
+                  state: "",
                 })
               }
             >
