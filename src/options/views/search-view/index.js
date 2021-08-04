@@ -58,6 +58,8 @@ const SearchView = () => {
 
     keyString = removeLeadingWhiteSpace(keyString)
 
+    console.log(keyString)
+
     const filteredKeys = Object.keys(allWebsites).filter((k) =>
       k.includes(keyString)
     )
@@ -97,20 +99,23 @@ const SearchView = () => {
       }
     })
 
+    // sort stack
     updatedStack = updatedStack.sort((a,b) => {b[0] - a[0]})
+
+    console.log(updatedStack)
 
     setIndexStack(updatedStack)
     setFilterList(filterArr)
 
-    // apply permission filters
+    // apply permission filters if stack changed and there are filters
     if (updatedStack.length > 0 && updatedStack != indexStack ) { 
       getLabels(filterArr).then( (labels) => {
         setWebLabels(labels)
-        filter(keyString.slice(updatedStack[updatedStack.length - 1][0]), labels)
+        filter(keyString.slice(updatedStack[0][0]), labels)
       })
     }
     else {
-      // clear all permission filters
+      // clear all permission filters if there are none
       if (stackChanged && updatedStack.length == 0) {
         getLabels().then( (labels) => {
           setWebLabels(labels)
@@ -119,8 +124,9 @@ const SearchView = () => {
         })
       }
       else {
-        if (updatedStack.length > 0){
-          filter(keyString.slice(updatedStack[updatedStack.length - 1][0]))
+        // filter by website name starting at the end of the permissions if applicable
+        if (updatedStack.length > 0) {
+          filter(keyString.slice(updatedStack[0][0]))
         }
         else {
           filter(keyString)
@@ -172,7 +178,7 @@ const SearchView = () => {
           </SSubtitle>
           <SSearchContainer>
             <SInputContainer>
-              <Icons.Search size = {20}/>
+              <Icons.Search size = {24}/>
               <SInput
                 placeholder="Search"
                 onChange={(e) => {
@@ -186,7 +192,6 @@ const SearchView = () => {
             <SFilterButton
               onClick = {() => {
                 filterLabels(searchQuery)
-                filter(searchQuery)
               }}
               > <Icons.Filter size={24} /> 
             </SFilterButton>

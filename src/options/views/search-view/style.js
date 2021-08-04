@@ -27,7 +27,7 @@ export const SSubtitle = styled.div`
 
 export const SInput = styled.input`
   -moz-box-sizing: border-box; 
-  width: 600px;
+  width: 500px;
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 30px;
@@ -49,8 +49,9 @@ export const SInputContainer = styled.div`
     fill: var(--secondaryTextColor);
   }
   svg {
+    margin-top: 5px;
     padding-left: 5px;
-    text-align: center;
+    vertical-align: baseline;
     position: absolute;
   }
 `;
@@ -65,6 +66,9 @@ export const SFilterButton = styled(motion.div)`
   cursor: pointer;
   padding-left: 8px;
   display: flex;
+  :hover {
+    transform: scale(1.2);
+  }
 `
 
 export const SSearchContainer = styled.div`
