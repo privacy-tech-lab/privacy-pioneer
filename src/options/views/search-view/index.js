@@ -20,23 +20,35 @@ import { permissionEnum, filterKeywordEnum } from "../../../background/analysis/
  * Search view allowing user to search from identified labels
  */
 const SearchView = () => {
-  const [allWebsites, setAllWebsites] = useState({})
-  const [filteredSites, setFilter] = useState({}) // all websites in DB (passed from previous page)
-  const [webLabels, setWebLabels] = useState({}) // all labels in DB (passed from previous page)
-  const [indexStack, setIndexStack] = useState([]) //used for permission filtering
-  const [filterList, setFilterList] = useState(
-    [
+
+  const getAllPerms = () => {
+    return [
       permissionEnum.location,
       permissionEnum.monetization,
       permissionEnum.tracking,
       permissionEnum.watchlist
     ]
-  ) // used for permission filtering
+  }
+
+  const [allWebsites, setAllWebsites] = useState({})
+  const [filteredSites, setFilter] = useState({}) // all websites in DB (passed from previous page)
+  const [webLabels, setWebLabels] = useState({}) // all labels in DB (passed from previous page)
+  const [indexStack, setIndexStack] = useState([]) //used for permission filtering
+  const [filterList, setFilterList] = useState(getAllPerms()) // used for permission filtering
   const [searchQuery, setSearchQuery] = useState('')
   const [modal, setModal] = useState({ show: false })
   const history = useHistory()
   const location = useLocation()
   const passedSearch = location.state === undefined ? "" : location.state
+
+
+  const removeLeadingWhiteSpace = (str) => {
+    var index = 0
+    while (index < str.length && str.charAt(index) == ' ') {
+      index += 1
+    }
+    return str.slice(index)
+  } 
 
   /**
    * Filter websites based on user input string from text field
@@ -44,10 +56,7 @@ const SearchView = () => {
    */
   const filter = (keyString, labels = webLabels) => {
 
-    // filter the string after the permission filters have been set
-    if (indexStack.length > 0) {
-      keyString = keyString.slice(indexStack[indexStack.length - 1][0] + 1)
-    }
+    keyString = removeLeadingWhiteSpace(keyString)
 
     const filteredKeys = Object.keys(allWebsites).filter((k) =>
       k.includes(keyString)
@@ -68,55 +77,57 @@ const SearchView = () => {
   const filterLabels = (keyString) => {
 
     var stackChanged = false
-    var filterArr = filterList
+    var filterArr = getAllPerms()
     var updatedStack = indexStack
 
-    // clear removed filters
-    while ( updatedStack.length > 0 && keyString.length < updatedStack[updatedStack.length - 1][0]) {
-      let popIndex, popPerm
-      [popIndex, popPerm] = updatedStack.pop()
-      filterArr.push(popPerm)
-      setFilterList(filterArr)
+    // empty stack if a previous filter has been removed
+    if ( updatedStack.length > 0 && keyString.length < updatedStack[updatedStack.length - 1][0]) {
       stackChanged = true
-      getLabels(filterArr).then( labels => {
-        setWebLabels(labels)
-        filter(keyString, labels)
-      })
     }
 
-    // set search query to after the position of the most recent filter
-    var keyStringToSearch = keyString
-    if (updatedStack.length > 0) { 
-      keyStringToSearch = keyString.slice(updatedStack[updatedStack.length - 1][0]) 
-    }
+    updatedStack = []
 
     // check for filters
     Object.values(filterKeywordEnum).map(({searchString, permission}) => {
-      if (keyStringToSearch.includes(searchString)) {
+      if (keyString.includes(searchString)) {
         const removeIndex = filterArr.indexOf(permission)
         filterArr.splice(removeIndex, 1)
-        setFilterList(filterArr)
-        updatedStack.push([keyString.length, permission])
-        setIndexStack(updatedStack)
+        const index = keyString.indexOf(searchString)
+        updatedStack.push([index + searchString.length, permission])
       }
     })
 
+    updatedStack = updatedStack.sort((a,b) => {b[0] - a[0]})
+
+    setIndexStack(updatedStack)
+    setFilterList(filterArr)
+
     // apply permission filters
-    if (updatedStack.length > 0 && keyString.length <= updatedStack[updatedStack.length - 1][0] ) { 
+    if (updatedStack.length > 0 && updatedStack != indexStack ) { 
       getLabels(filterArr).then( (labels) => {
         setWebLabels(labels)
-        filter(keyString, labels)
+        filter(keyString.slice(updatedStack[updatedStack.length - 1][0]), labels)
       })
     }
-
-    // clear all permission filters
-    if (stackChanged && updatedStack.length == 0) {
-      getLabels().then( (labels) => {
-        setWebLabels(labels)
-        setFilter(allWebsites)
-        filter(keyString, labels)
-      })
-    }
+    else {
+      // clear all permission filters
+      if (stackChanged && updatedStack.length == 0) {
+        getLabels().then( (labels) => {
+          setWebLabels(labels)
+          setFilter(allWebsites)
+          filter(keyString, labels)
+        })
+      }
+      else {
+        if (updatedStack.length > 0){
+          filter(keyString.slice(updatedStack[updatedStack.length - 1][0]))
+        }
+        else {
+          filter(keyString)
+        }
+        
+      }
+    }   
   }
 
 
@@ -161,12 +172,11 @@ const SearchView = () => {
           </SSubtitle>
           <SSearchContainer>
             <SInputContainer>
-              <Icons.Search size = {24}/>
+              <Icons.Search size = {20}/>
               <SInput
                 placeholder="Search"
                 onChange={(e) => {
                   filterLabels(e.target.value);
-                  filter(e.target.value);
                   setSearchQuery(e.target.value)
                   }
                 }

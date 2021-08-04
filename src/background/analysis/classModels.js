@@ -212,19 +212,19 @@ export const typeEnum = Object.freeze({
  */
  export const filterKeywordEnum = Object.freeze({
   permissionMonetization: {
-    searchString: "permission:monetization",
+    searchString: "perm:monetization",
     permission: permissionEnum.monetization,
   },
   permissionLocation: {
-    searchString: "permission:location",
+    searchString: "perm:location",
     permission: permissionEnum.location,
   },
   permissionWatchlist: {
-    searchString: "permission:watchlist",
+    searchString: "perm:watchlist",
     permission: permissionEnum.watchlist,
   },
   permissionTracking: {
-    searchString: "permission:tracking",
+    searchString: "perm:tracking",
     permission: permissionEnum.tracking,
   }
 })
