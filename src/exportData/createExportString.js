@@ -87,7 +87,7 @@ privacy-tech-lab, https://www.privacytechlab.org/
         strArray.push(rowArr.join('\t'));
     }
     // File Description
-    strArray.push('NOTE: Use the JSON export for the raw data, including the full HTTP requests')
+    strArray.push('Privacy Pioneer TSV export')
 
     // add all rows. separate rows.
     return strArray.join('\r');
