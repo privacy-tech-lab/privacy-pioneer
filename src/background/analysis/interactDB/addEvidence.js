@@ -73,7 +73,7 @@ async function addToEvidenceStore(evidenceToAdd, firstParty, parent, rootU, requ
 
       let keys = Object.keys(evidenceObject);
       for (let key of keys) {
-        if (!evidenceObject[key]) {
+        if (!evidenceObject[key] && typeof evidenceObject[key] != "boolean") {
           delete evidenceObject[key];
         }
       }
