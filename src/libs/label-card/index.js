@@ -34,6 +34,7 @@ const LabelCard = ({ requests, website, label, margin, onTap, popup }) => {
    * Label descriptions ({___} collected and shared {label}, collected, shared with {___})
    */
   const getDescription = () => {
+    const firstPartyTip = `The website (${website}) you visted stored your ${label} data visit the FAQ page to learn more`
     if (collected && urls.length > 1) {
       return (
         <div
@@ -42,15 +43,36 @@ const LabelCard = ({ requests, website, label, margin, onTap, popup }) => {
             flexDirection: "row",
           }}
         >
-          <SBadge>First Party</SBadge>
-          <SBadge>
+          <SBadge
+            data-custom
+            data-custom-multiline
+            data-custom-at="right"
+            data-custom-info={firstPartyTip}
+          >
+            First Party
+          </SBadge>
+          <SBadge
+            data-custom
+            data-custom-multiline
+            data-custom-at="right"
+            data-custom-info={firstPartyTip}
+          >
             {urls.length - 1}
             {urls.length - 1 > 1 ? " Third Parties" : " Third Party"}
           </SBadge>
         </div>
       )
     } else if (collected) {
-      return <SBadge>First Party</SBadge>
+      return (
+        <SBadge
+          data-custom
+          data-custom-at="right"
+          data-custom-multiline
+          data-custom-info={firstPartyTip}
+        >
+          First Party
+        </SBadge>
+      )
     } else {
       return (
         <SBadge>

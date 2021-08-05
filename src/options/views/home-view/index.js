@@ -3,7 +3,7 @@ Licensed per https://github.com/privacy-tech-lab/privacy-pioneer/blob/main/LICEN
 privacy-tech-lab, https://www.privacytechlab.org/
 */
 
-import React, { useEffect, useState } from "react"
+import React, { useEffect, useState, useRef } from "react"
 import { useHistory } from "react-router"
 import { getWebsites, getLabels } from "../../../libs/indexed-db/getIdbData.js"
 import Scaffold from "../../components/scaffold"
@@ -30,22 +30,20 @@ const HomeView = () => {
   const [labels, setLabels] = useState({})
   const [modal, setModal] = useState({ show: false })
   const entries = Object.entries(websites)
-
-  useEffect(
-    () =>
-      getWebsites().then((websites) => {
-        setWebsites(websites)
-        getLabels().then((labels) => {
-          setLabels(labels)
-        }),
-          document
-            .getElementById("detail-modal")
-            .addEventListener("hidden.bs.modal", () => {
-              setModal({ show: false })
-            })
+  const tooltipRef = useRef()
+  useEffect(() => {
+    getWebsites().then((websites) => {
+      setWebsites(websites)
+      getLabels().then((labels) => {
+        setLabels(labels)
       }),
-    []
-  )
+        document
+          .getElementById("detail-modal")
+          .addEventListener("hidden.bs.modal", () => {
+            setModal({ show: false })
+          })
+    })
+  })
 
   const handleTap = (items) => {
     const modal = new Modal(document.getElementById("detail-modal"))
@@ -63,8 +61,14 @@ const HomeView = () => {
       />
       <Scaffold>
         <SContainer>
-          <STitle>Overview</STitle>
-          <SSubtitle>A summary of your privacy labels</SSubtitle>
+          <STitle data-bs-toggle="tooltip" title="Hello Test">
+            Overview
+          </STitle>
+
+          <SSubtitle ref={tooltipRef} title="Test">
+            A summary of your privacy labels
+          </SSubtitle>
+
           <SCardGroup>
             <LabelSummaryCardList labels={labels} />
           </SCardGroup>

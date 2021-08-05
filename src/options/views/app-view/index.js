@@ -14,20 +14,8 @@ import SettingsView from "../settings-view"
 import SearchView from "../search-view"
 import GlobalStyle from "../../../libs/global-style"
 import { getTheme, settingsEnum } from "../../../libs/settings"
-import ReactHintFactory from "react-hint"
-import "react-hint/css/index.css"
-import styled from "styled-components"
-
-const SHint = styled.div`
-  padding: 8px;
-  border-radius: 5px;
-  background: var(--primaryBrandColor);
-  font-size: var(--body1);
-  text-align: center;
-  width: max-content;
-  color: white;
-  max-width: ${(props) => (props.multiline ? "350px" : "none")};
-`
+import Tooltips from "../../../libs/tooltips"
+import { Tooltip } from "bootstrap"
 
 /**
  * Root node of application that handles routing
@@ -37,31 +25,19 @@ const SHint = styled.div`
 const AppView = () => {
   const location = useLocation()
   const [theme, setTheme] = useState(settingsEnum.sameAsSystem)
-  const ReactHint = ReactHintFactory(React)
 
-  useEffect(
-    () =>
-      getTheme().then((res) => {
-        if (res) setTheme(res)
-      }),
-    [theme]
-  )
+  useEffect(() => {
+    getTheme().then((res) => {
+      if (res) setTheme(res)
+    })
+    const tooltipArray = [].slice
+      .call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+      .map((tooltipTriggerEl) => new Tooltip(tooltipTriggerEl))
+  }, [theme])
 
   return (
     <React.Fragment>
-      <ReactHint
-        attribute="data-custom"
-        position="bottom"
-        events={{ hover: true }}
-        delay={{ show: 300 }}
-        onRenderContent={(target, content) => {
-          return (
-            <SHint multiline={target.dataset.customMultiline}>
-              {target.dataset.customInfo}
-            </SHint>
-          )
-        }}
-      />
+      <Tooltips />
       <GlobalStyle theme={theme} />
       <NavBar />
       <AnimatePresence exitBeforeEnter>
