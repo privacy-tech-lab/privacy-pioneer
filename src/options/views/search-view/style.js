@@ -71,6 +71,14 @@ export const SFilterButton = styled(motion.div)`
   }
 `
 
+export const SAddFilterButton = styled(motion.div)`
+  cursor: pointer;
+  display: flex;
+  :hover {
+    transform: scale(1.2);
+  }
+`
+
 export const SSearchContainer = styled.div`
   padding-top: 16px;
   padding-bottom: 16px;

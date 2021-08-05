@@ -5,7 +5,7 @@ privacy-tech-lab, https://www.privacytechlab.org/
 
 import React, { useEffect, useState } from "react"
 import Scaffold from "../../components/scaffold"
-import { SBackButton, SFilterButton, SInput, SInputContainer, SSearchContainer, STitle, STop } from "./style"
+import { SBackButton, SFilterButton, SAddFilterButton, SInput, SInputContainer, SSearchContainer, STitle, STop } from "./style"
 import { SContainer, SSubtitle } from "./style"
 import * as Icons from "../../../libs/icons"
 import { Modal } from "bootstrap"
@@ -161,20 +161,29 @@ const SearchView = () => {
               <Icons.Search size = {24}/>
               <SInput
                 placeholder="Search"
+                value = {searchQuery}
                 onChange={(e) => {
                   filterLabels(e.target.value);
                   setSearchQuery(e.target.value)
                   }
                 }
                 defaultValue = {passedSearch}
+                id='searchInput'
               />
             </SInputContainer>
             <SFilterButton
               onClick = {() => {
                 filterLabels(searchQuery)
-              }}
-              > <Icons.Filter size={24} /> 
+            }}> 
+              <Icons.Filter size={24} /> 
             </SFilterButton>
+            <SAddFilterButton
+              onClick = {() => {
+                setSearchQuery(searchQuery.concat(" perm:location"))
+              }}
+            >
+              <Icons.addFilter size={21} />
+            </SAddFilterButton>
           </SSearchContainer>
           <WebsiteLabelList
             websites={filteredSites}
