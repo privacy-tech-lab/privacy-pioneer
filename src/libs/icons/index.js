@@ -412,8 +412,7 @@ export const addFilter = ({ size }) => (
 /**
  * Mappings of icons to privacy labels
  */
-export const getLabelIcon = (label) => {
-  const size = "24px"
+export const getLabelIcon = (label, size="24px") => {
   switch (label) {
     case "location":
       return <Location size={size} />

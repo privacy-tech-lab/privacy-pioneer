@@ -3,12 +3,23 @@ Licensed per https://github.com/privacy-tech-lab/privacy-pioneer/blob/main/LICEN
 privacy-tech-lab, https://www.privacytechlab.org/
 */
 
-import React, { useEffect, useState } from "react"
+import React, { useEffect, useState, useRef } from "react"
 import Scaffold from "../../components/scaffold"
-import { SBackButton, SFilterButton, SAddFilterButton, SInput, SInputContainer, SSearchContainer, STitle, STop } from "./style"
+import { 
+  SBackButton,
+  SFilterButton,
+  SAddFilterButton,
+  SInput,
+  SInputContainer,
+  SSearchContainer,
+  STitle,
+  STop,
+  SDropdownOptions,
+  SDropdownItem,
+ } from "./style"
 import { SContainer, SSubtitle } from "./style"
 import * as Icons from "../../../libs/icons"
-import { Modal } from "bootstrap"
+import { Modal, Dropdown, Button } from "bootstrap"
 import LabelModal from "../home-view/components/detail-modal"
 import WebsiteLabelList from "../../components/website-label-list"
 import { getLabels, getWebsites } from "../../../libs/indexed-db/getIdbData.js"
@@ -22,16 +33,23 @@ import { removeLeadingWhiteSpace, getAllPerms } from "../../../background/analys
  */
 const SearchView = () => {
 
-  const [allWebsites, setAllWebsites] = useState({})
-  const [allLabels, setAllLabels] = useState({})
-  const [filteredSites, setFilter] = useState({}) // all websites in DB (passed from previous page)
-  const [webLabels, setWebLabels] = useState({}) // all labels in DB (passed from previous page)
-  const [indexStack, setIndexStack] = useState([]) //used for permission filtering
-  const [searchQuery, setSearchQuery] = useState('')
   const [modal, setModal] = useState({ show: false })
   const history = useHistory()
   const location = useLocation()
+
+  const [allWebsites, setAllWebsites] = useState({})
+  const [allLabels, setAllLabels] = useState({})
+
+  const [filteredSites, setFilter] = useState({}) // all websites in DB (passed from previous page)
+  const [webLabels, setWebLabels] = useState({}) // all labels in DB (passed from previous page)
+
+  const [indexStack, setIndexStack] = useState([]) //used for permission filtering
+  const [searchQuery, setSearchQuery] = useState("")
   const passedSearch = location.state === undefined ? "" : location.state
+  const [placeholder, setPlaceholder] = useState("Search in: All")
+
+  const dropdownRef = useRef()
+  const [showDropdown, setDropdown] = useState(false)
 
   /**
    * Filter websites based on user input string from text field
@@ -58,9 +76,8 @@ const SearchView = () => {
   }
   
   /**
-   * Core filtering function. 
    * Looks for filters and applies them as appropriate.
-   * Makes appropriate calls to the above filter function.
+   * 
    * @param {string} keyString 
    */
   const filterLabels = (keyString) => {
@@ -73,6 +90,8 @@ const SearchView = () => {
       resetLabels = true
     }
 
+    var updatedPlaceholder = "Search in: "
+
     var updatedStack = []
 
     // check for filters
@@ -82,8 +101,15 @@ const SearchView = () => {
         filterArr.splice(removeIndex, 1)
         const index = keyString.indexOf(searchString)
         updatedStack.push(index + searchString.length)
+        updatedPlaceholder = updatedPlaceholder.concat(searchString).concat(' ')
       }
     })
+
+    if (updatedStack.length == 0 || updatedStack.length == 4) {
+      updatedPlaceholder = "Search in: All"
+    }
+
+    setPlaceholder(updatedPlaceholder)
 
     // sort and set stack
     var sortedStack = updatedStack.sort()
@@ -93,7 +119,7 @@ const SearchView = () => {
     if (sortedStack.length > 0 && sortedStack != indexStack ) { 
       getLabels(filterArr).then( (labels) => {
         setWebLabels(labels)
-        filter(keyString.slice(sortedStack[sortedStack.length - 1]), labels)
+        filter('', labels)
       })
     }
     else {
@@ -101,18 +127,8 @@ const SearchView = () => {
       if (resetLabels && sortedStack.length == 0) {
           setWebLabels(allLabels)
           setFilter(allWebsites)
-          filter(keyString, allLabels)
-      }
-      else {
-        // otherwise, just filter by website
-        if (sortedStack.length > 0) {
-          filter(keyString.slice(sortedStack[sortedStack.length - 1]))
-        }
-        else {
-          filter(keyString)
-        }
-        
-      }
+          filter('', allLabels)
+      }  
     }   
   }
 
@@ -160,29 +176,43 @@ const SearchView = () => {
             <SInputContainer>
               <Icons.Search size = {24}/>
               <SInput
-                placeholder="Search"
+                placeholder= {placeholder}
                 value = {searchQuery}
                 onChange={(e) => {
-                  filterLabels(e.target.value);
-                  setSearchQuery(e.target.value)
+                  filter(e.target.value);
+                  setSearchQuery(e.target.value);
                   }
                 }
-                defaultValue = {passedSearch}
-                id='searchInput'
               />
             </SInputContainer>
             <SFilterButton
               onClick = {() => {
                 filterLabels(searchQuery)
+                setSearchQuery('')
             }}> 
               <Icons.Filter size={24} /> 
             </SFilterButton>
             <SAddFilterButton
-              onClick = {() => {
-                setSearchQuery(searchQuery.concat(" perm:location"))
-              }}
+              onHoverStart={() => setDropdown(true)}
+              onHoverEnd={() => setDropdown(false)}
+              ref={dropdownRef}
             >
               <Icons.addFilter size={21} />
+              <SDropdownOptions show={showDropdown}>
+              {Object.values(filterKeywordEnum).map(({searchString, permission}) => (
+                    <SDropdownItem
+                      onClick={() => {
+                        setSearchQuery(searchQuery.concat(' ').concat(searchString))
+                      }}
+                      key={permission}
+                    >
+                      {Icons.getLabelIcon(permission, "21px")}
+                    </SDropdownItem>
+                  )
+                )
+              }
+                
+            </SDropdownOptions>
             </SAddFilterButton>
           </SSearchContainer>
           <WebsiteLabelList
