@@ -111,32 +111,7 @@ function createEvidenceObj(
   typ, 
   index, 
   watchlistHash = undefined, 
-  extraDetail = undefined,
-  cutDown = true) {
-
-  /**
-   * Cuts down a snippet to only include the context of where we found
-   * The evidence
-   * 
-   * @param {Evidence} evidenceObject 
-   * @returns {void} updates evidenceObject
-   */
-  function cutDownSnippet(evidenceObject) {
-    if ( evidenceObject.index === -1 ) {
-      evidenceObject.snippet = null
-    }
-    else {
-      let start, end
-      [start, end] = evidenceObject.index
-      const snipLength = evidenceObject.snippet.length
-
-      const frontBuffer = start < 300 ? start : 300
-      const endBuffer = end + 300 < snipLength ? 300 : snipLength - end - 1
-
-      evidenceObject.snippet = evidenceObject.snippet.substring(start - frontBuffer, end + endBuffer)
-      evidenceObject.index = [frontBuffer, frontBuffer + end - start]
-    }
-  }
+  extraDetail = undefined) {
 
   const e = new Evidence( {
     timestamp: undefined,
@@ -152,7 +127,6 @@ function createEvidenceObj(
     extraDetail: extraDetail
   } )
 
-  if ( cutDown ) { cutDownSnippet(e) } // if cutting down is set to true, cut the snippet down
   return e
 }
 

@@ -56,6 +56,11 @@ export const SLabelToggle = styled.div`
   flex-direction: column;
 `
 
+export const SSnippetToggle = styled.div`
+  margin-left: 8px;
+  flex-direction: column;
+`
+
 export const SThemeSection = styled.div`
   display: flex;
   flex-direction: row;

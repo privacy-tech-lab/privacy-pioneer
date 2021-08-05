@@ -6,6 +6,7 @@ privacy-tech-lab, https://www.privacytechlab.org/
 import { getHostname } from "../utility/util.js"
 import { evidenceKeyval } from "../interactDB/openDB.js"
 import { Evidence, typeEnum, storeEnum } from "../classModels.js"
+import { settingsKeyval } from "../../../libs/indexed-db/openDB.js";
 
 
 /**
@@ -29,7 +30,7 @@ import { Evidence, typeEnum, storeEnum } from "../classModels.js"
  */
 
 // perm, rootU, snip, requestU, t, i, extraDetail = undefined)
-async function addToEvidenceStore(evidenceToAdd, firstParty, parent, rootU, requestU) {
+async function addToEvidenceStore(evidenceToAdd, firstParty, parent, rootU, requestU, saveFullSnippet) {
 
   /**
    * This is a known bug where certain websites intiate requests where the rootURL 
@@ -65,11 +66,38 @@ async function addToEvidenceStore(evidenceToAdd, firstParty, parent, rootU, requ
       evidenceObject.rootUrl = rootU
       evidenceObject.parentCompany = parent
 
+    /**
+     * Cuts down a snippet to only include the context of where we found
+     * The evidence
+     * 
+     * @param {Evidence} evidenceObject 
+     * @returns {void} updates evidenceObject
+     */
+    function cutDownSnippet(evidenceObject) {
+      if ( evidenceObject.index === -1 ) {
+        evidenceObject.snippet = null
+      }
+      else {
+        let start, end
+        [start, end] = evidenceObject.index
+        const snipLength = evidenceObject.snippet.length
 
-      // whitelist our IP API
-      if (requestU == 'http://ip-api.com/json/'){ return new Promise( function(resolve, reject) {
-        resolve('whitelist IP API');
-      }) };
+        const frontBuffer = start < 300 ? start : 300
+        const endBuffer = end + 300 < snipLength ? 300 : snipLength - end - 1
+
+        evidenceObject.snippet = evidenceObject.snippet.substring(start - frontBuffer, end + endBuffer)
+        evidenceObject.index = [frontBuffer, frontBuffer + end - start]
+      }
+    }
+
+    if (!saveFullSnippet){
+      cutDownSnippet(evidenceObject)
+    }
+
+      // // whitelist our IP API
+      // if (requestU == 'http://ip-api.com/json/'){ return new Promise( function(resolve, reject) {
+      //   resolve('whitelist IP API');
+      // }) };
       
       evidence = updateFetchedDict(evidence, evidenceObject)
     }

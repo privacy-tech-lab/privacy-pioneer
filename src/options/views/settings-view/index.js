@@ -20,6 +20,7 @@ import {
   ExportData,
   DangerZone,
   LabelToggle,
+  FullSnippetToggle
 } from "./components"
 
 /**
@@ -50,6 +51,7 @@ const SettingsView = ({ changeTheme }) => {
               </SSubtitle>
               <ExportData />
             </div>
+            <FullSnippetToggle />
             <DangerZone />
           </SSection>
         </SBody>
