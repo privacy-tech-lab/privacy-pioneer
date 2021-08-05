@@ -60,8 +60,9 @@ const NavBar = () => {
         <SNavAction
           active={tab === 0}
           onClick={() => configureRoute("/")}
-          data-custom
-          data-custom-info="See your recent browsing history and all generated labels"
+          data-bs-toggle="tooltip"
+      data-bs-placement="bottom"
+      title="See your recent browsing history and all generated labels"
         >
           <Icons.Home size="24px" />
           Home
@@ -69,8 +70,9 @@ const NavBar = () => {
         <SNavAction
           active={tab === 1}
           onClick={() => configureRoute("/watchlist")}
-          data-custom
-          data-custom-info="Enter personal keywords that ___ will look out for while you browse"
+          data-bs-toggle="tooltip"
+      data-bs-placement="bottom"
+      title="Enter personal keywords that ___ will look out for while you browse"
         >
           <Icons.Radar size="20px" />
           Watchlist
@@ -78,8 +80,9 @@ const NavBar = () => {
         <SNavAction
           active={tab === 2}
           onClick={() => configureRoute("/settings")}
-          data-custom
-          data-custom-info="Control ___’s settings"
+          data-bs-toggle="tooltip"
+      data-bs-placement="bottom"
+      title="Control ___’s settings"
         >
           <Icons.Settings size="24px" />
           Settings
@@ -87,8 +90,9 @@ const NavBar = () => {
         <SNavAction
           active={tab === 3}
           onClick={() => configureRoute("/about")}
-          data-custom
-          data-custom-info="About ____"
+          data-bs-toggle="tooltip"
+      data-bs-placement="bottom"
+      title="About ____"
         >
           <Icons.Info size="24px" />
           About

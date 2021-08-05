@@ -14,7 +14,7 @@ import SettingsView from "../settings-view"
 import SearchView from "../search-view"
 import GlobalStyle from "../../../libs/global-style"
 import { getTheme, settingsEnum } from "../../../libs/settings"
-import Tooltips from "../../../libs/tooltips"
+import Tooltips, { initTooltips } from "../../../libs/tooltips"
 import { Tooltip } from "bootstrap"
 
 /**
@@ -30,9 +30,7 @@ const AppView = () => {
     getTheme().then((res) => {
       if (res) setTheme(res)
     })
-    const tooltipArray = [].slice
-      .call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
-      .map((tooltipTriggerEl) => new Tooltip(tooltipTriggerEl))
+    initTooltips()
   }, [theme])
 
   return (

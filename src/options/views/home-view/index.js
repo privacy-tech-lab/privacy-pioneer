@@ -20,6 +20,7 @@ import {
   SSubtitle,
   STitle,
 } from "./style"
+import { initTooltips } from "../../../libs/tooltips/index.js"
 
 /**
  * Home page view containing overview and recently identified labels
@@ -30,7 +31,6 @@ const HomeView = () => {
   const [labels, setLabels] = useState({})
   const [modal, setModal] = useState({ show: false })
   const entries = Object.entries(websites)
-  const tooltipRef = useRef()
   useEffect(() => {
     getWebsites().then((websites) => {
       setWebsites(websites)
@@ -42,6 +42,7 @@ const HomeView = () => {
           .addEventListener("hidden.bs.modal", () => {
             setModal({ show: false })
           })
+      initTooltips()
     })
   })
 
@@ -61,11 +62,11 @@ const HomeView = () => {
       />
       <Scaffold>
         <SContainer>
-          <STitle data-bs-toggle="tooltip" title="Hello Test">
+          <STitle>
             Overview
           </STitle>
 
-          <SSubtitle ref={tooltipRef} title="Test">
+          <SSubtitle>
             A summary of your privacy labels
           </SSubtitle>
 

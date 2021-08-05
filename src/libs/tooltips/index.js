@@ -2,6 +2,7 @@ import ReactHintFactory from "react-hint"
 import "react-hint/css/index.css"
 import React from "react"
 import styled from "styled-components"
+import { Tooltip } from "bootstrap"
 
 const SHint = styled.div`
   padding: 8px;
@@ -14,6 +15,12 @@ const SHint = styled.div`
   max-width: ${(props) =>
     props.multiline ? (props.popup ? "150px" : "350px") : "none"};
 `
+
+export const initTooltips = () => {
+  [].slice
+      .call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+      .map((tooltipTriggerEl) => new Tooltip(tooltipTriggerEl))
+}
 
 const Tooltips = ({ popup }) => {
   const ReactHint = ReactHintFactory(React)
