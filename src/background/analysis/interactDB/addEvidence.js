@@ -82,8 +82,8 @@ async function addToEvidenceStore(evidenceToAdd, firstParty, parent, rootU, requ
         [start, end] = evidenceObject.index
         const snipLength = evidenceObject.snippet.length
 
-        const frontBuffer = start < 300 ? start : 300
-        const endBuffer = end + 300 < snipLength ? 300 : snipLength - end - 1
+        const frontBuffer = start < 350 ? start : 350
+        const endBuffer = end + 250 < snipLength ? 250 : snipLength - end - 1
 
         evidenceObject.snippet = evidenceObject.snippet.substring(start - frontBuffer, end + endBuffer)
         evidenceObject.index = [frontBuffer, frontBuffer + end - start]
@@ -94,10 +94,10 @@ async function addToEvidenceStore(evidenceToAdd, firstParty, parent, rootU, requ
       cutDownSnippet(evidenceObject)
     }
 
-      // // whitelist our IP API
-      // if (requestU == 'http://ip-api.com/json/'){ return new Promise( function(resolve, reject) {
-      //   resolve('whitelist IP API');
-      // }) };
+    // whitelist our IP API
+    if (requestU == 'http://ip-api.com/json/'){ return new Promise( function(resolve, reject) {
+      resolve('whitelist IP API');
+    }) };
       
       evidence = updateFetchedDict(evidence, evidenceObject)
     }
