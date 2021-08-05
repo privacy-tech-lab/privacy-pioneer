@@ -3,31 +3,36 @@ Licensed per https://github.com/privacy-tech-lab/privacy-pioneer/blob/main/LICEN
 privacy-tech-lab, https://www.privacytechlab.org/
 */
 
-import React from "react";
+import React from "react"
 
 export const FAQ = {
-  "Does ___ collect any of my data?": (
+  "Does Privacy Pioneer collect any of my data?": (
     <text>
       Absolutely not! Our extension is entirely local to your computer—we do not
       store any data outside of your browser. Feel free to check the source code
-      of ___ at ___.
+      of Privacy Pioneer at Privacy Pioneer.
     </text>
   ),
-  "How does ___ process my data?": (
+  "How does Privacy Pioneer process my data?": (
     <text>
-      ___ stores all of its data in your browser’s storage. That means that all
-      data which ___ collects and displays to you within its popup or options
-      page stays on your computer and is never seen by us or anyone else.
+      Privacy Pioneer stores all of its data in your browser’s storage. That
+      means that all data which Privacy Pioneer collects and displays to you
+      within its popup or options page stays on your computer and is never seen
+      by us or anyone else.
     </text>
   ),
-  "Do I need an account to use ___?": <text>Nope, just go ahead. :).</text>,
+  "Do I need an account to use Privacy Pioneer?": (
+    <text>Nope, just go ahead. :).</text>
+  ),
   "Who are you?": (
     <text>
       We are academic researchers at Wesleyan University’s{" "}
-      <a href="https://www.privacytechlab.org/" target="_blank">privacy-tech-lab</a>. We believe
-      in privacy as a fundamental right. Our motivation is to provide new
-      directions in privacy technologies, and we do not have any commercial
-      interests.
+      <a href="https://www.privacytechlab.org/" target="_blank">
+        privacy-tech-lab
+      </a>
+      . We believe in privacy as a fundamental right. Our motivation is to
+      provide new directions in privacy technologies, and we do not have any
+      commercial interests.
     </text>
   ),
   "How does the web actually work?": (
@@ -49,16 +54,17 @@ export const FAQ = {
       initiated by third parties: abc.com initiates a request from def.com.
     </text>
   ),
-  "What is ___ actually doing?": (
+  "What is Privacy Pioneer actually doing?": (
     <text>
-      ___ analyzes HTTP requests, responses, and related data, and stores
-      tracking information in a textual format in your browser’s secure storage.
-      ___ then informs you when privacy-invasive procedures have occurred with
-      the appropriate labels. Note that ___ does not block or intervene with
-      these procedures; ___ is an information-focused browser extension
-      intending to give you greater understanding of the web. If you want to
-      block tracking in the first place, consider tools like Privacy Badger,
-      uBlockOrigin, or a proxy service.
+      Privacy Pioneer analyzes HTTP requests, responses, and related data, and
+      stores tracking information in a textual format in your browser’s secure
+      storage. Privacy Pioneer then informs you when privacy-invasive procedures
+      have occurred with the appropriate labels. Note that Privacy Pioneer does
+      not block or intervene with these procedures; Privacy Pioneer is an
+      information-focused browser extension intending to give you greater
+      understanding of the web. If you want to block tracking in the first
+      place, consider tools like Privacy Badger, uBlockOrigin, or a proxy
+      service.
     </text>
   ),
   "What are first and third party websites?": (
@@ -71,33 +77,45 @@ export const FAQ = {
       data may be sent without your knowledge.
     </text>
   ),
-  "Is ___ compatible with Firefox’s built-in blocking technologies?": (
-    <text>
-      Yes, ___ is completely compatible with Firefox’s built-in blocking
-      technologies. ___ analyzes the HTTP requests that are made, no matter what
-      other blocking you have enabled.
-    </text>
-  ),
-  "What is the ___ license? Where can I find the ___ source code?": (
-    <text>
-      ___ is licensed under the{" "}
-      <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">
-        Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International
-        license
-      </a>
-      . The ___ source code can be found on the{" "}
-      <a href="https://github.com/privacy-tech-lab/privacy-pioneer" target="_blank">
-        {" "}
-        privacy-tech-lab’s ___ GitHub
-      </a>
-      .
-    </text>
-  ),
+  "Is Privacy Pioneer compatible with Firefox’s built-in blocking technologies?":
+    (
+      <text>
+        Yes, Privacy Pioneer is completely compatible with Firefox’s built-in
+        blocking technologies. Privacy Pioneer analyzes the HTTP requests that
+        are made, no matter what other blocking you have enabled.
+      </text>
+    ),
+  "What is the Privacy Pioneer license? Where can I find the Privacy Pioneer source code?":
+    (
+      <text>
+        Privacy Pioneer is licensed under the{" "}
+        <a
+          href="https://creativecommons.org/licenses/by-nc-sa/4.0/"
+          target="_blank"
+        >
+          Creative Commons Attribution-NonCommercial-ShareAlike 4.0
+          International license
+        </a>
+        . The Privacy Pioneer source code can be found on the{" "}
+        <a
+          href="https://github.com/privacy-tech-lab/privacy-pioneer"
+          target="_blank"
+        >
+          {" "}
+          privacy-tech-lab’s Privacy Pioneer GitHub
+        </a>
+        .
+      </text>
+    ),
   "Where can I reach you?": (
     <text>
       Send us an email at [email address]. We would love to hear from you! You
       can also learn more about our work at{" "}
-      <a href="https://www.privacytechlab.org/" target="_blank"> privacy-tech-lab</a>.
+      <a href="https://www.privacytechlab.org/" target="_blank">
+        {" "}
+        privacy-tech-lab
+      </a>
+      .
     </text>
   ),
-};
+}
