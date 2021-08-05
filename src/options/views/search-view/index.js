@@ -16,6 +16,7 @@ import {
   STop,
   SDropdownOptions,
   SDropdownItem,
+  SEmpty
  } from "./style"
 import { SContainer, SSubtitle } from "./style"
 import * as Icons from "../../../libs/icons"
@@ -50,6 +51,7 @@ const SearchView = () => {
 
   const dropdownRef = useRef()
   const [showDropdown, setDropdown] = useState(false)
+  const [showEmpty, setShowEmpty] = useState(false)
 
   /**
    * Filter websites based on user input string from text field
@@ -71,7 +73,8 @@ const SearchView = () => {
         }
       }
     }
-
+    if (Object.keys(filteredWebsites) == 0) {setShowEmpty(true)}
+    else {setShowEmpty(false)}
     setFilter(filteredWebsites)
   }
   
@@ -82,16 +85,8 @@ const SearchView = () => {
    */
   const filterLabels = (keyString) => {
 
-    var resetLabels = false
     var filterArr = getAllPerms()
-
-    // reset labels if all previous filters have been removed
-    if ( indexStack.length > 0 && keyString.length < indexStack[0]) {
-      resetLabels = true
-    }
-
     var updatedPlaceholder = "Search in: "
-
     var updatedStack = []
 
     // check for filters
@@ -124,10 +119,13 @@ const SearchView = () => {
     }
     else {
       // clear all filters if they've all been removed
-      if (resetLabels && sortedStack.length == 0) {
+      if (sortedStack.length == 0) {
           setWebLabels(allLabels)
           setFilter(allWebsites)
           filter('', allLabels)
+      }
+      else {
+        filter('', labels)
       }  
     }   
   }
@@ -220,6 +218,7 @@ const SearchView = () => {
             allLabels={webLabels}
             handleTap={handleTap}
           />
+          <SEmpty show={showEmpty}> No search results. Try changing the filter. </SEmpty>
         </SContainer>
       </Scaffold>
     </React.Fragment>

@@ -116,3 +116,9 @@ export const SDropdownItem = styled.div`
     opacity: .7;
   }
 `
+
+export const SEmpty = styled.div`
+  font-size: var(--title2);
+  font-weight: bold;
+  display: ${(props) => (props.show ? "block" : "none")};
+`
