@@ -13,7 +13,8 @@ import LabelModal from "../home-view/components/detail-modal"
 import WebsiteLabelList from "../../components/website-label-list"
 import { getLabels, getWebsites } from "../../../libs/indexed-db/getIdbData.js"
 import { useHistory, useLocation } from "react-router"
-import { permissionEnum, filterKeywordEnum } from "../../../background/analysis/classModels"
+import { filterKeywordEnum } from "../../../background/analysis/classModels"
+import { removeLeadingWhiteSpace, getAllPerms } from "../../../background/analysis/utility/util"
 
 
 /**
@@ -21,34 +22,16 @@ import { permissionEnum, filterKeywordEnum } from "../../../background/analysis/
  */
 const SearchView = () => {
 
-  const getAllPerms = () => {
-    return [
-      permissionEnum.location,
-      permissionEnum.monetization,
-      permissionEnum.tracking,
-      permissionEnum.watchlist
-    ]
-  }
-
   const [allWebsites, setAllWebsites] = useState({})
+  const [allLabels, setAllLabels] = useState({})
   const [filteredSites, setFilter] = useState({}) // all websites in DB (passed from previous page)
   const [webLabels, setWebLabels] = useState({}) // all labels in DB (passed from previous page)
   const [indexStack, setIndexStack] = useState([]) //used for permission filtering
-  const [filterList, setFilterList] = useState(getAllPerms()) // used for permission filtering
   const [searchQuery, setSearchQuery] = useState('')
   const [modal, setModal] = useState({ show: false })
   const history = useHistory()
   const location = useLocation()
   const passedSearch = location.state === undefined ? "" : location.state
-
-
-  const removeLeadingWhiteSpace = (str) => {
-    var index = 0
-    while (index < str.length && str.charAt(index) == ' ') {
-      index += 1
-    }
-    return str.slice(index)
-  } 
 
   /**
    * Filter websites based on user input string from text field
@@ -57,8 +40,6 @@ const SearchView = () => {
   const filter = (keyString, labels = webLabels) => {
 
     keyString = removeLeadingWhiteSpace(keyString)
-
-    console.log(keyString)
 
     const filteredKeys = Object.keys(allWebsites).filter((k) =>
       k.includes(keyString)
@@ -76,18 +57,23 @@ const SearchView = () => {
     setFilter(filteredWebsites)
   }
   
+  /**
+   * Core filtering function. 
+   * Looks for filters and applies them as appropriate.
+   * Makes appropriate calls to the above filter function.
+   * @param {string} keyString 
+   */
   const filterLabels = (keyString) => {
 
-    var stackChanged = false
+    var resetLabels = false
     var filterArr = getAllPerms()
-    var updatedStack = indexStack
 
-    // empty stack if a previous filter has been removed
-    if ( updatedStack.length > 0 && keyString.length < updatedStack[updatedStack.length - 1][0]) {
-      stackChanged = true
+    // reset labels if all previous filters have been removed
+    if ( indexStack.length > 0 && keyString.length < indexStack[0]) {
+      resetLabels = true
     }
 
-    updatedStack = []
+    var updatedStack = []
 
     // check for filters
     Object.values(filterKeywordEnum).map(({searchString, permission}) => {
@@ -95,38 +81,32 @@ const SearchView = () => {
         const removeIndex = filterArr.indexOf(permission)
         filterArr.splice(removeIndex, 1)
         const index = keyString.indexOf(searchString)
-        updatedStack.push([index + searchString.length, permission])
+        updatedStack.push(index + searchString.length)
       }
     })
 
-    // sort stack
-    updatedStack = updatedStack.sort((a,b) => {b[0] - a[0]})
-
-    console.log(updatedStack)
-
-    setIndexStack(updatedStack)
-    setFilterList(filterArr)
+    // sort and set stack
+    var sortedStack = updatedStack.sort()
+    setIndexStack(sortedStack)
 
     // apply permission filters if stack changed and there are filters
-    if (updatedStack.length > 0 && updatedStack != indexStack ) { 
+    if (sortedStack.length > 0 && sortedStack != indexStack ) { 
       getLabels(filterArr).then( (labels) => {
         setWebLabels(labels)
-        filter(keyString.slice(updatedStack[0][0]), labels)
+        filter(keyString.slice(sortedStack[sortedStack.length - 1]), labels)
       })
     }
     else {
-      // clear all permission filters if there are none
-      if (stackChanged && updatedStack.length == 0) {
-        getLabels().then( (labels) => {
-          setWebLabels(labels)
+      // clear all filters if they've all been removed
+      if (resetLabels && sortedStack.length == 0) {
+          setWebLabels(allLabels)
           setFilter(allWebsites)
-          filter(keyString, labels)
-        })
+          filter(keyString, allLabels)
       }
       else {
-        // filter by website name starting at the end of the permissions if applicable
-        if (updatedStack.length > 0) {
-          filter(keyString.slice(updatedStack[0][0]))
+        // otherwise, just filter by website
+        if (sortedStack.length > 0) {
+          filter(keyString.slice(sortedStack[sortedStack.length - 1]))
         }
         else {
           filter(keyString)
@@ -136,20 +116,20 @@ const SearchView = () => {
     }   
   }
 
-
   const handleTap = (items) => {
     const modal = new Modal(document.getElementById("detail-modal"))
     setModal(items)
     modal.show()
   }
 
-
-
   useEffect(() => {
     getWebsites().then((websites) => {
       setAllWebsites(websites)
       setFilter(websites)
-      getLabels().then((labels) => {setWebLabels(labels)})
+      getLabels().then((labels) => {
+        setWebLabels(labels)
+        setAllLabels(labels)
+      })
     })
     setSearchQuery(passedSearch)
   }, [])
