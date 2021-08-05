@@ -74,7 +74,7 @@ const SearchView = () => {
             <STitle>History</STitle>
           </STop>
           <SSubtitle>
-            See browsed webistes accessing and sharing your personal information
+            See browsed websites accessing and sharing your personal information
           </SSubtitle>
           <SInputContainer>
             <Icons.Search size="24px" />
