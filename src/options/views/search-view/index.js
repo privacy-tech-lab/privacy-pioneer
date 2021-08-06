@@ -223,6 +223,7 @@ const SearchView = () => {
                 highlight={permFilter[permission]}
               >
                 {Icons.getLabelIcon(permission, "21px")}
+                {' '.concat(permission.charAt(0).toUpperCase()).concat(permission.slice(1))}
               </SDropdownItem>
               ))
             }
