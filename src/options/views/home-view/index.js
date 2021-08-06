@@ -66,7 +66,9 @@ const HomeView = () => {
           <STitle>Overview</STitle>
           <SSubtitle>A summary of your privacy labels</SSubtitle>
           <SCardGroup>
-            <LabelSummaryCardList labels={labels} />
+            <LabelSummaryCardList 
+            labels={labels}
+            passWebsites={websites} />
           </SCardGroup>
         </SContainer>
         <SContainer marginTop>
@@ -82,7 +84,6 @@ const HomeView = () => {
               onClick={() =>
                 history.push({
                   pathname: "/search",
-                  state: "",
                 })
               }
             >

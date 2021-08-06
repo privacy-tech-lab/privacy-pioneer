@@ -7,14 +7,11 @@ import React, { useEffect, useState, useRef } from "react"
 import Scaffold from "../../components/scaffold"
 import { 
   SBackButton,
-  SFilterButton,
-  SAddFilterButton,
   SInput,
   SInputContainer,
   SSearchContainer,
   STitle,
   STop,
-  SDropdownOptions,
   SDropdownItem,
   SEmpty
  } from "./style"
@@ -34,23 +31,54 @@ import { removeLeadingWhiteSpace, getAllPerms } from "../../../background/analys
  */
 const SearchView = () => {
 
+  const getPlaceholder = () => {
+    const defaultPlaceholder = "Search in: All"
+    var updatedPlaceholder = "Search in: "
+    var ct = 0
+    for (const [perm, val] of Object.entries(permFilter)) {
+      if (permFilter[perm]) {
+        updatedPlaceholder = updatedPlaceholder.concat(perm).concat(' ')
+        ct += 1
+      }
+    }
+    if (ct == 4) {return defaultPlaceholder}
+    else {return updatedPlaceholder}
+  }
+
+  const getMapping = (typ) => {
+    const mapping = 
+    {'location': false,
+    'monetization': false,
+    'watchlist': false,
+    'tracking': false} 
+    mapping[typ] = true
+    return mapping
+  }
+
   const [modal, setModal] = useState({ show: false })
   const history = useHistory()
   const location = useLocation()
 
-  const [allWebsites, setAllWebsites] = useState({})
+  const [allWebsites, setAllWebsites] = useState(
+    location.state === undefined ? {} : location.state[1]
+  )
   const [allLabels, setAllLabels] = useState({})
 
   const [filteredSites, setFilter] = useState({}) // all websites in DB (passed from previous page)
   const [webLabels, setWebLabels] = useState({}) // all labels in DB (passed from previous page)
 
-  const [indexStack, setIndexStack] = useState([]) //used for permission filtering
-  const [searchQuery, setSearchQuery] = useState("")
-  const passedSearch = location.state === undefined ? "" : location.state
-  const [placeholder, setPlaceholder] = useState("Search in: All")
+  const [permFilter, setPermFilter] = useState(
+    location.state === undefined ? 
+    {'location': true,
+    'monetization': true,
+    'watchlist': true,
+    'tracking': true} 
+    :
+    getMapping(location.state[0])
+  )
+  const [placeholder, setPlaceholder] = useState(getPlaceholder())
+  
 
-  const dropdownRef = useRef()
-  const [showDropdown, setDropdown] = useState(false)
   const [showEmpty, setShowEmpty] = useState(false)
 
   /**
@@ -73,6 +101,7 @@ const SearchView = () => {
         }
       }
     }
+    
     if (Object.keys(filteredWebsites) == 0) {setShowEmpty(true)}
     else {setShowEmpty(false)}
     setFilter(filteredWebsites)
@@ -83,51 +112,30 @@ const SearchView = () => {
    * 
    * @param {string} keyString 
    */
-  const filterLabels = (keyString) => {
+  const filterLabels = () => {
 
     var filterArr = getAllPerms()
-    var updatedPlaceholder = "Search in: "
-    var updatedStack = []
 
-    // check for filters
-    Object.values(filterKeywordEnum).map(({searchString, permission}) => {
-      if (keyString.includes(searchString)) {
-        const removeIndex = filterArr.indexOf(permission)
+    for (const [perm, val] of Object.entries(permFilter)) {
+      if (permFilter[perm]) {
+        const removeIndex = filterArr.indexOf(perm)
         filterArr.splice(removeIndex, 1)
-        const index = keyString.indexOf(searchString)
-        updatedStack.push(index + searchString.length)
-        updatedPlaceholder = updatedPlaceholder.concat(searchString).concat(' ')
       }
-    })
-
-    if (updatedStack.length == 0 || updatedStack.length == 4) {
-      updatedPlaceholder = "Search in: All"
     }
 
-    setPlaceholder(updatedPlaceholder)
+    setPlaceholder(getPlaceholder())
 
-    // sort and set stack
-    var sortedStack = updatedStack.sort()
-    setIndexStack(sortedStack)
-
-    // apply permission filters if stack changed and there are filters
-    if (sortedStack.length > 0 && sortedStack != indexStack ) { 
+    if (filterArr.length > 0) {
       getLabels(filterArr).then( (labels) => {
         setWebLabels(labels)
         filter('', labels)
       })
     }
     else {
-      // clear all filters if they've all been removed
-      if (sortedStack.length == 0) {
-          setWebLabels(allLabels)
-          setFilter(allWebsites)
-          filter('', allLabels)
-      }
-      else {
-        filter('', labels)
-      }  
-    }   
+      setWebLabels(allLabels)
+      setFilter(allWebsites)
+      filter('', allLabels)
+    }
   }
 
   const handleTap = (items) => {
@@ -137,15 +145,23 @@ const SearchView = () => {
   }
 
   useEffect(() => {
-    getWebsites().then((websites) => {
-      setAllWebsites(websites)
-      setFilter(websites)
+    if (location.state === undefined) {
+      getWebsites().then((websites) => {
+        setAllWebsites(websites)
+        setFilter(websites)
+        getLabels().then((labels) => {
+          setWebLabels(labels)
+          setAllLabels(labels)
+        })
+      })
+    }
+    else {
+      setFilter(allWebsites)
+      filterLabels()
       getLabels().then((labels) => {
-        setWebLabels(labels)
         setAllLabels(labels)
       })
-    })
-    setSearchQuery(passedSearch)
+    }
   }, [])
 
   return (
@@ -175,43 +191,27 @@ const SearchView = () => {
               <Icons.Search size = {24}/>
               <SInput
                 placeholder= {placeholder}
-                value = {searchQuery}
                 onChange={(e) => {
                   filter(e.target.value);
-                  setSearchQuery(e.target.value);
                   }
                 }
               />
             </SInputContainer>
-            <SFilterButton
-              onClick = {() => {
-                filterLabels(searchQuery)
-                setSearchQuery('')
-            }}> 
-              <Icons.Filter size={24} /> 
-            </SFilterButton>
-            <SAddFilterButton
-              onHoverStart={() => setDropdown(true)}
-              onHoverEnd={() => setDropdown(false)}
-              ref={dropdownRef}
-            >
-              <Icons.addFilter size={21} />
-              <SDropdownOptions show={showDropdown}>
               {Object.values(filterKeywordEnum).map(({searchString, permission}) => (
                     <SDropdownItem
                       onClick={() => {
-                        setSearchQuery(searchQuery.concat(' ').concat(searchString))
+                        permFilter[permission] = !permFilter[permission]
+                        setPermFilter(permFilter)
+                        filterLabels()
                       }}
                       key={permission}
+                      show={permFilter[permission]}
                     >
                       {Icons.getLabelIcon(permission, "21px")}
                     </SDropdownItem>
                   )
                 )
               }
-                
-            </SDropdownOptions>
-            </SAddFilterButton>
           </SSearchContainer>
           <WebsiteLabelList
             websites={filteredSites}

@@ -62,23 +62,6 @@ export const SBackButton = styled(motion.div)`
   display: flex;
 `;
 
-export const SFilterButton = styled(motion.div)`
-  cursor: pointer;
-  magin-left: 5px;
-  display: flex;
-  :hover {
-    opacity: .7;
-  }
-`
-
-export const SAddFilterButton = styled(motion.div)`
-  cursor: pointer;
-  display: flex;
-  :hover {
-    filter: brightness(1.2)
-  }
-`
-
 export const SSearchContainer = styled.div`
   padding-top: 16px;
   margin-top: 32px;
@@ -87,34 +70,12 @@ export const SSearchContainer = styled.div`
   justify-content: left;
 `
 
-export const SDropdownOptions = styled.div`
-  display: ${(props) => (props.show ? "flex" : "none")};
-  width: 120px;
-  margin-left: 5px;
-  flex-wrap: wrap;
-  position: relative;
-  box-shadow: 0px 4px 16px -8px rgba(0, 0, 0, 0.25);
-  background-color: var(--backgroundColor);
-  border-radius: 5px;
-  align: center;
-  filter: brightness(1.5);
-  will-change: transform;
-  -moz-transition-delay: 500ms;
-`
 
 export const SDropdownItem = styled.div`
   margin-top: 2px;
   padding: 4px;
   cursor: pointer;
-  @media (prefers-color-scheme: dark) {
-    :hover {
-        filter: brightness(1.2);
-      }
-    }
-  }
-  :hover {
-    opacity: .7;
-  }
+  opacity: ${(props) => (props.show) ? 1: .6};
 `
 
 export const SEmpty = styled.div`
