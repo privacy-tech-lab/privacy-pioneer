@@ -23,11 +23,14 @@ import LabelModal from "../home-view/components/detail-modal"
 import WebsiteLabelList from "../../components/website-label-list"
 import { getLabels, getWebsites } from "../../../libs/indexed-db/getIdbData.js"
 import { useHistory, useLocation } from "react-router"
-import { filterKeywordEnum } from "../../../background/analysis/classModels"
+import { permissionEnum } from "../../../background/analysis/classModels"
 import { removeLeadingWhiteSpace, getAllPerms } from "../../../background/analysis/utility/util"
 
 
 /**
+ * location.state = undefined | [permission, websites]
+ * Depending on if you came to this page from the See All 
+ * or clicking the large cards
  * Search view allowing user to search from identified labels
  */
 const SearchView = () => {
@@ -39,11 +42,12 @@ const SearchView = () => {
    * @returns {Dict}
    */
   const getPermMapping = (typ) => {
-    const mapping = 
-    {'monetization': false,
-    'location': false,
-    'watchlist': false,
-    'tracking': false} 
+    const mapping = {
+      'monetization': false,
+      'location': false,
+      'watchlist': false,
+      'tracking': false
+    } 
     mapping[typ] = true
     return mapping
   }
@@ -58,13 +62,12 @@ const SearchView = () => {
   const [filteredSites, setFilter] = useState({}) 
   const [webLabels, setWebLabels] = useState({}) 
   const [permFilter, setPermFilter] = useState(
-    location.state === undefined ? 
-    {'monetization': true,
-    'location': true,
-    'watchlist': true,
-    'tracking': true} 
-    :
-    getPermMapping(location.state[0])
+    location.state === undefined ? {
+      'monetization': true,
+      'location': true,
+      'watchlist': true,
+      'tracking': true
+    } : getPermMapping(location.state[0])
   )
   const [placeholder, setPlaceholder] = useState('')
   const [showEmpty, setShowEmpty] = useState(false)
@@ -78,8 +81,8 @@ const SearchView = () => {
     const defaultPlaceholder = "Search in: All"
     var updatedPlaceholder = "Search in: "
     var ct = 0
-    for (const [perm, val] of Object.entries(permFilter)) {
-      if (permFilter[perm]) {
+    for (const [perm, bool] of Object.entries(permFilter)) {
+      if (bool) {
           ct += 1
           updatedPlaceholder = updatedPlaceholder.concat(perm).concat(' ')
         }
@@ -87,7 +90,7 @@ const SearchView = () => {
 
     if (ct == 4) {return defaultPlaceholder}
     if (ct == 0) {return "Search in: None"}
-    else {return updatedPlaceholder}
+    return updatedPlaceholder
   }
 
   /**
@@ -111,8 +114,7 @@ const SearchView = () => {
       }
     }
     
-    if (Object.keys(filteredWebsites) == 0) {setShowEmpty(true)}
-    else {setShowEmpty(false)}
+    Object.keys(filteredWebsites) == 0 ? setShowEmpty(true) : setShowEmpty(false)
     setFilter(filteredWebsites)
   }
   
@@ -123,10 +125,12 @@ const SearchView = () => {
    */
   const filterLabels = () => {
 
+    // filter gets passed as an array in DB call
     var filterArr = getAllPerms()
 
-    for (const [perm, val] of Object.entries(permFilter)) {
-      if (permFilter[perm]) {
+    // update array based on filter settings
+    for (const [perm, bool] of Object.entries(permFilter)) {
+      if (bool) {
         const removeIndex = filterArr.indexOf(perm)
         filterArr.splice(removeIndex, 1)
       }
@@ -165,7 +169,7 @@ const SearchView = () => {
         })
       })
     }
-    // if we are:
+    // if we are then allWebsties is already set. setWebLabels will be called by filterLabels
     else {
       setFilter(allWebsites)
       filterLabels()
@@ -212,7 +216,7 @@ const SearchView = () => {
             </SInputContainer>
           </SSearchContainer>
           <SFilterRow>
-            {Object.values(filterKeywordEnum).map(({searchString, permission}) => (
+            {Object.values(permissionEnum).map((permission) => (
               <SDropdownItem
                 onClick={() => {
                   permFilter[permission] = !permFilter[permission]
