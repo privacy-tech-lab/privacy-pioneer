@@ -21,6 +21,13 @@ export const STop = styled.div`
   align-items: center;
 `;
 
+export const SFilterRow = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  margin-top: 7px;
+`;
+
 export const SSubtitle = styled.div`
   color: var(--secondaryTextColor);
 `;
@@ -75,7 +82,7 @@ export const SDropdownItem = styled.div`
   margin-top: 2px;
   padding: 4px;
   cursor: pointer;
-  opacity: ${(props) => (props.show) ? 1: .6};
+  opacity: ${(props) => (props.highlight) ? 1: .6};
 `
 
 export const SEmpty = styled.div`
