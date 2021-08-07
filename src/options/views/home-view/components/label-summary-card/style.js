@@ -31,6 +31,7 @@ export const SContainer = styled.div`
   background: ${(props) => getColor(props.labeltype)};
   box-sizing: content-box;
   display: flex;
+  cursor: grab;
   flex-direction: column;
   padding: 16px 16px 16px;
   color: white;

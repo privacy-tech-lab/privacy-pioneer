@@ -3,7 +3,7 @@ Licensed per https://github.com/privacy-tech-lab/privacy-pioneer/blob/main/LICEN
 privacy-tech-lab, https://www.privacytechlab.org/
 */
 
-import { Evidence } from '../classModels.js'
+import { Evidence, permissionEnum } from '../classModels.js'
 
 function sleep(ms) {
     return new Promise(resolve => setTimeout(resolve, ms));
@@ -162,5 +162,23 @@ function watchlistHashGen (type, keyword) {
   return hashTypeAndPermission(type.concat(keyword)).toString()
 }
 
+const getAllPerms = () => {
+  return [
+    permissionEnum.location,
+    permissionEnum.monetization,
+    permissionEnum.tracking,
+    permissionEnum.watchlist
+  ]
+}
 
-export { hashTypeAndPermission, extractHostname, getHostname, watchlistHashGen, createEvidenceObj }
+const removeLeadingWhiteSpace = (str) => {
+  var index = 0
+  while (index < str.length && str.charAt(index) == ' ') {
+    index += 1
+  }
+  return str.slice(index)
+} 
+
+
+export { hashTypeAndPermission, extractHostname, getHostname, 
+  watchlistHashGen, createEvidenceObj, getAllPerms, removeLeadingWhiteSpace }

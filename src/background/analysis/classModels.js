@@ -206,6 +206,7 @@ export const typeEnum = Object.freeze({
   fingerprinting: "fingerprinting",
 })
 
+
 /**
  * An object containing the keyword types for the watchlist and information to populate defaults.
  * @typedef keywordTypes

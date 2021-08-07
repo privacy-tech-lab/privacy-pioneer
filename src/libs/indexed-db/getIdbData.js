@@ -16,8 +16,7 @@ import { getExcludedLabels } from "../settings/index.js"
  * Restucture to display in UI
  * result: {..., label: {..., requestURL: {..., labelType: requestObject}}}
  */
-export const getWebsiteLabels = async (website) => {
-  const excludedLabels = await getExcludedLabels()
+export const getWebsiteLabels = async (website, excludedLabels = []) => {
   try {
     var evidence = await evidenceIDB.get(website, storeEnum.firstParty) // first try first party DB
     if (evidence == undefined) {
@@ -56,12 +55,12 @@ export const getWebsiteLabels = async (website) => {
  * @returns: {..., website: {...,label: {..., requestURL: {..., labelType: requestObject}}}}
  */
 
-const getAllWebsiteLabels = async () => {
+const getAllWebsiteLabels = async (excludedLabels = []) => {
   const weblabels = {}
   const websites = await getWebsites()
   try {
     Object.keys(websites).forEach((website) => {
-      getWebsiteLabels(website).then((res) => (weblabels[website] = res))
+      getWebsiteLabels(website, excludedLabels).then((res) => (weblabels[website] = res))
     })
     return weblabels
   } catch (error) {
@@ -151,14 +150,20 @@ const sortEvidence = (websites) => {
 /**
  * Uses above function to iterate through websites
  * Made for UI implementation
+ * @param {Array<String>|null} filter Optional parameter to limit labels to specific permissions
  * @returns Labels sorted in various ways
  */
 
-export const getLabels = async () => {
+export const getLabels = async (filter = null) => {
   let res = {}
-  const labels = await getAllWebsiteLabels()
+  var excludedLabels = await getExcludedLabels()
+  if (filter !== null) {
+    excludedLabels = excludedLabels.concat(
+      filter.filter(label => excludedLabels.indexOf(label) < 0)
+    )
+  }
+  const labels = await getAllWebsiteLabels(excludedLabels)
   const websites = Object.keys(await getWebsites())
-  const excludedLabels = await getExcludedLabels()
 
   Object.values(permissionEnum).forEach((label) => {
     if (!excludedLabels.includes(label)) res[label] = {}
@@ -168,6 +173,10 @@ export const getLabels = async () => {
     Object.keys(labels[website]).forEach((label) => {
       res[label][website] = labels[website][label]
     })
+  })
+
+  Object.values(permissionEnum).forEach( (label) => {
+    if (excludedLabels.includes(label)) res[label] = {}
   })
 
   return res
