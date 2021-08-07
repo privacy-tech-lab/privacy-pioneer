@@ -13,12 +13,12 @@ import {
   STitle,
   STop,
   SFilterRow,
-  SDropdownItem,
+  SFilterRowItem,
   SEmpty
  } from "./style"
 import { SContainer, SSubtitle } from "./style"
 import * as Icons from "../../../libs/icons"
-import { Modal, Dropdown, Button } from "bootstrap"
+import { Modal } from "bootstrap"
 import LabelModal from "../home-view/components/detail-modal"
 import WebsiteLabelList from "../../components/website-label-list"
 import { getLabels, getWebsites } from "../../../libs/indexed-db/getIdbData.js"
@@ -217,7 +217,7 @@ const SearchView = () => {
           </SSearchContainer>
           <SFilterRow>
             {Object.values(permissionEnum).map((permission) => (
-              <SDropdownItem
+              <SFilterRowItem
                 onClick={() => {
                   permFilter[permission] = !permFilter[permission]
                   setPermFilter(permFilter)
@@ -228,7 +228,7 @@ const SearchView = () => {
               >
                 {Icons.getLabelIcon(permission, "21px")}
                 {' '.concat(permission.charAt(0).toUpperCase()).concat(permission.slice(1))}
-              </SDropdownItem>
+              </SFilterRowItem>
               ))
             }
           </SFilterRow>

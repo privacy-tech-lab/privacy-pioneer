@@ -78,7 +78,7 @@ export const SSearchContainer = styled.div`
 `
 
 
-export const SDropdownItem = styled.div`
+export const SFilterRowItem = styled.div`
   font-weight: bold;
   user-select: none;
   margin-top: 2px;
