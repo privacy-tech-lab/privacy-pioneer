@@ -53,20 +53,22 @@ const WebsiteLabelList = ({ websites, recent, handleTap, allLabels }) => {
     : Object.entries(websites)
   return (
     <SContainer>
-      {entries.slice(0, recent ? 3 : entries.length).map(([website, data]) => (
-        <SItem key={website}>
-          <WebsiteBadge website={website} party={data.party} />
-          <SLabelGroup>
-            <LabelCards
-              website={website}
-              handleTap={handleTap}
-              allLabels={allLabels}
-              webLabels={data.labels}
-            />
-          </SLabelGroup>
-          <SSeperator marginTop="16px" />
-        </SItem>
-      ))}
+      {entries
+        .slice(0, recent & (entries.length > 3) ? 3 : entries.length)
+        .map(([website, data]) => (
+          <SItem key={website}>
+            <WebsiteBadge website={website} party={data.party} />
+            <SLabelGroup>
+              <LabelCards
+                website={website}
+                handleTap={handleTap}
+                allLabels={allLabels}
+                webLabels={data.labels}
+              />
+            </SLabelGroup>
+            <SSeperator marginTop="16px" />
+          </SItem>
+        ))}
     </SContainer>
   )
 }
