@@ -82,7 +82,7 @@ async function addToEvidenceStore(evidenceToAdd, firstParty, parent, rootU, requ
         [start, end] = evidenceObject.index
         const snipLength = evidenceObject.snippet.length
 
-        const frontBuffer = start < 350 ? start : 350
+        const frontBuffer = start < 250 ? start : 250
         const endBuffer = end + 250 < snipLength ? 250 : snipLength - end - 1
 
         evidenceObject.snippet = evidenceObject.snippet.substring(start - frontBuffer, end + endBuffer)
