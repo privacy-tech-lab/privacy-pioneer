@@ -16,8 +16,6 @@ import {
   onBeforeSendHeaders,
   onHeadersReceived,
 } from "./analysis/analyze.js"
-import { openDB } from "idb"
-import { settingsKeyval } from "../libs/indexed-db/openDB.js"
 import { setDefault } from "../libs/settings/index.js"
 import { importData } from "./analysis/buildUserData/importSearchData.js"
 import Queue from "queue"

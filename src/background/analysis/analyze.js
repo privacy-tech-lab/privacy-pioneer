@@ -190,6 +190,8 @@ function resolveBuffer(id, data) {
 async function analyze(request, userData) {
 
   const allEvidence = getAllEvidenceForRequest(request, userData);
+
+  const saveFullSnippet = userData[3]
   
   // if we found evidence for the request
   if (allEvidence.length != 0) {
@@ -199,8 +201,6 @@ async function analyze(request, userData) {
     const partyBool = await tagParty(rootUrl)
     const parent = tagParent(reqUrl)
 
-    const saveFullSnippet = await settingsKeyval.get(settingsModelsEnum.fullSnippet)
-    
     // push the job to the Queue (will add the evidence for one HTTP request at a time)
     evidenceQ.push(function(cb) { cb(null, addToEvidenceStore(allEvidence, partyBool, parent, rootUrl, reqUrl, saveFullSnippet))});
   }

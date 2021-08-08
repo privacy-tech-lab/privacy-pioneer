@@ -10,6 +10,7 @@ import {
   storeEnum,
 } from "../../background/analysis/classModels"
 import { evidenceKeyval } from "../../background/analysis/interactDB/openDB"
+import { BrowserRouter } from "react-router-dom"
 
 export const settingsEnum = Object.freeze({
   sameAsSystem: "sameAsSystem",
@@ -62,6 +63,7 @@ export const getLabelStatus = async () => {
  export const toggleSnippet = async () => {
   let currentVal = await settingsKeyval.get(settingsModelsEnum.fullSnippet)
   await settingsKeyval.set(settingsModelsEnum.fullSnippet, !currentVal)
+  browser.runtime.sendMessage({msg:'dataUpdated'})
 }
 
 /**
