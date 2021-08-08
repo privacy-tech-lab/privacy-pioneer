@@ -60,7 +60,9 @@ const getAllWebsiteLabels = async (excludedLabels = []) => {
   const websites = await getWebsites()
   try {
     Object.keys(websites).forEach((website) => {
-      getWebsiteLabels(website, excludedLabels).then((res) => (weblabels[website] = res))
+      getWebsiteLabels(website, excludedLabels).then(
+        (res) => (weblabels[website] = res)
+      )
     })
     return weblabels
   } catch (error) {
@@ -95,6 +97,7 @@ const buildLabels = async (store, res, excludedLabels) => {
         res[website] = {}
         res[website].labels = labels
         res[website].timestamp = timestamp
+        res[website].party = store
       } // give priority to first party labels if we have the same key in both stores
     }
   } catch (error) {
@@ -159,7 +162,7 @@ export const getLabels = async (filter = null) => {
   var excludedLabels = await getExcludedLabels()
   if (filter !== null) {
     excludedLabels = excludedLabels.concat(
-      filter.filter(label => excludedLabels.indexOf(label) < 0)
+      filter.filter((label) => excludedLabels.indexOf(label) < 0)
     )
   }
   const labels = await getAllWebsiteLabels(excludedLabels)
@@ -175,7 +178,7 @@ export const getLabels = async (filter = null) => {
     })
   })
 
-  Object.values(permissionEnum).forEach( (label) => {
+  Object.values(permissionEnum).forEach((label) => {
     if (excludedLabels.includes(label)) res[label] = {}
   })
 

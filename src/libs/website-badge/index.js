@@ -3,10 +3,11 @@ Licensed per https://github.com/privacy-tech-lab/privacy-pioneer/blob/main/LICEN
 privacy-tech-lab, https://www.privacytechlab.org/
 */
 
-import React from "react";
-import styled from "styled-components";
-import { getParent, getParents } from "../company-icons/getCompany.js";
-import WebsiteLogo, { CompanyLogo } from "../website-logo";
+import React from "react"
+import styled from "styled-components"
+import { storeEnum } from "../../background/analysis/classModels.js"
+import { getParent, getParents } from "../company-icons/getCompany.js"
+import WebsiteLogo, { CompanyLogo } from "../website-logo"
 
 /**
  * Generally this would be in a style.js file
@@ -18,16 +19,25 @@ const SBadge = styled.div`
   justify-content: space-between;
   align-items: center;
   margin-top: 16px;
-`;
+`
+const SParty = styled.div`
+  border-radius: 50%;
+  background-color: #3e92cc;
+  user-select: none;
+  color: white;
+  padding: 4px;
+  font-weight: 600;
+  font-size: 12px;
+`
 
 /**
  * Displays website logo (which is the first letter of website) and title of website
  * @param {string} website the host website
  * @param {string|null} showParent the parent company of the site
  */
-const WebsiteBadge = ({ website, showParent }) => {
-  const parent = getParent(website);
-  const logo = parent ? <CompanyLogo parent={parent} /> : null;
+const WebsiteBadge = ({ website, showParent, party }) => {
+  const parent = getParent(website)
+  const logo = parent ? <CompanyLogo parent={parent} /> : null
   return (
     <SBadge>
       <span style={{ display: "flex" }}>
@@ -42,10 +52,18 @@ const WebsiteBadge = ({ website, showParent }) => {
         >
           {website}
         </span>
+        {party == storeEnum.thirdParty ? (
+          <SParty
+            data-position="top"
+            data-tip="This site was loaded in with another site you visited"
+          >
+            3rd
+          </SParty>
+        ) : null}
       </span>
       {showParent ? logo : null}
     </SBadge>
-  );
-};
+  )
+}
 
-export default WebsiteBadge;
+export default WebsiteBadge

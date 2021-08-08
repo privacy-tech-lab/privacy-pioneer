@@ -19,8 +19,7 @@ const SWebsiteLogo = styled.div`
   width: ${(props) => (props.large ? "64px" : "24px")};
   margin: ${(props) => (props.margin ? props.margin : "0px")};
   border-radius: 50%;
-  background-color: ${(props) =>
-    props.color ? props.color : "var(--primaryBrandTintColor)"};
+  background-color: var(--primaryHighlightColor);
 `
 const SCompanyLogo = styled.div`
   display: flex;
@@ -32,7 +31,7 @@ const SCompanyLogo = styled.div`
 `
 
 const SLetterLogo = styled.div`
-  color: ${(props) => (props.color ? "white" : "var(--primaryBrandColor)")};
+  color: var(--tintTextColor);
   font-weight: bold;
   font-size: ${(props) => (props.large ? "32px" : "16px")};
 `

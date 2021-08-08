@@ -5,7 +5,7 @@ privacy-tech-lab, https://www.privacytechlab.org/
 
 import React, { useEffect, useState, useRef } from "react"
 import Scaffold from "../../components/scaffold"
-import { 
+import {
   SBackButton,
   SInput,
   SInputContainer,
@@ -14,8 +14,8 @@ import {
   STop,
   SFilterRow,
   SFilterRowItem,
-  SEmpty
- } from "./style"
+  SEmpty,
+} from "./style"
 import { SContainer, SSubtitle } from "./style"
 import * as Icons from "../../../libs/icons"
 import { Modal } from "bootstrap"
@@ -24,30 +24,32 @@ import WebsiteLabelList from "../../components/website-label-list"
 import { getLabels, getWebsites } from "../../../libs/indexed-db/getIdbData.js"
 import { useHistory, useLocation } from "react-router"
 import { permissionEnum } from "../../../background/analysis/classModels"
-import { removeLeadingWhiteSpace, getAllPerms } from "../../../background/analysis/utility/util"
-
+import {
+  removeLeadingWhiteSpace,
+  getAllPerms,
+} from "../../../background/analysis/utility/util"
+import ReactTooltip from "react-tooltip"
 
 /**
  * location.state = undefined | [permission, websites]
- * Depending on if you came to this page from the See All 
+ * Depending on if you came to this page from the See All
  * or clicking the large cards
  * Search view allowing user to search from identified labels
  */
 const SearchView = () => {
-
   /**
    * Takes in a type passed from the previous page and returns
    * the appropriate filter mapping
-   * @param {string} typ 
+   * @param {string} typ
    * @returns {Dict}
    */
   const getPermMapping = (typ) => {
     const mapping = {
-      'monetization': false,
-      'location': false,
-      'watchlist': false,
-      'tracking': false
-    } 
+      monetization: false,
+      location: false,
+      watchlist: false,
+      tracking: false,
+    }
     mapping[typ] = true
     return mapping
   }
@@ -59,19 +61,21 @@ const SearchView = () => {
     location.state === undefined ? {} : location.state[1]
   ) // pass websites from previous page if possible
   const [allLabels, setAllLabels] = useState({})
-  const [filteredSites, setFilter] = useState({}) 
-  const [webLabels, setWebLabels] = useState({}) 
+  const [filteredSites, setFilter] = useState({})
+  const [webLabels, setWebLabels] = useState({})
   const [permFilter, setPermFilter] = useState(
-    location.state === undefined ? {
-      'monetization': true,
-      'location': true,
-      'watchlist': true,
-      'tracking': true
-    } : getPermMapping(location.state[0])
+    location.state === undefined
+      ? {
+          monetization: true,
+          location: true,
+          watchlist: true,
+          tracking: true,
+        }
+      : getPermMapping(location.state[0])
   )
-  const [placeholder, setPlaceholder] = useState('')
+  const [placeholder, setPlaceholder] = useState("")
   const [showEmpty, setShowEmpty] = useState(false)
-  const [query, setQuery] = useState('')
+  const [query, setQuery] = useState("")
 
   /**
    * Looks at the filter to create a placeholder string
@@ -83,13 +87,17 @@ const SearchView = () => {
     var ct = 0
     for (const [perm, bool] of Object.entries(permFilter)) {
       if (bool) {
-          ct += 1
-          updatedPlaceholder = updatedPlaceholder.concat(perm).concat(' ')
-        }
+        ct += 1
+        updatedPlaceholder = updatedPlaceholder.concat(perm).concat(" ")
       }
+    }
 
-    if (ct == 4) {return defaultPlaceholder}
-    if (ct == 0) {return "Search in: None"}
+    if (ct == 4) {
+      return defaultPlaceholder
+    }
+    if (ct == 0) {
+      return "Search in: None"
+    }
     return updatedPlaceholder
   }
 
@@ -98,7 +106,6 @@ const SearchView = () => {
    * @param {string} keyString string the user entered
    */
   const filter = (keyString, labels = webLabels) => {
-
     keyString = removeLeadingWhiteSpace(keyString).toLowerCase()
 
     const filteredKeys = Object.keys(allWebsites).filter((k) =>
@@ -106,25 +113,27 @@ const SearchView = () => {
     )
 
     var filteredWebsites = {}
-    for ( const [perm, websiteLevel] of Object.entries(labels)) {
+    for (const [perm, websiteLevel] of Object.entries(labels)) {
       if (Object.keys(websiteLevel).length > 0) {
-        for ( const website of Object.keys(websiteLevel)) {
-          if (filteredKeys.includes(website)) filteredWebsites[website] = allWebsites[website]
+        for (const website of Object.keys(websiteLevel)) {
+          if (filteredKeys.includes(website))
+            filteredWebsites[website] = allWebsites[website]
         }
       }
     }
-    
-    Object.keys(filteredWebsites) == 0 ? setShowEmpty(true) : setShowEmpty(false)
+
+    Object.keys(filteredWebsites) == 0
+      ? setShowEmpty(true)
+      : setShowEmpty(false)
     setFilter(filteredWebsites)
   }
-  
+
   /**
    * Looks for filters and applies them as appropriate.
-   * 
-   * @param {string} keyString 
+   *
+   * @param {string} keyString
    */
   const filterLabels = () => {
-
     // filter gets passed as an array in DB call
     var filterArr = getAllPerms()
 
@@ -139,12 +148,11 @@ const SearchView = () => {
     setPlaceholder(getPlaceholder())
 
     if (filterArr.length > 0) {
-      getLabels(filterArr).then( (labels) => {
+      getLabels(filterArr).then((labels) => {
         setWebLabels(labels)
         filter(query, labels)
       })
-    }
-    else {
+    } else {
       setWebLabels(allLabels)
       setFilter(allWebsites)
       filter(query, allLabels)
@@ -166,6 +174,7 @@ const SearchView = () => {
         getLabels().then((labels) => {
           setWebLabels(labels)
           setAllLabels(labels)
+          ReactTooltip.rebuild()
         })
       })
     }
@@ -204,14 +213,13 @@ const SearchView = () => {
           </SSubtitle>
           <SSearchContainer>
             <SInputContainer>
-              <Icons.Search size = {24}/>
+              <Icons.Search size={24} />
               <SInput
-                placeholder= {placeholder}
+                placeholder={placeholder}
                 onChange={(e) => {
-                  filter(e.target.value);
-                  setQuery(e.target.value);
-                  }
-                }
+                  filter(e.target.value)
+                  setQuery(e.target.value)
+                }}
               />
             </SInputContainer>
           </SSearchContainer>
@@ -227,17 +235,21 @@ const SearchView = () => {
                 highlight={permFilter[permission]}
               >
                 {Icons.getLabelIcon(permission, "21px")}
-                {' '.concat(permission.charAt(0).toUpperCase()).concat(permission.slice(1))}
+                {" "
+                  .concat(permission.charAt(0).toUpperCase())
+                  .concat(permission.slice(1))}
               </SFilterRowItem>
-              ))
-            }
+            ))}
           </SFilterRow>
           <WebsiteLabelList
             websites={filteredSites}
             allLabels={webLabels}
             handleTap={handleTap}
           />
-          <SEmpty show={showEmpty}> No search results. Try changing the filter. </SEmpty>
+          <SEmpty show={showEmpty}>
+            {" "}
+            No search results. Try changing the filter.{" "}
+          </SEmpty>
         </SContainer>
       </Scaffold>
     </React.Fragment>

@@ -27,8 +27,9 @@ import Skeleton, { SkeletonTheme } from "react-loading-skeleton"
  * Card that briefly summarizes label and description for website
  */
 const LabelCard = ({ requests, website, label, margin, onTap, popup }) => {
-
-  if (requests === undefined) { return null}
+  if (requests === undefined) {
+    return null
+  }
 
   const urls = Object.keys(requests) // detected request urls containing identified data
   const collected = urls.includes(website) // Check if website collected data
@@ -135,11 +136,7 @@ const LabelCard = ({ requests, website, label, margin, onTap, popup }) => {
                 data-tip="hello world"
                 data-tip={website}
               >
-                <WebsiteLogo
-                  website={website}
-                  margin={"0px 6px 0px 6px"}
-                  color="var(--primaryBrandColor)"
-                />
+                <WebsiteLogo website={website} margin={"0px 6px 0px 6px"} />
               </div>
             ))}
             <More amount={websites.length - WebsiteLogoList.length} />

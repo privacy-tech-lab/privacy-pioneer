@@ -62,7 +62,7 @@ const defaultTheme = css`
     --textFieldColor: #f2e8f9;
     --inputTextFieldColor: #c6cdd2;
     --seperatorColor: #c6c6c8;
-    --tintTextColor: white;
+    --tintTextColor: #f2e8f9;
     --primaryHighlightColor: #6b219f;
   }
 `
@@ -79,7 +79,7 @@ const darkTheme = css`
     --textFieldColor: #3a3a3c;
     --inputTextFieldColor: #3a3a3c;
     --seperatorColor: #38383a;
-    --tintTextColor: black;
+    --tintTextColor: #6b219f;
     --primaryHighlightColor: #f2e8f9;
   }
 `

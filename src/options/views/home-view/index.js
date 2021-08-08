@@ -77,13 +77,10 @@ const HomeView = () => {
               </SSubtitle>
             </div>
             <SButtonText
-              onClick={
-                (() =>
-                  history.push({
-                    pathname: "/search",
-                  }),
-                ReactTooltip.hide())
-              }
+              onClick={() => {
+                history.push("/search")
+                ReactTooltip.hide()
+              }}
               data-place="left"
               data-tip="See all browsing history, including evidence originating from 3rd parties"
             >
@@ -93,7 +90,8 @@ const HomeView = () => {
           <WebsiteLabelList
             allLabels={labels}
             websites={websites}
-            maxLength={entries.length > 6 ? 5 : entries.length}
+            recent
+            maxLength={entries.length > 3 ? 3 : entries.length}
             handleTap={handleTap}
           />
         </SContainer>

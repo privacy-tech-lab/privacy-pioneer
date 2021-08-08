@@ -30,11 +30,21 @@ export const SSectionContainer = styled.div`
 `
 
 export const SButtonText = styled.div`
+  cursor: pointer;
+  width: fit-content;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 16px;
+  color: var(--primaryBrandColor);
+  background-color: var(--primaryBrandTintColor);
+  padding: 8px 16px 8px 16px;
+  font-weight: bold;
+  margin: 0px 8px;
   font-weight: bold;
   cursor: pointer;
-  color: var(--primaryHighlightColor);
-  text-decoration: underline;
   align-self: flex-start;
+  user-select: none;
   :hover {
     filter: brightness(0.95);
   }
