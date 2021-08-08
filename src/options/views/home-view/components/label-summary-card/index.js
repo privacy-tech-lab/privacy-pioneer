@@ -7,17 +7,25 @@ import React from "react"
 import { privacyLabels } from "../../../../../background/analysis/classModels"
 import * as Icons from "../../../../../libs/icons"
 import { SContainer, SFooter, SHeader, SLabel, STotal } from "./style"
+import { filterKeywordEnum } from "../../../../../background/analysis/classModels"
+import { useHistory } from "react-router"
 
 /**
  * Summary card that highlights notable stat from identified label
  */
-const LabelSummaryCard = ({ labeltype, websiteTotal }) => {
+const LabelSummaryCard = ({ labeltype, websiteTotal, passWebsites }) => {
+  const history = useHistory()
   return (
     <SContainer
       labeltype={labeltype}
       data-place="bottom"
-      data-tip="hello world"
       data-tip={privacyLabels[labeltype]["description"]}
+      onClick={() => {
+        history.push({
+          pathname: "/search",
+          state: [labeltype, passWebsites],
+        })
+      }}
     >
       <SHeader>
         <STotal>{websiteTotal}</STotal>
@@ -35,7 +43,7 @@ const LabelSummaryCard = ({ labeltype, websiteTotal }) => {
  * List of Summary cards given label and stat {label:stat}
  * @param {object} labels label and stat {label:stat} object
  */
-const LabelSummaryCardList = ({ labels }) => {
+const LabelSummaryCardList = ({ labels, passWebsites }) => {
   const entries = Object.entries(labels)
   return entries.map(([labeltype, evidence]) => {
     let numOfWebsites = 0
@@ -47,6 +55,7 @@ const LabelSummaryCardList = ({ labels }) => {
         key={labeltype}
         labeltype={labeltype}
         websiteTotal={numOfWebsites}
+        passWebsites={passWebsites}
       />
     )
   })

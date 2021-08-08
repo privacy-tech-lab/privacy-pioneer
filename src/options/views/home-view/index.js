@@ -29,7 +29,6 @@ const HomeView = () => {
   const [websites, setWebsites] = useState({})
   const [labels, setLabels] = useState({})
   const [modal, setModal] = useState({ show: false })
-  const seeAllRef = useRef()
   const entries = Object.entries(websites)
   useEffect(() => {
     getWebsites().then((websites) => {
@@ -65,7 +64,7 @@ const HomeView = () => {
           <STitle>Overview</STitle>
           <SSubtitle>A summary of your privacy labels</SSubtitle>
           <SCardGroup>
-            <LabelSummaryCardList labels={labels} />
+            <LabelSummaryCardList labels={labels} passWebsites={websites} />
           </SCardGroup>
         </SContainer>
         <SContainer marginTop>
@@ -78,11 +77,13 @@ const HomeView = () => {
               </SSubtitle>
             </div>
             <SButtonText
-              ref={seeAllRef}
-              onClick={() => {
-                history.push({ pathname: "/search" })
-                ReactTooltip.hide()
-              }}
+              onClick={
+                (() =>
+                  history.push({
+                    pathname: "/search",
+                  }),
+                ReactTooltip.hide())
+              }
               data-place="left"
               data-tip="See all browsing history, including evidence originating from 3rd parties"
             >

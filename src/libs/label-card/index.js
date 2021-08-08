@@ -27,6 +27,9 @@ import Skeleton, { SkeletonTheme } from "react-loading-skeleton"
  * Card that briefly summarizes label and description for website
  */
 const LabelCard = ({ requests, website, label, margin, onTap, popup }) => {
+
+  if (requests === undefined) { return null}
+
   const urls = Object.keys(requests) // detected request urls containing identified data
   const collected = urls.includes(website) // Check if website collected data
 
@@ -152,7 +155,6 @@ const LabelCard = ({ requests, website, label, margin, onTap, popup }) => {
       </>
     )
   }
-
   return (
     <SCard margin={margin} onClick={onTap} popup={popup}>
       {requests == "empty" ? (
