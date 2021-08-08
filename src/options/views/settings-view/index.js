@@ -51,8 +51,8 @@ const SettingsView = ({ changeTheme }) => {
               </SSubtitle>
               <ExportData />
             </div>
-            <FullSnippetToggle />
             <DangerZone />
+            <FullSnippetToggle />
           </SSection>
         </SBody>
       </SContainer>
