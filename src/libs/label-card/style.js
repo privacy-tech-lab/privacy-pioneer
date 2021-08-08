@@ -92,7 +92,10 @@ export const SMore = styled.div`
   justify-content: space-between;
   align-items: center;
   border-radius: 8px;
-  padding: 2px 4px;
+  padding: 2px;
+  font-weight: 600;
+  padding-left: 4px;
+  padding-right: 6px;
   background-color: var(--primaryHighlightColor);
   color: var(--tintTextColor);
   margin-left: 12px;

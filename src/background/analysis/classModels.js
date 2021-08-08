@@ -206,6 +206,7 @@ export const typeEnum = Object.freeze({
   fingerprinting: "fingerprinting",
 })
 
+
 /**
  * An object containing the keyword types for the watchlist and information to populate defaults.
  * @typedef keywordTypes
@@ -216,6 +217,8 @@ export const keywordTypes = Object.freeze({
   userKeyword: {
     displayName: "General",
     placeholder: "Keyword",
+    toolTip:
+      "We will flag instances where the entered keyword is shared with a 3rd party.",
   },
   location: {
     displayName: "Street Address",
@@ -225,14 +228,20 @@ export const keywordTypes = Object.freeze({
       state: "CT",
       zipCode: "06459",
     },
+    toolTip:
+      "We will flag instances where the entered location data is shared with a 3rd party.",
   },
   phoneNumber: {
     displayName: "Phone Number",
     placeholder: "+1 (860) 685-2000",
+    toolTip:
+      "We will flag instances where the entered phone number is shared with a 3rd party.",
   },
   emailAddress: {
     displayName: "Email Address",
     placeholder: "jdoe@wesleyan.edu",
+    toolTip:
+      "We will flag instances where the entered email is shared with a 3rd party,  both in the form you write it  and in an alternate representation (The Trade Desk's UID)",
   },
   ipAddress: {
     displayName: "IP Address",

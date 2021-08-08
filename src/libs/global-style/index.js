@@ -4,7 +4,7 @@ privacy-tech-lab, https://www.privacytechlab.org/
 */
 
 import { createGlobalStyle, css } from "styled-components"
-import { getTheme, settingsEnum } from "../settings"
+import { settingsEnum } from "../settings"
 
 /**
  * Global style targeted for popup
@@ -62,7 +62,7 @@ const defaultTheme = css`
     --textFieldColor: #f2e8f9;
     --inputTextFieldColor: #c6cdd2;
     --seperatorColor: #c6c6c8;
-    --tintTextColor: white;
+    --tintTextColor: #f2e8f9;
     --primaryHighlightColor: #6b219f;
   }
 `
@@ -79,7 +79,7 @@ const darkTheme = css`
     --textFieldColor: #3a3a3c;
     --inputTextFieldColor: #3a3a3c;
     --seperatorColor: #38383a;
-    --tintTextColor: black;
+    --tintTextColor: #6b219f;
     --primaryHighlightColor: #f2e8f9;
   }
 `
@@ -103,6 +103,13 @@ const GlobalStyle = createGlobalStyle`
     --headline: 18px;
     --body1: 16px;
     --body2: 14px;
+  }
+  .reactTooltip{
+    z-index: 10000 !important;
+    opacity: 1 !important;
+    max-width: 250px !important;
+    text-align: center;
+    font-weight:600;
   }
 
   ${(props) => (props.popup ? Popup : Options)}

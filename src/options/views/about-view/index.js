@@ -3,9 +3,9 @@ Licensed per https://github.com/privacy-tech-lab/privacy-pioneer/blob/main/LICEN
 privacy-tech-lab, https://www.privacytechlab.org/
 */
 
-import React, { useEffect, useState } from "react";
-import Scaffold from "../../components/scaffold";
-import { Collapse } from "bootstrap";
+import React, { useEffect, useState } from "react"
+import Scaffold from "../../components/scaffold"
+import { Collapse } from "bootstrap"
 import {
   SAnswer,
   SBody,
@@ -15,21 +15,21 @@ import {
   SSubtitle,
   SQuestionCard,
   SArrow,
-} from "./style";
-import { FAQ } from "./faq";
-import { ArrowDown } from "../../../libs/icons";
+} from "./style"
+import { FAQ } from "./faq"
+import { ArrowDown } from "../../../libs/icons"
 /**
  * About page view
  */
 const AboutView = () => {
   const QuestionCard = ({ question, answer }) => {
-    const [open, setOpen] = useState(false);
+    const [open, setOpen] = useState(false)
 
     useEffect(() => {
-      var faqCollapse = document.getElementById(question);
-      var collapse = new Collapse(faqCollapse, { toggle: false });
-      open ? collapse.show() : collapse.hide();
-    });
+      var faqCollapse = document.getElementById(question)
+      var collapse = new Collapse(faqCollapse, { toggle: false })
+      open ? collapse.show() : collapse.hide()
+    })
 
     return (
       <SQuestionCard onClick={() => setOpen(!open)}>
@@ -44,8 +44,8 @@ const AboutView = () => {
           <SAnswer>{answer}</SAnswer>
         </div>
       </SQuestionCard>
-    );
-  };
+    )
+  }
 
   return (
     <Scaffold>
@@ -53,8 +53,8 @@ const AboutView = () => {
         <STitle>About</STitle>
         <SSubtitle>Learn more about our extension</SSubtitle>
         <SBody>
-          ___ will inform you which websites are tracking you and what data
-          they collect.
+          Privacy Pioneer will inform you which websites are tracking you and
+          what data they collect.
         </SBody>
         <STitle>FAQ</STitle>
         <SBody>
@@ -64,7 +64,7 @@ const AboutView = () => {
         </SBody>
       </SContainer>
     </Scaffold>
-  );
-};
+  )
+}
 
-export default AboutView;
+export default AboutView

@@ -3,17 +3,18 @@ Licensed per https://github.com/privacy-tech-lab/privacy-pioneer/blob/main/LICEN
 privacy-tech-lab, https://www.privacytechlab.org/
 */
 
-import React, { useEffect, useState } from "react";
-import { Route, Switch, useLocation } from "react-router-dom";
-import { AnimatePresence } from "framer-motion";
-import NavBar from "./components/nav-bar";
-import HomeView from "../home-view";
-import WatchlistView from "../watchlist-view";
-import AboutView from "../about-view";
-import SettingsView from "../settings-view";
-import SearchView from "../search-view";
-import GlobalStyle from "../../../libs/global-style";
-import { getTheme, settingsEnum } from "../../../libs/settings";
+import React, { useEffect, useState } from "react"
+import { Route, Switch, useLocation } from "react-router-dom"
+import { AnimatePresence } from "framer-motion"
+import NavBar from "./components/nav-bar"
+import HomeView from "../home-view"
+import WatchlistView from "../watchlist-view"
+import AboutView from "../about-view"
+import SettingsView from "../settings-view"
+import SearchView from "../search-view"
+import GlobalStyle from "../../../libs/global-style"
+import { getTheme, settingsEnum } from "../../../libs/settings"
+import ReactTooltip from "react-tooltip"
 
 /**
  * Root node of application that handles routing
@@ -21,20 +22,26 @@ import { getTheme, settingsEnum } from "../../../libs/settings";
  *  See Scaffold component for specific animation
  */
 const AppView = () => {
-  const location = useLocation();
-  const [theme, setTheme] = useState(settingsEnum.sameAsSystem);
+  const location = useLocation()
+  const [theme, setTheme] = useState(settingsEnum.sameAsSystem)
 
-  useEffect(
-    () =>
-      getTheme().then((res) => {
-        if (res) setTheme(res);
-      }),
-    [theme]
-  );
+  useEffect(() => {
+    getTheme().then((res) => {
+      if (res) setTheme(res)
+    })
+  }, [theme])
 
   return (
     <React.Fragment>
       <GlobalStyle theme={theme} />
+      <ReactTooltip
+        className="reactTooltip"
+        delayShow={400}
+        backgroundColor="var(--primaryBrandColor)"
+        textColor="var(--primaryBrandTintColor)"
+        effect="solid"
+        multiline
+      />
       <NavBar />
       <AnimatePresence exitBeforeEnter>
         <Switch location={location} key={location.pathname}>
@@ -49,7 +56,7 @@ const AppView = () => {
         </Switch>
       </AnimatePresence>
     </React.Fragment>
-  );
-};
+  )
+}
 
-export default AppView;
+export default AppView

@@ -3,7 +3,7 @@ Licensed per https://github.com/privacy-tech-lab/privacy-pioneer/blob/main/LICEN
 privacy-tech-lab, https://www.privacytechlab.org/
 */
 
-import React, { useRef, useState, useEffect } from "react";
+import React, { useRef, useState, useEffect } from "react"
 import {
   IconWrapper,
   SHeader,
@@ -22,66 +22,68 @@ import {
   SDropdownItem,
   SContent,
   SErrorText,
-} from "./style";
-import * as Icons from "../../../../../libs/icons";
-import { saveKeyword } from "../../../../../libs/indexed-db/updateWatchlist.js";
+} from "./style"
+import * as Icons from "../../../../../libs/icons"
+import { saveKeyword } from "../../../../../libs/indexed-db/updateWatchlist.js"
 import {
   keywordTypes,
   permissionEnum,
   typeEnum,
-} from "../../../../../background/analysis/classModels";
-import { Modal } from "bootstrap";
-import Form from "./components/forms";
-import inputValidator from "./components/input-validators";
+} from "../../../../../background/analysis/classModels"
+import { Modal } from "bootstrap"
+import Form from "./components/forms"
+import inputValidator from "./components/input-validators"
+import ReactTooltip from "react-tooltip"
 
 /**
  * Popup modal to create/edit keyword
  */
 const EditModal = ({ keywordType, keyword, edit, id, updateList }) => {
-  const dropdownRef = useRef();
-  const [showDropdown, setDropdown] = useState(false);
+  const dropdownRef = useRef()
+  const [showDropdown, setDropdown] = useState(false)
   const [_keywordType, setKeywordType] = useState(
     edit ? keywordType : "Select Type"
-  );
-  const [_keyword, setKeyword] = useState(edit ? keyword : "");
-  const [_location, setLocation] = useState(edit ? keyword : {});
-  const [inputValid, setInputValid] = useState(true);
-  const [keyType, setKeyType] = useState("");
+  )
+  const [_keyword, setKeyword] = useState(edit ? keyword : "")
+  const [_location, setLocation] = useState(edit ? keyword : {})
+  const [inputValid, setInputValid] = useState(true)
+  const [keyType, setKeyType] = useState("")
 
   /**
    * Closes dropdown when clicked outside
    */
   const blur = (event) => {
     if (!dropdownRef.current.contains(event.target)) {
-      setDropdown(false);
+      setDropdown(false)
     }
-  };
+  }
 
   const handleAddressChange = (type, value) => {
-    var newLocation = _location;
-    newLocation[type] = value;
+    var newLocation = _location
+    newLocation[type] = value
     newLocation["display"] = `${newLocation[typeEnum.streetAddress]}, ${
       newLocation[typeEnum.city]
-    }, ${newLocation[typeEnum.state]} ${newLocation[typeEnum.zipCode]} `;
-    setLocation(newLocation);
-  };
+    }, ${newLocation[typeEnum.state]} ${newLocation[typeEnum.zipCode]} `
+    setLocation(newLocation)
+  }
 
   const handleKeywordChange = (value) => {
-    setKeyword(value);
-  };
+    setKeyword(value)
+  }
 
   useEffect(() => {
-    document.addEventListener("mousedown", blur);
-    return () => document.removeEventListener("mousedown", blur);
-  }, []);
+    document.addEventListener("mousedown", blur)
+    ReactTooltip.rebuild()
+    return () => document.removeEventListener("mousedown", blur)
+  }, [])
 
   /**
    * Reset the form if the input is not valid
    */
   const badInput = (type) => {
-    setInputValid(false);
-    setKeyType(type);
-  };
+    setInputValid(false)
+    setKeyType(type)
+  }
 
   /**
    * Validate a user input
@@ -94,8 +96,8 @@ const EditModal = ({ keywordType, keyword, edit, id, updateList }) => {
         inputValidator.numRegex2.test(_keyword)
       )
     ) {
-      badInput("phone number");
-      return false;
+      badInput("phone number")
+      return false
     } else if (
       _keywordType == typeEnum.email &&
       !(
@@ -103,8 +105,8 @@ const EditModal = ({ keywordType, keyword, edit, id, updateList }) => {
         inputValidator.emailRegex2.test(_keyword)
       )
     ) {
-      badInput("email address");
-      return false;
+      badInput("email address")
+      return false
     } else if (
       _keywordType == typeEnum.ipAddress &&
       !(
@@ -112,10 +114,10 @@ const EditModal = ({ keywordType, keyword, edit, id, updateList }) => {
         inputValidator.ipRegex_6.test(_keyword)
       )
     ) {
-      badInput("IP address");
-      return false;
-    } else return true;
-  };
+      badInput("IP address")
+      return false
+    } else return true
+  }
 
   return (
     <>
@@ -133,18 +135,28 @@ const EditModal = ({ keywordType, keyword, edit, id, updateList }) => {
             </STrailing>
           </SNavigationBar>
           <SType>
-            <SHeader>TYPE</SHeader>
+            <SHeader
+              data-place="left"
+              // data-tip={"test"}
+              data-tip="hello world"
+            >
+              TYPE
+            </SHeader>
             <SDropdown
               ref={dropdownRef}
-              onClick={() => setDropdown((state) => !state)}
+              onClick={() => {
+                setDropdown((state) => !state)
+              }}
             >
               <SDropdownOptions show={showDropdown}>
                 {Object.keys(keywordTypes).map((key, index) => (
                   <SDropdownItem
+                    data-place="right"
+                    data-tip={keywordTypes[key]["toolTip"]}
                     onClick={() => {
-                      setKeywordType(key);
-                      setInputValid(true);
-                      setKeyword("");
+                      setKeywordType(key)
+                      setInputValid(true)
+                      setKeyword("")
                     }}
                     key={index}
                   >
@@ -178,17 +190,15 @@ const EditModal = ({ keywordType, keyword, edit, id, updateList }) => {
             <SAction
               onClick={async () => {
                 let key =
-                  _keywordType == permissionEnum.location
-                    ? _location
-                    : _keyword;
+                  _keywordType == permissionEnum.location ? _location : _keyword
                 // check if user input is valid
                 if (validate()) {
                   if (await saveKeyword(key, _keywordType, id)) {
-                    await updateList();
+                    await updateList()
                     const modal = Modal.getInstance(
                       document.getElementById("edit-modal")
-                    );
-                    modal.hide();
+                    )
+                    modal.hide()
                   }
                 }
               }}
@@ -200,7 +210,7 @@ const EditModal = ({ keywordType, keyword, edit, id, updateList }) => {
         </SModal>
       </SContent>
     </>
-  );
-};
+  )
+}
 
-export default EditModal;
+export default EditModal

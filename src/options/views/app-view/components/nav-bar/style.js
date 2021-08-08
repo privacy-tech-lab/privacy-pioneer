@@ -21,6 +21,7 @@ export const SNavBar = styled.nav`
   top: 0px;
   background-color: var(--backgroundColor);
   z-index: 1;
+  user-select: none;
 `
 
 export const SLeading = styled.div`
