@@ -151,7 +151,7 @@ export const ThemeSelection = ({ changeTheme }) => {
 }
 export const ExportData = () => {
   const [showDropdown, setDropdown] = useState(false)
-  const [timeRange, setTimeRange] = useState(timeRangeEnum.allTime)
+  const [timeRange, setTimeRange] = useState(timeRangeEnum.allTime.timestamp)
   const [dropdownTitle, setTitle] = useState("All Time")
   const dropdownRef = useRef()
   const blur = (event) => {
