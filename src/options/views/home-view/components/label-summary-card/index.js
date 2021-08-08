@@ -15,9 +15,9 @@ const LabelSummaryCard = ({ labeltype, websiteTotal }) => {
   return (
     <SContainer
       labeltype={labeltype}
-      data-bs-toggle="tooltip"
-      data-bs-placement="bottom"
-      title={privacyLabels[labeltype]["description"]}
+      data-place="bottom"
+      data-tip="hello world"
+      data-tip={privacyLabels[labeltype]["description"]}
     >
       <SHeader>
         <STotal>{websiteTotal}</STotal>

@@ -11,7 +11,7 @@ import WebsiteLabelList from "../../components/website-label-list"
 import LabelSummaryCardList from "./components/label-summary-card"
 import LabelModal from "../home-view/components/detail-modal"
 import { Modal } from "bootstrap"
-
+import ReactTooltip from "react-tooltip"
 import {
   SButtonText,
   SCardGroup,
@@ -20,7 +20,6 @@ import {
   SSubtitle,
   STitle,
 } from "./style"
-import { initTooltips } from "../../../libs/tooltips/index.js"
 
 /**
  * Home page view containing overview and recently identified labels
@@ -30,21 +29,22 @@ const HomeView = () => {
   const [websites, setWebsites] = useState({})
   const [labels, setLabels] = useState({})
   const [modal, setModal] = useState({ show: false })
+  const seeAllRef = useRef()
   const entries = Object.entries(websites)
   useEffect(() => {
     getWebsites().then((websites) => {
       setWebsites(websites)
       getLabels().then((labels) => {
         setLabels(labels)
+        ReactTooltip.rebuild()
       }),
         document
           .getElementById("detail-modal")
           .addEventListener("hidden.bs.modal", () => {
             setModal({ show: false })
           })
-      initTooltips()
     })
-  })
+  }, [])
 
   const handleTap = (items) => {
     const modal = new Modal(document.getElementById("detail-modal"))
@@ -62,14 +62,8 @@ const HomeView = () => {
       />
       <Scaffold>
         <SContainer>
-          <STitle>
-            Overview
-          </STitle>
-
-          <SSubtitle>
-            A summary of your privacy labels
-          </SSubtitle>
-
+          <STitle>Overview</STitle>
+          <SSubtitle>A summary of your privacy labels</SSubtitle>
           <SCardGroup>
             <LabelSummaryCardList labels={labels} />
           </SCardGroup>
@@ -84,14 +78,13 @@ const HomeView = () => {
               </SSubtitle>
             </div>
             <SButtonText
-              onClick={() =>
-                history.push({
-                  pathname: "/search",
-                })
-              }
-              data-custom
-              data-custom-info="See all browsing history, including evidence originating from 3rd parties"
-              data-custom-at="left"
+              ref={seeAllRef}
+              onClick={() => {
+                history.push({ pathname: "/search" })
+                ReactTooltip.hide()
+              }}
+              data-place="left"
+              data-tip="See all browsing history, including evidence originating from 3rd parties"
             >
               See All
             </SButtonText>

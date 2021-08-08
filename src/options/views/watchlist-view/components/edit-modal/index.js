@@ -33,6 +33,7 @@ import {
 import { Modal } from "bootstrap"
 import Form from "./components/forms"
 import inputValidator from "./components/input-validators"
+import ReactTooltip from "react-tooltip"
 
 /**
  * Popup modal to create/edit keyword
@@ -72,6 +73,7 @@ const EditModal = ({ keywordType, keyword, edit, id, updateList }) => {
 
   useEffect(() => {
     document.addEventListener("mousedown", blur)
+    ReactTooltip.rebuild()
     return () => document.removeEventListener("mousedown", blur)
   }, [])
 
@@ -133,7 +135,13 @@ const EditModal = ({ keywordType, keyword, edit, id, updateList }) => {
             </STrailing>
           </SNavigationBar>
           <SType>
-            <SHeader>TYPE</SHeader>
+            <SHeader
+              data-place="left"
+              // data-tip={"test"}
+              data-tip="hello world"
+            >
+              TYPE
+            </SHeader>
             <SDropdown
               ref={dropdownRef}
               onClick={() => {
@@ -143,10 +151,8 @@ const EditModal = ({ keywordType, keyword, edit, id, updateList }) => {
               <SDropdownOptions show={showDropdown}>
                 {Object.keys(keywordTypes).map((key, index) => (
                   <SDropdownItem
-                    data-custom
-                    data-custom-info={keywordTypes[key]["toolTip"]}
-                    data-custom-at="right"
-                    data-custom-multiline
+                    data-place="right"
+                    data-tip={keywordTypes[key]["toolTip"]}
                     onClick={() => {
                       setKeywordType(key)
                       setInputValid(true)

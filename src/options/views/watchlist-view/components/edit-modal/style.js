@@ -140,14 +140,6 @@ export const SDropdownItem = styled.div`
   cursor: pointer;
   background-color: var(--inputTextFieldColor);
 
-  .react-hint__content {
-    padding: 10px;
-    border-radius: 5px;
-    background: var(--primaryBrandColor);
-    text-align: center;
-    width: max-content;
-    max-width: 350px;
-  }
   :hover {
     filter: brightness(0.95);
   }

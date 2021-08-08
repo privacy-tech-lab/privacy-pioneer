@@ -10,7 +10,6 @@ import WebsiteView from "../website-view"
 import LabelView from "../label-view"
 import GlobalStyle from "../../../libs/global-style"
 import { getTheme, settingsEnum } from "../../../libs/settings"
-import Tooltips from "../../../libs/tooltips"
 
 /**
  * Root node of application that handles routing
@@ -30,7 +29,6 @@ const AppView = () => {
   )
   return (
     <React.Fragment>
-      <Tooltips popup />
       <GlobalStyle theme={theme} popup />
       <AnimatePresence initial={false}>
         <Switch location={location} key={location.pathname}>

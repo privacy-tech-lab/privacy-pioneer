@@ -60,9 +60,8 @@ const NavBar = () => {
         <SNavAction
           active={tab === 0}
           onClick={() => configureRoute("/")}
-          data-bs-toggle="tooltip"
-      data-bs-placement="bottom"
-      title="See your recent browsing history and all generated labels"
+          data-place="bottom"
+          data-tip="See your recent browsing history and all generated labels"
         >
           <Icons.Home size="24px" />
           Home
@@ -70,9 +69,8 @@ const NavBar = () => {
         <SNavAction
           active={tab === 1}
           onClick={() => configureRoute("/watchlist")}
-          data-bs-toggle="tooltip"
-      data-bs-placement="bottom"
-      title="Enter personal keywords that ___ will look out for while you browse"
+          data-place="bottom"
+          data-tip="Enter personal keywords that Privacy Pioneer will look out for while you browse"
         >
           <Icons.Radar size="20px" />
           Watchlist
@@ -80,9 +78,8 @@ const NavBar = () => {
         <SNavAction
           active={tab === 2}
           onClick={() => configureRoute("/settings")}
-          data-bs-toggle="tooltip"
-      data-bs-placement="bottom"
-      title="Control ___’s settings"
+          data-place="bottom"
+          data-tip="Control Privacy Pioneer’s settings"
         >
           <Icons.Settings size="24px" />
           Settings
@@ -90,9 +87,8 @@ const NavBar = () => {
         <SNavAction
           active={tab === 3}
           onClick={() => configureRoute("/about")}
-          data-bs-toggle="tooltip"
-      data-bs-placement="bottom"
-      title="About ____"
+          data-place="bottom"
+          data-tip="About Privacy Pioneer"
         >
           <Icons.Info size="24px" />
           About

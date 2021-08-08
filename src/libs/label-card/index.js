@@ -34,7 +34,10 @@ const LabelCard = ({ requests, website, label, margin, onTap, popup }) => {
    * Label descriptions ({___} collected and shared {label}, collected, shared with {___})
    */
   const getDescription = () => {
-    const firstPartyTip = `The website (${website}) you visted stored your ${label} data visit the FAQ page to learn more`
+    const firstPartyTip = `${
+      label.charAt(0).toUpperCase() + label.slice(1)
+    } date was collected by ${website}.`
+    const thirdPartyTip = ` A website you visited shared some of your ${label} data with other websites.`
     if (collected && urls.length > 1) {
       return (
         <div
@@ -43,20 +46,10 @@ const LabelCard = ({ requests, website, label, margin, onTap, popup }) => {
             flexDirection: "row",
           }}
         >
-          <SBadge
-            data-custom
-            data-custom-multiline
-            data-custom-at="right"
-            data-custom-info={firstPartyTip}
-          >
+          <SBadge data-place="bottom" data-tip={firstPartyTip}>
             First Party
           </SBadge>
-          <SBadge
-            data-custom
-            data-custom-multiline
-            data-custom-at="right"
-            data-custom-info={firstPartyTip}
-          >
+          <SBadge data-place="bottom" data-tip={thirdPartyTip}>
             {urls.length - 1}
             {urls.length - 1 > 1 ? " Third Parties" : " Third Party"}
           </SBadge>
@@ -64,18 +57,13 @@ const LabelCard = ({ requests, website, label, margin, onTap, popup }) => {
       )
     } else if (collected) {
       return (
-        <SBadge
-          data-custom
-          data-custom-at="right"
-          data-custom-multiline
-          data-custom-info={firstPartyTip}
-        >
+        <SBadge data-place="bottom" data-tip={firstPartyTip}>
           First Party
         </SBadge>
       )
     } else {
       return (
-        <SBadge>
+        <SBadge data-place="bottom" data-tip={thirdPartyTip}>
           {urls.length} {urls.length > 1 ? "Third Parties" : "Third Party"}
         </SBadge>
       )
@@ -117,7 +105,11 @@ const LabelCard = ({ requests, website, label, margin, onTap, popup }) => {
             {companiesWithIcons.map((company) => {
               if (company)
                 return (
-                  <div data-custom data-custom-info={company}>
+                  <div
+                    data-place="bottom"
+                    data-tip="hello world"
+                    data-tip={company}
+                  >
                     <CompanyLogo
                       parent={company}
                       key={company}
@@ -135,7 +127,11 @@ const LabelCard = ({ requests, website, label, margin, onTap, popup }) => {
         return (
           <SLogo>
             {WebsiteLogoList.map((website) => (
-              <div data-custom data-custom-info={website}>
+              <div
+                data-place="bottom"
+                data-tip="hello world"
+                data-tip={website}
+              >
                 <WebsiteLogo
                   website={website}
                   margin={"0px 6px 0px 6px"}

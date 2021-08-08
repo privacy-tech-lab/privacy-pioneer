@@ -14,8 +14,7 @@ import SettingsView from "../settings-view"
 import SearchView from "../search-view"
 import GlobalStyle from "../../../libs/global-style"
 import { getTheme, settingsEnum } from "../../../libs/settings"
-import Tooltips, { initTooltips } from "../../../libs/tooltips"
-import { Tooltip } from "bootstrap"
+import ReactTooltip from "react-tooltip"
 
 /**
  * Root node of application that handles routing
@@ -30,13 +29,19 @@ const AppView = () => {
     getTheme().then((res) => {
       if (res) setTheme(res)
     })
-    initTooltips()
   }, [theme])
 
   return (
     <React.Fragment>
-      <Tooltips />
       <GlobalStyle theme={theme} />
+      <ReactTooltip
+        className="reactTooltip"
+        delayShow={400}
+        backgroundColor="var(--primaryBrandColor)"
+        textColor="var(--primaryBrandTintColor)"
+        effect="solid"
+        multiline
+      />
       <NavBar />
       <AnimatePresence exitBeforeEnter>
         <Switch location={location} key={location.pathname}>

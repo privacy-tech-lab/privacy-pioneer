@@ -4,7 +4,7 @@ privacy-tech-lab, https://www.privacytechlab.org/
 */
 
 import { createGlobalStyle, css } from "styled-components"
-import { getTheme, settingsEnum } from "../settings"
+import { settingsEnum } from "../settings"
 
 /**
  * Global style targeted for popup
@@ -39,32 +39,6 @@ const Options = css`
     flex-direction: column;
     color: var(--primaryTextColor);
     font-size: var(--body1);
-  }
-`
-
-const tooltipStyles = css`
-  .react-hint__content {
-    padding: 10px;
-    border-radius: 5px;
-    background: var(--primaryBrandColor);
-    text-align: center;
-    width: max-content;
-    max-width: 350px;
-  }
-  .react-hint--left:after {
-    left: auto;
-    border-right: none;
-    border-left-color: var(--primaryBrandColor);
-  }
-  .react-hint--bottom:after {
-    bottom: auto;
-    border-top: none;
-    border-bottom-color: var(--primaryBrandColor);
-  }
-  .react-hint--right:after {
-    right: auto;
-    border-left: none;
-    border-right-color: var(--primaryBrandColor);
   }
 `
 
@@ -130,7 +104,13 @@ const GlobalStyle = createGlobalStyle`
     --body1: 16px;
     --body2: 14px;
   }
-  ${tooltipStyles}
+  .reactTooltip{
+    z-index: 10000 !important;
+    opacity: 1 !important;
+    max-width: 250px !important;
+    text-align: center;
+    font-weight:600;
+  }
 
   ${(props) => (props.popup ? Popup : Options)}
 
