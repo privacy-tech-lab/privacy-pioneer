@@ -7,19 +7,22 @@ import React from "react"
 import WebsiteBadge from "../../../libs/website-badge"
 import LabelCard from "../../../libs/label-card"
 import { SContainer, SItem, SLabel, SLabelGroup, SSeperator } from "./style"
+import { storeEnum } from "../../../background/analysis/classModels"
 
 /**
  * Makes label cards for a given website
  * @param {string} website the host website
  * @param {function} handleTap function that handles clicking on the cards
- * @param allLabels 
- * @param webLabels 
+ * @param allLabels
+ * @param webLabels
  */
 const LabelCards = ({ website, handleTap, allLabels, webLabels }) => {
   return webLabels.map((label, index) => {
     var requests =
       Object.entries(allLabels).length > 0 ? allLabels[label][website] : "empty"
-    if ( !label in allLabels ) { requests = "hide" }
+    if (!label in allLabels) {
+      requests = "hide"
+    }
     return (
       <LabelCard
         key={index}
@@ -39,16 +42,20 @@ const LabelCards = ({ website, handleTap, allLabels, webLabels }) => {
  * Displays a list of websites and a quick summary of their privacy labels
  * @param {string} websites All websites we have evidence for
  * @param {int} maxLength
- * @param allLabels 
- * @param webLabels 
+ * @param allLabels
+ * @param webLabels
  */
-const WebsiteLabelList = ({ websites, maxLength, handleTap, allLabels }) => {
-  const entries = Object.entries(websites)
+const WebsiteLabelList = ({ websites, recent, handleTap, allLabels }) => {
+  const entries = recent
+    ? Object.entries(websites).filter(
+        ([website, data]) => data.party == storeEnum.firstParty
+      )
+    : Object.entries(websites)
   return (
     <SContainer>
-      {entries.slice(0, maxLength ?? entries.length).map(([website, data]) => (
+      {entries.slice(0, recent ? 3 : entries.length).map(([website, data]) => (
         <SItem key={website}>
-          <WebsiteBadge website={website} />
+          <WebsiteBadge website={website} party={data.party} />
           <SLabelGroup>
             <LabelCards
               website={website}
