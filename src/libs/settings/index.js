@@ -5,10 +5,12 @@ privacy-tech-lab, https://www.privacytechlab.org/
 
 import { settingsKeyval, watchlistKeyval } from "../indexed-db/openDB.js"
 import {
+  settingsModelsEnum,
   permissionEnum,
   storeEnum,
 } from "../../background/analysis/classModels"
 import { evidenceKeyval } from "../../background/analysis/interactDB/openDB"
+import { BrowserRouter } from "react-router-dom"
 
 export const settingsEnum = Object.freeze({
   sameAsSystem: "sameAsSystem",
@@ -28,6 +30,7 @@ export const setDefault = async () => {
     await settingsKeyval.set(permissionEnum.tracking, true)
     await settingsKeyval.set(permissionEnum.watchlist, true)
     await settingsKeyval.set("theme", settingsEnum.sameAsSystem)
+    await settingsKeyval.set(settingsModelsEnum.fullSnippet, false)
   }
 }
 
@@ -51,6 +54,23 @@ export const getLabelStatus = async () => {
     labelStatus[label] = await settingsKeyval.get(label)
   }
   return labelStatus
+}
+
+/**
+ * Toggles labels on or off
+ * @param {string} label label we generated
+ */
+ export const toggleSnippet = async () => {
+  let currentVal = await settingsKeyval.get(settingsModelsEnum.fullSnippet)
+  await settingsKeyval.set(settingsModelsEnum.fullSnippet, !currentVal)
+  browser.runtime.sendMessage({msg:'dataUpdated'})
+}
+
+/**
+ * Tells whether the labels are on or off based on settings
+ */
+export const getSnippetStatus = async () => {
+  return await settingsKeyval.get(settingsModelsEnum.fullSnippet)
 }
 
 /**

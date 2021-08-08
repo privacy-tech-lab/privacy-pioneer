@@ -360,3 +360,12 @@ export const privacyLabels = Object.freeze({
     },
   },
 })
+
+/**
+ * settingsModelsEnum object to remove strings from codebase
+ * named models to not confuse with theme settings in src/libs/settings
+ * @enum string
+ */
+export const settingsModelsEnum = Object.freeze({
+  fullSnippet: "fullSnippet"
+})

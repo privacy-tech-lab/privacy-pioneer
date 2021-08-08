@@ -9,11 +9,12 @@ analyze.js
 - analyze.js analyzes network requests
 */
 
-import { Request } from "./classModels.js";
+import { settingsModelsEnum, Request } from "./classModels.js";
 import { evidenceQ } from "../background.js";
 import { tagParty, tagParent } from "./requestAnalysis/tagRequests.js";
 import { addToEvidenceStore } from "./interactDB/addEvidence.js";
 import { getAllEvidenceForRequest } from "./requestAnalysis/scanHTTP.js";
+import { settingsKeyval } from "../../libs/indexed-db/openDB.js";
 
 // Temporary container to hold network requests while properties are being added from listener callbacks
 const buffer = {}
@@ -189,6 +190,8 @@ function resolveBuffer(id, data) {
 async function analyze(request, userData) {
 
   const allEvidence = getAllEvidenceForRequest(request, userData);
+
+  const saveFullSnippet = userData[3]
   
   // if we found evidence for the request
   if (allEvidence.length != 0) {
@@ -197,9 +200,9 @@ async function analyze(request, userData) {
     // tag the parent and the store
     const partyBool = await tagParty(rootUrl)
     const parent = tagParent(reqUrl)
-    
+
     // push the job to the Queue (will add the evidence for one HTTP request at a time)
-    evidenceQ.push(function(cb) { cb(null, addToEvidenceStore(allEvidence, partyBool, parent, rootUrl, reqUrl))});
+    evidenceQ.push(function(cb) { cb(null, addToEvidenceStore(allEvidence, partyBool, parent, rootUrl, reqUrl, saveFullSnippet))});
   }
 }
 

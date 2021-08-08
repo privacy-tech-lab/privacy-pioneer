@@ -56,6 +56,11 @@ export const SLabelToggle = styled.div`
   flex-direction: column;
 `
 
+export const SSnippetToggle = styled.div`
+  margin-left: 8px;
+  flex-direction: column;
+`
+
 export const SThemeSection = styled.div`
   display: flex;
   flex-direction: row;
@@ -181,7 +186,8 @@ export const SDropdownSelection = styled.div`
 export const SDangerSection = styled.div`
   display: flex;
   flex-direction: column;
-  margin-top: 8px;
+  margin-top: 20px;
+  margin-bottom: 10px;
   border: 5px solid crimson;
   padding: 8px;
   border-radius: 4px;

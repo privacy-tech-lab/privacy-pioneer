@@ -6,6 +6,7 @@ privacy-tech-lab, https://www.privacytechlab.org/
 import { getHostname } from "../utility/util.js"
 import { evidenceKeyval } from "../interactDB/openDB.js"
 import { Evidence, typeEnum, storeEnum } from "../classModels.js"
+import { settingsKeyval } from "../../../libs/indexed-db/openDB.js";
 
 
 /**
@@ -29,7 +30,7 @@ import { Evidence, typeEnum, storeEnum } from "../classModels.js"
  */
 
 // perm, rootU, snip, requestU, t, i, extraDetail = undefined)
-async function addToEvidenceStore(evidenceToAdd, firstParty, parent, rootU, requestU) {
+async function addToEvidenceStore(evidenceToAdd, firstParty, parent, rootU, requestU, saveFullSnippet) {
 
   /**
    * This is a known bug where certain websites intiate requests where the rootURL 
@@ -65,19 +66,47 @@ async function addToEvidenceStore(evidenceToAdd, firstParty, parent, rootU, requ
       evidenceObject.rootUrl = rootU
       evidenceObject.parentCompany = parent
 
-
-      // whitelist our IP API
-      if (requestU == 'http://ip-api.com/json/'){ return new Promise( function(resolve, reject) {
-        resolve('whitelist IP API');
-      }) };
-
-      let keys = Object.keys(evidenceObject);
-      for (let key of keys) {
-        // looking for null, undefined, NaN, empty string (""), 0, false
-        if (!evidenceObject[key] && typeof evidenceObject[key] != "boolean") {
-          delete evidenceObject[key];
-        }
+    /**
+     * Cuts down a snippet to only include the context of where we found
+     * The evidence
+     * 
+     * @param {Evidence} evidenceObject 
+     * @returns {void} updates evidenceObject
+     */
+    function cutDownSnippet(evidenceObject) {
+      if ( evidenceObject.index === -1 ) {
+        evidenceObject.snippet = null
       }
+      else {
+        let start, end
+        [start, end] = evidenceObject.index
+        const snipLength = evidenceObject.snippet.length
+
+        const frontBuffer = start < 250 ? start : 250
+        const endBuffer = end + 250 < snipLength ? 250 : snipLength - end - 1
+
+        evidenceObject.snippet = evidenceObject.snippet.substring(start - frontBuffer, end + endBuffer)
+        evidenceObject.index = [frontBuffer, frontBuffer + end - start]
+      }
+    }
+
+    if (!saveFullSnippet){
+      cutDownSnippet(evidenceObject)
+    }
+
+    // whitelist our IP API
+    if (requestU == 'http://ip-api.com/json/'){ return new Promise( function(resolve, reject) {
+      resolve('whitelist IP API');
+    }) };
+
+
+    let keys = Object.keys(evidenceObject);
+    for (let key of keys) {
+      // looking for null, undefined, NaN, empty string (""), 0, false
+      if (!evidenceObject[key] && typeof evidenceObject[key] != "boolean") {
+        delete evidenceObject[key];
+      }
+    }
       evidence = updateFetchedDict(evidence, evidenceObject)
     }
   }

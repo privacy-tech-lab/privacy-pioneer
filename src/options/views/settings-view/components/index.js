@@ -13,10 +13,12 @@ import {
   deleteEvidenceDB,
   deleteKeywordDB,
   getLabelStatus,
+  getSnippetStatus,
   getTheme,
   setTheme,
   settingsEnum,
   toggleLabel,
+  toggleSnippet,
 } from "../../../../libs/settings"
 import {
   SSubtitle,
@@ -35,9 +37,11 @@ import {
   SDropdownItem,
   SDropdownOptions,
   SDropdownSelection,
+  SSnippetToggle
 } from "./style"
 import { initiateDownload } from "../../../../exportData/initiateDownload"
 import { exportTypeEnum } from "../../../../background/analysis/classModels.js"
+import { settingsKeyval } from "../../../../libs/indexed-db/openDB"
 
 export const ToggleSwitch = ({ isActive, label, onClick, spaceBetween }) => (
   <div
@@ -62,6 +66,32 @@ export const ToggleSwitch = ({ isActive, label, onClick, spaceBetween }) => (
     </SSwitch>
   </div>
 )
+
+export const FullSnippetToggle = () => {
+  const [snippetStatus, setSnippetStatus] = useState(false);
+
+  useEffect(() => {
+    getSnippetStatus().then((res) => {
+      setSnippetStatus(res)
+    })
+  })
+
+  const toggle = () => {
+    toggleSnippet()
+    setSnippetStatus(!snippetStatus)
+  }
+
+  return (
+    <SSnippetToggle>
+        <ToggleSwitch
+          isActive={snippetStatus}
+          onClick={() => toggle()}
+          label={"Save Full Snippets"}
+          spaceBetween
+        />
+    </SSnippetToggle>
+  )
+}
 
 export const LabelToggle = () => {
   const [labelStatus, SetLabelStatus] = useState({

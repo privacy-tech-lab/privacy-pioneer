@@ -12,10 +12,11 @@ network requests
 */
 import { getLocationData, filterGeocodeResponse } from "./getLocationData.js"
 import { buildPhone, getState, buildIpRegex, buildZipRegex } from '../buildUserData/structuredRoutines.js'
-import { typeEnum, permissionEnum } from "../classModels.js"
+import { typeEnum, permissionEnum, settingsModelsEnum } from "../classModels.js"
 import {setEmail, digestMessage, hexToBase64} from '../requestAnalysis/encodedEmail.js';
 import { getWatchlistDict, hashUserDictValues, createKeywordObj } from "./structureUserData.js";
 import { createEvidenceObj, watchlistHashGen } from "../utility/util.js";
+import { settingsKeyval } from "../../../libs/indexed-db/openDB.js";
 
 // import keywords, services JSONs
 const keywords = require("../../../assets/keywords.json");
@@ -147,10 +148,12 @@ async function importData() {
 
     networkKeywords = hashUserDictValues(networkKeywords);
 
+    const fullSnippet = await settingsKeyval.get(settingsModelsEnum.fullSnippet)
+
     // returns [location we obtained from google maps API, {phone #s, emails,
     // location elements entered by the user, fingerprinting keywords}, websites
     // that have identification objectives as services]
-    return [locCoords, networkKeywords, services]
+    return [locCoords, networkKeywords, services, fullSnippet]
 }
 
 
