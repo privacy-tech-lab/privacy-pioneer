@@ -7,7 +7,15 @@ import React, { useEffect, useState } from "react"
 import { useHistory, useLocation } from "react-router"
 import logo from "../../../../../assets/icon-48.png"
 import * as Icons from "../../../../../libs/icons"
-import { SNavBar, SLeading, SBrandIcon, SBrandTitle, STrailing, SNavAction, SLeadingContainer } from "./style"
+import {
+  SNavBar,
+  SLeading,
+  SBrandIcon,
+  SBrandTitle,
+  STrailing,
+  SNavAction,
+  SLeadingContainer,
+} from "./style"
 
 /**
  * Navigation bar that allows navigating between home, watchlist, settings, and about
@@ -49,19 +57,39 @@ const NavBar = () => {
         </SLeadingContainer>
       </SLeading>
       <STrailing>
-        <SNavAction active={tab === 0} onClick={() => configureRoute("/")}>
+        <SNavAction
+          active={tab === 0}
+          onClick={() => configureRoute("/")}
+          data-place="bottom"
+          data-tip="See your recent browsing history and all generated labels"
+        >
           <Icons.Home size="24px" />
           Home
         </SNavAction>
-        <SNavAction active={tab === 1} onClick={() => configureRoute("/watchlist")}>
+        <SNavAction
+          active={tab === 1}
+          onClick={() => configureRoute("/watchlist")}
+          data-place="bottom"
+          data-tip="Enter personal keywords that Privacy Pioneer will look out for while you browse"
+        >
           <Icons.Radar size="20px" />
           Watchlist
         </SNavAction>
-        <SNavAction active={tab === 2} onClick={() => configureRoute("/settings")}>
+        <SNavAction
+          active={tab === 2}
+          onClick={() => configureRoute("/settings")}
+          data-place="bottom"
+          data-tip="Control Privacy Pioneer’s settings"
+        >
           <Icons.Settings size="24px" />
           Settings
         </SNavAction>
-        <SNavAction active={tab === 3} onClick={() => configureRoute("/about")}>
+        <SNavAction
+          active={tab === 3}
+          onClick={() => configureRoute("/about")}
+          data-place="bottom"
+          data-tip="About Privacy Pioneer"
+        >
           <Icons.Info size="24px" />
           About
         </SNavAction>

@@ -32,6 +32,24 @@ privacy-tech-lab, https://www.privacytechlab.org/
         return rowArr
     }
 
+    /*
+     * used to make sure that every column gets populated regardless of the keys
+     * of a particular evidence
+    */
+    const columnMapping = {
+        0: 'timestamp',
+        1: 'permission',
+        2: 'rootUrl',
+        3: 'snippet',
+        4: 'requestUrl',
+        5: 'typ',
+        6: 'index',
+        7: 'firstPartyRoot',
+        8: 'parentCompany',
+        9: 'watchlistHash',
+        10: 'extraDetail'
+    }
+
     // initiate column titles
     const columnTitles = [
         'Timestamp', 'Permission', 'rootUrl', 'httpSnippet', 'reqUrl', 
@@ -41,8 +59,14 @@ privacy-tech-lab, https://www.privacytechlab.org/
     var strArray = [ columnTitles.join('\t') ] //initialze the tsv with the titles.
 
     for (const evidenceObj of objArray) {
+        var columnIndex = 0
         var rowArr = []
         for (const [header, value] of Object.entries(evidenceObj) ) {
+            // get this object alligned with the columns
+            while (columnIndex < 11 && columnMapping[columnIndex] != header) {
+                rowArr.push('')
+                columnIndex += 1
+            }
             if (header != 'snippet') {
                 rowArr = escapeRowAndUpdate(String(value), rowArr)
             }
@@ -57,12 +81,13 @@ privacy-tech-lab, https://www.privacytechlab.org/
                     rowArr.push(''); // no snippet for this evidence object
                 }
             }
+            columnIndex += 1
         }
         // add a row of values
         strArray.push(rowArr.join('\t'));
     }
     // File Description
-    strArray.push('NOTE: Use the JSON export for the raw data, including the full HTTP requests')
+    strArray.push('Privacy Pioneer TSV export')
 
     // add all rows. separate rows.
     return strArray.join('\r');
