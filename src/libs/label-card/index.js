@@ -19,7 +19,7 @@ import {
   SContent,
 } from "./style"
 import { privacyLabels } from "../../background/analysis/classModels"
-import { CompanyLogo } from "../website-logo"
+import WebsiteLogo, { CompanyLogo } from "../website-logo"
 import { getParents } from "../company-icons/getCompany.js"
 import Skeleton, { SkeletonTheme } from "react-loading-skeleton"
 
@@ -37,6 +37,10 @@ const LabelCard = ({ requests, website, label, margin, onTap, popup }) => {
    * Label descriptions ({___} collected and shared {label}, collected, shared with {___})
    */
   const getDescription = () => {
+    const firstPartyTip = `${
+      label.charAt(0).toUpperCase() + label.slice(1)
+    } date was collected by ${website}.`
+    const thirdPartyTip = ` A website you visited shared some of your ${label} data with other websites.`
     if (collected && urls.length > 1) {
       return (
         <div
@@ -45,18 +49,24 @@ const LabelCard = ({ requests, website, label, margin, onTap, popup }) => {
             flexDirection: "row",
           }}
         >
-          <SBadge>First Party</SBadge>
-          <SBadge>
+          <SBadge data-place="bottom" data-tip={firstPartyTip}>
+            First Party
+          </SBadge>
+          <SBadge data-place="bottom" data-tip={thirdPartyTip}>
             {urls.length - 1}
             {urls.length - 1 > 1 ? " Third Parties" : " Third Party"}
           </SBadge>
         </div>
       )
     } else if (collected) {
-      return <SBadge>First Party</SBadge>
+      return (
+        <SBadge data-place="bottom" data-tip={firstPartyTip}>
+          First Party
+        </SBadge>
+      )
     } else {
       return (
-        <SBadge>
+        <SBadge data-place="bottom" data-tip={thirdPartyTip}>
           {urls.length} {urls.length > 1 ? "Third Parties" : "Third Party"}
         </SBadge>
       )
@@ -98,43 +108,44 @@ const LabelCard = ({ requests, website, label, margin, onTap, popup }) => {
             {companiesWithIcons.map((company) => {
               if (company)
                 return (
-                  <CompanyLogo
-                    parent={company}
-                    key={company}
-                    margin={"0px 6px 0px 6px"}
-                    data-for="default"
-                    data-tip={parents[company].websites.join("<br/>")}
-                  />
+                  <div
+                    data-place="bottom"
+                    data-tip="hello world"
+                    data-tip={company}
+                  >
+                    <CompanyLogo
+                      parent={company}
+                      key={company}
+                      margin={"0px 6px 0px 6px"}
+                    />
+                  </div>
                 )
             })}
             <More amount={websites.length - numOfSitesWithIcons} />
           </SLogo>
         )
-      } else if (Object.keys(parents).length >= 1) {
-        const displayedCompanyName = Object.keys(parents)[0]
+      } else {
+        const WebsiteLogoList =
+          websites.length > 3 ? websites.slice(0, 3) : websites
         return (
           <SLogo>
-            <div
-              data-for="default"
-              data-tip={parents[displayedCompanyName].websites.join("<br/>")}
-            >
-              {displayedCompanyName.charAt(0).toUpperCase() +
-                displayedCompanyName.substring(1)}
-            </div>
-            <More
-              amount={
-                websites.length - parents[displayedCompanyName].websites.length
-              }
-            />
+            {WebsiteLogoList.map((website) => (
+              <div
+                data-place="bottom"
+                data-tip="hello world"
+                data-tip={website}
+              >
+                <WebsiteLogo
+                  website={website}
+                  margin={"0px 6px 0px 6px"}
+                  color="var(--primaryBrandColor)"
+                />
+              </div>
+            ))}
+            <More amount={websites.length - WebsiteLogoList.length} />
           </SLogo>
         )
-      } else
-        return (
-          <SLogo>
-            {websites[0]}
-            <More amount={websites.length - 1} />
-          </SLogo>
-        )
+      }
     }
 
     return (

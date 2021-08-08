@@ -4,7 +4,7 @@ privacy-tech-lab, https://www.privacytechlab.org/
 */
 
 import { createGlobalStyle, css } from "styled-components"
-import { getTheme, settingsEnum } from "../settings"
+import { settingsEnum } from "../settings"
 
 /**
  * Global style targeted for popup
@@ -103,6 +103,13 @@ const GlobalStyle = createGlobalStyle`
     --headline: 18px;
     --body1: 16px;
     --body2: 14px;
+  }
+  .reactTooltip{
+    z-index: 10000 !important;
+    opacity: 1 !important;
+    max-width: 250px !important;
+    text-align: center;
+    font-weight:600;
   }
 
   ${(props) => (props.popup ? Popup : Options)}

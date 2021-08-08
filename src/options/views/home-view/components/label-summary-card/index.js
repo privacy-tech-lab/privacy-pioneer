@@ -4,6 +4,7 @@ privacy-tech-lab, https://www.privacytechlab.org/
 */
 
 import React from "react"
+import { privacyLabels } from "../../../../../background/analysis/classModels"
 import * as Icons from "../../../../../libs/icons"
 import { SContainer, SFooter, SHeader, SLabel, STotal } from "./style"
 import { filterKeywordEnum } from "../../../../../background/analysis/classModels"
@@ -15,14 +16,16 @@ import { useHistory } from "react-router"
 const LabelSummaryCard = ({ labeltype, websiteTotal, passWebsites }) => {
   const history = useHistory()
   return (
-    <SContainer 
+    <SContainer
       labeltype={labeltype}
-      onClick = { () => {history.push({
-        pathname: '/search',
-        state: [labeltype, passWebsites]
+      data-place="bottom"
+      data-tip={privacyLabels[labeltype]["description"]}
+      onClick={() => {
+        history.push({
+          pathname: "/search",
+          state: [labeltype, passWebsites],
         })
-      }
-    }
+      }}
     >
       <SHeader>
         <STotal>{websiteTotal}</STotal>

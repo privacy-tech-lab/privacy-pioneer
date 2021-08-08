@@ -3,13 +3,13 @@ Licensed per https://github.com/privacy-tech-lab/privacy-pioneer/blob/main/LICEN
 privacy-tech-lab, https://www.privacytechlab.org/
 */
 
-import React, { useState, useEffect } from "react";
-import { Route, Switch, useLocation } from "react-router-dom";
-import { AnimatePresence } from "framer-motion";
-import WebsiteView from "../website-view";
-import LabelView from "../label-view";
-import GlobalStyle from "../../../libs/global-style";
-import { getTheme, settingsEnum } from "../../../libs/settings";
+import React, { useState, useEffect } from "react"
+import { Route, Switch, useLocation } from "react-router-dom"
+import { AnimatePresence } from "framer-motion"
+import WebsiteView from "../website-view"
+import LabelView from "../label-view"
+import GlobalStyle from "../../../libs/global-style"
+import { getTheme, settingsEnum } from "../../../libs/settings"
 
 /**
  * Root node of application that handles routing
@@ -17,16 +17,16 @@ import { getTheme, settingsEnum } from "../../../libs/settings";
  *  See Scaffold component for specific animation
  */
 const AppView = () => {
-  const location = useLocation();
-  const [theme, setTheme] = useState(settingsEnum.sameAsSystem);
+  const location = useLocation()
+  const [theme, setTheme] = useState(settingsEnum.sameAsSystem)
 
   useEffect(
     () =>
       getTheme().then((res) => {
-        if (res) setTheme(res);
+        if (res) setTheme(res)
       }),
     [theme]
-  );
+  )
   return (
     <React.Fragment>
       <GlobalStyle theme={theme} popup />
@@ -37,7 +37,7 @@ const AppView = () => {
         </Switch>
       </AnimatePresence>
     </React.Fragment>
-  );
-};
+  )
+}
 
-export default AppView;
+export default AppView
