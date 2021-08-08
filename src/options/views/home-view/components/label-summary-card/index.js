@@ -9,6 +9,7 @@ import * as Icons from "../../../../../libs/icons"
 import { SContainer, SFooter, SHeader, SLabel, STotal } from "./style"
 import { filterKeywordEnum } from "../../../../../background/analysis/classModels"
 import { useHistory } from "react-router"
+import ReactTooltip from "react-tooltip"
 
 /**
  * Summary card that highlights notable stat from identified label
@@ -25,6 +26,7 @@ const LabelSummaryCard = ({ labeltype, websiteTotal, passWebsites }) => {
           pathname: "/search",
           state: [labeltype, passWebsites],
         })
+        ReactTooltip.hide()
       }}
     >
       <SHeader>
