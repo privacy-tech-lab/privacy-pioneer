@@ -48,6 +48,7 @@ const WebsiteView = () => {
     browser.tabs.query({ url: url }, function (tabs) {
       if (tabs.length) {
         browser.tabs.update(tabs[0].id, { active: true, url: url + urlHash })
+        browser.tabs.reload()
       } else {
         browser.tabs.create({ url: url + urlHash })
       }
@@ -119,8 +120,7 @@ const WebsiteView = () => {
         <NavBar
           leading={
             <SLeading>
-              <SBrandIcon />{" "}
-              <SBrandTitle>Privacy Pioneer</SBrandTitle>
+              <SBrandIcon /> <SBrandTitle>Privacy Pioneer</SBrandTitle>
             </SLeading>
           }
           trailing={

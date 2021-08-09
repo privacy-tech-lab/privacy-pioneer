@@ -113,12 +113,9 @@ const LabelCard = ({ requests, website, label, margin, onTap, popup }) => {
                     data-place="bottom"
                     data-tip="hello world"
                     data-tip={company}
+                    key={company}
                   >
-                    <CompanyLogo
-                      parent={company}
-                      key={company}
-                      margin={"0px 6px 0px 6px"}
-                    />
+                    <CompanyLogo parent={company} margin={"0px 6px 0px 6px"} />
                   </div>
                 )
             })}
@@ -135,6 +132,7 @@ const LabelCard = ({ requests, website, label, margin, onTap, popup }) => {
                 data-place="bottom"
                 data-tip="hello world"
                 data-tip={website}
+                key={website}
               >
                 <WebsiteLogo website={website} margin={"0px 6px 0px 6px"} />
               </div>
