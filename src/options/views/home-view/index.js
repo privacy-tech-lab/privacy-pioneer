@@ -20,6 +20,7 @@ import {
   SSubtitle,
   STitle,
 } from "./style"
+import { HomeTour, homeSteps } from "../../../libs/tour/index.js"
 
 /**
  * Home page view containing overview and recently identified labels
@@ -96,6 +97,7 @@ const HomeView = () => {
           />
         </SContainer>
       </Scaffold>
+      <HomeTour steps={homeSteps} />
     </React.Fragment>
   )
 }

@@ -22,6 +22,7 @@ import {
   LabelToggle,
   FullSnippetToggle
 } from "./components"
+import { settingsSteps, SettingsTour } from "../../../libs/tour"
 
 /**
  * Settings page view
@@ -56,6 +57,7 @@ const SettingsView = ({ changeTheme }) => {
           </SSection>
         </SBody>
       </SContainer>
+      <SettingsTour steps={settingsSteps}/>
     </Scaffold>
   )
 }

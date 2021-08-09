@@ -29,6 +29,7 @@ import {
   getAllPerms,
 } from "../../../background/analysis/utility/util"
 import ReactTooltip from "react-tooltip"
+import { seeAllSteps, SeeAllTour } from "../../../libs/tour"
 
 /**
  * location.state = undefined | [permission, websites]
@@ -252,6 +253,7 @@ const SearchView = () => {
           </SEmpty>
         </SContainer>
       </Scaffold>
+      <SeeAllTour steps={seeAllSteps}/>
     </React.Fragment>
   )
 }
