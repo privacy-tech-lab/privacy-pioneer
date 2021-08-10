@@ -17,7 +17,6 @@ import {
   typeEnum,
 } from "../../../background/analysis/classModels"
 import { saveKeyword } from "../../../libs/indexed-db/updateWatchlist.js"
-import { watchlistSteps, WatchlistTour } from "../../../libs/tour"
 
 /**
  * Watchlist page view allowing user to add/modify keywords
@@ -156,7 +155,6 @@ const WatchlistView = () => {
           </SListContent>
         </SContainer>
       </Scaffold>
-      <WatchlistTour steps={watchlistSteps}/>
     </React.Fragment>
   )
 }

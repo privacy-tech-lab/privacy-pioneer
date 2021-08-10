@@ -4,33 +4,42 @@ import React from "react";
 export const homeSteps = [
   {
     target: ".fbjqxs",
-    content: "Welcome to Privacy Pioneer! This is a short tour that will help you get your bearings and understand our extension.",
+    content: (
+      <div>
+        Welcome to Privacy Pioneer! This is a short tour that will help you get your bearings and understand our extension.
+      </div>),
     placement: 'center',
   },
   {
     target: ".kcaaTV",
-    content:
-      "Here is an overview of how your data is being sent across your internet usage. ",
-  },
-  {
-    target: ".jeLpyY",
-    content: "Here you will see the most recent collection of your data. ",
-  },
-  {
-    target: ".dZYVxT",
-    content:
-      "Above is the website that collected or shared your data. Below you can see how your data is being sent."
+    content: (
+      <div>
+        Here is an overview of how your data is being sent across your internet usage.
+        <br/>
+        1/6
+      </div>)
   },
   {
     run: true,
-    target: ".idEqqj",
-    content: "Click on any card. When it pops up, you can click on the buttons to see more information. Click next to continue when you are ready.",
+    target: ".dZYVxT",
+    content: (
+      <div>
+        Here you will see the most recent collection of your data.
+        <br/>
+        Click on any card. When it pops up, you can click on the buttons to see more information. Click next to continue when you are ready.
+        <br/>
+        2/6
+      </div>),
     spotlightClicks: true,
   },
   {
     target: ".jsXcyL",
-    content: "Click here to see all of your browsing history",
-    spotlightClicks: true,
+    content: (<div>
+      Click here to see all of your browsing history.
+      <br/>
+      3/6
+    </div>),
+    spotlightClicks: false,
     hideFooter: true,
   },
 ];
@@ -46,6 +55,19 @@ export const HomeTour = ({ steps }) => {
           last: "Next",
           skip: "Exit tour",
         }}
+        styles={{
+          options: {
+            backgroundColor: `var(--backgroundColor)`,
+            textColor: `var(--primaryTextColor)`,
+          },
+          buttonNext: {
+            backgroundColor: `var(--primaryBrandTintColor)`,
+            color: `var(--primaryBrandColor)`
+          },
+          buttonBack: {
+            color: `var(--primaryTextColor)`
+          }
+        }}
       />
     </>
   );
@@ -53,24 +75,33 @@ export const HomeTour = ({ steps }) => {
 
 export const seeAllSteps = [
   {
-    target: ".iYoder",
-    content: "Here you can enter a specific website domain you want to search for",
+    target: ".filters",
+    content: (<div>
+      In the search bar, you can enter a specific website domain you want to search for. You can click on the label types to enable/disable the type.
+      <br/>
+      4/6
+    </div>),
     disableScrolling: true,
     disableScrollParentFix: true,
     placement: 'bottom'
   },
   {
-    target: ".bwvKIa",
-    content: "You can click on the label types to enable/disable the type.",
-    disableScrolling: true,
-    placement: 'bottom',
+    target: ".jhSFJl",
+    content: (<div>
+      This is the navigation bar. Go to "Watchlist" to add keywords that we will look for in your browsing data. If they ever show up, we will let you know. Go to "Settings" to control Privacy Pioneer's settings. Go to "About" to learn more about Privacy Pioneer and what is actually happening with your data on the internet.
+      <br/>
+      5/6
+    </div>),
   },
   {
-    target: ".ilIRpL",
-    content: "Click here to see your watchlist",
-    spotlightClicks: true,
-    hideFooter: true,
-  },
+    target: ".fbjqxs",
+    content: (<div>
+      Thank you for using Privacy Pioneer! Please enjoy using our extension!
+      <br/>
+      6/6
+    </div>),
+    placement: "center",
+  }
 ];
 
 export const SeeAllTour = ({ steps }) => {
@@ -82,104 +113,21 @@ export const SeeAllTour = ({ steps }) => {
         continuous={true}
         showSkipButton={true}
         locale={{
-          last: "Next",
-          skip: "Exit tour",
-        }}
-      />
-    </>
-  );
-};
-
-export const watchlistSteps = [
-  {
-    target: ".fbjqxs",
-    content: "Here you can add keywords that we will look for in your browsing data. If they ever show up, we will let you know.",
-    disableScrolling: true,
-    disableScrollParentFix: true,
-  },
-  {
-    target: ".ilIRpL",
-    content: "Click here to control Privacy Pioneer's settings",
-    spotlightClicks: true,
-    hideFooter: true,
-  },
-];
-
-export const WatchlistTour = ({ steps }) => {
-  return (
-    <>
-      <JoyRide
-        steps={steps}
-        scrollToFirstStep={false}
-        continuous={true}
-        showSkipButton={true}
-        locale={{
-          last: "Next",
-          skip: "Exit tour",
-        }}
-      />
-    </>
-  );
-};
-
-export const settingsSteps = [
-  {
-    target: ".ecXlte",
-    content: "Here you can change how Privacy Pioneer works to fit your preferences.",
-    disableScrolling: true,
-    disableScrollParentFix: true,
-  },
-  {
-    target: ".ilIRpL",
-    content: "Click here to read about Privacy Pioneer",
-    spotlightClicks: true,
-    hideFooter: true,
-  },
-];
-
-export const SettingsTour = ({ steps }) => {
-  return (
-    <>
-      <JoyRide
-        steps={steps}
-        scrollToFirstStep={false}
-        continuous={true}
-        showSkipButton={true}
-        locale={{
-          last: "Next",
-          skip: "Exit tour",
-        }}
-      />
-    </>
-  );
-};
-
-export const aboutSteps = [
-  {
-    target: ".dBpMed",
-    content: "Here you can learn more about Privacy Pioneer and what is actually going on on the internet.",
-    disableScrolling: true,
-    disableScrollParentFix: true,
-    placement: 'top-end',
-  },
-  {
-    target: ".dBpMed",
-    content: "Thank you for using Privacy Pioneer! Please enjoy using our extension!",
-    placement: "center",
-  }
-];
-
-export const AboutTour = ({ steps }) => {
-  return (
-    <>
-      <JoyRide
-        steps={steps}
-        scrollToFirstStep={false}
-        continuous={true}
-        showSkipButton={true}
-        locale={{
           last: "End Tour",
           skip: "Exit tour",
+        }}
+        styles={{
+          options: {
+            backgroundColor: `var(--backgroundColor)`,
+            textColor: `var(--primaryTextColor)`,
+          },
+          buttonNext: {
+            backgroundColor: `var(--primaryBrandTintColor)`,
+            color: `var(--primaryBrandColor)`
+          },
+          buttonBack: {
+            color: `var(--primaryTextColor)`
+          }
         }}
       />
     </>

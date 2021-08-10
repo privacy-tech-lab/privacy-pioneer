@@ -18,7 +18,7 @@ import {
 } from "./style"
 import { FAQ } from "./faq"
 import { ArrowDown } from "../../../libs/icons"
-import { aboutSteps, AboutTour } from "../../../libs/tour"
+
 /**
  * About page view
  */
@@ -64,7 +64,6 @@ const AboutView = () => {
           ))}
         </SBody>
       </SContainer>
-      <AboutTour steps={aboutSteps}/>
     </Scaffold>
   )
 }

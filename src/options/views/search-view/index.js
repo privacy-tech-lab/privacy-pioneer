@@ -212,6 +212,7 @@ const SearchView = () => {
           <SSubtitle>
             See browsed websites accessing and sharing your personal information
           </SSubtitle>
+          <div className='filters'>
           <SSearchContainer>
             <SInputContainer>
               <Icons.Search size={24} />
@@ -242,6 +243,7 @@ const SearchView = () => {
               </SFilterRowItem>
             ))}
           </SFilterRow>
+          </div>
           <WebsiteLabelList
             websites={filteredSites}
             allLabels={webLabels}
