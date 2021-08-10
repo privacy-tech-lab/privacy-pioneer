@@ -17,6 +17,7 @@ import {
   getTheme,
   setTheme,
   settingsEnum,
+  startStopTour,
   toggleLabel,
   toggleSnippet,
 } from "../../../../libs/settings"
@@ -41,7 +42,7 @@ import {
 } from "./style"
 import { initiateDownload } from "../../../../exportData/initiateDownload"
 import { exportTypeEnum } from "../../../../background/analysis/classModels.js"
-import { settingsKeyval } from "../../../../libs/indexed-db/openDB"
+import { useHistory } from "react-router"
 
 export const ToggleSwitch = ({ isActive, label, onClick, spaceBetween }) => (
   <div
@@ -263,5 +264,23 @@ export const DangerZone = () => {
         </SDangerButton>
       </div>
     </SDangerSection>
+  )
+}
+
+export const Tour = () => {
+
+  const history = useHistory()
+  
+  const startTour = () => {
+    startStopTour()
+    history.push('/')
+  }
+  
+  return (
+  <SExportButton onClick={
+    startTour
+  }>
+    Redo Walkthrough
+  </SExportButton>
   )
 }

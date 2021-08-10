@@ -1,5 +1,7 @@
-import JoyRide from "react-joyride";
-import React from "react";
+import JoyRide, {STATUS} from "react-joyride";
+import React, {useState, useEffect} from "react";
+import { useHistory } from "react-router";
+import { startStopTour, getTourStatus } from "../settings";
 
 export const homeSteps = [
   {
@@ -39,38 +41,65 @@ export const homeSteps = [
       <br/>
       3/6
     </div>),
-    spotlightClicks: false,
+    spotlightClicks: true,
     hideFooter: true,
   },
 ];
 
 export const HomeTour = ({ steps }) => {
-  return (
-    <>
-      <JoyRide
-        steps={steps}
-        continuous={true}
-        showSkipButton={true}
-        locale={{
-          last: "Next",
-          skip: "Exit tour",
-        }}
-        styles={{
-          options: {
-            backgroundColor: `var(--backgroundColor)`,
-            textColor: `var(--primaryTextColor)`,
-          },
-          buttonNext: {
-            backgroundColor: `var(--primaryBrandTintColor)`,
-            color: `var(--primaryBrandColor)`
-          },
-          buttonBack: {
-            color: `var(--primaryTextColor)`
-          }
-        }}
-      />
-    </>
-  );
+  const history = useHistory()
+  const [touring, setTouring] = useState(false)
+
+  const checkEnd = data => {
+    const { action, index, status, type } = data;
+    if (STATUS.FINISHED == status) {
+      history.push("/search")
+    } else if (STATUS.SKIPPED == status) {
+      startStopTour()
+    }
+  }
+
+  useEffect(() => {
+    getTourStatus().then(res => {
+      setTouring(res)
+    })
+  }, [])
+
+  if (touring){
+    return (
+      <>
+        <JoyRide
+          callback={checkEnd}
+          steps={steps}
+          continuous={true}
+          showSkipButton={true}
+          hideCloseButton={true}
+          disableOverlayClose={true}
+          locale={{
+            last: "Next",
+            skip: "Exit tour",
+          }}
+          styles={{
+            options: {
+              backgroundColor: `var(--backgroundColor)`,
+              textColor: `var(--primaryTextColor)`,
+            },
+            buttonNext: {
+              backgroundColor: `var(--primaryBrandTintColor)`,
+              color: `var(--primaryBrandColor)`
+            },
+            buttonBack: {
+              color: `var(--primaryTextColor)`
+            },
+            buttonClose: {
+              display: "none"
+            }
+          }}
+        />
+      </>
+    );
+  }
+  return null
 };
 
 export const seeAllSteps = [
@@ -105,31 +134,54 @@ export const seeAllSteps = [
 ];
 
 export const SeeAllTour = ({ steps }) => {
-  return (
-    <>
-      <JoyRide
-        steps={steps}
-        scrollToFirstStep={false}
-        continuous={true}
-        showSkipButton={true}
-        locale={{
-          last: "End Tour",
-          skip: "Exit tour",
-        }}
-        styles={{
-          options: {
-            backgroundColor: `var(--backgroundColor)`,
-            textColor: `var(--primaryTextColor)`,
-          },
-          buttonNext: {
-            backgroundColor: `var(--primaryBrandTintColor)`,
-            color: `var(--primaryBrandColor)`
-          },
-          buttonBack: {
-            color: `var(--primaryTextColor)`
-          }
-        }}
-      />
-    </>
-  );
+  const [touring, setTouring] = useState(false)
+
+  const checkEnd = data => {
+    const { action, index, status, type } = data;
+    if ([STATUS.FINISHED, STATUS.SKIPPED].includes(status)) {
+      startStopTour()
+    }
+  }
+
+  useEffect(() => {
+    getTourStatus().then(res => {
+      setTouring(res)
+    })
+  }, [])
+
+  if (touring) {
+    return (
+      <>
+        <JoyRide
+          callback={checkEnd}
+          disableOverlayClose={true}
+          steps={steps}
+          scrollToFirstStep={false}
+          continuous={true}
+          showSkipButton={true}
+          locale={{
+            last: "End Tour",
+            skip: "Exit tour",
+          }}
+          styles={{
+            options: {
+              backgroundColor: `var(--backgroundColor)`,
+              textColor: `var(--primaryTextColor)`,
+            },
+            buttonNext: {
+              backgroundColor: `var(--primaryBrandTintColor)`,
+              color: `var(--primaryBrandColor)`
+            },
+            buttonBack: {
+              color: `var(--primaryTextColor)`
+            },
+            buttonClose: {
+              display: "none"
+            }
+          }}
+        />
+      </>
+    );
+  }
+  return null
 };
