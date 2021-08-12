@@ -38,7 +38,8 @@ import {
   SDropdownItem,
   SDropdownOptions,
   SDropdownSelection,
-  SSnippetToggle
+  SSnippetToggle,
+  STourButton
 } from "./style"
 import { initiateDownload } from "../../../../exportData/initiateDownload"
 import { exportTypeEnum } from "../../../../background/analysis/classModels.js"
@@ -277,10 +278,10 @@ export const Tour = () => {
   }
   
   return (
-  <SExportButton onClick={
+  <STourButton onClick={
     startTour
   }>
-    Redo Walkthrough
-  </SExportButton>
+    Tour
+  </STourButton>
   )
 }

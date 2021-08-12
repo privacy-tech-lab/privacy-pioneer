@@ -15,6 +15,7 @@ import {
   SFilterRow,
   SFilterRowItem,
   SEmpty,
+  SFiltersDiv
 } from "./style"
 import { SContainer, SSubtitle } from "./style"
 import * as Icons from "../../../libs/icons"
@@ -229,38 +230,38 @@ const SearchView = () => {
           <SSubtitle>
             See browsed websites accessing and sharing your personal information
           </SSubtitle>
-          <div className='filters'>
-          <SSearchContainer>
-            <SInputContainer>
-              <Icons.Search size={24} />
-              <SInput
-                placeholder={placeholder}
-                onChange={(e) => {
-                  filter(e.target.value)
-                  setQuery(e.target.value)
-                }}
-              />
-            </SInputContainer>
-          </SSearchContainer>
-          <SFilterRow>
-            {Object.values(permissionEnum).map((permission) => (
-              <SFilterRowItem
-                onClick={() => {
-                  permFilter[permission] = !permFilter[permission]
-                  setPermFilter(permFilter)
-                  filterLabels()
-                }}
-                key={permission}
-                highlight={permFilter[permission]}
-              >
-                {Icons.getLabelIcon(permission, "21px")}
-                {" "
-                  .concat(permission.charAt(0).toUpperCase())
-                  .concat(permission.slice(1))}
-              </SFilterRowItem>
-            ))}
-          </SFilterRow>
-          </div>
+          <SFiltersDiv id='filtersTour'>
+            <SSearchContainer>
+              <SInputContainer>
+                <Icons.Search size={24} />
+                <SInput
+                  placeholder={placeholder}
+                  onChange={(e) => {
+                    filter(e.target.value)
+                    setQuery(e.target.value)
+                  }}
+                />
+              </SInputContainer>
+            </SSearchContainer>
+            <SFilterRow>
+              {Object.values(permissionEnum).map((permission) => (
+                <SFilterRowItem
+                  onClick={() => {
+                    permFilter[permission] = !permFilter[permission]
+                    setPermFilter(permFilter)
+                    filterLabels()
+                  }}
+                  key={permission}
+                  highlight={permFilter[permission]}
+                >
+                  {Icons.getLabelIcon(permission, "21px")}
+                  {" "
+                    .concat(permission.charAt(0).toUpperCase())
+                    .concat(permission.slice(1))}
+                </SFilterRowItem>
+              ))}
+            </SFilterRow>
+          </SFiltersDiv>
           <WebsiteLabelList
             websites={filteredSites}
             allLabels={webLabels}

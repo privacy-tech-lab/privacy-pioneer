@@ -1,14 +1,14 @@
-import JoyRide, {STATUS} from "react-joyride";
+import JoyRide, {ACTIONS, STATUS} from "react-joyride";
 import React, {useState, useEffect} from "react";
 import { useHistory } from "react-router";
 import { startStopTour, getTourStatus } from "../settings";
 
 export const homeSteps = [
   {
-    target: ".fbjqxs",
+    target: "#navbarTour",
     content: (
       <div>
-        Welcome to Privacy Pioneer! This is a short tour that will help you get your bearings and understand our extension.
+        Welcome to Privacy Pioneer! Let's get your bearings in a short tour, shall we...
       </div>),
     placement: 'center',
     locale: {
@@ -22,12 +22,12 @@ export const homeSteps = [
     }
   },
   {
-    target: ".kcaaTV",
+    target: "#summaryTour",
     content: (
       <div>
-        See how your data is being sent across your internet usage.
+        Learn how sites use and share your data in the Overview.
         <br/>
-        1/6
+        1/5
         <br />
         <img src={'../assets/penguin_example.jpeg'} alt="Logo" style={{
           height: 200,
@@ -41,14 +41,12 @@ export const homeSteps = [
   },
   {
     run: true,
-    target: ".dZYVxT",
+    target: "#websitesTour",
     content: (
       <div>
-        Here you will see the most recent collection of your data.
-        <br/>
-        Click on any card. When it pops up, you can click on the buttons to see more information.
-        <br/>
-        2/6
+        See data from your most recent websites. Click a card or button to learn more.
+        <br />
+        2/5
       </div>),
     spotlightClicks: true,
     styles: {
@@ -58,11 +56,11 @@ export const homeSteps = [
     }
   },
   {
-    target: ".jsXcyL",
+    target: "#seeAllTour",
     content: (<div>
       Click here to see all of your browsing history.
       <br/>
-      3/6
+      3/5
     </div>),
     spotlightClicks: true,
     hideFooter: true,
@@ -79,6 +77,9 @@ export const HomeTour = ({ steps }) => {
     } else if (STATUS.SKIPPED == status) {
       startStopTour()
       location.reload()
+    } else if (ACTIONS.CLOSE == action) {
+      startStopTour()
+      location.reload()
     }
   }
 
@@ -90,7 +91,6 @@ export const HomeTour = ({ steps }) => {
         continuous={true}
         showSkipButton={true}
         hideCloseButton={true}
-        disableOverlayClose={true}
         disableCloseOnEsc={true}
         locale={{
           last: "Next",
@@ -110,6 +110,9 @@ export const HomeTour = ({ steps }) => {
           },
           buttonClose: {
             display: "none"
+          },
+          spotlight: {
+            borderRadius: 10
           }
         }}
       />
@@ -119,15 +122,15 @@ export const HomeTour = ({ steps }) => {
 
 export const seeAllSteps = [
   {
-    target: ".filters",
+    target: "#filtersTour",
     content: (
       <div style={{
         display: 'flex'
         }}> 
         <p>
-          In the search bar, you can enter a specific website domain you want to search for. You can click on the label types to enable/disable the type.
+          Search for any website you visited. Use the filters to narrow down your results.
           <br/>
-          4/6
+          4/5
         </p>
         <img src={'../assets/penguin_example.jpeg'} alt='Logo' style= {{
           height: 140,
@@ -146,22 +149,15 @@ export const seeAllSteps = [
       }
   },
   {
-    target: ".jhSFJl",
+    target: "#navbarTour",
     content: (<div>
-      This is the navigation bar. Use the Watchlist to look for custom keywords in your web traffic.
+      Use the Watchlist to keep track of custom keywords in your web traffic.
       <br/>
-      5/6
+      Enjoy Privacy Pioneer!
+      <br/>
+      5/5
     </div>),
   },
-  {
-    target: ".fbjqxs",
-    content: (<div>
-      Thank you for using Privacy Pioneer! Please enjoy using our extension!
-      <br/>
-      6/6
-    </div>),
-    placement: "center",
-  }
 ];
 
 export const SeeAllTour = ({ steps }) => {
@@ -175,6 +171,9 @@ export const SeeAllTour = ({ steps }) => {
     } else if (STATUS.SKIPPED == status) {
       startStopTour()
       location.reload()
+    } else if (ACTIONS.CLOSE == action) {
+      startStopTour()
+      location.reload()
     }
   }
 
@@ -182,7 +181,6 @@ export const SeeAllTour = ({ steps }) => {
     <>
       <JoyRide
         callback={checkEnd}
-        disableOverlayClose={true}
         steps={steps}
         scrollToFirstStep={false}
         continuous={true}
@@ -206,6 +204,9 @@ export const SeeAllTour = ({ steps }) => {
           },
           buttonClose: {
             display: "none"
+          },
+          spotlight: {
+            borderRadius: 10
           }
         }}
       />

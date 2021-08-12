@@ -56,7 +56,7 @@ const NavBar = () => {
           <SBrandTitle>Privacy Pioneer</SBrandTitle>
         </SLeadingContainer>
       </SLeading>
-      <STrailing>
+      <STrailing id='navbarTour'>
         <SNavAction
           active={tab === 0}
           onClick={() => configureRoute("/")}

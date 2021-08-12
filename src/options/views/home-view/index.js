@@ -82,7 +82,7 @@ const HomeView = () => {
         show={modal.show}
       />
       <Scaffold>
-        <SContainer>
+        <SContainer id='summaryTour'>
           <STitle>Overview</STitle>
           <SSubtitle>A summary of your privacy labels</SSubtitle>
           <SCardGroup>
@@ -105,10 +105,12 @@ const HomeView = () => {
               }}
               data-place="left"
               data-tip="See all browsing history, including evidence originating from 3rd parties"
+              id="seeAllTour"
             >
               See All
             </SButtonText>
           </SSectionContainer>
+          <div id="websitesTour">
           <WebsiteLabelList
             allLabels={labels}
             websites={websites}
@@ -116,6 +118,7 @@ const HomeView = () => {
             maxLength={entries.length > 3 ? 3 : entries.length}
             handleTap={handleTap}
           />
+          </div>
         </SContainer>
       </Scaffold>
       {touring?<HomeTour steps={homeSteps} />:null}
