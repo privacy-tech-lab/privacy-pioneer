@@ -37,7 +37,7 @@ import {
   SDropdownItem,
   SDropdownOptions,
   SDropdownSelection,
-  SSnippetToggle
+  SSnippetToggle,
 } from "./style"
 import { initiateDownload } from "../../../../exportData/initiateDownload"
 import { exportTypeEnum } from "../../../../background/analysis/classModels.js"
@@ -68,7 +68,7 @@ export const ToggleSwitch = ({ isActive, label, onClick, spaceBetween }) => (
 )
 
 export const FullSnippetToggle = () => {
-  const [snippetStatus, setSnippetStatus] = useState(false);
+  const [snippetStatus, setSnippetStatus] = useState(false)
 
   useEffect(() => {
     getSnippetStatus().then((res) => {
@@ -83,12 +83,12 @@ export const FullSnippetToggle = () => {
 
   return (
     <SSnippetToggle>
-        <ToggleSwitch
-          isActive={snippetStatus}
-          onClick={() => toggle()}
-          label={"Save Full Snippets"}
-          spaceBetween
-        />
+      <ToggleSwitch
+        isActive={snippetStatus}
+        onClick={() => toggle()}
+        label={"Save Full Snippets"}
+        spaceBetween
+      />
     </SSnippetToggle>
   )
 }
@@ -257,8 +257,16 @@ export const DangerZone = () => {
       <SSettingHeader>Danger Zone</SSettingHeader>
       <SSubtitle>Permenantly clear your stored data</SSubtitle>
       <div style={{ display: "flex", flexDirection: "row", marginTop: "12px" }}>
-        <SDangerButton onClick={handleEvidence}>Delete Evidence</SDangerButton>
-        <SDangerButton onClick={handleWatchlist}>
+        <SDangerButton
+          data-tip="Delete all of the data that we have collected from your local storage"
+          onClick={handleEvidence}
+        >
+          Delete Data
+        </SDangerButton>
+        <SDangerButton
+          data-tip="Delete all of the keywords you've added from the watchlist"
+          onClick={handleWatchlist}
+        >
           Delete Watchlist
         </SDangerButton>
       </div>

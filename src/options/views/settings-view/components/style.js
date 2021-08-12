@@ -205,5 +205,6 @@ export const SDangerButton = styled.div`
   cursor: pointer;
   :hover {
     background-color: crimson;
+    color: white;
   }
 `

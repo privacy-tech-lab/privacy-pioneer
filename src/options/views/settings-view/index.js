@@ -5,6 +5,7 @@ privacy-tech-lab, https://www.privacytechlab.org/
 
 import React, { useEffect, useRef, useState } from "react"
 import Scaffold from "../../components/scaffold"
+import ReactTooltip from "react-tooltip"
 import {
   STitle,
   SContainer,
@@ -20,13 +21,16 @@ import {
   ExportData,
   DangerZone,
   LabelToggle,
-  FullSnippetToggle
+  FullSnippetToggle,
 } from "./components"
 
 /**
  * Settings page view
  */
 const SettingsView = ({ changeTheme }) => {
+  useEffect(() => {
+    ReactTooltip.rebuild()
+  }, [])
   return (
     <Scaffold>
       <SContainer>
