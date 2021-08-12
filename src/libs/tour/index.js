@@ -11,15 +11,33 @@ export const homeSteps = [
         Welcome to Privacy Pioneer! This is a short tour that will help you get your bearings and understand our extension.
       </div>),
     placement: 'center',
+    locale: {
+      skip: "Skip Tour",
+      next: "Begin Tour"
+    },
+    styles: {
+      options: {
+        width: `440`,
+      }
+    }
   },
   {
     target: ".kcaaTV",
     content: (
       <div>
-        Here is an overview of how your data is being sent across your internet usage.
+        See how your data is being sent across your internet usage.
         <br/>
         1/6
-      </div>)
+        <br />
+        <img src={'../assets/penguin_example.jpeg'} alt="Logo" style={{
+          height: 200,
+        }} />
+      </div>),
+    styles: {
+      buttonBack: {
+        display: 'none'
+      },
+    }
   },
   {
     run: true,
@@ -28,11 +46,16 @@ export const homeSteps = [
       <div>
         Here you will see the most recent collection of your data.
         <br/>
-        Click on any card. When it pops up, you can click on the buttons to see more information. Click next to continue when you are ready.
+        Click on any card. When it pops up, you can click on the buttons to see more information.
         <br/>
         2/6
       </div>),
     spotlightClicks: true,
+    styles: {
+      options: {
+        width: 440
+      }
+    }
   },
   {
     target: ".jsXcyL",
@@ -48,7 +71,6 @@ export const homeSteps = [
 
 export const HomeTour = ({ steps }) => {
   const history = useHistory()
-  const [touring, setTouring] = useState(false)
 
   const checkEnd = data => {
     const { action, index, status, type } = data;
@@ -56,68 +78,77 @@ export const HomeTour = ({ steps }) => {
       history.push("/search")
     } else if (STATUS.SKIPPED == status) {
       startStopTour()
+      location.reload()
     }
   }
 
-  useEffect(() => {
-    getTourStatus().then(res => {
-      setTouring(res)
-    })
-  }, [])
-
-  if (touring){
-    return (
-      <>
-        <JoyRide
-          callback={checkEnd}
-          steps={steps}
-          continuous={true}
-          showSkipButton={true}
-          hideCloseButton={true}
-          disableOverlayClose={true}
-          locale={{
-            last: "Next",
-            skip: "Exit tour",
-          }}
-          styles={{
-            options: {
-              backgroundColor: `var(--backgroundColor)`,
-              textColor: `var(--primaryTextColor)`,
-            },
-            buttonNext: {
-              backgroundColor: `var(--primaryBrandTintColor)`,
-              color: `var(--primaryBrandColor)`
-            },
-            buttonBack: {
-              color: `var(--primaryTextColor)`
-            },
-            buttonClose: {
-              display: "none"
-            }
-          }}
-        />
-      </>
-    );
-  }
-  return null
+  return (
+    <>
+      <JoyRide
+        callback={checkEnd}
+        steps={steps}
+        continuous={true}
+        showSkipButton={true}
+        hideCloseButton={true}
+        disableOverlayClose={true}
+        disableCloseOnEsc={true}
+        locale={{
+          last: "Next",
+          skip: "Exit tour",
+        }}
+        styles={{
+          options: {
+            backgroundColor: `var(--backgroundColor)`,
+            textColor: `var(--primaryTextColor)`,
+          },
+          buttonNext: {
+            backgroundColor: `var(--primaryBrandTintColor)`,
+            color: `var(--primaryBrandColor)`
+          },
+          buttonBack: {
+            color: `var(--primaryTextColor)`
+          },
+          buttonClose: {
+            display: "none"
+          }
+        }}
+      />
+    </>
+  )
 };
 
 export const seeAllSteps = [
   {
     target: ".filters",
-    content: (<div>
-      In the search bar, you can enter a specific website domain you want to search for. You can click on the label types to enable/disable the type.
-      <br/>
-      4/6
-    </div>),
-    disableScrolling: true,
-    disableScrollParentFix: true,
-    placement: 'bottom'
+    content: (
+      <div style={{
+        display: 'flex'
+        }}> 
+        <p>
+          In the search bar, you can enter a specific website domain you want to search for. You can click on the label types to enable/disable the type.
+          <br/>
+          4/6
+        </p>
+        <img src={'../assets/penguin_example.jpeg'} alt='Logo' style= {{
+          height: 140,
+          padding: 3
+        }}/>
+      </div>),
+      disableScrolling: true,
+      disableScrollParentFix: true,
+      placement: 'bottom-start',
+      placementBeacon: 'top',
+      disableBeacon: true,
+      styles: {
+        options: {
+          width: 400
+        }
+      }
   },
   {
     target: ".jhSFJl",
     content: (<div>
-      This is the navigation bar. Go to "Watchlist" to add keywords that we will look for in your browsing data. If they ever show up, we will let you know. Go to "Settings" to control Privacy Pioneer's settings. Go to "About" to learn more about Privacy Pioneer and what is actually happening with your data on the internet.
+      This is the navigation bar. Use the Watchlist to look for custom keywords in your web traffic.
       <br/>
       5/6
     </div>),
@@ -134,54 +165,50 @@ export const seeAllSteps = [
 ];
 
 export const SeeAllTour = ({ steps }) => {
-  const [touring, setTouring] = useState(false)
+  const history = useHistory()
 
   const checkEnd = data => {
     const { action, index, status, type } = data;
-    if ([STATUS.FINISHED, STATUS.SKIPPED].includes(status)) {
+    if (STATUS.FINISHED == status) {
       startStopTour()
+      history.push('/')
+    } else if (STATUS.SKIPPED == status) {
+      startStopTour()
+      location.reload()
     }
   }
 
-  useEffect(() => {
-    getTourStatus().then(res => {
-      setTouring(res)
-    })
-  }, [])
-
-  if (touring) {
-    return (
-      <>
-        <JoyRide
-          callback={checkEnd}
-          disableOverlayClose={true}
-          steps={steps}
-          scrollToFirstStep={false}
-          continuous={true}
-          showSkipButton={true}
-          locale={{
-            last: "End Tour",
-            skip: "Exit tour",
-          }}
-          styles={{
-            options: {
-              backgroundColor: `var(--backgroundColor)`,
-              textColor: `var(--primaryTextColor)`,
-            },
-            buttonNext: {
-              backgroundColor: `var(--primaryBrandTintColor)`,
-              color: `var(--primaryBrandColor)`
-            },
-            buttonBack: {
-              color: `var(--primaryTextColor)`
-            },
-            buttonClose: {
-              display: "none"
-            }
-          }}
-        />
-      </>
-    );
-  }
-  return null
+  return (
+    <>
+      <JoyRide
+        callback={checkEnd}
+        disableOverlayClose={true}
+        steps={steps}
+        scrollToFirstStep={false}
+        continuous={true}
+        showSkipButton={true}
+        disableCloseOnEsc={true}
+        locale={{
+          last: "End Tour",
+          skip: "Exit tour",
+        }}
+        styles={{
+          options: {
+            backgroundColor: `var(--backgroundColor)`,
+            textColor: `var(--primaryTextColor)`,
+          },
+          buttonNext: {
+            backgroundColor: `var(--primaryBrandTintColor)`,
+            color: `var(--primaryBrandColor)`
+          },
+          buttonBack: {
+            color: `var(--primaryTextColor)`
+          },
+          buttonClose: {
+            display: "none"
+          }
+        }}
+      />
+    </>
+  );
 };

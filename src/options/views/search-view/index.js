@@ -30,6 +30,9 @@ import {
 } from "../../../background/analysis/utility/util"
 import ReactTooltip from "react-tooltip"
 import { seeAllSteps, SeeAllTour } from "../../../libs/tour"
+import { getTourStatus } from "../../../libs/settings"
+
+const exData = require('../../../libs/tour/exData.json')
 
 /**
  * location.state = undefined | [permission, websites]
@@ -77,6 +80,7 @@ const SearchView = () => {
   const [placeholder, setPlaceholder] = useState("")
   const [showEmpty, setShowEmpty] = useState(false)
   const [query, setQuery] = useState("")
+  const [touring, setTouring] = useState({})
 
   /**
    * Looks at the filter to create a placeholder string
@@ -167,27 +171,40 @@ const SearchView = () => {
   }
 
   useEffect(() => {
-    // if we're not passed the getWebsites call from previous:
-    if (location.state === undefined) {
-      getWebsites().then((websites) => {
-        setAllWebsites(websites)
-        setFilter(websites)
-        getLabels().then((labels) => {
-          setWebLabels(labels)
-          setAllLabels(labels)
-          ReactTooltip.rebuild()
-        })
-      })
-    }
-    // if we are then allWebsties is already set. setWebLabels will be called by filterLabels
-    else {
-      setFilter(allWebsites)
-      filterLabels()
-      getLabels().then((labels) => {
-        setAllLabels(labels)
-      })
-    }
-    setPlaceholder(getPlaceholder())
+    getTourStatus().then(res => {
+      if (res) {
+        setTouring(true)
+        setAllWebsites(exData.labelArrayPerSite)
+        setFilter(exData.labelArrayPerSite)
+        setWebLabels(exData.dataJson)
+        setAllLabels(exData.dataJson)
+        ReactTooltip.rebuild()
+      }
+      else {
+        setTouring(false)
+        // if we're not passed the getWebsites call from previous:
+        if (location.state === undefined) {
+          getWebsites().then((websites) => {
+            setAllWebsites(websites)
+            setFilter(websites)
+            getLabels().then((labels) => {
+              setWebLabels(labels)
+              setAllLabels(labels)
+              ReactTooltip.rebuild()
+            })
+          })
+        }
+        // if we are then allWebsties is already set. setWebLabels will be called by filterLabels
+        else {
+          setFilter(allWebsites)
+          filterLabels()
+          getLabels().then((labels) => {
+            setAllLabels(labels)
+          })
+        }
+        setPlaceholder(getPlaceholder())
+      }
+    })
   }, [])
 
   return (
@@ -255,7 +272,7 @@ const SearchView = () => {
           </SEmpty>
         </SContainer>
       </Scaffold>
-      <SeeAllTour steps={seeAllSteps}/>
+      {touring?<SeeAllTour steps={seeAllSteps}/>:null}
     </React.Fragment>
   )
 }
