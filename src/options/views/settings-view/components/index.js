@@ -88,7 +88,7 @@ export const FullSnippetToggle = () => {
         <ToggleSwitch
           isActive={snippetStatus}
           onClick={() => toggle()}
-          label={"Save Full Snippets"}
+          label={"Save Full HTTP Requests"}
           spaceBetween
         />
     </SSnippetToggle>

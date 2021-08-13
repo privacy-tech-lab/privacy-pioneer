@@ -1,13 +1,18 @@
 import JoyRide, {ACTIONS, STATUS} from "react-joyride";
-import React, {useState, useEffect} from "react";
+import React from "react";
 import { useHistory } from "react-router";
-import { startStopTour, getTourStatus } from "../settings";
+import { startStopTour } from "../settings";
+
+const textStyles = {
+  fontWeight: 'bold',
+  fontSize: `20px`
+}
 
 export const homeSteps = [
   {
     target: "#navbarTour",
     content: (
-      <div>
+      <div style={textStyles}>
         Welcome to Privacy Pioneer! Let's get your bearings in a short tour, shall we...
       </div>),
     placement: 'center',
@@ -24,14 +29,10 @@ export const homeSteps = [
   {
     target: "#summaryTour",
     content: (
-      <div>
+      <div style={textStyles}>
         Learn how sites use and share your data in the Overview.
         <br/>
         1/5
-        <br />
-        <img src={'../assets/penguin_example.jpeg'} alt="Logo" style={{
-          height: 200,
-        }} />
       </div>),
     styles: {
       buttonBack: {
@@ -43,7 +44,7 @@ export const homeSteps = [
     run: true,
     target: "#websitesTour",
     content: (
-      <div>
+      <div style={textStyles}>
         See data from your most recent websites. Click a card or button to learn more.
         <br />
         2/5
@@ -57,7 +58,8 @@ export const homeSteps = [
   },
   {
     target: "#seeAllTour",
-    content: (<div>
+    content: (
+    <div style={textStyles}>
       Click here to see all of your browsing history.
       <br/>
       3/5
@@ -124,18 +126,10 @@ export const seeAllSteps = [
   {
     target: "#filtersTour",
     content: (
-      <div style={{
-        display: 'flex'
-        }}> 
-        <p>
-          Search for any website you visited. Use the filters to narrow down your results.
-          <br/>
-          4/5
-        </p>
-        <img src={'../assets/penguin_example.jpeg'} alt='Logo' style= {{
-          height: 140,
-          padding: 3
-        }}/>
+      <div style={textStyles}> 
+        Search for any website you visited. Use the filters to narrow down your results.
+        <br/>
+        4/5
       </div>),
       disableScrolling: true,
       disableScrollParentFix: true,
@@ -150,7 +144,8 @@ export const seeAllSteps = [
   },
   {
     target: "#navbarTour",
-    content: (<div>
+    content: (
+    <div style={textStyles}>
       Use the Watchlist to keep track of custom keywords in your web traffic.
       <br/>
       Enjoy Privacy Pioneer!
