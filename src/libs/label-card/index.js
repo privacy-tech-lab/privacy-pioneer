@@ -128,13 +128,12 @@ const LabelCard = ({ requests, website, label, margin, onTap, popup }) => {
         return (
           <SLogo>
             {WebsiteLogoList.map((website) => (
-              <div
-                data-place="bottom"
-                data-tip="hello world"
-                data-tip={website}
-                key={website}
-              >
-                <WebsiteLogo website={website} margin={"0px 6px 0px 6px"} />
+              <div data-place="bottom" data-tip={website} key={website}>
+                <WebsiteLogo
+                  website={website}
+                  margin={"0px 6px 0px 6px"}
+                  label
+                />
               </div>
             ))}
             <More amount={websites.length - WebsiteLogoList.length} />

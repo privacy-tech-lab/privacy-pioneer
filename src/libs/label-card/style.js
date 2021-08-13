@@ -73,9 +73,8 @@ export const SDescription = styled.div`
 `
 
 export const SBadge = styled.div`
-  /* border: 2px solid white; */
-  background-color: var(--primaryHighlightColor);
-  color: var(--tintTextColor);
+  border: solid var(--primaryHighlightColor) 3px;
+  color: var(--primaryHighlightColor);
   border-radius: 1em;
   text-align: center;
   justify-self: center;
@@ -94,14 +93,13 @@ export const SMore = styled.div`
   border-radius: 8px;
   padding: 2px;
   font-weight: 600;
-  padding-left: 4px;
-  padding-right: 6px;
-  background-color: var(--primaryHighlightColor);
-  color: var(--tintTextColor);
-  margin-left: 12px;
+  padding-left: 2px;
+
+  /* background-color: var(--primaryHighlightColor); */
+  color: var(--primaryTextColorr);
   font-size: var(--headline);
   path,
   circle {
-    fill: var(--tintTextColor);
+    fill: var(--primaryTextColor);
   }
 `
