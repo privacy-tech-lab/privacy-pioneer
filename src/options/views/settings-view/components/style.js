@@ -103,6 +103,26 @@ export const SExportButton = styled.div`
   }
 `
 
+export const STourButton = styled.div`
+  display: flex;
+  color: var(--primaryBrandColor);
+  background-color: var(--primaryBrandTintColor);
+  cursor: pointer;
+  width: 100px;
+  padding: 8px 0px;
+  justify-content: center;
+  font-weight: bold;
+  margin-top: 12px;
+  margin-right: 12px;
+  border-radius: 8px;
+  :hover {
+    filter: brightness(0.95);
+  }
+  :active {
+    filter: brightness(1.05);
+  }
+`
+
 export const SDropdownOptions = styled.div`
   top: 56px;
   margin-left: auto;

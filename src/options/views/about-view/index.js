@@ -18,6 +18,7 @@ import {
 } from "./style"
 import { FAQ } from "./faq"
 import { ArrowDown } from "../../../libs/icons"
+
 /**
  * About page view
  */

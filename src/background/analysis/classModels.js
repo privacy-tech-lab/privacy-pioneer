@@ -367,5 +367,6 @@ export const privacyLabels = Object.freeze({
  * @enum string
  */
 export const settingsModelsEnum = Object.freeze({
-  fullSnippet: "fullSnippet"
+  fullSnippet: "fullSnippet",
+  tour: 'tour'
 })

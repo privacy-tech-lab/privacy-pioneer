@@ -26,10 +26,18 @@ export const SFilterRow = styled.div`
   flex-direction: row;
   align-items: center;
   margin-top: 7px;
+  width: fit-content
+`;
+
+export const SFiltersDiv = styled.div`
+  width: fit-content;
+  display: flex;
+  flex-direction: column;
 `;
 
 export const SSubtitle = styled.div`
   color: var(--secondaryTextColor);
+  margin-bottom: 32px;
 `;
 
 export const SInput = styled.input`
@@ -70,8 +78,6 @@ export const SBackButton = styled(motion.div)`
 `;
 
 export const SSearchContainer = styled.div`
-  padding-top: 16px;
-  margin-top: 32px;
   display: inline-flex;
   flex-direction: row;
   justify-content: left;

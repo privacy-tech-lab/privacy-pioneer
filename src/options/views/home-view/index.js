@@ -20,6 +20,10 @@ import {
   SSubtitle,
   STitle,
 } from "./style"
+import { HomeTour, homeSteps } from "../../../libs/tour/index.js"
+import { getTourStatus } from "../../../libs/settings/index.js"
+
+const exData = require('../../../libs/tour/exData.json')
 
 /**
  * Home page view containing overview and recently identified labels
@@ -30,18 +34,36 @@ const HomeView = () => {
   const [labels, setLabels] = useState({})
   const [modal, setModal] = useState({ show: false })
   const entries = Object.entries(websites)
+  const [touring, setTouring] = useState({})
   useEffect(() => {
-    getWebsites().then((websites) => {
-      setWebsites(websites)
-      getLabels().then((labels) => {
-        setLabels(labels)
+    getTourStatus().then(res => {
+      if (res) {
+        setTouring(true)
+        setWebsites(exData.labelArrayPerSite)
+        setLabels(exData.dataJson)
         ReactTooltip.rebuild()
-      }),
         document
           .getElementById("detail-modal")
           .addEventListener("hidden.bs.modal", () => {
             setModal({ show: false })
           })
+      } 
+      else {
+        setTouring(false)
+        getWebsites().then((websites) => {
+          setWebsites(websites)
+          getLabels().then((labels) => {
+            console.log(labels)
+            setLabels(labels)
+            ReactTooltip.rebuild()
+          }),
+            document
+              .getElementById("detail-modal")
+              .addEventListener("hidden.bs.modal", () => {
+                setModal({ show: false })
+              })
+        })
+      }
     })
   }, [])
 
@@ -60,7 +82,7 @@ const HomeView = () => {
         show={modal.show}
       />
       <Scaffold>
-        <SContainer>
+        <SContainer id='summaryTour'>
           <STitle>Overview</STitle>
           <SSubtitle>A summary of your privacy labels</SSubtitle>
           <SCardGroup>
@@ -83,10 +105,12 @@ const HomeView = () => {
               }}
               data-place="left"
               data-tip="See all browsing history, including evidence originating from 3rd parties"
+              id="seeAllTour"
             >
               See All
             </SButtonText>
           </SSectionContainer>
+          <div id="websitesTour">
           <WebsiteLabelList
             allLabels={labels}
             websites={websites}
@@ -94,8 +118,10 @@ const HomeView = () => {
             maxLength={entries.length > 3 ? 3 : entries.length}
             handleTap={handleTap}
           />
+          </div>
         </SContainer>
       </Scaffold>
+      {touring?<HomeTour steps={homeSteps} />:null}
     </React.Fragment>
   )
 }

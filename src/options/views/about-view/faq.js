@@ -10,7 +10,7 @@ export const FAQ = {
     <text>
       Absolutely not! Our extension is entirely local to your computer—we do not
       store any data outside of your browser. Feel free to check the source code
-      of Privacy Pioneer at Privacy Pioneer.
+      of Privacy Pioneer at <a href="https://github.com/privacy-tech-lab/privacy-pioneer" target="_blank">Privacy Pioneer's GitHub</a>.
     </text>
   ),
   "How does Privacy Pioneer process my data?": (
@@ -109,7 +109,7 @@ export const FAQ = {
     ),
   "Where can I reach you?": (
     <text>
-      Send us an email at [email address]. We would love to hear from you! You
+      Send us an email at sebastian@privacytechlab.org. We would love to hear from you! You
       can also learn more about our work at{" "}
       <a href="https://www.privacytechlab.org/" target="_blank">
         {" "}

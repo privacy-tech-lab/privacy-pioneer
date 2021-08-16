@@ -10,7 +10,6 @@ import {
   storeEnum,
 } from "../../background/analysis/classModels"
 import { evidenceKeyval } from "../../background/analysis/interactDB/openDB"
-import { BrowserRouter } from "react-router-dom"
 
 export const settingsEnum = Object.freeze({
   sameAsSystem: "sameAsSystem",
@@ -31,6 +30,7 @@ export const setDefault = async () => {
     await settingsKeyval.set(permissionEnum.watchlist, true)
     await settingsKeyval.set("theme", settingsEnum.sameAsSystem)
     await settingsKeyval.set(settingsModelsEnum.fullSnippet, false)
+    await settingsKeyval.set(settingsModelsEnum.tour, true)
   }
 }
 
@@ -117,4 +117,13 @@ export const getExcludedLabels = async () => {
     }
   }
   return excludedLabels
+}
+
+export const getTourStatus = async () => {
+  return await settingsKeyval.get(settingsModelsEnum.tour)
+}
+
+export const startStopTour = async () => {
+  const touring = await settingsKeyval.get(settingsModelsEnum.tour)
+  await settingsKeyval.set(settingsModelsEnum.tour, !touring)
 }

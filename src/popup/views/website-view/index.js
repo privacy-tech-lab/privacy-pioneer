@@ -53,6 +53,9 @@ const WebsiteView = () => {
         browser.tabs.create({ url: url + urlHash })
       }
     })
+    // closes the popup on navigation to options home or watchlist
+    // removing the timeout breaks the code. may be a hacky solution
+    setTimeout(() => window.close(), 10)
   }
 
   /**

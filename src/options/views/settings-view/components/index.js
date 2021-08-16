@@ -17,6 +17,7 @@ import {
   getTheme,
   setTheme,
   settingsEnum,
+  startStopTour,
   toggleLabel,
   toggleSnippet,
 } from "../../../../libs/settings"
@@ -38,10 +39,11 @@ import {
   SDropdownOptions,
   SDropdownSelection,
   SSnippetToggle,
+  STourButton
 } from "./style"
 import { initiateDownload } from "../../../../exportData/initiateDownload"
 import { exportTypeEnum } from "../../../../background/analysis/classModels.js"
-import { settingsKeyval } from "../../../../libs/indexed-db/openDB"
+import { useHistory } from "react-router"
 
 export const ToggleSwitch = ({ isActive, label, onClick, spaceBetween }) => (
   <div
@@ -83,12 +85,12 @@ export const FullSnippetToggle = () => {
 
   return (
     <SSnippetToggle>
-      <ToggleSwitch
-        isActive={snippetStatus}
-        onClick={() => toggle()}
-        label={"Save Full Snippets"}
-        spaceBetween
-      />
+        <ToggleSwitch
+          isActive={snippetStatus}
+          onClick={() => toggle()}
+          label={"Save Full HTTP Requests"}
+          spaceBetween
+        />
     </SSnippetToggle>
   )
 }
@@ -271,5 +273,23 @@ export const DangerZone = () => {
         </SDangerButton>
       </div>
     </SDangerSection>
+  )
+}
+
+export const Tour = () => {
+
+  const history = useHistory()
+  
+  const startTour = () => {
+    startStopTour()
+    history.push('/')
+  }
+  
+  return (
+  <STourButton onClick={
+    startTour
+  }>
+    Tour
+  </STourButton>
   )
 }

@@ -22,7 +22,7 @@ export const SBody = styled.div`
   margin-bottom: 12px;
   font-size: var(--headline);
   a {
-  color: var(--primaryBrandColor);
+  color: #3e92cc;
   }
 `;
 
