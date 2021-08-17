@@ -1,8 +1,16 @@
 {
   "name": "privacy-pioneer",
   "version": "0.0.1",
-  "permissions": ["webRequest", "<all_urls>", "webRequestBlocking", "geolocation", 
-    "storage", "tabs", "history", "downloads"],
+  "permissions": [
+    "webRequest",
+    "<all_urls>",
+    "webRequestBlocking",
+    "geolocation",
+    "storage",
+    "tabs",
+    "history",
+    "downloads"
+  ],
   "manifest_version": 2,
   "background": {
     "scripts": ["bundle.background.js"]
@@ -18,9 +26,9 @@
     "open_in_tab": true
   },
   "icons": {
-    "16": "assets/icon-16.png",
-    "48": "assets/icon-48.png",
-    "128": "assets/icon-128.png"
+    "16": "assets/favicon.svg",
+    "48": "assets/favicon.svg",
+    "128": "assets/favicon.svg"
   },
   "content_security_policy": "script-src 'self' 'unsafe-eval'; object-src 'self'"
 }

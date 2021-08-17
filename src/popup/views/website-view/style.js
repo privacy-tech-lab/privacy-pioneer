@@ -60,7 +60,8 @@ export const SBrandTitle = styled.div`
 export const SBody = styled.main`
   display: flex;
   flex-direction: column;
-  margin-bottom: 16px;
+  overflow: auto;
+  scrollbar-width: none; /* Firefox 64 */
 `
 
 export const SHeader = styled.div`

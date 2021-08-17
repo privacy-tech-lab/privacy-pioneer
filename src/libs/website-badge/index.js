@@ -25,7 +25,7 @@ const SParty = styled.div`
   background-color: #3e92cc;
   user-select: none;
   color: white;
-  padding: 4px;
+  padding: 5px;
   font-weight: 600;
   font-size: 12px;
 `
