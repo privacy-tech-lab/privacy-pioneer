@@ -34,6 +34,7 @@ import ReactTooltip from "react-tooltip"
 import { seeAllSteps, SeeAllTour } from "../../../libs/tour"
 import { getTourStatus } from "../../../libs/settings"
 import { CompanyLogoSVG } from "../../../libs/company-icons"
+import { filterLabelObject } from "./filterLabels"
 
 const exData = require('../../../libs/tour/exData.json')
 
@@ -99,9 +100,9 @@ const SearchView = () => {
    * Looks at the filter to create a placeholder string
    * @returns {string}
    */
-  const getPlaceholder = () => {
-    const defaultPlaceholder = "Search in: All"
-    var updatedPlaceholder = "Search in: "
+  const getPlaceholder = (hasCompanyFilter=false) => {
+    const defaultPlaceholder = "in: All "
+    var updatedPlaceholder = "in: "
     var ct = 0
     for (const [perm, bool] of Object.entries(permFilter)) {
       if (bool) {
@@ -111,10 +112,18 @@ const SearchView = () => {
     }
 
     if (ct == 4) {
-      return defaultPlaceholder
+      updatedPlaceholder = defaultPlaceholder
     }
     if (ct == 0) {
-      return "Search in: None"
+      return "in: None "
+    }
+    if (hasCompanyFilter) {
+      updatedPlaceholder = updatedPlaceholder.concat("companies: ")
+      for (const [company, setting] of Object.entries(companyFilter)) {
+        if (setting) {
+          updatedPlaceholder = updatedPlaceholder.concat(`${company} `)
+        }
+      }
     }
     return updatedPlaceholder
   }
@@ -132,7 +141,7 @@ const SearchView = () => {
 
     var filteredWebsites = {}
     for (const [perm, websiteLevel] of Object.entries(labels)) {
-      if (Object.keys(websiteLevel).length > 0) {
+      if (Object.keys(websiteLevel).length > 0 && permFilter[perm]) {
         for (const website of Object.keys(websiteLevel)) {
           if (filteredKeys.includes(website))
             filteredWebsites[website] = allWebsites[website]
@@ -151,29 +160,36 @@ const SearchView = () => {
    *
    * @param {string} keyString
    */
-  const filterLabels = () => {
+  const filterLabels = (labels = allLabels) => {
     // filter gets passed as an array in DB call
-    var filterArr = getAllPerms()
+    var runFilter = false
+    var runCompanyFilter = false
 
-    // update array based on filter settings
-    for (const [perm, bool] of Object.entries(permFilter)) {
-      if (bool) {
-        const removeIndex = filterArr.indexOf(perm)
-        filterArr.splice(removeIndex, 1)
+    for (const bool of Object.values(permFilter)) {
+      if (!bool) {
+        runFilter = true
+        break
       }
     }
 
-    setPlaceholder(getPlaceholder())
+    for (const bool of Object.values(companyFilter)) {
+      if (bool) {
+        runCompanyFilter = true
+        break
+      } 
+    }
 
-    if (filterArr.length > 0) {
-      getLabels(filterArr).then((labels) => {
-        setWebLabels(labels)
-        filter(query, labels)
-      })
-    } else {
-      setWebLabels(allLabels)
+    setPlaceholder(getPlaceholder(runCompanyFilter))
+
+    if (runFilter || runCompanyFilter) {
+      const filtered = filterLabelObject(labels, permFilter, companyFilter, runCompanyFilter)
+      setWebLabels(filtered)
+      filter(query, filtered)
+    } 
+    else {
+      setWebLabels(labels)
       setFilter(allWebsites)
-      filter(query, allLabels)
+      filter(query, labels)
     }
   }
 
@@ -210,9 +226,9 @@ const SearchView = () => {
         // if we are then allWebsties is already set. setWebLabels will be called by filterLabels
         else {
           setFilter(allWebsites)
-          filterLabels()
           getLabels().then((labels) => {
             setAllLabels(labels)
+            filterLabels(labels)
           })
         }
         setPlaceholder(getPlaceholder())
@@ -287,6 +303,7 @@ const SearchView = () => {
                       }
                     );
                     setCompanyFilter(companyFilter);
+                    filterLabels()
                   }
                 }
                 >
