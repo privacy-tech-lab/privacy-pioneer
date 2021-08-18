@@ -5,7 +5,7 @@ privacy-tech-lab, https://www.privacytechlab.org/
 
 import React, { useEffect, useState } from "react"
 import { useHistory, useLocation } from "react-router"
-import logo from "../../../../../assets/icon-48.png"
+import logo from "../../../../../assets/logos/Rocket.svg"
 import * as Icons from "../../../../../libs/icons"
 import {
   SNavBar,
@@ -56,7 +56,7 @@ const NavBar = () => {
           <SBrandTitle>Privacy Pioneer</SBrandTitle>
         </SLeadingContainer>
       </SLeading>
-      <STrailing id='navbarTour'>
+      <STrailing id="navbarTour">
         <SNavAction
           active={tab === 0}
           onClick={() => configureRoute("/")}

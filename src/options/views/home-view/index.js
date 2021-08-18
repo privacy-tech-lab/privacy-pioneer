@@ -52,7 +52,6 @@ const HomeView = () => {
         getWebsites().then((websites) => {
           setWebsites(websites)
           getLabels().then((labels) => {
-            console.log(labels)
             setLabels(labels)
             ReactTooltip.rebuild()
           }),

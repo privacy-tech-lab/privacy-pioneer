@@ -42,12 +42,13 @@ export const SLeadingContainer = styled.div`
 
 export const SBrandIcon = styled.img`
   margin-right: 16px;
-  height: 36px;
-  width: 36px;
+  height: 64px;
+  aspect-ratio: 1/1;
 `
 
 export const SBrandTitle = styled.div`
-  font-size: var(--headline);
+  font-size: var(--title1);
+  font-weight: 500;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;

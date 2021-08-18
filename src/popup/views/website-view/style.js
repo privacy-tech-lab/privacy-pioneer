@@ -4,7 +4,7 @@ privacy-tech-lab, https://www.privacytechlab.org/
 */
 
 import styled from "styled-components"
-import logo from "../../../assets/icon-48.png"
+import logo from "../../../assets/logos/Rocket.svg"
 
 export const SLeading = styled.div`
   display: flex;
@@ -94,7 +94,7 @@ export const SLoader = styled.div`
 export const SEmpty = styled.div`
   display: flex;
   flex: 1;
-  margin-top: 30px;
+  margin-top: 15px;
   padding-left: 12px;
   padding-right: 12px;
   font-weight: bold;
@@ -102,6 +102,11 @@ export const SEmpty = styled.div`
   font-size: var(--title2);
   align-items: center;
   justify-content: center;
+  img {
+    margin-top: 12px;
+    object-fit: contain;
+    width: 80%;
+  }
 `
 export const SEmptyText = styled.text`
   display: flex;

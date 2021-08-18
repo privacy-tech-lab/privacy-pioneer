@@ -174,7 +174,6 @@ const SearchView = () => {
   useEffect(() => {
     getTourStatus().then((res) => {
       if (res) {
-        console.log("Tour")
         setTouring(true)
         setAllWebsites(exData.labelArrayPerSite)
         setFilter(exData.labelArrayPerSite)
