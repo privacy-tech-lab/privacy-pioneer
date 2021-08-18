@@ -36,7 +36,7 @@ export const getParents = (labels) => {
 }
 
 // This is the list of companies we have SVGs for. Will be updated as needed
-const companiesWithSVG = new Set([
+export const companiesWithSVG = new Set([
   "AddThis",
   "Adobe",
   "Amazon",
@@ -75,4 +75,10 @@ export const getParent = (website) => {
       return parentSite
     }
   }
+}
+
+export const getCompanyIconDict = () => {
+
+
+
 }

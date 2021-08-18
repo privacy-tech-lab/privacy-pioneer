@@ -15,7 +15,8 @@ import {
   SFilterRow,
   SFilterRowItem,
   SEmpty,
-  SFiltersDiv
+  SFiltersDiv,
+  SCompaniesButton
 } from "./style"
 import { SContainer, SSubtitle } from "./style"
 import * as Icons from "../../../libs/icons"
@@ -32,6 +33,7 @@ import {
 import ReactTooltip from "react-tooltip"
 import { seeAllSteps, SeeAllTour } from "../../../libs/tour"
 import { getTourStatus } from "../../../libs/settings"
+import { CompanyLogoSVG } from "../../../libs/company-icons"
 
 const exData = require('../../../libs/tour/exData.json')
 
@@ -59,6 +61,14 @@ const SearchView = () => {
     return mapping
   }
 
+  const getEmptyCompanyFilter = () => {
+    var mapping = {}
+    Object.keys( CompanyLogoSVG ).map(company => {
+      mapping[company] = false
+    })
+    return mapping
+  }
+
   const [modal, setModal] = useState({ show: false })
   const history = useHistory()
   const location = useLocation()
@@ -78,6 +88,8 @@ const SearchView = () => {
         }
       : getPermMapping(location.state[0])
   )
+  const [showCompanies, setShowCompanies] = useState(false)
+  const [companyFilter, setCompanyFilter] = useState(getEmptyCompanyFilter())
   const [placeholder, setPlaceholder] = useState("")
   const [showEmpty, setShowEmpty] = useState(false)
   const [query, setQuery] = useState("")
@@ -243,7 +255,9 @@ const SearchView = () => {
                 />
               </SInputContainer>
             </SSearchContainer>
-            <SFilterRow>
+            <SFilterRow
+              show={true}
+            >
               {Object.values(permissionEnum).map((permission) => (
                 <SFilterRowItem
                   onClick={() => {
@@ -255,10 +269,46 @@ const SearchView = () => {
                   highlight={permFilter[permission]}
                 >
                   {Icons.getLabelIcon(permission, "21px")}
-                  {" "
-                    .concat(permission.charAt(0).toUpperCase())
+                  {permission.charAt(0).toUpperCase()
                     .concat(permission.slice(1))}
                 </SFilterRowItem>
+              ))}
+              <SFilterRowItem
+                onClick={()=> {
+                  setShowCompanies(!showCompanies)
+                }}
+                key={'Companies'}
+                highlight={showCompanies}
+              >
+                <SCompaniesButton
+                  onClick={ () => {
+                    Object.keys(companyFilter).map( (company) => {
+                        companyFilter[company] = false
+                      }
+                    );
+                    setCompanyFilter(companyFilter);
+                  }
+                }
+                >
+                  {'Companies'}
+                </SCompaniesButton>
+              </SFilterRowItem>
+            </SFilterRow>
+            <SFilterRow
+              show={showCompanies}
+            >
+              {Object.entries(CompanyLogoSVG).map(([parent, logo]) => (
+               <SFilterRowItem
+                onClick={() => {
+                  companyFilter[parent] = !companyFilter[parent]
+                  setCompanyFilter(companyFilter)
+                  filterLabels()
+                }}
+                key={parent}
+                highlight={companyFilter[parent]}
+               >
+                 {logo({size:'21px'})}
+               </SFilterRowItem>
               ))}
             </SFilterRow>
           </SFiltersDiv>
