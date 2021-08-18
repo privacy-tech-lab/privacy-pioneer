@@ -36,7 +36,7 @@ import { getTourStatus } from "../../../libs/settings"
 import { CompanyLogoSVG } from "../../../libs/company-icons"
 import { filterLabelObject } from "./filterLabels"
 
-const exData = require('../../../libs/tour/exData.json')
+const exData = require("../../../libs/tour/exData.json")
 
 /**
  * location.state = undefined | [permission, websites]
@@ -94,7 +94,7 @@ const SearchView = () => {
   const [placeholder, setPlaceholder] = useState("")
   const [showEmpty, setShowEmpty] = useState(false)
   const [query, setQuery] = useState("")
-  const [touring, setTouring] = useState({})
+  const [touring, setTouring] = useState(false)
 
   /**
    * Looks at the filter to create a placeholder string
@@ -200,7 +200,7 @@ const SearchView = () => {
   }
 
   useEffect(() => {
-    getTourStatus().then(res => {
+    getTourStatus().then((res) => {
       if (res) {
         setTouring(true)
         setAllWebsites(exData.labelArrayPerSite)
@@ -208,8 +208,7 @@ const SearchView = () => {
         setWebLabels(exData.dataJson)
         setAllLabels(exData.dataJson)
         ReactTooltip.rebuild()
-      }
-      else {
+      } else {
         setTouring(false)
         // if we're not passed the getWebsites call from previous:
         if (location.state === undefined) {
@@ -258,7 +257,7 @@ const SearchView = () => {
           <SSubtitle>
             See browsed websites accessing and sharing your personal information
           </SSubtitle>
-          <SFiltersDiv id='filtersTour'>
+          <SFiltersDiv id="filtersTour">
             <SSearchContainer>
               <SInputContainer>
                 <Icons.Search size={24} />
@@ -340,7 +339,7 @@ const SearchView = () => {
           </SEmpty>
         </SContainer>
       </Scaffold>
-      {touring?<SeeAllTour steps={seeAllSteps}/>:null}
+      {touring ? <SeeAllTour steps={seeAllSteps} /> : null}
     </React.Fragment>
   )
 }

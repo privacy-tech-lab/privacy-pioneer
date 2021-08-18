@@ -132,7 +132,7 @@ const LabelCard = ({ requests, website, label, margin, onTap, popup }) => {
                 <WebsiteLogo
                   website={website}
                   margin={"0px 6px 0px 6px"}
-                  label
+                  isLabel
                 />
               </div>
             ))}

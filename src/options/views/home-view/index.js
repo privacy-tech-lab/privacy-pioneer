@@ -23,7 +23,7 @@ import {
 import { HomeTour, homeSteps } from "../../../libs/tour/index.js"
 import { getTourStatus } from "../../../libs/settings/index.js"
 
-const exData = require('../../../libs/tour/exData.json')
+const exData = require("../../../libs/tour/exData.json")
 
 /**
  * Home page view containing overview and recently identified labels
@@ -34,9 +34,9 @@ const HomeView = () => {
   const [labels, setLabels] = useState({})
   const [modal, setModal] = useState({ show: false })
   const entries = Object.entries(websites)
-  const [touring, setTouring] = useState({})
+  const [touring, setTouring] = useState(false)
   useEffect(() => {
-    getTourStatus().then(res => {
+    getTourStatus().then((res) => {
       if (res) {
         setTouring(true)
         setWebsites(exData.labelArrayPerSite)
@@ -47,13 +47,11 @@ const HomeView = () => {
           .addEventListener("hidden.bs.modal", () => {
             setModal({ show: false })
           })
-      } 
-      else {
+      } else {
         setTouring(false)
         getWebsites().then((websites) => {
           setWebsites(websites)
           getLabels().then((labels) => {
-            console.log(labels)
             setLabels(labels)
             ReactTooltip.rebuild()
           }),
@@ -82,7 +80,7 @@ const HomeView = () => {
         show={modal.show}
       />
       <Scaffold>
-        <SContainer id='summaryTour'>
+        <SContainer id="summaryTour">
           <STitle>Overview</STitle>
           <SSubtitle>A summary of your privacy labels</SSubtitle>
           <SCardGroup>
@@ -111,17 +109,17 @@ const HomeView = () => {
             </SButtonText>
           </SSectionContainer>
           <div id="websitesTour">
-          <WebsiteLabelList
-            allLabels={labels}
-            websites={websites}
-            recent
-            maxLength={entries.length > 3 ? 3 : entries.length}
-            handleTap={handleTap}
-          />
+            <WebsiteLabelList
+              allLabels={labels}
+              websites={websites}
+              recent
+              maxLength={entries.length > 3 ? 3 : entries.length}
+              handleTap={handleTap}
+            />
           </div>
         </SContainer>
       </Scaffold>
-      {touring?<HomeTour steps={homeSteps} />:null}
+      {touring ? <HomeTour steps={homeSteps} /> : null}
     </React.Fragment>
   )
 }

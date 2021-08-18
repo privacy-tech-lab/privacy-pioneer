@@ -23,6 +23,7 @@ import {
   SEmpty,
   SEmptyText,
 } from "./style"
+import floating from "../../../assets/logos/Floating.svg"
 import NavBar from "../../components/nav-bar"
 import { getWebsiteLabels } from "../../../libs/indexed-db/getIdbData.js"
 import { getHostname } from "../../../background/analysis/utility/util.js"
@@ -155,19 +156,14 @@ const WebsiteView = () => {
               <SSubtitle>{getCount()}</SSubtitle>
             </SHeader>
             {empty ? (
-              ourOptions ? (
-                <SEmpty>
-                  <SEmptyText>
-                    Nothing here ... Check elsewhere or come back later!
-                  </SEmptyText>
-                </SEmpty>
-              ) : (
-                <SEmpty>
-                  <SEmptyText>
-                    Nothing yet... Keep browsing and check back later!
-                  </SEmptyText>
-                </SEmpty>
-              )
+              <SEmpty>
+                <SEmptyText>
+                  {ourOptions
+                    ? "Nothing here...Check elsewhere or come back later!"
+                    : "Nothing yet...Keep browsing and check back later!"}
+                </SEmptyText>
+                <img src={floating} />
+              </SEmpty>
             ) : (
               Object.entries(labels).map(([label, requests]) => (
                 <LabelCard

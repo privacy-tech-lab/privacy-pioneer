@@ -20,9 +20,9 @@ const SWebsiteLogo = styled.div`
   margin: ${(props) => (props.margin ? props.margin : "0px")};
   border-radius: 50%;
   background-color: ${(props) =>
-    props.label ? "none" : "var(--primaryHighlightColor)"};
+    props.isLabel ? "none" : "var(--primaryHighlightColor)"};
   border: ${(props) =>
-    props.label ? "solid var(--primaryTextColor) 3px" : "none"};
+    props.isLabel ? "solid var(--primaryTextColor) 3px" : "none"};
 `
 const SCompanyLogo = styled.div`
   display: flex;
@@ -35,7 +35,7 @@ const SCompanyLogo = styled.div`
 
 const SLetterLogo = styled.div`
   color: ${(props) =>
-    props.label ? "var(--primaryTextColor)" : "var(--tintTextColor)"};
+    props.isLabel ? "var(--primaryTextColor)" : "var(--tintTextColor)"};
   font-weight: 700;
   font-size: ${(props) => (props.large ? "32px" : "18px")};
 `
@@ -43,10 +43,10 @@ const SLetterLogo = styled.div`
 /**
  * Displays website logo (which is the first letter of website)
  */
-const WebsiteLogo = ({ website, large, margin, label }) => {
+const WebsiteLogo = ({ website, large, margin, isLabel }) => {
   return (
-    <SWebsiteLogo margin={margin} large={large} label={label}>
-      <SLetterLogo large={large} label={label}>
+    <SWebsiteLogo margin={margin} large={large} isLabel={isLabel}>
+      <SLetterLogo large={large} isLabel={isLabel}>
         {website.charAt(0).toUpperCase()}
       </SLetterLogo>
     </SWebsiteLogo>

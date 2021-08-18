@@ -178,9 +178,5 @@ export const getLabels = async (filter = null) => {
     })
   })
 
-  Object.values(permissionEnum).forEach((label) => {
-    if (excludedLabels.includes(label)) res[label] = {}
-  })
-
   return res
 }
