@@ -101,7 +101,7 @@ export const SEmpty = styled.div`
 `;
 
 export const SCompaniesButton = styled.div`
-  background-color: var(--primaryBrandColor);
+  background-color: #9b45d9;
   color: #ffffff;
   border-radius: 5px;
   padding: 5px;
