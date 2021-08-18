@@ -52,7 +52,7 @@ const Options = css`
 const defaultTheme = css`
   :root {
     // Colors
-    --primaryBrandColor: #6b219f;
+    --primaryBrandColor: #9b45d9;
     --primaryBrandTintColor: #f2e8f9;
     --backgroundColor: #fcffff;
     --primaryTextColor: #000000;
@@ -69,8 +69,6 @@ const defaultTheme = css`
 
 const darkTheme = css`
   :root {
-    --primaryBrandColor: #6b219f;
-    --primaryBrandTintColor: #f2e8f9;
     --backgroundColor: #1c1c1e;
     --primaryTextColor: #ffffff;
     --secondaryTextColor: #ebebf5;
