@@ -18,11 +18,18 @@ import { storeEnum } from "../../../background/analysis/classModels"
  */
 const LabelCards = ({ website, handleTap, allLabels, webLabels }) => {
   return webLabels.map((label, index) => {
-    var requests =
-      Object.entries(allLabels).length > 0 ? allLabels[label][website] : "empty"
-    if (!label in allLabels) {
-      requests = "hide"
+    var requests = "hide"
+    if ( Object.entries(allLabels).length == 0 ) {
+        requests = "empty"
     }
+    else {
+      if (label in allLabels && website in allLabels[label]) {
+          requests = allLabels[label][website]
+      }
+    }
+
+    if (requests == "hide") { return null}
+    
     return (
       <LabelCard
         key={index}

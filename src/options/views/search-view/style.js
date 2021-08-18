@@ -22,7 +22,7 @@ export const STop = styled.div`
 `;
 
 export const SFilterRow = styled.div`
-  display: flex;
+  display: ${(props) => (props.show ? "flex" : "none")};
   flex-direction: row;
   align-items: center;
   margin-top: 7px;
@@ -81,20 +81,28 @@ export const SSearchContainer = styled.div`
   display: inline-flex;
   flex-direction: row;
   justify-content: left;
-`
+`;
 
 
 export const SFilterRowItem = styled.div`
   font-weight: bold;
   user-select: none;
   margin-top: 2px;
+  margin-right: 2px;
   padding: 4px;
   cursor: pointer;
   opacity: ${(props) => (props.highlight) ? 1: .6};
-`
+`;
 
 export const SEmpty = styled.div`
   font-size: var(--title2);
   font-weight: bold;
   display: ${(props) => (props.show ? "block" : "none")};
-`
+`;
+
+export const SCompaniesButton = styled.div`
+  background-color: #9b45d9;
+  color: #ffffff;
+  border-radius: 5px;
+  padding: 5px;
+`;
