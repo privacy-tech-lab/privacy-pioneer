@@ -243,19 +243,20 @@ export const Yandex = ({ size }) => (
 )
 
 export const CompanyLogoSVG = Object.freeze({
-  "AddThis": AddThis,
-  "Adobe": Adobe,
+
+  "Google": Google,
+  "Facebook": Facebook,
   "Amazon": Amazon,
+  "Microsoft": Microsoft,
+  "Twitter": Twitter,
+  "Adobe": Adobe,
+  "Salesforce": Salesforce,
   "AT&T": Atat,
   "Fox": Fox,
+  "Verizon": Verizon,
   "Ibm": Ibm,
   "Oracle": Oracle,
   "Ebay": Ebay,
-  "Facebook": Facebook,
-  "Google": Google,
-  "Microsoft": Microsoft,
-  "Salesforce": Salesforce,
-  "Twitter": Twitter,
-  "Verizon": Verizon,
+  "AddThis": AddThis,
   "Yandex": Yandex,
 })

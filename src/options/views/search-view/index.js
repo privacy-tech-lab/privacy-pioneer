@@ -292,7 +292,7 @@ const SearchView = () => {
                 onClick={()=> {
                   setShowCompanies(!showCompanies)
                 }}
-                key={'Companies'}
+                key={"Companies"}
                 highlight={showCompanies}
               >
                 <SCompaniesButton
@@ -306,7 +306,7 @@ const SearchView = () => {
                   }
                 }
                 >
-                  {'Companies'}
+                  {"Companies"}
                 </SCompaniesButton>
               </SFilterRowItem>
             </SFilterRow>
@@ -322,8 +322,11 @@ const SearchView = () => {
                 }}
                 key={parent}
                 highlight={companyFilter[parent]}
+                data-tip={parent}
+                data-place={"bottom"}
+                data-delay-show={500}
                >
-                 {logo({size:'21px'})}
+                 {logo({size:"21px"})}
                </SFilterRowItem>
               ))}
             </SFilterRow>
