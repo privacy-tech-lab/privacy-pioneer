@@ -16,6 +16,7 @@ import {
   permissionEnum,
   typeEnum,
 } from "../../../background/analysis/classModels"
+import ReactTooltip from "react-tooltip"
 import { saveKeyword } from "../../../libs/indexed-db/updateWatchlist.js"
 
 /**
@@ -52,6 +53,7 @@ const WatchlistView = () => {
   }
 
   useEffect(() => {
+    ReactTooltip.hide()
     updateList()
     // Add listener to modal so we can reset it by taking it off the dom so it doesn't hold references
     document

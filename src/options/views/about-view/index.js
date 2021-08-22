@@ -18,6 +18,7 @@ import {
 } from "./style"
 import { FAQ } from "./faq"
 import { ArrowDown } from "../../../libs/icons"
+import ReactTooltip from "react-tooltip"
 
 /**
  * About page view
@@ -27,6 +28,7 @@ const AboutView = () => {
     const [open, setOpen] = useState(false)
 
     useEffect(() => {
+      ReactTooltip.hide()
       var faqCollapse = document.getElementById(question)
       var collapse = new Collapse(faqCollapse, { toggle: false })
       open ? collapse.show() : collapse.hide()

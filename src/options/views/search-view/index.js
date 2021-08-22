@@ -16,7 +16,7 @@ import {
   SFilterRowItem,
   SEmpty,
   SFiltersDiv,
-  SCompaniesButton
+  SCompaniesButton,
 } from "./style"
 import { SContainer, SSubtitle } from "./style"
 import * as Icons from "../../../libs/icons"
@@ -64,7 +64,7 @@ const SearchView = () => {
 
   const getEmptyCompanyFilter = () => {
     var mapping = {}
-    Object.keys( CompanyLogoSVG ).map(company => {
+    Object.keys(CompanyLogoSVG).map((company) => {
       mapping[company] = false
     })
     return mapping
@@ -100,7 +100,7 @@ const SearchView = () => {
    * Looks at the filter to create a placeholder string
    * @returns {string}
    */
-  const getPlaceholder = (hasCompanyFilter=false) => {
+  const getPlaceholder = (hasCompanyFilter = false) => {
     const defaultPlaceholder = "in: All "
     var updatedPlaceholder = "in: "
     var ct = 0
@@ -176,17 +176,21 @@ const SearchView = () => {
       if (bool) {
         runCompanyFilter = true
         break
-      } 
+      }
     }
 
     setPlaceholder(getPlaceholder(runCompanyFilter))
 
     if (runFilter || runCompanyFilter) {
-      const filtered = filterLabelObject(labels, permFilter, companyFilter, runCompanyFilter)
+      const filtered = filterLabelObject(
+        labels,
+        permFilter,
+        companyFilter,
+        runCompanyFilter
+      )
       setWebLabels(filtered)
       filter(query, filtered)
-    } 
-    else {
+    } else {
       setWebLabels(labels)
       setFilter(allWebsites)
       filter(query, labels)
@@ -200,6 +204,7 @@ const SearchView = () => {
   }
 
   useEffect(() => {
+    ReactTooltip.hide()
     getTourStatus().then((res) => {
       if (res) {
         setTouring(true)
@@ -270,9 +275,7 @@ const SearchView = () => {
                 />
               </SInputContainer>
             </SSearchContainer>
-            <SFilterRow
-              show={true}
-            >
+            <SFilterRow show={true}>
               {Object.values(permissionEnum).map((permission) => (
                 <SFilterRowItem
                   onClick={() => {
@@ -284,50 +287,48 @@ const SearchView = () => {
                   highlight={permFilter[permission]}
                 >
                   {Icons.getLabelIcon(permission, "21px")}
-                  {permission.charAt(0).toUpperCase()
+                  {permission
+                    .charAt(0)
+                    .toUpperCase()
                     .concat(permission.slice(1))}
                 </SFilterRowItem>
               ))}
               <SFilterRowItem
-                onClick={()=> {
+                onClick={() => {
                   setShowCompanies(!showCompanies)
                 }}
                 key={"Companies"}
                 highlight={showCompanies}
               >
                 <SCompaniesButton
-                  onClick={ () => {
-                    Object.keys(companyFilter).map( (company) => {
-                        companyFilter[company] = false
-                      }
-                    );
-                    setCompanyFilter(companyFilter);
+                  onClick={() => {
+                    Object.keys(companyFilter).map((company) => {
+                      companyFilter[company] = false
+                    })
+                    setCompanyFilter(companyFilter)
                     filterLabels()
-                  }
-                }
+                  }}
                 >
                   {"Companies"}
                 </SCompaniesButton>
               </SFilterRowItem>
             </SFilterRow>
-            <SFilterRow
-              show={showCompanies}
-            >
+            <SFilterRow show={showCompanies}>
               {Object.entries(CompanyLogoSVG).map(([parent, logo]) => (
-               <SFilterRowItem
-                onClick={() => {
-                  companyFilter[parent] = !companyFilter[parent]
-                  setCompanyFilter(companyFilter)
-                  filterLabels()
-                }}
-                key={parent}
-                highlight={companyFilter[parent]}
-                data-tip={parent}
-                data-place={"bottom"}
-                data-delay-show={500}
-               >
-                 {logo({size:"21px"})}
-               </SFilterRowItem>
+                <SFilterRowItem
+                  onClick={() => {
+                    companyFilter[parent] = !companyFilter[parent]
+                    setCompanyFilter(companyFilter)
+                    filterLabels()
+                  }}
+                  key={parent}
+                  highlight={companyFilter[parent]}
+                  data-tip={parent}
+                  data-place={"bottom"}
+                  data-delay-show={500}
+                >
+                  {logo({ size: "21px" })}
+                </SFilterRowItem>
               ))}
             </SFilterRow>
           </SFiltersDiv>

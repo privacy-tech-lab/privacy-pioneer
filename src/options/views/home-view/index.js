@@ -36,6 +36,7 @@ const HomeView = () => {
   const entries = Object.entries(websites)
   const [touring, setTouring] = useState(false)
   useEffect(() => {
+    ReactTooltip.hide()
     getTourStatus().then((res) => {
       if (res) {
         setTouring(true)
