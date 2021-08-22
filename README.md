@@ -9,6 +9,9 @@
   <img alt="GitHub Repo stars" src="https://img.shields.io/github/stars/privacy-tech-lab/privacy-pioneer?style=social">
   <img alt="GitHub forks" src="https://img.shields.io/github/forks/privacy-tech-lab/privacy-pioneer?style=social">
 </p>
+<p align="center">
+<img src="src\assets\logos\Moon.svg" width="350" height="350">
+</p>
 
 # Privacy Pioneer
 
