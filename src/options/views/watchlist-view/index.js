@@ -5,7 +5,14 @@ privacy-tech-lab, https://www.privacytechlab.org/
 
 import React, { useEffect, useState } from "react"
 import Scaffold from "../../components/scaffold"
-import { SAddButton, SHeader, SListContent, SListHeader, STitle } from "./style"
+import {
+  SAddButton,
+  SEmpty,
+  SHeader,
+  SListContent,
+  SListHeader,
+  STitle,
+} from "./style"
 import { SContainer, SSubtitle } from "./style"
 import * as Icons from "../../../libs/icons"
 import ListItem from "./components/list-item"
@@ -139,21 +146,28 @@ const WatchlistView = () => {
             <div>TYPE</div>
           </SListHeader>
           <SListContent>
-            {items.map((item) => (
-              <ListItem
-                key={item.id}
-                id={item.id}
-                type={item.type}
-                keyword={
-                  item.type != permissionEnum.location
-                    ? item.keyword
-                    : item.location.display
-                }
-                location={item.location}
-                configModal={configModal}
-                updateList={updateList}
-              />
-            ))}
+            {items.length != 0 ? (
+              items.map((item) => (
+                <ListItem
+                  key={item.id}
+                  id={item.id}
+                  type={item.type}
+                  keyword={
+                    item.type != permissionEnum.location
+                      ? item.keyword
+                      : item.location.display
+                  }
+                  location={item.location}
+                  configModal={configModal}
+                  updateList={updateList}
+                />
+              ))
+            ) : (
+              <SEmpty>
+                You curently have no keywords press "Add Keyword" or "Add IP" to
+                add your first keyword!
+              </SEmpty>
+            )}
           </SListContent>
         </SContainer>
       </Scaffold>
