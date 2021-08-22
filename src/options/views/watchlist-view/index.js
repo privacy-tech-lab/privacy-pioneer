@@ -150,6 +150,7 @@ const WatchlistView = () => {
                 location={item.location}
                 configModal={configModal}
                 updateList={updateList}
+                notification={item.notification}
               />
             ))}
           </SListContent>
