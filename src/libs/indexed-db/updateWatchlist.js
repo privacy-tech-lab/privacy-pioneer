@@ -47,14 +47,14 @@ const saveKeyword = async (keyword, type, id) => {
           keyword: keyword,
           type: type,
           id: key,
-          notification: true,
+          notification: false,
         })
       : await watchlistKeyval.set(key, {
           location: keyword,
           type: type,
           id: key,
           locNum: maxNum,
-          notification: true,
+          notification: false,
         })
     return true
   }
@@ -63,7 +63,18 @@ const saveKeyword = async (keyword, type, id) => {
 
 const toggleNotifications = async (id) => {
   const data = await watchlistKeyval.get(id)
-  data.notification = !data.notification
+  if (data.notification) {
+    data.notification = false
+  } else {
+    data.notification = true
+    if (
+      Notification.permission == "default" ||
+      Notification.permission == "denied"
+    ) {
+      Notification.requestPermission()
+    }
+  }
+
   await watchlistKeyval.set(id, data)
 }
 
