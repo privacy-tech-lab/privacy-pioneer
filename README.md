@@ -10,9 +10,9 @@
   <img alt="GitHub forks" src="https://img.shields.io/github/forks/privacy-tech-lab/privacy-pioneer?style=social">
 </p>
 
-<p align="center">
+<!-- <p align="center">
   <a href="https://addons.mozilla.org/en-US/firefox/user/12247904/"><img src="https://github.com/privacy-tech-lab/privacy-pioneer/blob/main/firefox-add-ons-badge.png" alt="Firefox Add Ons badge" width = "125" height = "45"></a> 
-<p/>
+<p/> -->
 
 # Privacy Pioneer 
 
