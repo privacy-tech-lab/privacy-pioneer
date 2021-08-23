@@ -32,6 +32,7 @@ import {
 const SettingsView = ({ changeTheme }) => {
   useEffect(() => {
     ReactTooltip.rebuild()
+    ReactTooltip.hide()
   }, [])
   return (
     <Scaffold>
