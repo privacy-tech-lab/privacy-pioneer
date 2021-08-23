@@ -23,6 +23,7 @@ import {
   LabelToggle,
   FullSnippetToggle,
   Tour,
+  OptimizationToggle
 } from "./components"
 
 /**
@@ -59,7 +60,8 @@ const SettingsView = ({ changeTheme }) => {
             </div>
             <DangerZone />
             <FullSnippetToggle />
-            <Tour />
+            <OptimizationToggle />
+            <Tour/>
           </SSection>
         </SBody>
       </SContainer>

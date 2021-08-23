@@ -22,7 +22,7 @@ export const settingsEnum = Object.freeze({
 /**
  * Sets all labels on in settings, theme (colors) to be system setting
  */
-export const setDefault = async () => {
+export const setDefaultSettings = async () => {
   if ((await settingsKeyval.values()).length == 0) {
     await settingsKeyval.set(permissionEnum.location, true)
     await settingsKeyval.set(permissionEnum.monetization, true)
@@ -31,6 +31,7 @@ export const setDefault = async () => {
     await settingsKeyval.set("theme", settingsEnum.sameAsSystem)
     await settingsKeyval.set(settingsModelsEnum.fullSnippet, false)
     await settingsKeyval.set(settingsModelsEnum.tour, true)
+    await settingsKeyval.set(settingsModelsEnum.optimizePerformance, true)
   }
 }
 
@@ -57,7 +58,7 @@ export const getLabelStatus = async () => {
 }
 
 /**
- * Toggles labels on or off
+ * Toggles snippets on or off
  * @param {string} label label we generated
  */
  export const toggleSnippet = async () => {
@@ -69,9 +70,28 @@ export const getLabelStatus = async () => {
 /**
  * Tells whether the labels are on or off based on settings
  */
-export const getSnippetStatus = async () => {
+ export const getSnippetStatus = async () => {
   return await settingsKeyval.get(settingsModelsEnum.fullSnippet)
 }
+
+/**
+ * Toggles optimization on or off
+ * @param {string} label label we generated
+ */
+ export const toggleOptimization = async () => {
+  let currentVal = await settingsKeyval.get(settingsModelsEnum.optimizePerformance)
+  await settingsKeyval.set(settingsModelsEnum.optimizePerformance, !currentVal)
+  browser.runtime.sendMessage({msg:'dataUpdated'})
+}
+
+/**
+ * Tells whether optimization is on or off based on settings
+ */
+ export const getOptimizationStatus = async () => {
+  return await settingsKeyval.get(settingsModelsEnum.optimizePerformance)
+}
+
+
 
 /**
  * Sets the theme to be light, dark, or system
