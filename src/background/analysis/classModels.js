@@ -368,5 +368,6 @@ export const privacyLabels = Object.freeze({
  */
 export const settingsModelsEnum = Object.freeze({
   fullSnippet: "fullSnippet",
-  tour: 'tour'
+  tour: "tour",
+  optimizePerformance: "optimizePerformance",
 })

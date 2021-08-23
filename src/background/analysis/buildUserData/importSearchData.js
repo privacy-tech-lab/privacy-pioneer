@@ -149,11 +149,12 @@ async function importData() {
     networkKeywords = hashUserDictValues(networkKeywords);
 
     const fullSnippet = await settingsKeyval.get(settingsModelsEnum.fullSnippet)
+    const optimizePerformance = await settingsKeyval.get(settingsModelsEnum.optimizePerformance)
 
     // returns [location we obtained from google maps API, {phone #s, emails,
     // location elements entered by the user, fingerprinting keywords}, websites
     // that have identification objectives as services]
-    return [locCoords, networkKeywords, services, fullSnippet]
+    return [locCoords, networkKeywords, services, fullSnippet, optimizePerformance]
 }
 
 

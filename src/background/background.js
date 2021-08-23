@@ -16,7 +16,7 @@ import {
   onBeforeSendHeaders,
   onHeadersReceived,
 } from "./analysis/analyze.js"
-import { setDefault } from "../libs/settings/index.js"
+import { setDefaultSettings } from "../libs/settings/index.js"
 import { importData } from "./analysis/buildUserData/importSearchData.js"
 import Queue from "queue"
 
@@ -115,7 +115,7 @@ async function initDB(initArr) {
   }
 }
 
-setDefault()
+setDefaultSettings()
 
 /**
  * Gets a callback with downloadDelta every time downloads have been changed.

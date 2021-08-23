@@ -33,6 +33,8 @@ function getAllEvidenceForRequest(request, userData) {
   // websites that have identification objectives
   const urls = userData[2]
 
+  const optimizePerformance = userData[4]
+
   const strRequest = JSON.stringify(request);
 
   var evidenceArr = [];
@@ -65,18 +67,19 @@ function getAllEvidenceForRequest(request, userData) {
   // comment out below line when testing termination heuristics
   executeAndPush(urlSearch(strRequest, rootUrl, reqUrl, request.urlClassification))
 
+
   function earlyTermination() {
     return lengthHeuristic(strRequest)
   }
 
-  const abandonAnalysis = earlyTermination()
-  if (abandonAnalysis) { 
-    return evidenceArr
+  if (optimizePerformance) {
+    if (earlyTermination()) {
+      return evidenceArr
+    }
   }
-  else {
-    runWatchlistAnalysis()
-    runStandardAnalysis()
-  }
+
+  runWatchlistAnalysis()
+  runStandardAnalysis()
 
   return evidenceArr
 
