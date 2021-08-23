@@ -1,5 +1,3 @@
-# Privacy Pioneer
-
 <p align="center">
   <img alt="GitHub release (latest by date)" src="https://img.shields.io/github/v/release/privacy-tech-lab/privacy-pioneer">
   <img alt="GitHub Release Date" src="https://img.shields.io/github/release-date/privacy-tech-lab/privacy-pioneer">
@@ -13,8 +11,18 @@
 </p>
 
 <p align="center">
+  <a href="https://addons.mozilla.org/en-US/firefox/user/12247904/"><img src="https://github.com/privacy-tech-lab/privacy-pioneer/blob/main/firefox-add-ons-badge.png" alt="Firefox Add Ons badge" width = "125" height = "45"></a> 
+<p/>
+
+# Privacy Pioneer 
+
+
+
+<p align="center">
 <img src="src\assets\logos\Moon.svg" width="250" height="250">
 </p>
+
+
   
   
   
@@ -128,11 +136,6 @@ It also uses the following resources.
 
 We thank the developers.
 
-<br/>
-
-<p align="center">
-  <a href="https://addons.mozilla.org/en-US/firefox/user/12247904/"><img src="https://github.com/privacy-tech-lab/privacy-pioneer/blob/main/firefox-add-ons-badge.png" alt="Firefox Add Ons badge"></a> 
-<p/>
 
 <p align="center">
   <a href="https://www.privacytechlab.org/"><img src="https://github.com/privacy-tech-lab/privacy-pioneer/blob/main/plt_logo.png" alt="privacy-tech-lab logo"></a><p/>
