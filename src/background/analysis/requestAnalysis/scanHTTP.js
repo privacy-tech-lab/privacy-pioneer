@@ -8,29 +8,6 @@ import { permissionEnum, typeEnum, resourceTypeEnum } from "../classModels.js"
 import { lengthHeuristic } from "../requestAnalysis/earlyTermination/heuristics.js";
 
 
-var collectLabelLength = {
-  1000: 0,
-  2500: 0,
-  5000: 0,
-  10000: 0,
-  25000: 0,
-  50000: 0,
-  100000: 0,
-  150000: 0,
-  200000: 0,
-  250000: 0,
-  400000: 0,
-  600000: 0,
-  800000: 0,
-  1000000: 0,
-  2000000: 0,
-  5000000: 0,
-  8000000: 0,
-  100000000: 0,
-}
-
-var abandonDict = {}
-
 /**
  * This function runs all of the apporpriate analysis functions for an HTTP request.
  * It returns an empty array if no evidence is found. Else an array of arrays containing the
@@ -86,7 +63,7 @@ function getAllEvidenceForRequest(request, userData) {
   
   // always search to see if the url of the root or request comes up in our services list
   // comment out below line when testing termination heuristics
-  //executeAndPush(urlSearch(strRequest, rootUrl, reqUrl, request.urlClassification))
+  executeAndPush(urlSearch(strRequest, rootUrl, reqUrl, request.urlClassification))
 
   function earlyTermination() {
     return lengthHeuristic(strRequest)
@@ -94,28 +71,11 @@ function getAllEvidenceForRequest(request, userData) {
 
   const abandonAnalysis = earlyTermination()
   if (abandonAnalysis) { 
-    abandonDict[request.id] = true
+    return evidenceArr
   }
-
-  runWatchlistAnalysis()
-  runStandardAnalysis()
-
-  // check if we would have abandoned a request that generated evidence.
-  if ( request.id in abandonDict && evidenceArr.length != 0 ) {
-    console.log(evidenceArr)
-    console.log(strRequest.length)
-  }
-
-  if ( true ) {
-    for (const [k, v] of Object.entries(collectLabelLength)) {
-      if (strRequest.length < k) {
-        collectLabelLength[k] = v + 1
-        break
-      }
-    }
-    if (Math.floor(Math.random() * 5) == 1) {
-      console.log(collectLabelLength)
-    } 
+  else {
+    runWatchlistAnalysis()
+    runStandardAnalysis()
   }
 
   return evidenceArr
@@ -163,6 +123,17 @@ function getAllEvidenceForRequest(request, userData) {
    * @returns {Void} Nothing. Updates evidenceArr as necessary
    */
   function runStandardAnalysis() {
+
+    // if the request is an image or subFrame and is coming from a different url than the root, we look for our pixel URLs
+    if ( (request.type == resourceTypeEnum.image || request.type == resourceTypeEnum.subFrame) && rootUrl != reqUrl ) {
+      executeAndPush(pixelSearch(strRequest, networkKeywords, rootUrl, reqUrl))
+      executeAndPush(dynamicPixelSearch(strRequest, reqUrl, rootUrl))
+      // only do pixel analysis for images.
+      if ( request.type == resourceTypeEnum.image) {
+        return 
+      }
+    }
+
     // if this value is 0 the client likely denied location permission
     // or they could be on Null Island in the middle of the Gulf of Guinea
     if (loc[0] != 0 && loc[1] != 0) {
@@ -177,12 +148,6 @@ function getAllEvidenceForRequest(request, userData) {
 
     // search to see if any fingerprint data
     executeAndPush(fingerprintSearch(strRequest, networkKeywords, rootUrl, reqUrl))
-
-    // if the request is an image or subFrame and is coming from a different url than the root, we look for our pixel URLs
-    if ( (request.type == resourceTypeEnum.image || request.type == resourceTypeEnum.subFrame) && rootUrl != reqUrl ) {
-      executeAndPush(pixelSearch(strRequest, networkKeywords, rootUrl, reqUrl))
-      executeAndPush(dynamicPixelSearch(strRequest, reqUrl, rootUrl))
-    }
   }
 }
 

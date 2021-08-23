@@ -31,8 +31,6 @@ const filter = {
     "script",
     "xmlhttprequest",
     "sub_frame",
-    "websocket",
-    "main_frame",
     "image",
   ],
 }
