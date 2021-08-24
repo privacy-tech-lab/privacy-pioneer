@@ -106,7 +106,7 @@ const WatchlistView = () => {
               <STitle>Watchlist</STitle>
               <SSubtitle>
                 Edit your watchlist so we can monitor personal information
-                collected and shared between companies.
+                collected and shared with companies.
               </SSubtitle>
             </div>
             <div
@@ -164,8 +164,7 @@ const WatchlistView = () => {
               ))
             ) : (
               <SEmpty>
-                You curently have no keywords press "Add Keyword" or "Add IP" to
-                add your first keyword!
+                You currently have no keywords or IP. Press "Add Keyword" or "Add IP"!
               </SEmpty>
             )}
           </SListContent>
