@@ -62,9 +62,12 @@ export const FAQ = {
       have occurred with the appropriate labels. Note that Privacy Pioneer does
       not block or intervene with these procedures; Privacy Pioneer is an
       information-focused browser extension intending to give you greater
-      understanding of the web. If you want to block tracking in the first
-      place, consider tools like Privacy Badger, uBlockOrigin, or a proxy
-      service.
+      understanding of the web. If you want to block tracking or ad services in 
+      the first place, consider tools like&nbsp;
+      <a href="https://addons.mozilla.org/en-US/firefox/addon/disconnect/?utm_source=addons.mozilla.org&utm_medium=referral&utm_content=search" target="_blank">Disconnect</a>,&nbsp;
+      <a href="https://privacybadger.org/" target="_blank">Privacy Badger</a>,&nbsp; 
+      <a href="https://addons.mozilla.org/en-US/firefox/addon/ublock-origin/" target="_blank">uBlockOrigin</a> 
+      , or a proxy service.
     </text>
   ),
   "What are first and third party websites?": (

@@ -92,57 +92,6 @@ function urlSearch(strReq, rootUrl, reqUrl, classifications) {
   }
 
 /**
- * Iterates through the disconnect list and adds evidence accordingly. 
- * Only iterating through the fingerprintingInvasive category right now.
- * 
- * Defined in searchFunctions.js
- * 
- * Used in scanHTTP.js
- * 
- * @param {Request} request An HTTP request
- * @param {object} urls The disconnect JSON
- * @returns {Array<Array>|Array} An array of arrays with the search results [] if no result 
- */
- function disconnectFingerprintSearch(request, urls) {
-
-  var output = []
-
-  /**
-   * adds a piece of evidence from the disconnect JSON to allign with our permission type schema.
-   * 
-   * Defined, used in searchFunctions.js
-   * 
-   * @param {string} perm permission from permissionEnum
-   * @param {string} type type from typeEnum
-   * @returns {void} Nothing. Adds to evidence list
-   */
-  function addDisconnectEvidence(perm, type) {
-    output.push(createEvidenceObj(perm, request.details["originUrl"], "null", request.details["url"], type, undefined))
-  }
-  
-  // The fingerprintingInvasive category is the only one we are traversing.
-  const cat = 'fingerprintingInvasive'
-  var fpInv = urls["categories"][cat]
-  for (var j = 0; j < fpInv.length; j++) {
-    var obj = urls["categories"][cat][j]
-    var indivKey = Object.keys(obj)
-    var nextKey = Object.keys(urls["categories"][cat][j][indivKey])
-    for (var k = 0; k < nextKey.length; k++) {
-      var urlLst = urls["categories"][cat][j][indivKey][nextKey[k]]
-      var url = request.details["url"]
-      // if there are multiple URLs on the list we go here
-      for (var u = 0; u < urlLst.length; u++) {
-        if (url.includes(urlLst[u])) {
-            addDisconnectEvidence(permissionEnum.tracking, typeEnum.fingerprinting);
-        }
-      }
-    }
-  }
-  return output
-}
-
-
-/**
  * Searches an HTTP request for a users lattitude and longitude. Uses regular expression patterns to look for floating point patterns.
  * We only add evidence if we find a .1 distance from both the 
  * lattitude and the longitude within 250 characters of each other in the request
@@ -456,4 +405,4 @@ function encodedEmailSearch(strReq, networkKeywords, rootUrl, reqUrl) {
   return output
 }
 
-export { regexSearch, coordinateSearch, urlSearch, locationKeywordSearch, fingerprintSearch, ipSearch, pixelSearch, disconnectFingerprintSearch, encodedEmailSearch, dynamicPixelSearch }
+export { regexSearch, coordinateSearch, urlSearch, locationKeywordSearch, fingerprintSearch, ipSearch, pixelSearch, encodedEmailSearch, dynamicPixelSearch }

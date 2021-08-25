@@ -90,7 +90,7 @@ const EditModal = ({ keywordType, keyword, edit, id, updateList }) => {
    */
   const validate = () => {
     if (
-      _keywordType == typeEnum.phone &&
+      _keywordType == typeEnum.phoneNumber &&
       !(
         inputValidator.numRegex.test(_keyword) ||
         inputValidator.numRegex2.test(_keyword)
@@ -99,7 +99,7 @@ const EditModal = ({ keywordType, keyword, edit, id, updateList }) => {
       badInput("phone number")
       return false
     } else if (
-      _keywordType == typeEnum.email &&
+      _keywordType == typeEnum.emailAddress &&
       !(
         inputValidator.emailRegex.test(_keyword) ||
         inputValidator.emailRegex2.test(_keyword)
@@ -115,6 +115,39 @@ const EditModal = ({ keywordType, keyword, edit, id, updateList }) => {
       )
     ) {
       badInput("IP address")
+      return false
+    } else if (
+      _keywordType == typeEnum.userKeyword && 
+      !inputValidator.userKeyword.test(_keyword)
+    ) {
+      // BAD INPUT KEYWORD FIX IT ##################################
+      return false
+    } else if (
+      _keywordType == permissionEnum.location &&
+      !(
+        inputValidator.zipCode.test(_location.zipCode) ||
+        _location.zipCode
+      )
+    ) {
+      badInput("zip code")
+      return false
+    } else if (
+      _keywordType == permissionEnum.location &&
+      !(
+        inputValidator.city_address.test(_location.city) || 
+        _location.city
+      )
+    ) {
+      badInput('city')
+      return false
+    } else if (
+      _keywordType == permissionEnum.location &&
+      !(
+        inputValidator.city_address.test(_location.streetAddress) ||
+        _location.streetAddress
+      )
+    ) {
+      badInput('address')
       return false
     } else return true
   }

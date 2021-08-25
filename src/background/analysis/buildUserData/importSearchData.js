@@ -80,7 +80,7 @@ async function importData() {
         userZip.forEach( zip => {
             const origHash = watchlistHashGen(typeEnum.zipCode, zip)
             const zipRegex = buildZipRegex(zip)
-            const zipObj = createKeywordObj(zipRegex, origHash)
+            const zipObj = createKeywordObj(zipRegex, typeEnum.zipCode, origHash)
             userZipArr.push(zipObj)
             let abrev, state;
             [abrev, state] = getState(zip)
