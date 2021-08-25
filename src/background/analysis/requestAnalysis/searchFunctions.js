@@ -71,7 +71,7 @@ const classificationTransformation = {
  * @param {object} urls The disconnect JSON
  * @returns {Array<Array>|Array} An array of arrays with the search results [] if no result 
  */
-function urlSearch(strReq, rootUrl, reqUrl, classifications) {
+function urlSearch(rootUrl, reqUrl, classifications) {
   var output = []
   let firstPartyArr = classifications.firstParty;
   let thirdPartyArr = classifications.thirdParty;
@@ -81,7 +81,7 @@ function urlSearch(strReq, rootUrl, reqUrl, classifications) {
       if (classification in classificationTransformation) {
         let p, t;
         [p, t] = classificationTransformation[classification];
-        output.push(createEvidenceObj(p, rootUrl, strReq, reqUrl, t, undefined))
+        output.push(createEvidenceObj(p, rootUrl, null, reqUrl, t, undefined))
       }
     }
   }
@@ -129,7 +129,7 @@ function urlSearch(strReq, rootUrl, reqUrl, classifications) {
     var nextKey = Object.keys(urls["categories"][cat][j][indivKey])
     for (var k = 0; k < nextKey.length; k++) {
       var urlLst = urls["categories"][cat][j][indivKey][nextKey[k]]
-      var url = request.details["url"]
+      var url = request.reqUrl
       // if there are multiple URLs on the list we go here
       for (var u = 0; u < urlLst.length; u++) {
         if (url.includes(urlLst[u])) {
