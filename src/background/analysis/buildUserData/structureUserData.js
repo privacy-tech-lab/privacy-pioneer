@@ -26,7 +26,7 @@ async function getWatchlistDict() {
         for (let [t, val] of Object.entries(keywordObject) ) {
             // we have either a type of key or an actual key
             // the multi-line input gets parsed with its own function
-            if (t == permissionEnum.location ) { parseLocationObject(val, user_store_dict) }
+            if (t == permissionEnum.location ) { parseLocationObject(val, user_store_dict, keywordObject.id) }
             if (t == 'type') { ktype = val }
             if (t == 'keyword') { keyword = val }
        }
@@ -53,19 +53,19 @@ async function getWatchlistDict() {
  * @param {Dict<permissionEnum<typeEnum>>} user_dict The dictionary being built by getWatchlistDict()
  * @returns {void} Nothing. Updates the user_dict paramter
  */
- function parseLocationObject(locObj, user_dict) {
+ function parseLocationObject(locObj, user_dict, id) {
 
-    const locElems = new Set([typeEnum.streetAddress, typeEnum.city, typeEnum.zipCode])
+    const locElems = new Set([typeEnum.streetAddress, typeEnum.city, typeEnum.zipCode, typeEnum.state])
 
     for ( let [t, val] of Object.entries(locObj) ) {
         if(locElems.has(t)) {
             let ktype = t
             let keyword = val
             if (t in user_dict) {
-                let updated = user_dict[ktype].concat([keyword])
+                let updated = user_dict[ktype].concat([[keyword, id]])
                 user_dict[ktype] = updated
             }
-            else { user_dict[ktype] = [keyword] }
+            else { user_dict[ktype] = [[keyword, id]] }
         }
     }
 }
