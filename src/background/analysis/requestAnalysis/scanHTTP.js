@@ -83,8 +83,6 @@ function getAllEvidenceForRequest(request, userData) {
   runWatchlistAnalysis()
   runStandardAnalysis()
 
-  console.log(evidenceArr)
-
   return evidenceArr
 
   /**

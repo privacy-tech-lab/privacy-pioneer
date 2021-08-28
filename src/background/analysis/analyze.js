@@ -16,12 +16,11 @@ import { addToEvidenceStore } from "./interactDB/addEvidence.js";
 import { getAllEvidenceForRequest } from "./requestAnalysis/scanHTTP.js";
 import { settingsKeyval } from "../../libs/indexed-db/openDB.js";
 import { urlSearch } from "./requestAnalysis/searchFunctions.js";
+import { MAX_BYTE_LEN } from "./constants.js";
 
 // Temporary container to hold network requests while properties are being added from listener callbacks
-const buffer = {}
-
-// used in onBeforeRequest callback
-const decoder = new TextDecoder("utf-8")
+const buffer = {},
+ decoder = new TextDecoder("utf-8")
 
 
 /**
@@ -39,9 +38,7 @@ const decoder = new TextDecoder("utf-8")
  * @returns {Void} Calls resolveBuffer (in analyze.js)
  */
 const onBeforeRequest = (details, data) => {
-  // filter = you can now monitor a response before the request is sent
-  const filter = browser.webRequest.filterResponseData(details.requestId),
-    d = []
+  
   let request
 
   if (details.requestId in buffer) {
@@ -65,29 +62,25 @@ const onBeforeRequest = (details, data) => {
     buffer[details.requestId] = request
   }
 
-  filter.onstart = (event) => {}
-  var responseLen = 0
-  var abort = false
+  // filter = you can now monitor a response before the request is sent
+  const filter = browser.webRequest.filterResponseData(details.requestId)
 
-  // on data received, add it to list d. This is analyzed for our keywords, etc later
+  var responseByteLength = 0,
+   abort = false,
+   strArr = []
+
   filter.ondata = (event) => {
-    const str = decoder.decode(event.data, { stream: true })
-    if (data[4]) {
-      responseLen += str.length
-      if (responseLen > 500000) {
-        filter.close()
+    if (!abort) {
+      filter.write(event.data)
+      responseByteLength += event.data.byteLength
+      if ( responseByteLength > MAX_BYTE_LEN ) {
+        filter.disconnect()
         abort = true
-        request.responseData = ""
-        resolveBuffer(request.id, data)
       }
       else {
-        d.push(str)
-        filter.write(event.data)
+        const str = decoder.decode(event.data, { stream: true })
+        strArr.push(str)
       }
-    }
-    else {
-      d.push(str)
-      filter.write(event.data)
     }
   }
 
@@ -96,11 +89,11 @@ const onBeforeRequest = (details, data) => {
   // when the filter stops, close filter, add data from d (as connected string) to
   // our Request created earlier. Sends to resolveBuffer (below)
   filter.onstop = async (event) => {
-    filter.close()
     if (!abort) {
-      request.responseData = d.toString()
+      filter.close()
+      request.responseData = strArr.toString()
       resolveBuffer(request.id, data)
-    }
+      }
   }
 }
 
@@ -128,9 +121,7 @@ function resolveBuffer(id, data) {
     // delete the request from our buffer (we have it stored for this function as request)
     delete buffer[id]
 
-    if (request.rootUrl) {
-      analyze(request, data)
-    }
+    analyze(request, data)
 
     }
   } 
