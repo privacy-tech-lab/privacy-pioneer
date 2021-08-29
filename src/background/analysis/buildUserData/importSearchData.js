@@ -15,7 +15,7 @@ import { buildPhone, getState, buildIpRegex, buildZipRegex, stateObj } from '../
 import { typeEnum, permissionEnum, settingsModelsEnum, KeywordObject } from "../classModels.js"
 import {setEmail, digestMessage, hexToBase64} from '../requestAnalysis/encodedEmail.js';
 import { getWatchlistDict, hashUserDictValues, createKeywordObj } from "./structureUserData.js";
-import { createEvidenceObj, watchlistHashGen } from "../utility/util.js";
+import { watchlistHashGen } from "../utility/util.js";
 import { settingsKeyval } from "../../../libs/indexed-db/openDB.js";
 
 // import keywords, services JSONs
@@ -92,9 +92,7 @@ async function importData() {
         else { locElems[typeEnum.state] = userStateArr }
 
         locElems[typeEnum.zipCode] = userZipArr
-        console.log(userStateArr)
     }
-    console.log(locElems)
 
     if (typeEnum.state in user_store_dict) {
         if (!locElems[typeEnum.state]) {
@@ -117,7 +115,6 @@ async function importData() {
         const userAddress = user_store_dict[typeEnum.streetAddress]
         locElems[typeEnum.streetAddress] = userAddress
     }
-    console.log(locElems)
 
     networkKeywords[permissionEnum.location] = locElems
 
@@ -161,7 +158,7 @@ async function importData() {
     // JSON list methods
     networkKeywords[permissionEnum.tracking][typeEnum.fingerprinting] = keywords["FINGERPRINT"]
 
-    // networkKeywords = hashUserDictValues(networkKeywords);
+    networkKeywords = hashUserDictValues(networkKeywords);
 
     const fullSnippet = await settingsKeyval.get(settingsModelsEnum.fullSnippet)
     const optimizePerformance = await settingsKeyval.get(settingsModelsEnum.optimizePerformance)

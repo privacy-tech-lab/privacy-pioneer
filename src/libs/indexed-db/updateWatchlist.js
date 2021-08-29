@@ -63,30 +63,9 @@ import { keywordTypes, permissionEnum, storeEnum, typeEnum } from "../../backgro
   * @param {string} type 
   * @returns {void} Nothing. Updates and deletes as described.
   */
-  const deleteKeyword = async (id, type) => {
+  const deleteKeyword = async (id) => {
     let firstEvKeys = await evidenceIDB.keys(storeEnum.firstParty)
     let thirdEvKeys = await evidenceIDB.keys(storeEnum.thirdParty)
-  
-    // this will be a singleton set for all cases except (this needs two lines because Set(id) adds each char as an element)
-    // var idSet = new Set()
-    // idSet.add(id)
-  
-    // /* for location elements, we need to delete all of its associated ids so
-    //  * we fetch the object, generate the hashes for all of its values, and add
-    //  * those to our set */
-    // if (type == permissionEnum.location) {
-    //   const deletedItem = await watchlistKeyval.get(id)
-    //   for (const [type, keyword] of Object.entries(deletedItem.location)) {
-    //     idSet.add(watchlistHashGen(type, keyword))
-    //     // then we also need to get the full state name from the zip
-    //     if (type == typeEnum.zipCode) {
-    //       let st, state
-    //       ;[st, state] = getState(keyword)
-    //       idSet.add(watchlistHashGen(typeEnum.state, state))
-    //     }
-    //   }
-    // }
-    const idSet = new Set().add(id)
   
     /**
      * Deletes evidence if watchlistHash of the evidence is the same as the id we are deleting from the watchlist
@@ -102,7 +81,7 @@ import { keywordTypes, permissionEnum, storeEnum, typeEnum } from "../../backgro
         for (const [perm, typeLevel] of Object.entries(a)) {
           for (const [type, evUrls] of Object.entries(typeLevel)) {
             for (const [evUrl, evidence] of Object.entries(evUrls)) {
-              if (idSet.has(evidence.watchlistHash)) {
+              if (id == evidence.watchlistHash) {
                 delete a[perm][type][evUrl]
               }
             }

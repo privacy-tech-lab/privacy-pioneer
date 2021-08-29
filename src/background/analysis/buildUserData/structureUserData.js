@@ -93,18 +93,15 @@ function createKeywordObj(keyword, typ, hash = null, ) {
 
 function hashUserDictValues( networkKeywords ) {
 
-    const permSet = new Set( [ permissionEnum.location, permissionEnum.watchlist ] );
-    const excludedSet = new Set( [ typeEnum.phoneNumber, typeEnum.encodedEmail, typeEnum.zipCode, typeEnum.ipAddress ]) // these get hashed in importData
+    const excludedSet = new Set( [ typeEnum.phoneNumber, typeEnum.encodedEmail, typeEnum.ipAddress ]) // these get hashed in importData
 
-    for ( const perm of permSet ) {
-        for ( const [t, valArr] of Object.entries(networkKeywords[perm]) ) {
-            if ( !(excludedSet.has(t)) ) {
-                var replacedArr = []
-                for ( const keywordItem of valArr) {
-                    replacedArr.push(createKeywordObj(keywordItem, t))
-                }
-                networkKeywords[perm][t] = replacedArr
+    for ( const [t, valArr] of Object.entries(networkKeywords[permissionEnum.watchlist]) ) {
+        if ( !(excludedSet.has(t)) ) {
+            var replacedArr = []
+            for ( const keywordItem of valArr) {
+                replacedArr.push(createKeywordObj(keywordItem, t))
             }
+            networkKeywords[permissionEnum.watchlist][t] = replacedArr
         }
     }
 
