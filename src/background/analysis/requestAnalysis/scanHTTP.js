@@ -3,7 +3,7 @@ Licensed per https://github.com/privacy-tech-lab/privacy-pioneer/blob/main/LICEN
 privacy-tech-lab, https://www.privacytechlab.org/
 */
 
-import { regexSearch, coordinateSearch, urlSearch, disconnectFingerprintSearch, locationKeywordSearch, fingerprintSearch, ipSearch, pixelSearch, encodedEmailSearch, dynamicPixelSearch } from "./searchFunctions.js"
+import { regexSearch, coordinateSearch, urlSearch, locationKeywordSearch, fingerprintSearch, ipSearch, pixelSearch, encodedEmailSearch, dynamicPixelSearch } from "./searchFunctions.js"
 import { permissionEnum, typeEnum, resourceTypeEnum } from "../classModels.js"
 import { lengthHeuristic } from "../requestAnalysis/earlyTermination/heuristics.js";
 
@@ -149,8 +149,6 @@ function getAllEvidenceForRequest(request, userData) {
     if ( permissionEnum.location in networkKeywords) {
       executeAndPush(locationKeywordSearch(strRequest, networkKeywords[permissionEnum.location], rootUrl, reqUrl))
     }
-
-    executeAndPush(disconnectFingerprintSearch(request, urls))
 
     // search to see if any fingerprint data
     executeAndPush(fingerprintSearch(strRequest, networkKeywords, rootUrl, reqUrl))
