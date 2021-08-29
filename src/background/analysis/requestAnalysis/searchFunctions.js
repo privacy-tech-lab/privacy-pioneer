@@ -71,7 +71,7 @@ const classificationTransformation = {
  * @param {object} urls The disconnect JSON
  * @returns {Array<Array>|Array} An array of arrays with the search results [] if no result 
  */
-function urlSearch(strReq, rootUrl, reqUrl, classifications) {
+function urlSearch(rootUrl, reqUrl, classifications) {
   var output = []
   let firstPartyArr = classifications.firstParty;
   let thirdPartyArr = classifications.thirdParty;
@@ -81,7 +81,7 @@ function urlSearch(strReq, rootUrl, reqUrl, classifications) {
       if (classification in classificationTransformation) {
         let p, t;
         [p, t] = classificationTransformation[classification];
-        output.push(createEvidenceObj(p, rootUrl, strReq, reqUrl, t, undefined))
+        output.push(createEvidenceObj(p, rootUrl, null, reqUrl, t, undefined))
       }
     }
   }

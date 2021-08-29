@@ -28,9 +28,8 @@ the codebase.
 export class Request {
   constructor({
     id,
-    details,
-    requestHeaders,
-    responseHeaders,
+    rootUrl,
+    reqUrl,
     requestBody,
     responseData,
     error,
@@ -38,11 +37,10 @@ export class Request {
     urlClassification,
   }) {
     this.id = id
-    this.requestHeaders = requestHeaders
-    this.responseHeaders = responseHeaders
-    this.responseData = responseData
+    this.rootUrl = rootUrl
+    this.reqUrl = reqUrl
     this.requestBody = requestBody
-    this.details = details
+    this.responseData = responseData
     this.error = error
     this.type = type
     this.urlClassification = urlClassification

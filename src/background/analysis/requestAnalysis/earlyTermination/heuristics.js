@@ -1,3 +1,5 @@
+import { MAX_CHAR_LEN } from "../../constants.js"
+
 /**
  * 100000 choice based on analysis here: https://github.com/privacy-tech-lab/privacy-pioneer/issues/297
  * To maximize performance while keeping complexity to a reasonable level.
@@ -8,7 +10,7 @@
  */
 function lengthHeuristic(strReq) {
     const requestLen = strReq.length
-    return requestLen > 100000
+    return requestLen > MAX_CHAR_LEN
 }
 
 export { lengthHeuristic }

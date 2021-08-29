@@ -22,8 +22,8 @@ import { lengthHeuristic } from "../requestAnalysis/earlyTermination/heuristics.
  */
 function getAllEvidenceForRequest(request, userData) {
 
-  const rootUrl = request.details["originUrl"]
-  const reqUrl = request.details["url"]
+  const rootUrl = request.rootUrl
+  const reqUrl = request.reqUrl
 
   // this 0, 1, 2 comes from the structure of the importData function
   // location we obtained from google maps API
@@ -35,9 +35,15 @@ function getAllEvidenceForRequest(request, userData) {
 
   const optimizePerformance = userData[4]
 
-  const strRequest = JSON.stringify(request);
+  // We only perform our analysis on reqUrl, requestBody, and responseData.
+  const strRequest = JSON.stringify(request, 
+      ["reqUrl",
+      "requestBody",
+      "responseData"]
+    );
 
-  var evidenceArr = [];
+  var evidenceArr = []
+
 
   // we don't surface these evidences, so skip.
   if (typeof rootUrl == "undefined") {
@@ -62,10 +68,7 @@ function getAllEvidenceForRequest(request, userData) {
     }
   }
 
-  
-  // always search to see if the url of the root or request comes up in our services list
-  // comment out below line when testing termination heuristics
-  executeAndPush(urlSearch(strRequest, rootUrl, reqUrl, request.urlClassification))
+  executeAndPush(urlSearch(rootUrl, reqUrl, request.urlClassification))
 
 
   function earlyTermination() {
