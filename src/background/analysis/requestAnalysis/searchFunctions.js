@@ -117,7 +117,7 @@ function urlSearch(rootUrl, reqUrl, classifications) {
    * @returns {void} Nothing. Adds to evidence list
    */
   function addDisconnectEvidence(perm, type) {
-    output.push(createEvidenceObj(perm, request.details["originUrl"], "null", request.details["url"], type, undefined))
+    output.push(createEvidenceObj(perm, request.rootUrl, "null", request.reqUrl, type, undefined))
   }
   
   // The fingerprintingInvasive category is the only one we are traversing.

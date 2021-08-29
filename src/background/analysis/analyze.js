@@ -9,18 +9,18 @@ analyze.js
 - analyze.js analyzes network requests
 */
 
-import { settingsModelsEnum, Request } from "./classModels.js";
+import { Request } from "./classModels.js";
 import { evidenceQ } from "../background.js";
 import { tagParty, tagParent } from "./requestAnalysis/tagRequests.js";
 import { addToEvidenceStore } from "./interactDB/addEvidence.js";
 import { getAllEvidenceForRequest } from "./requestAnalysis/scanHTTP.js";
-import { settingsKeyval } from "../../libs/indexed-db/openDB.js";
-import { urlSearch } from "./requestAnalysis/searchFunctions.js";
 import { MAX_BYTE_LEN } from "./constants.js";
 
 // Temporary container to hold network requests while properties are being added from listener callbacks
-const buffer = {},
- decoder = new TextDecoder("utf-8")
+const buffer = {}
+
+// Used to decode HTTP responses
+const decoder = new TextDecoder("utf-8")
 
 
 /**
@@ -67,7 +67,7 @@ const onBeforeRequest = (details, data) => {
 
   var responseByteLength = 0,
    abort = false,
-   strArr = []
+   httpResponseStrArr = []
 
   filter.ondata = (event) => {
     if (!abort) {
@@ -79,19 +79,19 @@ const onBeforeRequest = (details, data) => {
       }
       else {
         const str = decoder.decode(event.data, { stream: true })
-        strArr.push(str)
+        httpResponseStrArr.push(str)
       }
     }
   }
 
   filter.onerror = (event) => (request.error = filter.error)
 
-  // when the filter stops, close filter, add data from d (as connected string) to
+  // when the filter stops, close filter, add data from httpResponseStrArr to
   // our Request created earlier. Sends to resolveBuffer (below)
   filter.onstop = async (event) => {
     if (!abort) {
       filter.close()
-      request.responseData = strArr.toString()
+      request.responseData = httpResponseStrArr.toString()
       resolveBuffer(request.id, data)
       }
   }
@@ -144,8 +144,6 @@ function resolveBuffer(id, data) {
 async function analyze(request, userData) {
 
   const allEvidence = getAllEvidenceForRequest(request, userData);
-
-  const saveFullSnippet = userData[3]
   
   // if we found evidence for the request
   if (allEvidence.length != 0) {
@@ -154,6 +152,8 @@ async function analyze(request, userData) {
     // tag the parent and the store
     const partyBool = await tagParty(rootUrl)
     const parent = tagParent(reqUrl)
+
+    const saveFullSnippet = userData[3]
 
     // push the job to the Queue (will add the evidence for one HTTP request at a time)
     evidenceQ.push(function(cb) { cb(null, addToEvidenceStore(allEvidence, partyBool, parent, rootUrl, reqUrl, saveFullSnippet))});
