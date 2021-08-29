@@ -88,5 +88,5 @@ export const SEmpty = styled.div`
   justify-content: center;
   font-weight: 600;
   font-size: var(--title2);
-  margin-top: 16px;
+  margin-top: 12%;
 `
