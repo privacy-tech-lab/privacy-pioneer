@@ -11,11 +11,7 @@ background.js
 - https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/API/webRequest
 */
 
-import {
-  onBeforeRequest,
-  onBeforeSendHeaders,
-  onHeadersReceived,
-} from "./analysis/analyze.js"
+import { onBeforeRequest } from "./analysis/analyze.js"
 import { setDefaultSettings } from "../libs/settings/index.js"
 import { importData } from "./analysis/buildUserData/importSearchData.js"
 import Queue from "queue"
@@ -41,6 +37,7 @@ export var evidenceQ = Queue({ results: [], concurrency: 1, autostart: true })
 // Get url of active tab for popup
 browser.runtime.onMessage.addListener((request, sender, sendResponse) => {
   if (request.msg == "background.currentTab") {
+
     // send current, open tab to the runtime (our extension)
     const send = (tabs) =>
       browser.runtime.sendMessage({
@@ -79,41 +76,7 @@ importData().then((data) => {
     filter,
     ["requestBody", "blocking"]
   )
-
-  // Listener to get request headers
-  // Note: I'm not sure if there is a difference between the details of a request here and onBeforeRequest
-  // maybe timestamp difference, antyhing else important?
-  browser.webRequest.onBeforeSendHeaders.addListener(
-    function (details) {
-      onBeforeSendHeaders(details, data)
-    },
-    filter,
-    ["requestHeaders"]
-  )
-
-  // Listener to get response headers
-  // Note: I'm not sure if there is a difference between the details of a request here and onBeforeRequest
-  // maybe timestamp differece, antyhing else important?
-  browser.webRequest.onResponseStarted.addListener(
-    function (details) {
-      onHeadersReceived(details, data)
-    },
-    filter,
-    ["responseHeaders"]
-  )
 })
-
-async function initDB(initArr) {
-  for (let initItem of initArr) {
-    let key, keyword, type, id;
-    [key, keyword, type, id] = initItem
-    watchlistKeyval.set(key, {
-      keyword: keyword,
-      type: type,
-      id: id,
-    })
-  }
-}
 
 setDefaultSettings()
 
@@ -123,7 +86,7 @@ setDefaultSettings()
  * Revokes the object URL after a download has been successfully completed or interrupted.
  * downloadDelta: https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/API/downloads/onChanged#downloaddelta
  */
-browser.downloads.onChanged.addListener(async function (downloadDelta) {
+browser.downloads.onChanged.addListener( async function (downloadDelta) {
   const status = downloadDelta.state.current
   // if the download is finished, we fetch the url for the download and revoke that object URL
   if (status === "complete" || status === "interrupted") {
@@ -138,3 +101,4 @@ browser.downloads.onChanged.addListener(async function (downloadDelta) {
     }
   }
 })
+
