@@ -35,6 +35,7 @@ function getAllEvidenceForRequest(request, userData) {
 
   const optimizePerformance = userData[4]
 
+  // We only perform our analysis on reqUrl, requestBody, and responseData.
   const strRequest = JSON.stringify(request, 
       ["reqUrl",
       "requestBody",
