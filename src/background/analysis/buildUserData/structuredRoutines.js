@@ -249,6 +249,60 @@ function buildPhone(userNumber) {
     return [st, state];
   }
 
+const stateObj = {
+    "AL": /Alabama/i,
+    "AK": /Alaska/i,
+    "AZ": /Arizona/i,
+    "AR": /Arkansas/i,
+    "CA": /California/i,
+    "CO": /Colorado/i,
+    "CT": /Connecticut/i,
+    "DE": /Delaware/i,
+    "FL": /Florida/i,
+    "GA": /Georgia/i,
+    "HI": /Hawaii/i,
+    "ID": /Idaho/i,
+    "IL": /Illinois/i,
+    "IN": /Indiana/i,
+    "IA": /Iowa/i,
+    "KS": /Kansas/i,
+    "KY": /Kentucky/i,
+    "LA": /Louisiana/i,
+    "ME": /Maine/i,
+    "MD": /Maryland/i,
+    "MA": /Massachusetts/i,
+    "MI": /Michigan/i,
+    "MN": /Minnesota/i,
+    "MS": /Mississippi/i,
+    "MO": /Missouri/i,
+    "MT": /Montana/i,
+    "NC": /North.?Carolina/i,
+    "ND": /North.?Dakota/i,
+    "NE": /Nebraska/i,
+    "NV": /Nevada/i,
+    "NH": /New.?Hampshire/i,
+    "NJ": /New.?Jersey/i,
+    "NM": /New.?Mexico/i,
+    "NY": /New.?York/i,
+    "OH": /Ohio/i,
+    "OK": /Oklahoma/i,
+    "OR": /Oregon/i,
+    "PA": /Pennsylvania/i,
+    "PR": /Puerto.?Rico/i,
+    "RI": /Rhode.?Island/i,
+    "SC": /South.?Carolina/i,
+    "SD": /South.?Dakota/i,
+    "TN": /Tennessee/i,
+    "TX": /Texas/i,
+    "UT": /Utah/i,
+    "VT": /Vermont/i,
+    "VA": /Virgina/i,
+    "DC": /Washington.?DC/i,
+    "WA": /Washington/i,
+    "WV": /West.?Virginia/i,
+    "WI": /Wisconsin/i,
+    "WY": /Wyoming/i,
+}
 
 /**
  * Turns an IP into a regex that supports wildcard separators
@@ -282,4 +336,4 @@ function buildZipRegex(zip) {
 }
 
 
-export { buildPhone, getState, buildIpRegex, buildZipRegex }
+export { buildPhone, getState, buildIpRegex, buildZipRegex, stateObj }

@@ -34,6 +34,7 @@ import { Modal } from "bootstrap"
 import Form from "./components/forms"
 import inputValidator from "./components/input-validators"
 import ReactTooltip from "react-tooltip"
+import { getState, stateObj } from "../../../../../background/analysis/buildUserData/structuredRoutines"
 
 /**
  * Popup modal to create/edit keyword
@@ -90,7 +91,7 @@ const EditModal = ({ keywordType, keyword, edit, id, updateList }) => {
    */
   const validate = () => {
     if (
-      _keywordType == typeEnum.phone &&
+      _keywordType == typeEnum.phoneNumber &&
       !(
         inputValidator.numRegex.test(_keyword) ||
         inputValidator.numRegex2.test(_keyword)
@@ -99,7 +100,7 @@ const EditModal = ({ keywordType, keyword, edit, id, updateList }) => {
       badInput("phone number")
       return false
     } else if (
-      _keywordType == typeEnum.email &&
+      _keywordType == typeEnum.emailAddress &&
       !(
         inputValidator.emailRegex.test(_keyword) ||
         inputValidator.emailRegex2.test(_keyword)
@@ -116,6 +117,54 @@ const EditModal = ({ keywordType, keyword, edit, id, updateList }) => {
     ) {
       badInput("IP address")
       return false
+    } else if (
+      _keywordType == typeEnum.userKeyword && 
+      !inputValidator.userKeyword.test(_keyword)
+    ) {
+      badInput('keyword. Length should be 5 or greater.')
+      return false
+    } else if (_keywordType == permissionEnum.location){
+      if (
+        (!_location.zipCode == undefined && !inputValidator.zipCode.test(_location.zipCode) )||
+        !_location.zipCode == undefined
+      ) {
+        badInput("zip code")
+        return false
+      }
+      if (
+        !(_location.state == undefined || 
+        _location.state in stateObj)
+      ) {
+        badInput("state abbreviation")
+        return false
+      }
+      if (
+        _location.zipCode != undefined &&
+        _location.state != undefined
+      ) {
+        if (getState(_location.zipCode)[0] != _location.state) {
+          badInput('state / zip combination')
+          return false
+        }
+      }
+      if (
+        !inputValidator.city_address.test(_location.city)
+      ) {
+        badInput('city')
+        return false
+      } 
+      if (
+        !inputValidator.city_address.test(_location.streetAddress)
+      ) {
+        badInput('address')
+        return false
+      }
+      if (
+        Object.keys(_location).length == 0
+      ) {
+        return false
+      }
+      return true 
     } else return true
   }
 

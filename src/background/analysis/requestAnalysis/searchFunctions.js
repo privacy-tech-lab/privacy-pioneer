@@ -91,7 +91,6 @@ function urlSearch(rootUrl, reqUrl, classifications) {
   return output
   }
 
-
 /**
  * Searches an HTTP request for a users lattitude and longitude. Uses regular expression patterns to look for floating point patterns.
  * We only add evidence if we find a .1 distance from both the 
