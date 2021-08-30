@@ -95,7 +95,7 @@ async function importData() {
     }
 
     if (typeEnum.state in user_store_dict) {
-        if (!locElems[typeEnum.state]) {
+        if (!(typeEnum.state in locElems)) {
             locElems[typeEnum.state] = []
         }
         const userState = user_store_dict[typeEnum.state]
