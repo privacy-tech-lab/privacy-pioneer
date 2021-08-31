@@ -25,6 +25,8 @@ import { settingsKeyval } from "../../../libs/indexed-db/openDB.js";
  * @param {string|undefined} parent Parent company of the request Url, if possible
  * @param {string} rootU The rootUrl of the request
  * @param {string} requestU The requestUrl of the request
+ * @param {boolean} saveFullSnippet Option to save full snippet
+ * @param {boolean} cookie Whether the evidence is a cookie
  * @returns {Promise} Nothing. The evidence DB is updated.
  * 
  */
@@ -90,7 +92,7 @@ async function addToEvidenceStore(evidenceToAdd, firstParty, parent, rootU, requ
       }
     }
 
-    if (!saveFullSnippet){
+    if (!saveFullSnippet && !evidenceObject.cookie){
       cutDownSnippet(evidenceObject)
     }
 
@@ -98,8 +100,8 @@ async function addToEvidenceStore(evidenceToAdd, firstParty, parent, rootU, requ
     if (requestU == 'http://ip-api.com/json/'){ return new Promise( function(resolve, reject) {
       resolve('whitelist IP API');
     }) };
-
-
+    
+    
     let keys = Object.keys(evidenceObject);
     for (let key of keys) {
       // looking for null, undefined, NaN, empty string (""), 0, false
@@ -107,8 +109,8 @@ async function addToEvidenceStore(evidenceToAdd, firstParty, parent, rootU, requ
         delete evidenceObject[key];
       }
     }
-      evidence = updateFetchedDict(evidence, evidenceObject)
-    }
+    evidence = updateFetchedDict(evidence, evidenceObject)
+  }
   }
 
   // update the fetched evidence dict with each piece of evidence we have for this request

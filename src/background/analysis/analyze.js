@@ -15,6 +15,7 @@ import { tagParty, tagParent } from "./requestAnalysis/tagRequests.js";
 import { addToEvidenceStore } from "./interactDB/addEvidence.js";
 import { getAllEvidenceForRequest } from "./requestAnalysis/scanHTTP.js";
 import { MAX_BYTE_LEN } from "./constants.js";
+import { getAllEvidenceForCookies } from "./requestAnalysis/scanCookies.js";
 
 // Temporary container to hold network requests while properties are being added from listener callbacks
 const buffer = {}
@@ -144,6 +145,15 @@ function resolveBuffer(id, data) {
 async function analyze(request, userData) {
 
   const allEvidence = getAllEvidenceForRequest(request, userData);
+
+  if (await browser.cookies.getAll({url: request.reqUrl}).length != 0){
+    const allCookieEvidence = getAllEvidenceForCookies(await browser.cookies.getAll({url: request.reqUrl}), request.rootUrl, request.reqUrl, userData)
+    if (allCookieEvidence.length != 0) {
+      allCookieEvidence.forEach(cookieEv => {
+        allEvidence.push(cookieEv)
+      })
+    }
+  }
   
   // if we found evidence for the request
   if (allEvidence.length != 0) {
