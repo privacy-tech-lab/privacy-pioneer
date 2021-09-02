@@ -145,14 +145,12 @@ function resolveBuffer(id, data) {
 async function analyze(request, userData) {
 
   const allEvidence = getAllEvidenceForRequest(request, userData);
+  const allCookieEvidence = getAllEvidenceForCookies(await browser.cookies.getAll({url: request.reqUrl}), request.rootUrl, request.reqUrl, userData)
 
-  if (await browser.cookies.getAll({url: request.reqUrl}).length != 0){
-    const allCookieEvidence = getAllEvidenceForCookies(await browser.cookies.getAll({url: request.reqUrl}), request.rootUrl, request.reqUrl, userData)
-    if (allCookieEvidence.length != 0) {
-      allCookieEvidence.forEach(cookieEv => {
-        allEvidence.push(cookieEv)
-      })
-    }
+  if (allCookieEvidence.length != 0) {
+    allCookieEvidence.forEach(cookieEv => {
+      allEvidence.push(cookieEv)
+    })
   }
   
   // if we found evidence for the request

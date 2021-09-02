@@ -7,15 +7,17 @@ import { regexSearch, coordinateSearch, locationKeywordSearch, ipSearch, encoded
 import { permissionEnum, typeEnum } from "../classModels.js"
 
 /**
- * This function runs all of the apporpriate analysis functions for an HTTP request.
+ * This function runs all of the apporpriate analysis functions for cookies.
  * It returns an empty array if no evidence is found. Else an array of arrays containing the
  * information to be added.
  * 
- * Defined in scanHTTP.js
+ * Defined in scanCookies.js
  * 
  * Used in analyze.js
  * 
- * @param request An HTTP request to be analyzed
+ * @param cookies A list of cookies to be analyzed
+ * @param rootUrl Host site
+ * @param reqUrl Requesting site
  * @param userData 
  */
 function getAllEvidenceForCookies(cookies, rootUrl, reqUrl, userData) {
