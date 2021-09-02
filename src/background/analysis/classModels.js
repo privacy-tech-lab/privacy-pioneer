@@ -70,7 +70,6 @@ export const resourceTypeEnum = Object.freeze({
  * @property {string} requestUrl The request Url as a string
  * @property {enum} typ The type of the evdience
  * @property {Array|undefined} index A length 2 array with the indexes of the evidence or undefined if not applicable
- * @property {boolean} firstPartyRoot A boolean indicating if the evidence was generated with a first party root (the rootUrl of the request is the same as the website that generated the request)
  * @property {string|null} parentCompany If we have identified a parent company for this url, we store it here for the frontend. Else, null.
  * @property {string|undefined} watchlistHash If the evidence is from our watchlist, this is the id of that item. Used for deletion of evidence on deletion of watchlist item
  * @property {string|undefined} extraDetail Extra details as needed. Currently only used for encoded email's original email
@@ -84,7 +83,6 @@ export class Evidence {
     requestUrl,
     typ,
     index,
-    firstPartyRoot,
     parentCompany,
     watchlistHash,
     extraDetail,
@@ -96,7 +94,6 @@ export class Evidence {
     this.requestUrl = requestUrl
     this.typ = typ
     this.index = index === undefined ? -1 : index
-    this.firstPartyRoot = firstPartyRoot
     this.parentCompany = parentCompany
     this.watchlistHash = watchlistHash
     this.extraDetail = extraDetail
@@ -115,13 +112,6 @@ export class KeywordObject {
   }
 }
 
-/**
- * @enum {string} Enum used to reference which evidenceKeyval object store you want
- */
-export const storeEnum = Object.freeze({
-  firstParty: "firstPartyEvidence",
-  thirdParty: "thirdPartyEvidence",
-})
 
 /**
  * @enum {string} Enum used to reference file formats that are available for export

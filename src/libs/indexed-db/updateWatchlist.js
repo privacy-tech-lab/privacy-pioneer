@@ -7,7 +7,7 @@ import { watchlistKeyval } from "./openDB.js";
 import { evidenceKeyval as evidenceIDB } from "../../background/analysis/interactDB/openDB.js";
 import { watchlistHashGen } from "../../background/analysis/utility/util.js";
 import { getState } from "../../background/analysis/buildUserData/structuredRoutines.js";
-import { keywordTypes, permissionEnum, storeEnum, typeEnum } from "../../background/analysis/classModels.js";
+import { keywordTypes, permissionEnum } from "../../background/analysis/classModels.js";
 
 
 /**
@@ -64,17 +64,15 @@ import { keywordTypes, permissionEnum, storeEnum, typeEnum } from "../../backgro
   * @returns {void} Nothing. Updates and deletes as described.
   */
   const deleteKeyword = async (id) => {
-    let firstEvKeys = await evidenceIDB.keys(storeEnum.firstParty)
-    let thirdEvKeys = await evidenceIDB.keys(storeEnum.thirdParty)
-  
+
+    let evKeys = await evidenceIDB.keys()
     /**
      * Deletes evidence if watchlistHash of the evidence is the same as the id we are deleting from the watchlist
      * @param {Object} evidenceStoreKeys All keys from the related store, taken from the above lines
-     * @param {String} store Store name from storeEnum
      */
-    function runDeletion(evidenceStoreKeys, store) {
+    function runDeletion(evidenceStoreKeys) {
       evidenceStoreKeys.forEach(async (website) => {
-        let a = await evidenceIDB.get(website, store)
+        let a = await evidenceIDB.get(website)
         if (a == undefined) {
           return
         } // shouldn't happen but just in case
@@ -93,13 +91,12 @@ import { keywordTypes, permissionEnum, storeEnum, typeEnum } from "../../backgro
             delete a[perm]
           }
         }
-        await evidenceIDB.set(website, a, store)
+        await evidenceIDB.set(website, a)
       })
     }
   
     // delete from Evidence
-    runDeletion(firstEvKeys, storeEnum.firstParty)
-    runDeletion(thirdEvKeys, storeEnum.thirdParty)
+    runDeletion(evKeys)
   
     // delete from watchlist
     await watchlistKeyval.delete(id)
