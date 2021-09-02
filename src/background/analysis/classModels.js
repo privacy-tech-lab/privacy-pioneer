@@ -204,7 +204,6 @@ export const typeEnum = Object.freeze({
   fingerprinting: "fingerprinting",
 })
 
-
 /**
  * An object containing the keyword types for the watchlist and information to populate defaults.
  * @typedef keywordTypes
@@ -221,7 +220,7 @@ export const keywordTypes = Object.freeze({
   location: {
     displayName: "Street Address",
     placeholder: {
-      address: "45 Wyllys Ave",
+      streetAddress: "45 Wyllys Ave",
       city: "Middletown",
       state: "CT",
       zipCode: "06459",
