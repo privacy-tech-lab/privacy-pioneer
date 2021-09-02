@@ -43,21 +43,27 @@ const onBeforeRequest = async (details, data) => {
 
   if (details.requestId in buffer) {
 
+    request = buffer[details.requestId]
+
     // if the requestID has already been added, update details, request body as needed
     if (details.tabId == -1) {
       request.rootUrl = details.originUrl
     }
     else {
-      const rootUrlObj = await browser.tabs.get(details.tabId)
-      request.rootUrl = rootUrlObj.url 
+      try {
+        const rootUrlObj = await browser.tabs.get(details.tabId)
+        request.rootUrl = rootUrlObj.url 
+      }
+      catch (err) {
+        request.rootUrl = details.originUrl
+      }
     }
-    request = buffer[details.requestId]
     request.reqUrl = details.url !== undefined ? details.url : null
     request.requestBody = details.requestBody !== undefined ? details.requestBody : null
     request.type = details.type !== undefined ? details.type : null
     request.urlClassification = details.urlClassification !== undefined ? details.urlClassification : []
-  } else {
 
+  } else {
     // requestID not seen, create new request, add details and request body as needed
     request = new Request({
       id: details.requestId,
@@ -67,14 +73,21 @@ const onBeforeRequest = async (details, data) => {
       type: details.type !== undefined ? details.type : null,
       urlClassification: details.urlClassification !== undefined ? details.urlClassification : [],
     })
+    
+    buffer[details.requestId] = request
+
     if (details.tabId == -1) {
       request.rootUrl = details.originUrl
     }
     else {
-      const rootUrlObj = await browser.tabs.get(details.tabId)
-      request.rootUrl = rootUrlObj.url 
+      try {
+        const rootUrlObj = await browser.tabs.get(details.tabId)
+        request.rootUrl = rootUrlObj.url 
+      }
+      catch (err) {
+        request.rootUrl = details.originUrl
+      }
     }
-    buffer[details.requestId] = request
   }
 
   // filter = you can now monitor a response before the request is sent
@@ -170,7 +183,7 @@ async function analyze(request, userData) {
     const saveFullSnippet = userData[3]
 
     // push the job to the Queue (will add the evidence for one HTTP request at a time)
-    evidenceQ.push(function(cb) { cb(null, addToEvidenceStore(allEvidence, partyBool, parent, rootUrl, reqUrl, saveFullSnippet))});
+    evidenceQ.push(function(cb) { cb(null, addToEvidenceStore(allEvidence, parent, rootUrl, reqUrl, saveFullSnippet))});
   }
 }
 
