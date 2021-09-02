@@ -7,7 +7,6 @@ import { settingsKeyval, watchlistKeyval } from "../indexed-db/openDB.js"
 import {
   settingsModelsEnum,
   permissionEnum,
-  storeEnum,
 } from "../../background/analysis/classModels"
 import { evidenceKeyval } from "../../background/analysis/interactDB/openDB"
 
@@ -112,8 +111,7 @@ export const getTheme = async () => {
  * delete all evidence
  */
 export const deleteEvidenceDB = async () => {
-  await evidenceKeyval.clear(storeEnum.firstParty)
-  await evidenceKeyval.clear(storeEnum.thirdParty)
+  await evidenceKeyval.clear()
 }
 
 /**

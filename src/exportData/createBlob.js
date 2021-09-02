@@ -3,7 +3,7 @@ Licensed per https://github.com/privacy-tech-lab/privacy-pioneer/blob/main/LICEN
 privacy-tech-lab, https://www.privacytechlab.org/
 */
 
-import { storeEnum, exportTypeEnum } from "../background/analysis/classModels";
+import { exportTypeEnum } from "../background/analysis/classModels";
 import { evidenceKeyval } from "../background/analysis/interactDB/openDB.js";
 import { buildTsvString } from "./createExportString.js";
 
@@ -16,9 +16,8 @@ async function buildEvidenceAsArray(timeStampLB) {
 
     var evidenceArr = []
 
-    // update the arr with the evidences in both stores
-    evidenceArr = await walkStoreAndBuildArr(storeEnum.firstParty, evidenceArr, timeStampLB)
-    evidenceArr = await walkStoreAndBuildArr(storeEnum.thirdParty, evidenceArr, timeStampLB)
+    // update the arr with evidence
+    evidenceArr = await walkStoreAndBuildArr(evidenceArr, timeStampLB)
 
     return evidenceArr
 }
@@ -30,13 +29,13 @@ async function buildEvidenceAsArray(timeStampLB) {
  * @param {Array} evidenceObjectArr The array we are building
  * @returns {Promise<Array<Evidence>>} 
  */
-async function walkStoreAndBuildArr(store, evidenceObjectArr, timeStampLB) {
+async function walkStoreAndBuildArr(evidenceObjectArr, timeStampLB) {
 
-    const allKeys = await evidenceKeyval.keys(store);
+    const allKeys = await evidenceKeyval.keys();
 
     // iterate through all the rootUrls we have in the store
     for (const key of allKeys) {
-        const evidenceDict = await evidenceKeyval.get(key, store);
+        const evidenceDict = await evidenceKeyval.get(key);
         for (const [permLevel, typeLevel] of Object.entries(evidenceDict)) {
             for (const [type, reqUrlLevel] of Object.entries(typeLevel)){
                 for (const [reqUrl, evidenceObject] of Object.entries(reqUrlLevel)){

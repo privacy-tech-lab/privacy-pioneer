@@ -11,14 +11,15 @@ requestModel.js
 
 import { openDB } from "idb";
 
+const storeKey = "firstPartyEvidence"
+
 /**
  * @type {Promise}
  * opens up the DB. Used by the evidenceKeyval constant to mutate the DB.
  */
-const dbPromise = openDB("keyval-store", 2, {
+const dbPromise = openDB("keyval-store", 1, {
   upgrade(db) {
-    db.createObjectStore("firstPartyEvidence");
-    db.createObjectStore("thirdPartyEvidence");
+    db.createObjectStore(storeKey);
   },
 });
 
@@ -31,27 +32,27 @@ const dbPromise = openDB("keyval-store", 2, {
  * Used in backend (classModels.js, addEvidence.js, createBlob.js) and frontend (libs/indexed-db/index.js)
  * 
  * @class idbKeyval
- * @method get param(key, store) returns a promise with the value at a given key. undefined if no such key exists.
- * @method set param(key, val, store) sets a value at a key
- * @method del param(key, store) deletes a key value pair
- * @method clear param(store) empties the given object store
- * @method keys param(store) returns all the keys in the given object store
- * @method values param(store) returns all the all vaues in the given object store
+ * @method get param(key) returns a promise with the value at a given key. undefined if no such key exists.
+ * @method set param(key, val) sets a value at a key
+ * @method del param(key) deletes a key value pair
+ * @method clear param() empties the evidence store
+ * @method keys param() returns all the keys in the evidence store
+ * @method values param() returns all the all vaues in the evidence store
  */
 export const evidenceKeyval = {
-  async get(key, store) {
-    return (await dbPromise).get(store, key);
+  async get(key) {
+    return (await dbPromise).get(storeKey, key);
   },
-  async set(key, val, store) {
-    return (await dbPromise).put(store, val, key);
+  async set(key, val) {
+    return (await dbPromise).put(storeKey, val, key);
   },
-  async del(key, store) {
-    return (await dbPromise).delete(store, key);
+  async del(key) {
+    return (await dbPromise).delete(storeKey, key);
   },
-  async clear(store) {
-    return (await dbPromise).clear(store);
+  async clear() {
+    return (await dbPromise).clear(storeKey);
   },
-  async keys(store) {
-    return (await dbPromise).getAllKeys(store);
+  async keys() {
+    return (await dbPromise).getAllKeys(storeKey);
   },
 };
