@@ -75,69 +75,50 @@ const toggleNotifications = async (id) => {
     }
   }
 
-  await watchlistKeyval.set(id, data)
-}
-
-/**
- * Deletes the keyword from the watchlist.
- * Deletes the evidence associated with that keyword from the evidenceDB
- *
- * @param {number} id
- * @param {string} type
- * @returns {void} Nothing. Updates and deletes as described.
- */
-const deleteKeyword = async (id, type) => {
-  let firstEvKeys = await evidenceIDB.keys(storeEnum.firstParty)
-  let thirdEvKeys = await evidenceIDB.keys(storeEnum.thirdParty)
-
-  // this will be a singleton set for all cases except (this needs two lines because Set(id) adds each char as an element)
-  var idSet = new Set()
-  idSet.add(id)
-
-  /* for location elements, we need to delete all of its associated ids so
-   * we fetch the object, generate the hashes for all of its values, and add
-   * those to our set */
-  if (type == permissionEnum.location) {
-    const deletedItem = await watchlistKeyval.get(id)
-    for (const [type, keyword] of Object.entries(deletedItem.location)) {
-      idSet.add(watchlistHashGen(type, keyword))
-      // then we also need to get the full state name from the zip
-      if (type == typeEnum.zipCode) {
-        let st, state
-        ;[st, state] = getState(keyword)
-        idSet.add(watchlistHashGen(typeEnum.state, state))
-      }
-    }
-  }
-
   /**
-   * Deletes evidence if watchlistHash of the evidence is the same as the id we are deleting from the watchlist
-   * @param {Object} evidenceStoreKeys All keys from the related store, taken from the above lines
-   * @param {String} store Store name from storeEnum
+   * Deletes the keyword from the watchlist.
+   * Deletes the evidence associated with that keyword from the evidenceDB
+   *
+   * @param {number} id
+   * @param {string} type
+   * @returns {void} Nothing. Updates and deletes as described.
    */
-  function runDeletion(evidenceStoreKeys, store) {
-    evidenceStoreKeys.forEach(async (website) => {
-      let a = await evidenceIDB.get(website, store)
-      if (a == undefined) {
-        return
-      } // shouldn't happen but just in case
-      for (const [perm, typeLevel] of Object.entries(a)) {
-        for (const [type, evUrls] of Object.entries(typeLevel)) {
-          for (const [evUrl, evidence] of Object.entries(evUrls)) {
-            if (idSet.has(evidence.watchlistHash)) {
-              delete a[perm][type][evUrl]
+  const deleteKeyword = async (id) => {
+    let evKeys = await evidenceIDB.keys()
+    /**
+     * Deletes evidence if watchlistHash of the evidence is the same as the id we are deleting from the watchlist
+     * @param {Object} evidenceStoreKeys All keys from the related store, taken from the above lines
+     */
+    function runDeletion(evidenceStoreKeys) {
+      evidenceStoreKeys.forEach(async (website) => {
+        let a = await evidenceIDB.get(website)
+        if (a == undefined) {
+          return
+        } // shouldn't happen but just in case
+        for (const [perm, typeLevel] of Object.entries(a)) {
+          for (const [type, evUrls] of Object.entries(typeLevel)) {
+            for (const [evUrl, evidence] of Object.entries(evUrls)) {
+              if (id == evidence.watchlistHash) {
+                delete a[perm][type][evUrl]
+              }
+            }
+            if (Object.keys(a[perm][type]).length == 0) {
+              delete a[perm][type]
             }
           }
           if (Object.keys(a[perm][type]).length == 0) {
             delete a[perm][type]
           }
         }
-        if (Object.keys(a[perm]).length == 0) {
-          delete a[perm]
-        }
-      }
-      await evidenceIDB.set(website, a, store)
-    })
+        await evidenceIDB.set(website, a)
+      })
+    }
+
+    // delete from Evidence
+    runDeletion(evKeys)
+
+    // delete from watchlist
+    await watchlistKeyval.delete(id)
   }
 
   // delete from Evidence

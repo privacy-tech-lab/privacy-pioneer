@@ -31,9 +31,13 @@ import {
   typeEnum,
 } from "../../../../../background/analysis/classModels"
 import { Modal } from "bootstrap"
-import Form from "./components/forms"
+import { AddressForm, KeywordForm } from "./components/forms"
 import inputValidator from "./components/input-validators"
 import ReactTooltip from "react-tooltip"
+import {
+  getState,
+  stateObj,
+} from "../../../../../background/analysis/buildUserData/structuredRoutines"
 
 /**
  * Popup modal to create/edit keyword
@@ -45,7 +49,14 @@ const EditModal = ({ keywordType, keyword, edit, id, updateList }) => {
     edit ? keywordType : "Select Type"
   )
   const [_keyword, setKeyword] = useState(edit ? keyword : "")
-  const [_location, setLocation] = useState(edit ? keyword : {})
+  const [_address, setAddress] = useState(
+    edit ? keyword[typeEnum.streetAddress] ?? null : ""
+  )
+  const [_city, setCity] = useState(edit ? keyword[typeEnum.city] ?? null : "")
+  const [_state, setStateloc] = useState(
+    edit ? keyword[typeEnum.state] ?? null : ""
+  )
+  const [_zip, setZip] = useState(edit ? keyword[typeEnum.zipCode] ?? null : "")
   const [inputValid, setInputValid] = useState(true)
   const [keyType, setKeyType] = useState("")
 
@@ -59,12 +70,20 @@ const EditModal = ({ keywordType, keyword, edit, id, updateList }) => {
   }
 
   const handleAddressChange = (type, value) => {
-    var newLocation = _location
-    newLocation[type] = value
-    newLocation["display"] = `${newLocation[typeEnum.streetAddress]}, ${
-      newLocation[typeEnum.city]
-    }, ${newLocation[typeEnum.state]} ${newLocation[typeEnum.zipCode]} `
-    setLocation(newLocation)
+    switch (type) {
+      case typeEnum.city:
+        setCity(value)
+        break
+      case typeEnum.state:
+        setStateloc(value)
+        break
+      case typeEnum.zipCode:
+        setZip(value)
+        break
+      case typeEnum.streetAddress:
+        setAddress(value)
+        break
+    }
   }
 
   const handleKeywordChange = (value) => {
@@ -90,7 +109,7 @@ const EditModal = ({ keywordType, keyword, edit, id, updateList }) => {
    */
   const validate = () => {
     if (
-      _keywordType == typeEnum.phone &&
+      _keywordType == typeEnum.phoneNumber &&
       !(
         inputValidator.numRegex.test(_keyword) ||
         inputValidator.numRegex2.test(_keyword)
@@ -99,7 +118,7 @@ const EditModal = ({ keywordType, keyword, edit, id, updateList }) => {
       badInput("phone number")
       return false
     } else if (
-      _keywordType == typeEnum.email &&
+      _keywordType == typeEnum.emailAddress &&
       !(
         inputValidator.emailRegex.test(_keyword) ||
         inputValidator.emailRegex2.test(_keyword)
@@ -116,6 +135,42 @@ const EditModal = ({ keywordType, keyword, edit, id, updateList }) => {
     ) {
       badInput("IP address")
       return false
+    } else if (
+      _keywordType == typeEnum.userKeyword &&
+      !inputValidator.userKeyword.test(_keyword)
+    ) {
+      badInput("keyword. Length should be 5 or greater.")
+      return false
+    } else if (_keywordType == permissionEnum.location) {
+      if (
+        (!_zip == undefined && !inputValidator.zipCode.test(_zip)) ||
+        !_zip == undefined
+      ) {
+        badInput("zip code")
+        return false
+      }
+      if (!(_state == undefined || _state in stateObj)) {
+        badInput("state abbreviation")
+        return false
+      }
+      if (_zip != undefined && _state != undefined) {
+        if (getState(_zip)[0] != _state) {
+          badInput("state / zip combination")
+          return false
+        }
+      }
+      if (!inputValidator.city_address.test(_city)) {
+        badInput("city")
+        return false
+      }
+      if (!inputValidator.city_address.test(_address)) {
+        badInput("address")
+        return false
+      }
+      if (Object.keys(_keyword).length == 0) {
+        return false
+      }
+      return true
     } else return true
   }
 
@@ -172,14 +227,21 @@ const EditModal = ({ keywordType, keyword, edit, id, updateList }) => {
               </SDropdownSelection>
             </SDropdown>
           </SType>
-          <Form
-            onAddressChange={handleAddressChange}
-            onRegularChange={handleKeywordChange}
-            keywordType={_keywordType}
-            value={
-              keywordType == permissionEnum.location ? _location : _keyword
-            }
-          />
+          {_keywordType != permissionEnum.location ? (
+            <KeywordForm
+              keywordType={_keywordType}
+              onChange={handleKeywordChange}
+              value={_keyword}
+            />
+          ) : (
+            <AddressForm
+              onChange={handleAddressChange}
+              city={_city}
+              state={_state}
+              zip={_zip}
+              streetAddress={_address}
+            />
+          )}
           {inputValid ? null : (
             <SErrorText> Please enter a valid {keyType} </SErrorText>
           )}
@@ -189,8 +251,18 @@ const EditModal = ({ keywordType, keyword, edit, id, updateList }) => {
             </SAction>
             <SAction
               onClick={async () => {
-                let key =
-                  _keywordType == permissionEnum.location ? _location : _keyword
+                let key
+                if (_keywordType == permissionEnum.location) {
+                  key = {
+                    [typeEnum.streetAddress]: _address,
+                    [typeEnum.zipCode]: _zip,
+                    [typeEnum.state]: _state,
+                    [typeEnum.city]: _city,
+                    display: `${_address}, ${_city}, ${_state} ${_zip}`,
+                  }
+                } else {
+                  key = _keywordType == _keyword
+                }
                 // check if user input is valid
                 if (validate()) {
                   if (await saveKeyword(key, _keywordType, id)) {

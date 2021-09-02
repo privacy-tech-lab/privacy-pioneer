@@ -22,7 +22,8 @@ import {
   DangerZone,
   LabelToggle,
   FullSnippetToggle,
-  Tour
+  Tour,
+  OptimizationToggle
 } from "./components"
 
 /**
@@ -31,6 +32,7 @@ import {
 const SettingsView = ({ changeTheme }) => {
   useEffect(() => {
     ReactTooltip.rebuild()
+    ReactTooltip.hide()
   }, [])
   return (
     <Scaffold>
@@ -58,6 +60,7 @@ const SettingsView = ({ changeTheme }) => {
             </div>
             <DangerZone />
             <FullSnippetToggle />
+            <OptimizationToggle />
             <Tour/>
           </SSection>
         </SBody>

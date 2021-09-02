@@ -11,11 +11,11 @@ both the URL and the keyword list for words and URLs to look for in the
 network requests
 */
 import { getLocationData, filterGeocodeResponse } from "./getLocationData.js"
-import { buildPhone, getState, buildIpRegex, buildZipRegex } from '../buildUserData/structuredRoutines.js'
-import { typeEnum, permissionEnum, settingsModelsEnum } from "../classModels.js"
+import { buildPhone, getState, buildIpRegex, buildZipRegex, stateObj } from '../buildUserData/structuredRoutines.js'
+import { typeEnum, permissionEnum, settingsModelsEnum, KeywordObject } from "../classModels.js"
 import {setEmail, digestMessage, hexToBase64} from '../requestAnalysis/encodedEmail.js';
 import { getWatchlistDict, hashUserDictValues, createKeywordObj } from "./structureUserData.js";
-import { createEvidenceObj, watchlistHashGen } from "../utility/util.js";
+import { watchlistHashGen } from "../utility/util.js";
 import { settingsKeyval } from "../../../libs/indexed-db/openDB.js";
 
 // import keywords, services JSONs
@@ -78,13 +78,13 @@ async function importData() {
         var userStateArr = []
         var userZipArr = []
         userZip.forEach( zip => {
-            const origHash = watchlistHashGen(typeEnum.zipCode, zip)
-            const zipRegex = buildZipRegex(zip)
-            const zipObj = createKeywordObj(zipRegex, origHash)
+            const locHash = zip[1]
+            const zipRegex = buildZipRegex(zip[0])
+            const zipObj = new KeywordObject({keyword: zipRegex, keywordHash: locHash})
             userZipArr.push(zipObj)
             let abrev, state;
-            [abrev, state] = getState(zip)
-            if (typeof state !== 'undefined') { userStateArr.push(state) }
+            [abrev, state] = getState(zip[0])
+            if (typeof state !== 'undefined') { userStateArr.push(new KeywordObject({keyword: state, keywordHash: locHash})) }
         } )
         if ( userStateArr === undefined || userStateArr.length == 0 ) {
             // invalid zip input
@@ -92,6 +92,18 @@ async function importData() {
         else { locElems[typeEnum.state] = userStateArr }
 
         locElems[typeEnum.zipCode] = userZipArr
+    }
+
+    if (typeEnum.state in user_store_dict) {
+        if (!(typeEnum.state in locElems)) {
+            locElems[typeEnum.state] = []
+        }
+        const userState = user_store_dict[typeEnum.state]
+        userState.forEach( state => {
+            if (!locElems[typeEnum.state].includes(stateObj.state)) {
+                locElems[typeEnum.state].push(new KeywordObject({keyword: stateObj[state[0]], keywordHash: state[1]}))
+            }
+        })
     }
 
     if (typeEnum.city in user_store_dict) {
@@ -149,11 +161,12 @@ async function importData() {
     networkKeywords = hashUserDictValues(networkKeywords);
 
     const fullSnippet = await settingsKeyval.get(settingsModelsEnum.fullSnippet)
+    const optimizePerformance = await settingsKeyval.get(settingsModelsEnum.optimizePerformance)
 
     // returns [location we obtained from google maps API, {phone #s, emails,
     // location elements entered by the user, fingerprinting keywords}, websites
     // that have identification objectives as services]
-    return [locCoords, networkKeywords, services, fullSnippet]
+    return [locCoords, networkKeywords, services, fullSnippet, optimizePerformance]
 }
 
 

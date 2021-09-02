@@ -7,7 +7,6 @@ import { evidenceKeyval as evidenceIDB } from "../../background/analysis/interac
 import {
   permissionEnum,
   privacyLabels,
-  storeEnum,
 } from "../../background/analysis/classModels"
 import { getExcludedLabels } from "../settings/index.js"
 
@@ -18,10 +17,8 @@ import { getExcludedLabels } from "../settings/index.js"
  */
 export const getWebsiteLabels = async (website, excludedLabels = []) => {
   try {
-    var evidence = await evidenceIDB.get(website, storeEnum.firstParty) // first try first party DB
-    if (evidence == undefined) {
-      evidence = await evidenceIDB.get(website, storeEnum.thirdParty)
-    } // then try third party DB
+    var evidence = await evidenceIDB.get(website) 
+
     const result = {}
     for (const [label, value] of Object.entries(evidence)) {
       for (const [type, requests] of Object.entries(value)) {
@@ -83,11 +80,11 @@ const getAllWebsiteLabels = async (excludedLabels = []) => {
  * @param {Dict} res Resulting dictionary
  * @returns Void
  */
-const buildLabels = async (store, res, excludedLabels) => {
+const buildLabels = async (res, excludedLabels) => {
   try {
-    const websites = await evidenceIDB.keys(store)
+    const websites = await evidenceIDB.keys()
     for (const website of websites) {
-      const evidence = await evidenceIDB.get(website, store) // website evidence from indexedDB
+      const evidence = await evidenceIDB.get(website) // website evidence from indexedDB
       const labels = Object.keys(evidence).filter(
         (label) => label in privacyLabels && !excludedLabels.includes(label)
       ) // verify label in privacy labels
@@ -97,7 +94,6 @@ const buildLabels = async (store, res, excludedLabels) => {
         res[website] = {}
         res[website].labels = labels
         res[website].timestamp = timestamp
-        res[website].party = store
       } // give priority to first party labels if we have the same key in both stores
     }
   } catch (error) {
@@ -115,8 +111,7 @@ export const getWebsites = async () => {
     const excludedLabels = await getExcludedLabels()
     const unsortedResult = {}
 
-    await buildLabels(storeEnum.firstParty, unsortedResult, excludedLabels) // first party labels
-    await buildLabels(storeEnum.thirdParty, unsortedResult, excludedLabels) // third party labels
+    await buildLabels(unsortedResult, excludedLabels)
 
     const sortedResult = sortEvidence(unsortedResult)
     return sortedResult

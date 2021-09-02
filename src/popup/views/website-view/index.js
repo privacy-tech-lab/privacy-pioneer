@@ -174,7 +174,7 @@ const WebsiteView = () => {
                       pathname: `/website/${website}/label/${label}`,
                     })
                   }
-                  margin="16px 16px 0px 16px"
+                  margin="16px 16px 8px 16px"
                   label={label}
                   requests={requests}
                   website={website}

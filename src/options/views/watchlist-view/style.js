@@ -83,3 +83,10 @@ export const SListContent = styled.div`
   display: flex;
   flex-direction: column;
 `
+export const SEmpty = styled.div`
+  display: flex;
+  justify-content: center;
+  font-weight: 600;
+  font-size: var(--title2);
+  margin-top: 12%;
+`

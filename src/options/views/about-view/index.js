@@ -15,9 +15,12 @@ import {
   SSubtitle,
   SQuestionCard,
   SArrow,
+  SAbout,
 } from "./style"
 import { FAQ } from "./faq"
 import { ArrowDown } from "../../../libs/icons"
+import ReactTooltip from "react-tooltip"
+import penguin from "../../../assets/logos/Happy.svg"
 
 /**
  * About page view
@@ -27,6 +30,7 @@ const AboutView = () => {
     const [open, setOpen] = useState(false)
 
     useEffect(() => {
+      ReactTooltip.hide()
       var faqCollapse = document.getElementById(question)
       var collapse = new Collapse(faqCollapse, { toggle: false })
       open ? collapse.show() : collapse.hide()
@@ -51,12 +55,17 @@ const AboutView = () => {
   return (
     <Scaffold>
       <SContainer>
-        <STitle>About</STitle>
-        <SSubtitle>Learn more about our extension</SSubtitle>
-        <SBody>
-          Privacy Pioneer will inform you which websites are tracking you and
-          what data they collect.
-        </SBody>
+        <SAbout>
+          <div style={{ width: "350px" }}>
+            <STitle>About</STitle>
+            <SSubtitle>Learn more about our extension</SSubtitle>
+            <SBody>
+              Privacy Pioneer will inform you which websites are tracking you
+              and what data they collect.
+            </SBody>
+          </div>
+          <img src={penguin} />
+        </SAbout>
         <STitle>FAQ</STitle>
         <SBody>
           {Object.entries(FAQ).map(([question, answer], index) => (

@@ -28,9 +28,8 @@ the codebase.
 export class Request {
   constructor({
     id,
-    details,
-    requestHeaders,
-    responseHeaders,
+    rootUrl,
+    reqUrl,
     requestBody,
     responseData,
     error,
@@ -38,11 +37,10 @@ export class Request {
     urlClassification,
   }) {
     this.id = id
-    this.requestHeaders = requestHeaders
-    this.responseHeaders = responseHeaders
-    this.responseData = responseData
+    this.rootUrl = rootUrl
+    this.reqUrl = reqUrl
     this.requestBody = requestBody
-    this.details = details
+    this.responseData = responseData
     this.error = error
     this.type = type
     this.urlClassification = urlClassification
@@ -72,7 +70,6 @@ export const resourceTypeEnum = Object.freeze({
  * @property {string} requestUrl The request Url as a string
  * @property {enum} typ The type of the evdience
  * @property {Array|undefined} index A length 2 array with the indexes of the evidence or undefined if not applicable
- * @property {boolean} firstPartyRoot A boolean indicating if the evidence was generated with a first party root (the rootUrl of the request is the same as the website that generated the request)
  * @property {string|null} parentCompany If we have identified a parent company for this url, we store it here for the frontend. Else, null.
  * @property {string|undefined} watchlistHash If the evidence is from our watchlist, this is the id of that item. Used for deletion of evidence on deletion of watchlist item
  * @property {string|undefined} extraDetail Extra details as needed. Currently only used for encoded email's original email
@@ -86,7 +83,6 @@ export class Evidence {
     requestUrl,
     typ,
     index,
-    firstPartyRoot,
     parentCompany,
     watchlistHash,
     extraDetail,
@@ -98,7 +94,6 @@ export class Evidence {
     this.requestUrl = requestUrl
     this.typ = typ
     this.index = index === undefined ? -1 : index
-    this.firstPartyRoot = firstPartyRoot
     this.parentCompany = parentCompany
     this.watchlistHash = watchlistHash
     this.extraDetail = extraDetail
@@ -117,13 +112,6 @@ export class KeywordObject {
   }
 }
 
-/**
- * @enum {string} Enum used to reference which evidenceKeyval object store you want
- */
-export const storeEnum = Object.freeze({
-  firstParty: "firstPartyEvidence",
-  thirdParty: "thirdPartyEvidence",
-})
 
 /**
  * @enum {string} Enum used to reference file formats that are available for export
@@ -206,7 +194,6 @@ export const typeEnum = Object.freeze({
   fingerprinting: "fingerprinting",
 })
 
-
 /**
  * An object containing the keyword types for the watchlist and information to populate defaults.
  * @typedef keywordTypes
@@ -223,7 +210,7 @@ export const keywordTypes = Object.freeze({
   location: {
     displayName: "Street Address",
     placeholder: {
-      address: "45 Wyllys Ave",
+      streetAddress: "45 Wyllys Ave",
       city: "Middletown",
       state: "CT",
       zipCode: "06459",
@@ -368,5 +355,6 @@ export const privacyLabels = Object.freeze({
  */
 export const settingsModelsEnum = Object.freeze({
   fullSnippet: "fullSnippet",
-  tour: 'tour'
+  tour: "tour",
+  optimizePerformance: "optimizePerformance",
 })

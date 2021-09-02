@@ -7,7 +7,6 @@ import React from "react"
 import WebsiteBadge from "../../../libs/website-badge"
 import LabelCard from "../../../libs/label-card"
 import { SContainer, SItem, SLabel, SLabelGroup, SSeperator } from "./style"
-import { storeEnum } from "../../../background/analysis/classModels"
 
 /**
  * Makes label cards for a given website
@@ -53,11 +52,7 @@ const LabelCards = ({ website, handleTap, allLabels, webLabels }) => {
  * @param webLabels
  */
 const WebsiteLabelList = ({ websites, recent, handleTap, allLabels }) => {
-  const entries = recent
-    ? Object.entries(websites).filter(
-        ([website, data]) => data.party == storeEnum.firstParty
-      )
-    : Object.entries(websites)
+  const entries = Object.entries(websites)
   return (
     <SContainer>
       {entries

@@ -14,12 +14,14 @@ import {
   deleteKeywordDB,
   getLabelStatus,
   getSnippetStatus,
+  getOptimizationStatus,
   getTheme,
   setTheme,
   settingsEnum,
   startStopTour,
   toggleLabel,
   toggleSnippet,
+  toggleOptimization
 } from "../../../../libs/settings"
 import {
   SSubtitle,
@@ -89,6 +91,32 @@ export const FullSnippetToggle = () => {
           isActive={snippetStatus}
           onClick={() => toggle()}
           label={"Save Full HTTP Requests"}
+          spaceBetween
+        />
+    </SSnippetToggle>
+  )
+}
+
+export const OptimizationToggle = () => {
+  const [optimizationStatus, setOptimizationStatus] = useState(true)
+
+  useEffect(() => {
+    getOptimizationStatus().then((res) => {
+      setOptimizationStatus(res)
+    })
+  })
+
+  const toggleOptimize = () => {
+    toggleOptimization()
+    setOptimizationStatus(!optimizationStatus)
+  }
+
+  return (
+    <SSnippetToggle>
+        <ToggleSwitch
+          isActive={optimizationStatus}
+          onClick={() => toggleOptimize()}
+          label={"Optimize Performance"}
           spaceBetween
         />
     </SSnippetToggle>

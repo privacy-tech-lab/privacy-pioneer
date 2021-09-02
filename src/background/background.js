@@ -11,12 +11,8 @@ background.js
 - https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/API/webRequest
 */
 
-import {
-  onBeforeRequest,
-  onBeforeSendHeaders,
-  onHeadersReceived,
-} from "./analysis/analyze.js"
-import { setDefault } from "../libs/settings/index.js"
+import { onBeforeRequest } from "./analysis/analyze.js"
+import { setDefaultSettings } from "../libs/settings/index.js"
 import { importData } from "./analysis/buildUserData/importSearchData.js"
 import Queue from "queue"
 import { getHostname } from "./analysis/utility/util.js"
@@ -31,14 +27,7 @@ import { notify } from "../libs/indexed-db/notifications.js"
 // https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/API/webRequest/ResourceType
 const filter = {
   urls: ["<all_urls>"],
-  types: [
-    "script",
-    "xmlhttprequest",
-    "sub_frame",
-    "websocket",
-    "main_frame",
-    "image",
-  ],
+  types: ["script", "xmlhttprequest", "sub_frame", "image"],
 }
 
 // initialize the evidenceQ that will add evidence to the DB as we get it.
@@ -122,6 +111,8 @@ importData().then((data) => {
 })
 
 setDefault()
+
+setDefaultSettings()
 
 /**
  * Gets a callback with downloadDelta every time downloads have been changed.

@@ -13,7 +13,7 @@ export const homeSteps = [
     target: "#navbarTour",
     content: (
       <div style={textStyles}>
-        Welcome to Privacy Pioneer! Let's get your bearings in a short tour, shall we...
+        Welcome to Privacy Pioneer! Let's get your bearings ...
       </div>),
     placement: 'center',
     locale: {
@@ -45,7 +45,7 @@ export const homeSteps = [
     target: "#websitesTour",
     content: (
       <div style={textStyles}>
-        See data from your most recent websites. Click a card or button to learn more.
+        See data from your most recent website visits. Click a card or label to learn more.
         <br />
         2/5
       </div>),

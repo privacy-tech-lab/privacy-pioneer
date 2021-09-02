@@ -5,7 +5,6 @@ privacy-tech-lab, https://www.privacytechlab.org/
 
 import React from "react"
 import styled from "styled-components"
-import { storeEnum } from "../../background/analysis/classModels.js"
 import { getParent, getParents } from "../company-icons/getCompany.js"
 import WebsiteLogo, { CompanyLogo } from "../website-logo"
 
@@ -52,14 +51,6 @@ const WebsiteBadge = ({ website, showParent, party }) => {
         >
           {website}
         </span>
-        {party == storeEnum.thirdParty ? (
-          <SParty
-            data-position="top"
-            data-tip="This site was loaded in with another site you visited"
-          >
-            3rd
-          </SParty>
-        ) : null}
       </span>
       {showParent ? logo : null}
     </SBadge>
