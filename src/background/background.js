@@ -19,6 +19,10 @@ import {
 import { setDefault } from "../libs/settings/index.js"
 import { importData } from "./analysis/buildUserData/importSearchData.js"
 import Queue from "queue"
+import { getHostname } from "./analysis/utility/util.js"
+import { evidenceKeyval } from "./analysis/interactDB/openDB.js"
+import { storeEnum } from "./analysis/classModels.js"
+import { notify } from "../libs/indexed-db/notifications.js"
 
 // A filter that restricts the events that will be sent to a listener.
 // You can play around with the urls and types.
@@ -82,6 +86,18 @@ importData().then((data) => {
     ["requestBody", "blocking"]
   )
 
+  const test = (tabId, changeInfo, tab) => {
+    if (tab.status == "loading" && tab.active) {
+      browser.tabs.onUpdated.removeListener(test)
+      setTimeout(() => {
+        notify(tab.url)
+      }, 9000)
+    }
+  }
+  browser.tabs.onActivated.addListener(() =>
+    browser.tabs.onUpdated.addListener(test)
+  )
+
   // Listener to get request headers
   // Note: I'm not sure if there is a difference between the details of a request here and onBeforeRequest
   // maybe timestamp difference, antyhing else important?
@@ -104,18 +120,6 @@ importData().then((data) => {
     ["responseHeaders"]
   )
 })
-
-async function initDB(initArr) {
-  for (let initItem of initArr) {
-    let key, keyword, type, id;
-    [key, keyword, type, id] = initItem
-    watchlistKeyval.set(key, {
-      keyword: keyword,
-      type: type,
-      id: id,
-    })
-  }
-}
 
 setDefault()
 

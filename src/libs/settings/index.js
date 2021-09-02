@@ -31,6 +31,7 @@ export const setDefault = async () => {
     await settingsKeyval.set("theme", settingsEnum.sameAsSystem)
     await settingsKeyval.set(settingsModelsEnum.fullSnippet, false)
     await settingsKeyval.set(settingsModelsEnum.tour, true)
+    await settingsKeyval.set("alreadyNotified", {})
   }
 }
 
@@ -60,10 +61,10 @@ export const getLabelStatus = async () => {
  * Toggles labels on or off
  * @param {string} label label we generated
  */
- export const toggleSnippet = async () => {
+export const toggleSnippet = async () => {
   let currentVal = await settingsKeyval.get(settingsModelsEnum.fullSnippet)
   await settingsKeyval.set(settingsModelsEnum.fullSnippet, !currentVal)
-  browser.runtime.sendMessage({msg:'dataUpdated'})
+  browser.runtime.sendMessage({ msg: "dataUpdated" })
 }
 
 /**
