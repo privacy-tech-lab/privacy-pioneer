@@ -74,18 +74,20 @@ const onBeforeRequest = async (details, data) => {
       urlClassification: details.urlClassification !== undefined ? details.urlClassification : [],
     })
     
-    buffer[details.requestId] = request
 
     if (details.tabId == -1) {
       request.rootUrl = details.originUrl
+      buffer[details.requestId] = request
     }
     else {
       try {
         const rootUrlObj = await browser.tabs.get(details.tabId)
         request.rootUrl = rootUrlObj.url 
+        buffer[details.requestId] = request
       }
       catch (err) {
         request.rootUrl = details.originUrl
+        buffer[details.requestId] = request
       }
     }
   }
