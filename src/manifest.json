@@ -10,7 +10,8 @@
     "tabs",
     "history",
     "downloads",
-    "cookies"
+    "cookies",
+    "webNavigation"
   ],
   "manifest_version": 2,
   "background": {
