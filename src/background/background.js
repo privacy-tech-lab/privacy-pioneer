@@ -11,10 +11,12 @@ background.js
 - https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/API/webRequest
 */
 
+import { evidenceKeyval as evidenceIDB } from "./analysis/interactDB/openDB"
 import { onBeforeRequest } from "./analysis/analyze.js"
 import { setDefaultSettings } from "../libs/settings/index.js"
 import { importData } from "./analysis/buildUserData/importSearchData.js"
 import Queue from "queue"
+import { getHostname } from "./analysis/utility/util.js"
 
 // A filter that restricts the events that will be sent to a listener.
 // You can play around with the urls and types.
@@ -53,6 +55,37 @@ browser.runtime.onMessage.addListener((request, sender, sendResponse) => {
     )
   }
 })
+
+/**
+ * changes the favicon if above a certain threshold
+ * 
+ * Defined, used in background.js
+ */
+async function changeFavicon () {
+  const currentWindow = await browser.tabs.query({ active: true, currentWindow: true })
+  const currentWindowId = currentWindow[0].id
+  const currentUrl = currentWindow[0].url
+  const currentHostName = getHostname(currentUrl)
+  /**
+   * swaps the favicon
+   */
+  const swapFavicon = async () => {
+    var evidence = await evidenceIDB.get(currentHostName) 
+    var numEvidence = 0
+    for (let typ of Object.values(evidence)) {
+      for (let lst of Object.values(typ)) {
+        numEvidence += Object.keys(lst).length
+      }
+    }
+    if (numEvidence > 10) {
+      // change the path when we get the right favicon to switch to
+      browser.browserAction.setIcon({tabId: currentWindowId, path:"../assets/icon-48.png"})
+    }
+  }
+  // timeout set to 5 seconds to allow for initial third parties loaded.
+  setTimeout(swapFavicon, 5000)
+}
+browser.webNavigation.onDOMContentLoaded.addListener(changeFavicon)
 
 // call function to get all the url and keyword data
 importData().then((data) => {
