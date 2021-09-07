@@ -17,7 +17,6 @@ import { importData } from "./analysis/buildUserData/importSearchData.js"
 import Queue from "queue"
 import { getHostname } from "./analysis/utility/util.js"
 import { evidenceKeyval } from "./analysis/interactDB/openDB.js"
-import { storeEnum } from "./analysis/classModels.js"
 import { notify } from "../libs/indexed-db/notifications.js"
 
 // A filter that restricts the events that will be sent to a listener.
@@ -75,17 +74,19 @@ importData().then((data) => {
     ["requestBody", "blocking"]
   )
 
-  const test = (tabId, changeInfo, tab) => {
-    if (tab.status == "loading" && tab.active) {
-      browser.tabs.onUpdated.removeListener(test)
-      setTimeout(() => {
-        notify(tab.url)
-      }, 9000)
-    }
-  }
-  browser.tabs.onActivated.addListener(() =>
-    browser.tabs.onUpdated.addListener(test)
-  )
+  // const notification = (currentHost = "") => {
+  //   setTimeout(() => {
+  //     if (window.location.href != currentHost) {
+  //       console.log("notif")
+  //       notify(window.location.href)
+  //       notification(window.location.href)
+  //     } else {
+  //       notification(currentHost), console.log("no notif")
+  //     }
+  //   }, 5000)
+  // }
+
+  // notification()
 
   // Listener to get request headers
   // Note: I'm not sure if there is a difference between the details of a request here and onBeforeRequest
@@ -109,8 +110,6 @@ importData().then((data) => {
     ["responseHeaders"]
   )
 })
-
-setDefault()
 
 setDefaultSettings()
 

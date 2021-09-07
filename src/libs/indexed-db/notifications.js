@@ -1,4 +1,3 @@
-import { storeEnum } from "../../background/analysis/classModels"
 import { evidenceKeyval } from "../../background/analysis/interactDB/openDB"
 import { getHostname } from "../../background/analysis/utility/util"
 import { settingsKeyval, watchlistKeyval } from "./openDB"
@@ -45,7 +44,7 @@ const getUnnotifiedEvidence = async (watchlistEvidence) => {
 
 export const notify = async (url) => {
   const host = getHostname(url)
-  evidenceKeyval.get(host, storeEnum.firstParty).then(async (res) => {
+  evidenceKeyval.get(host).then(async (res) => {
     if (res && res.watchlist) {
       const evidenceToNotify = await getUnnotifiedEvidence(res.watchlist)
       if (Notification.permission == "granted" && evidenceToNotify.length > 0) {
