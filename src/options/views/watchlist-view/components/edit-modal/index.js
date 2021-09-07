@@ -250,7 +250,6 @@ const EditModal = ({ keywordType, keyword, edit, id, updateList }) => {
               onClick={async () => {
                 let key
                 if (_keywordType == permissionEnum.location) {
-                  console.log("location")
                   key = {
                     [typeEnum.streetAddress]: _address,
                     [typeEnum.zipCode]: _zip,
@@ -261,7 +260,6 @@ const EditModal = ({ keywordType, keyword, edit, id, updateList }) => {
                 } else {
                   key = _keyword
                 }
-                console.log(validate())
                 // check if user input is valid
                 if (validate()) {
                   if (await saveKeyword(key, _keywordType, id)) {

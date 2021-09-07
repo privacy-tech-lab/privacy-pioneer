@@ -30,6 +30,7 @@ export const setDefaultSettings = async () => {
     await settingsKeyval.set("theme", settingsEnum.sameAsSystem)
     await settingsKeyval.set(settingsModelsEnum.fullSnippet, false)
     await settingsKeyval.set(settingsModelsEnum.tour, true)
+    await settingsKeyval.set("alreadyNotified", {})
     await settingsKeyval.set(settingsModelsEnum.optimizePerformance, true)
   }
 }
@@ -60,16 +61,16 @@ export const getLabelStatus = async () => {
  * Toggles snippets on or off
  * @param {string} label label we generated
  */
- export const toggleSnippet = async () => {
+export const toggleSnippet = async () => {
   let currentVal = await settingsKeyval.get(settingsModelsEnum.fullSnippet)
   await settingsKeyval.set(settingsModelsEnum.fullSnippet, !currentVal)
-  browser.runtime.sendMessage({msg:'dataUpdated'})
+  browser.runtime.sendMessage({ msg: "dataUpdated" })
 }
 
 /**
  * Tells whether the labels are on or off based on settings
  */
- export const getSnippetStatus = async () => {
+export const getSnippetStatus = async () => {
   return await settingsKeyval.get(settingsModelsEnum.fullSnippet)
 }
 
@@ -77,20 +78,20 @@ export const getLabelStatus = async () => {
  * Toggles optimization on or off
  * @param {string} label label we generated
  */
- export const toggleOptimization = async () => {
-  let currentVal = await settingsKeyval.get(settingsModelsEnum.optimizePerformance)
+export const toggleOptimization = async () => {
+  let currentVal = await settingsKeyval.get(
+    settingsModelsEnum.optimizePerformance
+  )
   await settingsKeyval.set(settingsModelsEnum.optimizePerformance, !currentVal)
-  browser.runtime.sendMessage({msg:'dataUpdated'})
+  browser.runtime.sendMessage({ msg: "dataUpdated" })
 }
 
 /**
  * Tells whether optimization is on or off based on settings
  */
- export const getOptimizationStatus = async () => {
+export const getOptimizationStatus = async () => {
   return await settingsKeyval.get(settingsModelsEnum.optimizePerformance)
 }
-
-
 
 /**
  * Sets the theme to be light, dark, or system
