@@ -10,8 +10,6 @@ import { getState } from "../../background/analysis/buildUserData/structuredRout
 import {
   keywordTypes,
   permissionEnum,
-  storeEnum,
-  typeEnum,
 } from "../../background/analysis/classModels.js"
 
 /**
@@ -74,56 +72,49 @@ const toggleNotifications = async (id) => {
       Notification.requestPermission()
     }
   }
+}
 
+/**
+ * Deletes the keyword from the watchlist.
+ * Deletes the evidence associated with that keyword from the evidenceDB
+ *
+ * @param {number} id
+ * @param {string} type
+ * @returns {void} Nothing. Updates and deletes as described.
+ */
+const deleteKeyword = async (id) => {
+  let evKeys = await evidenceIDB.keys()
   /**
-   * Deletes the keyword from the watchlist.
-   * Deletes the evidence associated with that keyword from the evidenceDB
-   *
-   * @param {number} id
-   * @param {string} type
-   * @returns {void} Nothing. Updates and deletes as described.
+   * Deletes evidence if watchlistHash of the evidence is the same as the id we are deleting from the watchlist
+   * @param {Object} evidenceStoreKeys All keys from the related store, taken from the above lines
    */
-  const deleteKeyword = async (id) => {
-    let evKeys = await evidenceIDB.keys()
-    /**
-     * Deletes evidence if watchlistHash of the evidence is the same as the id we are deleting from the watchlist
-     * @param {Object} evidenceStoreKeys All keys from the related store, taken from the above lines
-     */
-    function runDeletion(evidenceStoreKeys) {
-      evidenceStoreKeys.forEach(async (website) => {
-        let a = await evidenceIDB.get(website)
-        if (a == undefined) {
-          return
-        } // shouldn't happen but just in case
-        for (const [perm, typeLevel] of Object.entries(a)) {
-          for (const [type, evUrls] of Object.entries(typeLevel)) {
-            for (const [evUrl, evidence] of Object.entries(evUrls)) {
-              if (id == evidence.watchlistHash) {
-                delete a[perm][type][evUrl]
-              }
-            }
-            if (Object.keys(a[perm][type]).length == 0) {
-              delete a[perm][type]
+  function runDeletion(evidenceStoreKeys) {
+    evidenceStoreKeys.forEach(async (website) => {
+      let a = await evidenceIDB.get(website)
+      if (a == undefined) {
+        return
+      } // shouldn't happen but just in case
+      for (const [perm, typeLevel] of Object.entries(a)) {
+        for (const [type, evUrls] of Object.entries(typeLevel)) {
+          for (const [evUrl, evidence] of Object.entries(evUrls)) {
+            if (id == evidence.watchlistHash) {
+              delete a[perm][type][evUrl]
             }
           }
           if (Object.keys(a[perm][type]).length == 0) {
             delete a[perm][type]
           }
         }
-        await evidenceIDB.set(website, a)
-      })
-    }
-
-    // delete from Evidence
-    runDeletion(evKeys)
-
-    // delete from watchlist
-    await watchlistKeyval.delete(id)
+        if (Object.keys(a[perm][type]).length == 0) {
+          delete a[perm][type]
+        }
+      }
+      await evidenceIDB.set(website, a)
+    })
   }
 
   // delete from Evidence
-  runDeletion(firstEvKeys, storeEnum.firstParty)
-  runDeletion(thirdEvKeys, storeEnum.thirdParty)
+  runDeletion(evKeys)
 
   // delete from watchlist
   await watchlistKeyval.delete(id)
