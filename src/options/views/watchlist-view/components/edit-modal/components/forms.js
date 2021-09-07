@@ -3,18 +3,18 @@ Licensed per https://github.com/privacy-tech-lab/privacy-pioneer/blob/main/LICEN
 privacy-tech-lab, https://www.privacytechlab.org/
 */
 
-import React from "react";
-import { SInput, SForm, SKeyword, SHeader } from "../style";
+import React from "react"
+import { SInput, SForm, SKeyword, SHeader } from "../style"
 import {
   typeEnum,
   permissionEnum,
-} from "../../../../../../background/analysis/classModels";
-import { keywordTypes } from "../../../../../../background/analysis/classModels";
+} from "../../../../../../background/analysis/classModels"
+import { keywordTypes } from "../../../../../../background/analysis/classModels"
 
 /**
  * Form for a user to input their address
  */
-const AddressForm = ({ onChange, value }) => {
+const AddressForm = ({ onChange, city, state, zip, streetAddress }) => {
   return (
     <SForm>
       <SKeyword>
@@ -26,7 +26,7 @@ const AddressForm = ({ onChange, value }) => {
             ]
           }
           onChange={(e) => onChange(typeEnum.streetAddress, e.target.value)}
-          value={value[typeEnum.streetAddress]}
+          value={streetAddress}
         />
       </SKeyword>
 
@@ -46,7 +46,7 @@ const AddressForm = ({ onChange, value }) => {
               ]
             }
             onChange={(e) => onChange(typeEnum.city, e.target.value)}
-            value={value[typeEnum.city]}
+            value={city}
           />
         </SKeyword>
         <SKeyword style={{ flex: 0.25 }}>
@@ -59,7 +59,7 @@ const AddressForm = ({ onChange, value }) => {
               ]
             }
             onChange={(e) => onChange(typeEnum.state, e.target.value)}
-            value={value[typeEnum.state]}
+            value={state}
           />
         </SKeyword>
 
@@ -73,13 +73,13 @@ const AddressForm = ({ onChange, value }) => {
               ]
             }
             onChange={(e) => onChange(typeEnum.zipCode, e.target.value)}
-            value={value[typeEnum.zipCode]}
+            value={zip}
           />
         </SKeyword>
       </div>
     </SForm>
-  );
-};
+  )
+}
 
 /**
  * Form for a user to add their own non-location keywords
@@ -98,22 +98,7 @@ const KeywordForm = ({ keywordType, onChange, value }) => {
         value={value}
       />
     </SKeyword>
-  );
-};
+  )
+}
 
-/**
- * Chooses the form the user should see (location or normal)
- */
-const Form = ({ keywordType, onAddressChange, onRegularChange, value }) => {
-  return keywordType != permissionEnum.location ? (
-    <KeywordForm
-      keywordType={keywordType}
-      onChange={onRegularChange}
-      value={value}
-    />
-  ) : (
-    <AddressForm onChange={onAddressChange} value={value} />
-  );
-};
-
-export default Form;
+export { KeywordForm, AddressForm }

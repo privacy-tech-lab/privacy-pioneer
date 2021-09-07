@@ -7,30 +7,6 @@ import { getHostname } from '../utility/util.js'
 const parentJson = require('../../../assets/parents.json');
 
 
-/**
- * Tells us whether or not the request was initiated by an origin that the user intended
- * 
- * Defined in tagRequests.js
- * 
- * Used in analyze.js
- * 
- * @param {string} rootU the rootURL of the request
- * @returns {Promse<boolean>} true if first party, false if third party
- */
-async function tagParty(rootU) {
-    /**
-    * Gets the ten most recently visited websites
-    * @var historyQuery Searches most recent sites opened in the browser
-    */
-    var historyQuery = await browser.history.search({text: "", maxResults: 10})
-    const rootUrl = getHostname(rootU);
-    let recentlyVisited = new Set()
-    for (let page of historyQuery) {
-        recentlyVisited.add(getHostname(page.url));
-    }
-    return recentlyVisited.has(rootUrl)
-}
-
 
 /**
 * Identifies if the request url hostname is in our list of parent companies, modified from Disconnect's entities.json,
@@ -62,4 +38,4 @@ function tagParent(reqUrl, parents = parentJson) {
     return null
   }
 
-export { tagParty, tagParent}
+export { tagParent}

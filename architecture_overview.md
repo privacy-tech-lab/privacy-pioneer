@@ -1,40 +1,40 @@
 **High-level picture:**
 
 ### 1
-  - We set up HTTP request listeners in background.js
+  - We set up an HTTP request listener, `onBeforeRequest` in background.js
   
-  - In analyze.js, we have callbacks for these listeners. First we verify that we have a full request, and then in the resolveBuffer function after we've verified that we have a full request, we call our analysis functions on that request
+  - In analyze.js, we have a callback for this listener. We take the information we analyze from the callback data, and then pass the result to `resolveBuffer`, where we call our analysis functions on that request
 
 ### 2
 - These functions can be found in searchFunctions.js.
 
-- urlSearch looks for urls from the disconnect.me list,  fingerprintSearch looks for text that matches the list that we have compiled (found in src/assets/services.json), coordinateSearch looks for longitude and latitudes, and regexSearch matches regular expression patterns passed to it.
+- `locationKeywordSearch` looks for user inputted location elements, `urlSearch` takes Firefox's url classifications from the disconnect.me list, `coordinateSearch` looks for longitude and latitudes, `regexSearch` matches regular expression patterns passed to it, `fingerprintSearch` looks for text that matches the list that we have compiled (`src/assets/services.json`), `pixelSearch` looks for urls on our pixel list (`src/assets/keywords.json`), `dynamicPixelSearch` looks for common properties of a pixel, and `ipSearch` looks for inputted IP addresses sent to 3rd parties.
 
-- Some of these functions, like regexSearch get passed user data from the watchlistKeyval.
+- Some of these functions, like `locationKeywordSearch`, `regexSearch`, and `ipSearch` get passed user data from the watchlistKeyval.
 
 ### 3
 
-- We format this user data as a list `[locCoords, networkKeywords, services]` returned by the importFunction in importSearchData.js. 
+- We format this user data as a list `[locCoords, networkKeywords, services, fullSnippet, optimizePerformance]` returned by the `importData()` function in `importSearchData.js`. 
 
 - `locCoords` use the getLocationData.js file which uses the navigator api to ask for the user's location. So, the location popup should come up here.
 
 - `networkKeywords` grabs all the user data in the watchlistKeyval, runs the appropriate structured routines in structuredRoutines.js (reformats phone numbers with google's api for example), and then returns everything as a dictionary.
 
-- `services` is the json from src/assets/staticJSONs.json. This contains important websites that regularly perform invasive procedures, and we alert users to instances of their use.
+- `services` is the json from `src/assets/services.json`. This contains important websites that regularly perform invasive procedures, and we alert users to instances of their use.
 
-- Right now, this function is called on load `importData().then((data) => {` in background.js. Then, we pass data to the listeners. We have to alter this architecture to allow for intra-session changes in user data.
+- This function is called on load `importData().then((data) => {` in background.js. Then, we pass data to the listeners. If the user changes a value, either a setting or a watchlist item, `importData()` will be called again.
 
 ### 4
 
-- If any of these functions flag evidence, they update the evidenceKeyval for the rootUrl of that request, by calling the addToEvidence function, passing in the evidence that they found as parameters.
+- For each HTTP Reqeust, we call all analysis routines. Once the analysis is complete, we pass its result to `addToEvidenceStore` found in `addEvidence.js`.
 
-- addToEvidence will create a new evidence object with the parameters it was passed, gets what is currently stored at that rootUrl, updates it with the new piece of evidence, and then sets the evidence for that rootUrl again.
+- `addToEvidenceStore` will take the passed evidence and interact with the database. We do not add duplicate evidence. Duplicate evidence is defined as the same root/reqUrl and the same permission/type. Example: The exact same request that gets tagged as `monetizaiton` is handled twice.
 
 ### 5
 
-- There are two indexedDb databases: evidenceKeyval and watchlistKeyval. evidenceKeyval is defined in openDB.js and watchlistKeyval is defined in libs/indexed-db/index.js. Both use async/await and have data persist across sessions.
+- There are three indexedDb databases: evidenceKeyval, watchlistKeyval, and settingsKeyval. evidenceKeyval is defined in `analysis/interactDB/openDB.js`, watchlistKeyval and settingsKeyval are defined in `libs/indexed-db/openDB.js`. Both use async/await and have data persist across sessions. We use this [library](https://github.com/jakearchibald/idb) to wrap the DB.
 
-- watchlistKeyval is populated when a user adds an item to their watchlist on the front-end. 
+- watchlistKeyval/settingsKeyval are populated when a user interacts with the front-end. 
 
 - In evidenceKeyval, we keep all of the evidence we have collected in our analysis. The keys to this store are rootUrls (i.e. nytimes.com or facebook.com) and the values are the evidence we have at these rootUrls.
 
@@ -42,7 +42,6 @@
 
 - So, if you call `e = await evidenceKeyval.get(nytimes.com)`, e will point to a dictionary of evidence. This evidence is structured: permission -> type -> requestUrl -> evidence object
 
-- There is a maximum of 4 pieces of unique evidence (unique defined by requestUrl) for a given subtype. So, in theory we could have 28 pieces of evidence for the location permission for a given rootUrl because there are 7 subtypes of location. You could see these subtypes in the privacyLabels enum found in classModels.js
 
 ### 7
 - The structure for permission, type, and evidence objects can be found in classModels.js. So, throughout the backend, we always use permissionEnum or typeEnum to reference permissions and types. If a new function is written that calls the addToEvidence function, it should pass permission and type parameters from these enums. 

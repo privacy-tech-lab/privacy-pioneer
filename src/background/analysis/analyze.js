@@ -11,12 +11,11 @@ analyze.js
 
 import { Request } from "./classModels.js";
 import { evidenceQ } from "../background.js";
-import { tagParty, tagParent } from "./requestAnalysis/tagRequests.js";
+import { tagParent } from "./requestAnalysis/tagRequests.js";
 import { addToEvidenceStore } from "./interactDB/addEvidence.js";
 import { getAllEvidenceForRequest } from "./requestAnalysis/scanHTTP.js";
 import { MAX_BYTE_LEN } from "./constants.js";
 import { getAllEvidenceForCookies } from "./requestAnalysis/scanCookies.js";
-import { getHostname } from "./utility/util.js";
 
 // Temporary container to hold network requests while properties are being added from listener callbacks
 const buffer = {}
@@ -39,29 +38,59 @@ const decoder = new TextDecoder("utf-8")
  * @param {Array} data Data from importData function [locCoords, networkKeywords, services]
  * @returns {Void} Calls resolveBuffer (in analyze.js)
  */
-const onBeforeRequest = (details, data) => {
+const onBeforeRequest = async (details, data) => {
   
   let request
 
   if (details.requestId in buffer) {
-    // if the requestID has already been added, update details, request body as needed
+
     request = buffer[details.requestId]
-    request.rootUrl = details.originUrl !== undefined ? details.originUrl : null
+
+    // if the requestID has already been added, update details, request body as needed
+    if (details.tabId == -1) {
+      request.rootUrl = details.originUrl
+    }
+    else {
+      try {
+        const rootUrlObj = await browser.tabs.get(details.tabId)
+        request.rootUrl = rootUrlObj.url 
+      }
+      catch (err) {
+        request.rootUrl = details.originUrl
+      }
+    }
     request.reqUrl = details.url !== undefined ? details.url : null
     request.requestBody = details.requestBody !== undefined ? details.requestBody : null
     request.type = details.type !== undefined ? details.type : null
     request.urlClassification = details.urlClassification !== undefined ? details.urlClassification : []
+
   } else {
     // requestID not seen, create new request, add details and request body as needed
     request = new Request({
       id: details.requestId,
-      rootUrl: details.originUrl !== undefined ? details.originUrl : null,
+      rootUrl: null,
       reqUrl: details.url !== undefined ? details.url : null,
       requestBody: details.requestBody !== undefined ? details.requestBody : null,
       type: details.type !== undefined ? details.type : null,
       urlClassification: details.urlClassification !== undefined ? details.urlClassification : [],
     })
-    buffer[details.requestId] = request
+    
+
+    if (details.tabId == -1) {
+      request.rootUrl = details.originUrl
+      buffer[details.requestId] = request
+    }
+    else {
+      try {
+        const rootUrlObj = await browser.tabs.get(details.tabId)
+        request.rootUrl = rootUrlObj.url 
+        buffer[details.requestId] = request
+      }
+      catch (err) {
+        request.rootUrl = details.originUrl
+        buffer[details.requestId] = request
+      }
+    }
   }
 
   // filter = you can now monitor a response before the request is sent
@@ -167,8 +196,6 @@ async function analyze(request, userData) {
     cookieUrlObject[reqUrl] = currentTime
   }
 
-  console.log(reqUrl, allCookieEvidence)
-
   if (allCookieEvidence.length != 0) {
     allCookieEvidence.forEach(cookieEv => {
       allEvidence.push(cookieEv)
@@ -178,14 +205,13 @@ async function analyze(request, userData) {
   // if we found evidence for the request
   if (allEvidence.length != 0) {
     const rootUrl = request.rootUrl
-    // tag the parent and the store
-    const partyBool = await tagParty(rootUrl)
+    // tag the parent
     const parent = tagParent(reqUrl)
 
     const saveFullSnippet = userData[3]
 
     // push the job to the Queue (will add the evidence for one HTTP request at a time)
-    evidenceQ.push(function(cb) { cb(null, addToEvidenceStore(allEvidence, partyBool, parent, rootUrl, reqUrl, saveFullSnippet))});
+    evidenceQ.push(function(cb) { cb(null, addToEvidenceStore(allEvidence, parent, rootUrl, reqUrl, saveFullSnippet))});
   }
 }
 

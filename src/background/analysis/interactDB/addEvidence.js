@@ -5,7 +5,7 @@ privacy-tech-lab, https://www.privacytechlab.org/
 
 import { getHostname } from "../utility/util.js"
 import { evidenceKeyval } from "../interactDB/openDB.js"
-import { Evidence, typeEnum, storeEnum } from "../classModels.js"
+import { Evidence } from "../classModels.js"
 import { settingsKeyval } from "../../../libs/indexed-db/openDB.js";
 
 
@@ -21,7 +21,6 @@ import { settingsKeyval } from "../../../libs/indexed-db/openDB.js";
  * Used in analyze.js
  * 
  * @param {Object} evidenceToAdd Evidence that the function should add to the correct store in evidenceIDB
- * @param {boolean} firstParty Whether the evidence is a first party request
  * @param {string|undefined} parent Parent company of the request Url, if possible
  * @param {string} rootU The rootUrl of the request
  * @param {string} requestU The requestUrl of the request
@@ -32,7 +31,7 @@ import { settingsKeyval } from "../../../libs/indexed-db/openDB.js";
  */
 
 // perm, rootU, snip, requestU, t, i, extraDetail = undefined)
-async function addToEvidenceStore(evidenceToAdd, firstParty, parent, rootU, requestU, saveFullSnippet) {
+async function addToEvidenceStore(evidenceToAdd, parent, rootU, requestU, saveFullSnippet) {
 
   /**
    * This is a known bug where certain websites intiate requests where the rootURL 
@@ -47,9 +46,8 @@ async function addToEvidenceStore(evidenceToAdd, firstParty, parent, rootU, requ
 
   const ts = Date.now()
   const rootUrl = getHostname(rootU)
-  const store = firstParty ? storeEnum.firstParty : storeEnum.thirdParty
 
-  var evidence = await evidenceKeyval.get(rootUrl, store)
+  var evidence = await evidenceKeyval.get(rootUrl)
   if (evidence === undefined) { evidence = {} }
 
   /**
@@ -64,7 +62,6 @@ async function addToEvidenceStore(evidenceToAdd, firstParty, parent, rootU, requ
     // if this is a valid object
     if (evidenceObject.rootUrl){
       evidenceObject.timestamp = ts
-      evidenceObject.firstPartyRoot = firstParty
       evidenceObject.rootUrl = rootU
       evidenceObject.parentCompany = parent
 
@@ -120,7 +117,7 @@ async function addToEvidenceStore(evidenceToAdd, firstParty, parent, rootU, requ
 
   //final return statement
   return new Promise( function(resolve, reject) {
-    evidenceKeyval.set(rootUrl, evidence, store)
+    evidenceKeyval.set(rootUrl, evidence)
     resolve('set');
   });
 }
