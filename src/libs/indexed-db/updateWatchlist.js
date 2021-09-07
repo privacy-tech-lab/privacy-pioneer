@@ -72,6 +72,7 @@ const toggleNotifications = async (id) => {
       Notification.requestPermission()
     }
   }
+  watchlistKeyval.set(id, data)
 }
 
 /**
@@ -104,9 +105,6 @@ const deleteKeyword = async (id) => {
           if (Object.keys(a[perm][type]).length == 0) {
             delete a[perm][type]
           }
-        }
-        if (Object.keys(a[perm][type]).length == 0) {
-          delete a[perm][type]
         }
       }
       await evidenceIDB.set(website, a)

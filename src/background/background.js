@@ -14,10 +14,9 @@ background.js
 import { onBeforeRequest } from "./analysis/analyze.js"
 import { setDefaultSettings } from "../libs/settings/index.js"
 import { importData } from "./analysis/buildUserData/importSearchData.js"
+import runNotifications from "../libs/indexed-db/notifications"
 import Queue from "queue"
 import { getHostname } from "./analysis/utility/util.js"
-import { evidenceKeyval } from "./analysis/interactDB/openDB.js"
-import { notify } from "../libs/indexed-db/notifications.js"
 
 // A filter that restricts the events that will be sent to a listener.
 // You can play around with the urls and types.
@@ -65,6 +64,8 @@ importData().then((data) => {
     }
   )
 
+  runNotifications()
+
   // Listener to get response data, request body, and details about request
   browser.webRequest.onBeforeRequest.addListener(
     function (details) {
@@ -72,42 +73,6 @@ importData().then((data) => {
     },
     filter,
     ["requestBody", "blocking"]
-  )
-
-  // const notification = (currentHost = "") => {
-  //   setTimeout(() => {
-  //     if (window.location.href != currentHost) {
-  //       console.log("notif")
-  //       notify(window.location.href)
-  //       notification(window.location.href)
-  //     } else {
-  //       notification(currentHost), console.log("no notif")
-  //     }
-  //   }, 5000)
-  // }
-
-  // notification()
-
-  // Listener to get request headers
-  // Note: I'm not sure if there is a difference between the details of a request here and onBeforeRequest
-  // maybe timestamp difference, antyhing else important?
-  browser.webRequest.onBeforeSendHeaders.addListener(
-    function (details) {
-      onBeforeSendHeaders(details, data)
-    },
-    filter,
-    ["requestHeaders"]
-  )
-
-  // Listener to get response headers
-  // Note: I'm not sure if there is a difference between the details of a request here and onBeforeRequest
-  // maybe timestamp differece, antyhing else important?
-  browser.webRequest.onResponseStarted.addListener(
-    function (details) {
-      onHeadersReceived(details, data)
-    },
-    filter,
-    ["responseHeaders"]
   )
 })
 
