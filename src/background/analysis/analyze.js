@@ -16,6 +16,7 @@ import { addToEvidenceStore } from "./interactDB/addEvidence.js";
 import { getAllEvidenceForRequest } from "./requestAnalysis/scanHTTP.js";
 import { MAX_BYTE_LEN } from "./constants.js";
 import { getAllEvidenceForCookies } from "./requestAnalysis/scanCookies.js";
+import { getHostname } from "./utility/util.js";
 
 // Temporary container to hold network requests while properties are being added from listener callbacks
 const buffer = {}
@@ -134,6 +135,12 @@ function resolveBuffer(id, data) {
 }
 
 /**
+ * cookieUrlObject object to store request urls and their timestamps. 
+ * Used exclusively in analyze.js to check the time a request url was called
+ */
+const cookieUrlObject = {}
+
+/**
  * Calls the analysis functions from searchFunctions.js on the appropriate data that we have
  * 
  * Defined, used in analyze.js
@@ -145,13 +152,23 @@ function resolveBuffer(id, data) {
 async function analyze(request, userData) {
 
   const allEvidence = getAllEvidenceForRequest(request, userData);
-  const currentUrl = request.rootUrl
+
   const currentTime = Date.now()
   var allCookieEvidence = []
-  if (currentTime - window.sessionStorage.getItem(currentUrl) < 60000) {
-    allCookieEvidence = getAllEvidenceForCookies(await browser.cookies.getAll({url: request.reqUrl}), request.rootUrl, request.reqUrl, userData)
+  const minuteInMillis = 60000
+  const reqUrl = request.reqUrl
+  if (reqUrl in cookieUrlObject) {
+    if (currentTime - cookieUrlObject[reqUrl] > minuteInMillis) {
+      allCookieEvidence = getAllEvidenceForCookies(await browser.cookies.getAll({url: reqUrl}), request.rootUrl, reqUrl, userData)
+      cookieUrlObject[request.reqUrl] = currentTime
+    }
+  } else {
+    allCookieEvidence = getAllEvidenceForCookies(await browser.cookies.getAll({url: reqUrl}), request.rootUrl, reqUrl, userData)
+    cookieUrlObject[reqUrl] = currentTime
   }
-  
+
+  console.log(reqUrl, allCookieEvidence)
+
   if (allCookieEvidence.length != 0) {
     allCookieEvidence.forEach(cookieEv => {
       allEvidence.push(cookieEv)
@@ -161,7 +178,6 @@ async function analyze(request, userData) {
   // if we found evidence for the request
   if (allEvidence.length != 0) {
     const rootUrl = request.rootUrl
-    const reqUrl = request.reqUrl
     // tag the parent and the store
     const partyBool = await tagParty(rootUrl)
     const parent = tagParent(reqUrl)

@@ -54,16 +54,6 @@ browser.runtime.onMessage.addListener((request, sender, sendResponse) => {
   }
 })
 
-
-async function siteLoaded () {
-  const currentWindow = await browser.tabs.query({ active: true, currentWindow: true })
-  const currentUrl = currentWindow[0].url
-  if (!window.sessionStorage.getItem(currentUrl)) {
-    window.sessionStorage.setItem(currentUrl, Date.now())
-  }
-}
-browser.webNavigation.onDOMContentLoaded.addListener(siteLoaded)
-
 // call function to get all the url and keyword data
 importData().then((data) => {
   /**
