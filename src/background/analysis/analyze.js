@@ -16,6 +16,7 @@ import { addToEvidenceStore } from "./interactDB/addEvidence.js";
 import { getAllEvidenceForRequest } from "./requestAnalysis/scanHTTP.js";
 import { MAX_BYTE_LEN } from "./constants.js";
 import { getAllEvidenceForCookies } from "./requestAnalysis/scanCookies.js";
+import { getHostname } from "./utility/util.js";
 
 // Temporary container to hold network requests while properties are being added from listener callbacks
 const buffer = {}
@@ -185,14 +186,14 @@ async function analyze(request, userData) {
   const currentTime = Date.now()
   var allCookieEvidence = []
   const minuteInMillis = 60000
-  const reqUrl = request.reqUrl
+  const reqUrl = getHostname(request.reqUrl)
   if (reqUrl in cookieUrlObject) {
     if (currentTime - cookieUrlObject[reqUrl] > minuteInMillis) {
-      allCookieEvidence = getAllEvidenceForCookies(await browser.cookies.getAll({url: reqUrl}), request.rootUrl, reqUrl, userData)
-      cookieUrlObject[request.reqUrl] = currentTime
+      allCookieEvidence = getAllEvidenceForCookies(await browser.cookies.getAll({domain: reqUrl}), request.rootUrl, reqUrl, userData)
+      cookieUrlObject[reqUrl] = currentTime
     }
   } else {
-    allCookieEvidence = getAllEvidenceForCookies(await browser.cookies.getAll({url: reqUrl}), request.rootUrl, reqUrl, userData)
+    allCookieEvidence = getAllEvidenceForCookies(await browser.cookies.getAll({domain: reqUrl}), request.rootUrl, reqUrl, userData)
     cookieUrlObject[reqUrl] = currentTime
   }
 
