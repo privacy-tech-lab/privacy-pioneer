@@ -9,3 +9,13 @@ export const MAX_BYTE_LEN = 200000
  * Based on an analysis that the most labels come from shorter requests
  */
 export const MAX_CHAR_LEN = 100000
+
+/**
+ * Used in setTimeout when changing favicon
+ */
+export const FIVE_SEC_IN_MILLIS = 5000
+
+/**
+ * Used to see if evidence is large for a first party
+ */
+export const EVIDENCE_THRESHOLD = 30

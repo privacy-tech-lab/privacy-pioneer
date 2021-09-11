@@ -17,6 +17,7 @@ import { setDefaultSettings } from "../libs/settings/index.js"
 import { importData } from "./analysis/buildUserData/importSearchData.js"
 import Queue from "queue"
 import { getHostname } from "./analysis/utility/util.js"
+import { EVIDENCE_THRESHOLD, FIVE_SEC_IN_MILLIS } from "./analysis/constants"
 
 // A filter that restricts the events that will be sent to a listener.
 // You can play around with the urls and types.
@@ -71,19 +72,24 @@ async function changeFavicon () {
    */
   const swapFavicon = async () => {
     var evidence = await evidenceIDB.get(currentHostName) 
+    if (evidence == undefined) evidence = {}
     var numEvidence = 0
     for (let typ of Object.values(evidence)) {
       for (let lst of Object.values(typ)) {
         numEvidence += Object.keys(lst).length
       }
     }
-    if (numEvidence > 10) {
+    if (numEvidence > EVIDENCE_THRESHOLD) {
       // change the path when we get the right favicon to switch to
       browser.browserAction.setIcon({tabId: currentWindowId, path:"../assets/icon-48.png"})
+    } else {
+      // Change it back to the original. Sometimes quickly changing a webpage after load
+      // keeps the now-incorrect favicon
+      browser.browserAction.setIcon({tabId: currentWindowId, path:"../assets/favicon.svg"})
     }
   }
   // timeout set to 5 seconds to allow for initial third parties loaded.
-  setTimeout(swapFavicon, 5000)
+  setTimeout(swapFavicon, FIVE_SEC_IN_MILLIS)
 }
 browser.webNavigation.onDOMContentLoaded.addListener(changeFavicon)
 
