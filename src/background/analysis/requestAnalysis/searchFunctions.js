@@ -92,9 +92,9 @@ function urlSearch(rootUrl, reqUrl, classifications) {
   }
 
 /**
- * Searches an HTTP request for a users lattitude and longitude. Uses regular expression patterns to look for floating point patterns.
+ * Searches an HTTP request for a users latitude and longitude. Uses regular expression patterns to look for floating point patterns.
  * We only add evidence if we find a .1 distance from both the 
- * lattitude and the longitude within 250 characters of each other in the request
+ * latitude and the longitude within 250 characters of each other in the request
  * 
  * Defined in searchFunctions.js
  * 
@@ -145,12 +145,12 @@ function coordinateSearch(strReq, locData, rootUrl, reqUrl) {
   }
 
   /**
-   * If we find lattitude, we search for longitude and vice versa
+   * If we find latitude, we search for longitude and vice versa
    * 
    * Defined, used in searchFunctions.js
    * 
    * @param {Array<Iterator>} matchArr An array with possible floating point numbers
-   * @param {number} goal Either a lattitude or a longitude.
+   * @param {number} goal Either a latitude or a longitude.
    * @param {number} arrIndex An index of where in matchArr the previous coordinate was found
    * @param {number} matchIndex The index in the original request string of the first coordinate.
    * @returns {number} The next index to be searched. Or the length of the array if a pair is found (This will terminate the outer while loop).

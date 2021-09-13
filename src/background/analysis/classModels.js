@@ -315,12 +315,12 @@ export const privacyLabels = Object.freeze({
       coarseLocation: {
         displayName: "Coarse Location",
         description:
-          "Your Coarse Location (lattitude and longitude coordinates within 1 degree) were found in a request.",
+          "Your Coarse Location (latitude and longitude coordinates within 1 degree) were found in a request.",
       },
       fineLocation: {
         displayName: "Fine Location",
         description:
-          "Your Fine Location (lattitude and longitude coordinates) were found in a request.",
+          "Your Fine Location (latitude and longitude coordinates) were found in a request.",
       },
       zipCode: {
         displayName: "Zip Code",
