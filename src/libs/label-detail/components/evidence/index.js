@@ -41,25 +41,16 @@ const Evidence = ({ collapseId, request, label, type }) => {
       isInt(request.index[0]) &&
       isInt(request.index[1])
     ) {
-      if (request.cookie) {
-        const data = { leading: "", middle: "", trailing: "" }
-        data.middle = request.snippet.slice(request.index[0], request.index[1])
-        data.leading = request.snippet.slice(0, request.index[0])
-        data.trailing = request.snippet.slice(request.index[1], request.snippet.length)
-        return data
-      } else {
+      const data = { leading: "", middle: "", trailing: "" }
+      data.leading = request.snippet.slice(0, request.index[0])
+      data.middle = request.snippet.slice(request.index[0], request.index[1])
+      data.trailing = request.snippet.slice(request.index[1], request.snippet.length)
+      if (!request.cookie) {
         const maxChars = 475
-        const data = { leading: "", middle: "", trailing: "" }
-        data.middle = request.snippet.slice(request.index[0], request.index[1])
-
-        data.leading = request.snippet.slice(0, request.index[0])
-        data.trailing = request.snippet.slice(request.index[1], request.snippet.length)
-
         data.leading = "... " + data.leading.slice(maxChars * -1)
         data.trailing = data.trailing.slice(0, maxChars) + " ..."
-
-        return data
       }
+      return data
     } else {
       return null
     }
