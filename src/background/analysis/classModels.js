@@ -103,6 +103,47 @@ export class Evidence {
   }
 }
 
+
+/**
+ * Used for the TSV export to describe evidence object
+ */
+export const evidenceDescription = Object.freeze({
+  timestamp: {
+    title: "Timestamp"
+  },
+  permission: {
+    title: "Permission"
+  },
+  rootUrl: {
+    title: "Root URL"
+  },
+  snippet: {
+    title: "HTTP Snippet"
+  },
+  requestUrl: {
+    title: "Request URL"
+  },
+  typ: {
+    title: "Type"
+  },
+  index: {
+    title: "Index"
+  },
+  parentCompany: {
+    title: "Parent Company"
+  },
+  watchlistHash: {
+    title: 'Watchlist Hash'
+  },
+  extraDetail: {
+    title: "Extra Detail"
+  },
+  cookie: {
+    title: "Cookie?"
+  }
+})
+
+
 /**
  * @class KeywordObject
  * @property {string|RegExp} keyword A keyword we search for
