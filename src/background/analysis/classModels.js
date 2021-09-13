@@ -106,6 +106,7 @@ export class Evidence {
 
 /**
  * Used for the TSV export to describe evidence object
+ * Should mirror the constructor of the above Evidence class exactly
  */
 export const evidenceDescription = Object.freeze({
   timestamp: {
