@@ -194,9 +194,7 @@ async function analyze(request, userData) {
   }
 
   if (allCookieEvidence.length != 0) {
-    allCookieEvidence.forEach(cookieEv => {
-      allEvidence.push(cookieEv)
-    })
+    allEvidence.push.apply(allEvidence, allCookieEvidence)
   }
 
   // if we found evidence for the request
