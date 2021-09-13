@@ -14,7 +14,7 @@ import { evidenceQ } from "../background.js";
 import { tagParent } from "./requestAnalysis/tagRequests.js";
 import { addToEvidenceStore } from "./interactDB/addEvidence.js";
 import { getAllEvidenceForRequest } from "./requestAnalysis/scanHTTP.js";
-import { MAX_BYTE_LEN } from "./constants.js";
+import { MAX_BYTE_LEN, MINUTE_MILLISECONDS } from "./constants.js";
 import { getAllEvidenceForCookies } from "./requestAnalysis/scanCookies.js";
 import { getHostname } from "./utility/util.js";
 
@@ -185,14 +185,10 @@ async function analyze(request, userData) {
 
   const currentTime = Date.now()
   var allCookieEvidence = []
-  const minuteInMillis = 60000
+  
   const reqUrl = getHostname(request.reqUrl)
-  if (reqUrl in cookieUrlObject) {
-    if (currentTime - cookieUrlObject[reqUrl] > minuteInMillis) {
-      allCookieEvidence = getAllEvidenceForCookies(await browser.cookies.getAll({domain: reqUrl}), request.rootUrl, reqUrl, userData)
-      cookieUrlObject[reqUrl] = currentTime
-    }
-  } else {
+  // Run cookie scan if we haven't seen this request url or it has been 1 minute since we last scanned
+  if ( !(reqUrl in cookieUrlObject) || (currentTime - cookieUrlObject[reqUrl] > MINUTE_MILLISECONDS) ) {
     allCookieEvidence = getAllEvidenceForCookies(await browser.cookies.getAll({domain: reqUrl}), request.rootUrl, reqUrl, userData)
     cookieUrlObject[reqUrl] = currentTime
   }
