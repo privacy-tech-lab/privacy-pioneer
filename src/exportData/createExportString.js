@@ -3,6 +3,8 @@ Licensed per https://github.com/privacy-tech-lab/privacy-pioneer/blob/main/LICEN
 privacy-tech-lab, https://www.privacytechlab.org/
 */
 
+import { evidenceDescription } from "../background/analysis/classModels.js"
+
 /**
  * Converts an array of Evidence Objects into a csv string.
  * Only adds snippets for Evidence with indexes
@@ -36,25 +38,15 @@ privacy-tech-lab, https://www.privacytechlab.org/
      * used to make sure that every column gets populated regardless of the keys
      * of a particular evidence
     */
-    const columnMapping = {
-        0: 'timestamp',
-        1: 'permission',
-        2: 'rootUrl',
-        3: 'snippet',
-        4: 'requestUrl',
-        5: 'typ',
-        6: 'index',
-        7: 'firstPartyRoot',
-        8: 'parentCompany',
-        9: 'watchlistHash',
-        10: 'extraDetail'
-    }
+    const columnMapping = {}
+    const columnTitles = []
 
-    // initiate column titles
-    const columnTitles = [
-        'Timestamp', 'Permission', 'rootUrl', 'httpSnippet', 'reqUrl', 
-        'Type', 'Index', 'FirstParty?', 'Parent', 'Extra Detail'
-    ];
+    var i = 0
+    for ( const [trait, desc] of Object.entries(evidenceDescription) ) {
+        columnMapping[i] = trait
+        columnTitles.push(desc.title)
+        i += 1
+    }
 
     var strArray = [ columnTitles.join('\t') ] //initialze the tsv with the titles.
 
@@ -63,7 +55,7 @@ privacy-tech-lab, https://www.privacytechlab.org/
         var rowArr = []
         for (const [header, value] of Object.entries(evidenceObj) ) {
             // get this object alligned with the columns
-            while (columnIndex < 11 && columnMapping[columnIndex] != header) {
+            while (columnIndex < columnTitles.length && columnMapping[columnIndex] != header) {
                 rowArr.push('')
                 columnIndex += 1
             }
