@@ -11,10 +11,12 @@ analyze.js
 
 import { Request } from "./classModels.js";
 import { evidenceQ } from "../background.js";
-import { tagParty, tagParent } from "./requestAnalysis/tagRequests.js";
+import { tagParent } from "./requestAnalysis/tagRequests.js";
 import { addToEvidenceStore } from "./interactDB/addEvidence.js";
 import { getAllEvidenceForRequest } from "./requestAnalysis/scanHTTP.js";
-import { MAX_BYTE_LEN } from "./constants.js";
+import { MAX_BYTE_LEN, MINUTE_MILLISECONDS } from "./constants.js";
+import { getAllEvidenceForCookies } from "./requestAnalysis/scanCookies.js";
+import { getHostname } from "./utility/util.js";
 
 // Temporary container to hold network requests while properties are being added from listener callbacks
 const buffer = {}
@@ -163,6 +165,12 @@ function resolveBuffer(id, data) {
 }
 
 /**
+ * cookieUrlObject object to store request urls and their timestamps. 
+ * Used exclusively in analyze.js to check the time a request url was called
+ */
+const cookieUrlObject = {}
+
+/**
  * Calls the analysis functions from searchFunctions.js on the appropriate data that we have
  * 
  * Defined, used in analyze.js
@@ -174,11 +182,24 @@ function resolveBuffer(id, data) {
 async function analyze(request, userData) {
 
   const allEvidence = getAllEvidenceForRequest(request, userData);
+
+  const currentTime = Date.now()
+  var allCookieEvidence = []
   
+  const reqUrl = getHostname(request.reqUrl)
+  // Run cookie scan if we haven't seen this request url or it has been 1 minute since we last scanned
+  if ( !(reqUrl in cookieUrlObject) || (currentTime - cookieUrlObject[reqUrl] > MINUTE_MILLISECONDS) ) {
+    allCookieEvidence = getAllEvidenceForCookies(await browser.cookies.getAll({domain: reqUrl}), request.rootUrl, reqUrl, userData)
+    cookieUrlObject[reqUrl] = currentTime
+  }
+
+  if (allCookieEvidence.length != 0) {
+    allEvidence.push.apply(allEvidence, allCookieEvidence)
+  }
+
   // if we found evidence for the request
   if (allEvidence.length != 0) {
     const rootUrl = request.rootUrl
-    const reqUrl = request.reqUrl
     // tag the parent
     const parent = tagParent(reqUrl)
 

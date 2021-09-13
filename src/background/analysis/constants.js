@@ -9,3 +9,9 @@ export const MAX_BYTE_LEN = 200000
  * Based on an analysis that the most labels come from shorter requests
  */
 export const MAX_CHAR_LEN = 100000
+
+/**
+ * Used in analyze.js for throttling cookie scan by time
+ */
+
+export const MINUTE_MILLISECONDS = 60000

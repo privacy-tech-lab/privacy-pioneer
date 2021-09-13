@@ -73,6 +73,7 @@ export const resourceTypeEnum = Object.freeze({
  * @property {string|null} parentCompany If we have identified a parent company for this url, we store it here for the frontend. Else, null.
  * @property {string|undefined} watchlistHash If the evidence is from our watchlist, this is the id of that item. Used for deletion of evidence on deletion of watchlist item
  * @property {string|undefined} extraDetail Extra details as needed. Currently only used for encoded email's original email
+ * @property {boolean} cookie Whether or not the evidence was found in a cookie
  */
 export class Evidence {
   constructor({
@@ -86,6 +87,7 @@ export class Evidence {
     parentCompany,
     watchlistHash,
     extraDetail,
+    cookie
   }) {
     this.timestamp = timestamp
     this.permission = permission
@@ -97,6 +99,7 @@ export class Evidence {
     this.parentCompany = parentCompany
     this.watchlistHash = watchlistHash
     this.extraDetail = extraDetail
+    this.cookie = cookie
   }
 }
 

@@ -57,6 +57,7 @@ const Item = ({ request, url, label }) => {
         {Object.entries(request).map(([type, request]) => (
           <SBadge key={type} className="badge" onClick={(event) => inflateCollapse(event, request, type)}>
             {privacyLabels[label]["types"][type]["displayName"]}
+            {request.cookie?` 🍪`:null}
           </SBadge>
         ))}
       </SBadgeGroup>
