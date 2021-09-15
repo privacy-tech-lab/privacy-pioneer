@@ -103,6 +103,9 @@ export const SEvidenceDescription = styled.div`
     font-weight: bold;
     color: var(--secondaryTextColor);
   }
+  a {
+    color: var(--primaryBrandColor)
+  }
 `
 
 export const SCollapse = styled.div``
