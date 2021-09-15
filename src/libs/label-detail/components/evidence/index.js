@@ -117,7 +117,6 @@ const Evidence = ({ collapseId, request, label, type }) => {
       const displayLink = privacyLabels[label]["types"][type]["link"];
 
       if (displayLink) {
-        console.log(displayLink)
         specificDescription.link = displayLink
         const cutOff = specificDescription.link.length < 26 ? specificDescription.link.length : 26
         specificDescription.linkDesc = (specificDescription.link).substring(0, cutOff).concat('...')
