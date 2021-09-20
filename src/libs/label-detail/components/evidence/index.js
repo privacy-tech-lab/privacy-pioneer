@@ -114,15 +114,14 @@ const Evidence = ({ collapseId, request, label, type }) => {
 
       // populate description aspects that are the same regardless of other properties
       const displayType = privacyLabels[label]["types"][type]["displayName"];
-      const displayLink = privacyLabels[label]["types"][type]["link"];
-
-      if (displayLink) {
-        specificDescription.link = displayLink
-        // 26 is the length where the text will fit in one line
-        const cutOff = specificDescription.link.length < 26 ? specificDescription.link.length : 26
-        specificDescription.linkDesc = (specificDescription.link).substring(0, cutOff).concat('...')
-        specificDescription.signOff = `More info ${handEmoji}`
-      }
+      const displayLink = privacyLabels[label]["types"][type]["link"]
+      // make sure we didn't get undefined from the privacyLabels object
+      if (!displayLink) { displayLink = "" }
+      specificDescription.link = displayLink
+      // 26 is the length where the text will fit in one line
+      const cutOff = specificDescription.link.length < 26 ? specificDescription.link.length : 26
+      specificDescription.linkDesc = (specificDescription.link).substring(0, cutOff).concat('...')
+      specificDescription.signOff = `More info ${handEmoji}`
 
       // description for when evidence came from a list of URL's (disconnect or urlClassification header)
       if (request.index == -1) {
@@ -189,7 +188,7 @@ const Evidence = ({ collapseId, request, label, type }) => {
               :<br></br>}
               <br></br>
               <span>
-                {specificDescription.signOff} <a target="_blank" href={specificDescription.link}>{specificDescription.linkDesc}</a>
+                {specificDescription.signOff} <a target="_blank" href={String(specificDescription.link)}>{specificDescription.linkDesc}</a>
               </span>
               </pre>
             </SEvidenceDescription>
