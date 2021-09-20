@@ -118,6 +118,7 @@ const Evidence = ({ collapseId, request, label, type }) => {
 
       if (displayLink) {
         specificDescription.link = displayLink
+        // 26 is the length where the text will fit in one line
         const cutOff = specificDescription.link.length < 26 ? specificDescription.link.length : 26
         specificDescription.linkDesc = (specificDescription.link).substring(0, cutOff).concat('...')
         specificDescription.signOff = `More info ${handEmoji}`
