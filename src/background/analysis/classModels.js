@@ -73,6 +73,7 @@ export const resourceTypeEnum = Object.freeze({
  * @property {string|null} parentCompany If we have identified a parent company for this url, we store it here for the frontend. Else, null.
  * @property {string|undefined} watchlistHash If the evidence is from our watchlist, this is the id of that item. Used for deletion of evidence on deletion of watchlist item
  * @property {string|undefined} extraDetail Extra details as needed. Currently only used for encoded email's original email
+ * @property {boolean} cookie Whether or not the evidence was found in a cookie
  */
 export class Evidence {
   constructor({
@@ -86,6 +87,7 @@ export class Evidence {
     parentCompany,
     watchlistHash,
     extraDetail,
+    cookie
   }) {
     this.timestamp = timestamp
     this.permission = permission
@@ -97,8 +99,51 @@ export class Evidence {
     this.parentCompany = parentCompany
     this.watchlistHash = watchlistHash
     this.extraDetail = extraDetail
+    this.cookie = cookie
   }
 }
+
+
+/**
+ * Used for the TSV export to describe evidence object
+ * Should mirror the constructor of the above Evidence class exactly
+ */
+export const evidenceDescription = Object.freeze({
+  timestamp: {
+    title: "Timestamp"
+  },
+  permission: {
+    title: "Permission"
+  },
+  rootUrl: {
+    title: "Root URL"
+  },
+  snippet: {
+    title: "HTTP Snippet"
+  },
+  requestUrl: {
+    title: "Request URL"
+  },
+  typ: {
+    title: "Type"
+  },
+  index: {
+    title: "Index"
+  },
+  parentCompany: {
+    title: "Parent Company"
+  },
+  watchlistHash: {
+    title: 'Watchlist Hash'
+  },
+  extraDetail: {
+    title: "Extra Detail"
+  },
+  cookie: {
+    title: "Cookie?"
+  }
+})
+
 
 /**
  * @class KeywordObject
@@ -252,14 +297,17 @@ export const privacyLabels = Object.freeze({
       advertising: {
         displayName: "Advertising",
         description: "An Advertising company sent or received your data.",
+        link: "https://disconnect.me/trackerprotection#categories-of-trackers",
       },
       analytics: {
         displayName: "Analytics",
         description: "An Analytics company sent or received your data.",
+        link: "https://disconnect.me/trackerprotection#categories-of-trackers",
       },
       social: {
         displayName: "Social",
         description: "A Social media company sent or received your data.",
+        link: "https://disconnect.me/trackerprotection#categories-of-trackers",
       },
     },
   },
@@ -270,28 +318,34 @@ export const privacyLabels = Object.freeze({
       coarseLocation: {
         displayName: "Coarse Location",
         description:
-          "Your Coarse Location (lattitude and longitude coordinates within 1 degree) were found in a request.",
+          "Your Coarse Location (latitude and longitude coordinates within 1 degree) were found in a request.",
+        link: "https://en.wikipedia.org/wiki/Geographic_coordinate_system",
       },
       fineLocation: {
         displayName: "Fine Location",
         description:
-          "Your Fine Location (lattitude and longitude coordinates) were found in a request.",
+          "Your Fine Location (latitude and longitude coordinates) were found in a request.",
+          link: "https://en.wikipedia.org/wiki/Geographic_coordinate_system",
       },
       zipCode: {
         displayName: "Zip Code",
         description: "Your Zip Code was found in a request.",
+        link: "https://en.wikipedia.org/wiki/ZIP_Code",
       },
       streetAddress: {
         displayName: "Street Address",
         description: "Your Street Address was found in a request.",
+        link: "https://en.wikipedia.org/wiki/Street_address",
       },
       city: {
         displayName: "City",
         description: "Your City was found in a request.",
+        link: "https://en.wikipedia.org/wiki/City",
       },
       state: {
         displayName: "State",
         description: "Your State was found in a request.",
+        link: "https://en.wikipedia.org/wiki/State_(polity)",
       },
     },
   },
@@ -303,20 +357,25 @@ export const privacyLabels = Object.freeze({
         displayName: "Phone Number",
         description:
           "A Phone Number from your watchlist was found in a request.",
+        link: "https://www.google.com/",
       },
       emailAddress: {
         displayName: "Email Address",
         description:
           "An Email Address from your watchlist was found in a request.",
+        link: "https://www.google.com/",
       },
       encodedEmail: {
         displayName: "Encoded Email",
         description:
           "An Email Address from your watchlist was found in an alternate representation (The Trade Desk's UID)", // this should be updated with a link or different wording
+        link: "https://www.google.com/",
       },
+
       userKeyword: {
         displayName: "Keyword",
         description: "A Keyword from your watchlist was found in a request.",
+        link: "https://www.google.com/",
       },
     },
   },
@@ -328,21 +387,25 @@ export const privacyLabels = Object.freeze({
         displayName: "Tracking Pixel",
         description:
           "A Tracking Pixel is code that silently pings a third-party to track your internet activity.",
+        link: "https://www.google.com/",
       },
       possiblePixel: {
         displayName: "Possible Pixel",
         description:
           "A Tracking Pixel is code that silently pings a third-party to track your internet activity.",
+        link: "https://www.google.com/",
       },
       ipAddress: {
         displayName: "IP Address",
         description:
           "Your IP Address identifies your device and can be used to fetch your location.",
+        link: "https://www.google.com/",
       },
       fingerprinting: {
         displayName: "Browser Fingerprinting",
         description:
           "Browser Fingerprinting are practices that uniquely identify your browser to track activity across sessions.",
+        link: "https://www.google.com/",
       },
     },
   },

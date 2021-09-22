@@ -160,11 +160,13 @@ const WatchlistView = () => {
                   location={item.location}
                   configModal={configModal}
                   updateList={updateList}
+                  notification={item.notification}
                 />
               ))
             ) : (
               <SEmpty>
-                You currently have no keywords or IP. Press "Add Keyword" or "Add IP"!
+                You currently have no keywords or IP. Press "Add Keyword" or
+                "Add IP"!
               </SEmpty>
             )}
           </SListContent>

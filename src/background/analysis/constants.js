@@ -19,3 +19,9 @@ export const FIVE_SEC_IN_MILLIS = 5000
  * Used to see if evidence is large for a first party
  */
 export const EVIDENCE_THRESHOLD = 30
+
+/**
+ * Used in analyze.js for throttling cookie scan by time
+ */
+
+export const MINUTE_MILLISECONDS = 60000

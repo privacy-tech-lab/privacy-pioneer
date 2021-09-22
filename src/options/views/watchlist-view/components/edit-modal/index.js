@@ -167,9 +167,6 @@ const EditModal = ({ keywordType, keyword, edit, id, updateList }) => {
         badInput("address")
         return false
       }
-      if (Object.keys(_keyword).length == 0) {
-        return false
-      }
       return true
     } else return true
   }
@@ -261,7 +258,7 @@ const EditModal = ({ keywordType, keyword, edit, id, updateList }) => {
                     display: `${_address}, ${_city}, ${_state} ${_zip}`,
                   }
                 } else {
-                  key = _keywordType == _keyword
+                  key = _keyword
                 }
                 // check if user input is valid
                 if (validate()) {

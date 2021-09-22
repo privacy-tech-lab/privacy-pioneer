@@ -10,6 +10,7 @@
     "tabs",
     "history",
     "downloads",
+    "cookies",
     "webNavigation"
   ],
   "manifest_version": 2,

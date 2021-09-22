@@ -64,7 +64,8 @@ function getAllEvidenceForRequest(request, userData) {
     if (typeof resArr == 'undefined') {return}
     if (resArr.length == 0) {return}
     for (const evList of resArr) {
-        arr.push(evList); // push the evidence to the arr
+      evList.cookie = false
+      arr.push(evList); // push the evidence to the arr
     }
   }
 

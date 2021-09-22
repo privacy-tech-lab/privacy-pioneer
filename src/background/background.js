@@ -15,6 +15,7 @@ import { evidenceKeyval as evidenceIDB } from "./analysis/interactDB/openDB"
 import { onBeforeRequest } from "./analysis/analyze.js"
 import { setDefaultSettings } from "../libs/settings/index.js"
 import { importData } from "./analysis/buildUserData/importSearchData.js"
+import runNotifications from "../libs/indexed-db/notifications"
 import Queue from "queue"
 import { getHostname } from "./analysis/utility/util.js"
 import { EVIDENCE_THRESHOLD, FIVE_SEC_IN_MILLIS } from "./analysis/constants"
@@ -26,12 +27,7 @@ import { EVIDENCE_THRESHOLD, FIVE_SEC_IN_MILLIS } from "./analysis/constants"
 // https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/API/webRequest/ResourceType
 const filter = {
   urls: ["<all_urls>"],
-  types: [
-    "script",
-    "xmlhttprequest",
-    "sub_frame",
-    "image",
-  ],
+  types: ["script", "xmlhttprequest", "sub_frame", "image"],
 }
 
 // initialize the evidenceQ that will add evidence to the DB as we get it.
@@ -40,7 +36,6 @@ export var evidenceQ = Queue({ results: [], concurrency: 1, autostart: true })
 // Get url of active tab for popup
 browser.runtime.onMessage.addListener((request, sender, sendResponse) => {
   if (request.msg == "background.currentTab") {
-
     // send current, open tab to the runtime (our extension)
     const send = (tabs) =>
       browser.runtime.sendMessage({
@@ -107,6 +102,8 @@ importData().then((data) => {
     }
   )
 
+  runNotifications()
+
   // Listener to get response data, request body, and details about request
   browser.webRequest.onBeforeRequest.addListener(
     function (details) {
@@ -125,7 +122,7 @@ setDefaultSettings()
  * Revokes the object URL after a download has been successfully completed or interrupted.
  * downloadDelta: https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/API/downloads/onChanged#downloaddelta
  */
-browser.downloads.onChanged.addListener( async function (downloadDelta) {
+browser.downloads.onChanged.addListener(async function (downloadDelta) {
   const status = downloadDelta.state.current
   // if the download is finished, we fetch the url for the download and revoke that object URL
   if (status === "complete" || status === "interrupted") {
@@ -140,4 +137,3 @@ browser.downloads.onChanged.addListener( async function (downloadDelta) {
     }
   }
 })
-

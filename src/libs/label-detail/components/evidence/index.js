@@ -41,16 +41,15 @@ const Evidence = ({ collapseId, request, label, type }) => {
       isInt(request.index[0]) &&
       isInt(request.index[1])
     ) {
-      const maxChars = 475
       const data = { leading: "", middle: "", trailing: "" }
-      data.middle = request.snippet.slice(request.index[0], request.index[1])
-
       data.leading = request.snippet.slice(0, request.index[0])
+      data.middle = request.snippet.slice(request.index[0], request.index[1])
       data.trailing = request.snippet.slice(request.index[1], request.snippet.length)
-
-      data.leading = "... " + data.leading.slice(maxChars * -1)
-      data.trailing = data.trailing.slice(0, maxChars) + " ..."
-
+      if (!request.cookie) {
+        const maxChars = 475
+        data.leading = "... " + data.leading.slice(maxChars * -1)
+        data.trailing = data.trailing.slice(0, maxChars) + " ..."
+      }
       return data
     } else {
       return null
@@ -91,7 +90,7 @@ const Evidence = ({ collapseId, request, label, type }) => {
   const [handEmoji, setHandEmoji] = useState('');
 
   useEffect(() => {
-    let choice = pickPointDownEmoji();
+    let choice = pickPointRightEmoji();
     setHandEmoji(choice);
   }, []);
 
@@ -99,8 +98,8 @@ const Evidence = ({ collapseId, request, label, type }) => {
    * return a random hand from choice of all hands
    * @returns {string}
    */
-  const pickPointDownEmoji = () => {
-    const allHands = [`👇`, `👇🏽`, `👇🏼`, `👇🏿`, `👇🏻`, `👇🏾`];
+  const pickPointRightEmoji = () => {
+    const allHands = [`👉`, `👉🏻`, `👉🏼`, `👉🏽`, `👉🏾`, `👉🏿`];
     return allHands[Math.floor(Math.random()*allHands.length)];
   }
 
@@ -111,15 +110,24 @@ const Evidence = ({ collapseId, request, label, type }) => {
    */
   const getSpecificDescription = (request) => {
     if (request != null) {
-      let specificDescription = {leading: "", highlight: "", trailing: "", email: "", trail1: "", encodedEmail: "", trail2: "", signOff: ""}
+      let specificDescription = {leading: "", highlight: "", trailing: "", email: "", trail1: "", encodedEmail: "", trail2: "", signOff: "", link: "", linkDesc: ""};
+
+      // populate description aspects that are the same regardless of other properties
       const displayType = privacyLabels[label]["types"][type]["displayName"];
+      const displayLink = privacyLabels[label]["types"][type]["link"]
+      // make sure we didn't get undefined from the privacyLabels object
+      if (!displayLink) { displayLink = "" }
+      specificDescription.link = displayLink
+      // 26 is the length where the text will fit in one line
+      const cutOff = specificDescription.link.length < 26 ? specificDescription.link.length : 26
+      specificDescription.linkDesc = (specificDescription.link).substring(0, cutOff).concat('...')
+      specificDescription.signOff = `More info ${handEmoji}`
 
       // description for when evidence came from a list of URL's (disconnect or urlClassification header)
       if (request.index == -1) {
         specificDescription.leading = `‣ The URL that initiated this HTTP request is known to practice `;
         specificDescription.highlight = `${displayType}`;
         specificDescription.trailing = `.`;
-        specificDescription.signOff = `${handEmoji} Request URL below`;
       }
 
       // description for when the evidence came with an index in the strReq
@@ -137,7 +145,6 @@ const Evidence = ({ collapseId, request, label, type }) => {
         // general case
         if (request.extraDetail == undefined){
           specificDescription.trailing =  ` in this HTTP request, so we gave it the ${displayType} label.`;
-          specificDescription.signOff = `${handEmoji} Context below`;
         }
         // specific encoded email case
         else {
@@ -146,7 +153,6 @@ const Evidence = ({ collapseId, request, label, type }) => {
           specificDescription.trail1 = ` from your watchlist, so we gave it the `
           specificDescription.encodedEmail = `${displayType}`
           specificDescription.trail2 = ` label.`;
-          specificDescription.signOff = `${handEmoji} Context below`;
         }
       }
       return specificDescription
@@ -175,8 +181,15 @@ const Evidence = ({ collapseId, request, label, type }) => {
               {specificDescription.trail1}
               <span>{specificDescription.encodedEmail}</span>
               {specificDescription.trail2}
-              <br></br><br></br>
-              <span>{specificDescription.signOff}</span>
+              {request != null && request.cookie?
+                <div>
+                  {"‣ This information was stored in a cookie."}
+                </div>
+              :<br></br>}
+              <br></br>
+              <span>
+                {specificDescription.signOff} <a target="_blank" href={String(specificDescription.link)}>{specificDescription.linkDesc}</a>
+              </span>
               </pre>
             </SEvidenceDescription>
         <SHeader marginTop="16px">◉ Request URL </SHeader>
@@ -188,7 +201,7 @@ const Evidence = ({ collapseId, request, label, type }) => {
               </pre>
             </SBody>
             <SHeader marginTop="16px" marginBottom="8px">
-              ◉ Data Snippet
+              ◉ Data Context
             </SHeader>
             <SCodeBlock>
               <pre>
