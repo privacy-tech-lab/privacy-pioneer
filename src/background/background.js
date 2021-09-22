@@ -81,7 +81,7 @@ async function changeFavicon () {
     }
     if (numEvidence > EVIDENCE_THRESHOLD) {
       // change the path when we get the right favicon to switch to
-      browser.browserAction.setIcon({tabId: currentWindowId, path:"../assets/icon-48.png"})
+      browser.browserAction.setIcon({tabId: currentWindowId, path:"../assets/favicon2.svg"})
     } else {
       // Change it back to the original. Sometimes quickly changing a webpage after load
       // keeps the now-incorrect favicon
