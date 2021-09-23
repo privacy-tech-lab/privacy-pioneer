@@ -60,7 +60,7 @@ export const SBrandTitle = styled.div`
 export const SBody = styled.main`
   display: flex;
   flex-direction: column;
-  overflow: auto;
+  overflow-x: hidden;
   scrollbar-width: none; /* Firefox 64 */
 `
 
