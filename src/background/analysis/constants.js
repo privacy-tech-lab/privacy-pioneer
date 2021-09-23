@@ -12,11 +12,19 @@ export const MAX_CHAR_LEN = 100000
 
 /**
  * Used in setTimeout when changing favicon
+ * 
+ * Used to make a decision about which rocket svg to show as the favicon
  */
 export const FIVE_SEC_IN_MILLIS = 5000
 
 /**
  * Used to see if evidence is large for a first party
+ * 
+ * NOTE: This will change after testing has concluded
+ * We would like to only have 1/3 of sites above this threshold and thus 
+ * highlighted to the user as a site that takes a lot of data
+ * 
+ * Currently set to 30 based on general assumption. Testing required.
  */
 export const EVIDENCE_THRESHOLD = 30
 

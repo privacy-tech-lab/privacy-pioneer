@@ -86,6 +86,7 @@ async function changeFavicon () {
   // timeout set to 5 seconds to allow for initial third parties loaded.
   setTimeout(swapFavicon, FIVE_SEC_IN_MILLIS)
 }
+// This opens a listener and calls the above function when the open site's DOM is loaded
 browser.webNavigation.onDOMContentLoaded.addListener(changeFavicon)
 
 // call function to get all the url and keyword data
