@@ -13,7 +13,7 @@
   <a href="https://addons.mozilla.org/en-US/firefox/user/12247904/"><img src="https://github.com/privacy-tech-lab/privacy-pioneer/blob/main/firefox-add-ons-badge.png" alt="Firefox Add Ons badge" width = "125" height = "45"></a> 
 <p/> -->
 
-# Privacy Pioneer 
+# Privacy Pioneer
 
 
 
@@ -92,6 +92,8 @@ The options and popup directories are similarly structured. Like many react proj
 
 The `src/libs/indexed-db` directory, contains functions that communicate to the database.
 
+Some logos and other assets are [here](https://docs.google.com/spreadsheets/d/1pmWIdsZv_lEIl9b3XRVXY2qe4mA-wedEM9K9kzkHnY0/edit#gid=0).
+
 ## Privacy Practice Analysis
 
 Privacy Pioneer is analyzing the following privacy practices for each first and third party website.
@@ -102,7 +104,7 @@ Privacy Pioneer is analyzing the following privacy practices for each first and 
   - Social Networking (Social from Disconnect)
 - Location
   - Coarse Location
-  - Tight Location
+  - Fine Location
   - ZIP Code
   - Street Address
   - City
