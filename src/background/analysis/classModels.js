@@ -289,7 +289,7 @@ export const keywordTypes = Object.freeze({
  *
  * @type {object}
  */
-export const privacyLabels = Object.freeze({
+ export const privacyLabels = Object.freeze({
   monetization: {
     displayName: "Monetization",
     description: "Practices used to monetize web traffic.",
@@ -297,97 +297,115 @@ export const privacyLabels = Object.freeze({
       advertising: {
         displayName: "Advertising",
         description: "An Advertising company sent or received your data.",
+        link: "https://disconnect.me/trackerprotection#categories-of-trackers",
       },
       analytics: {
         displayName: "Analytics",
         description: "An Analytics company sent or received your data.",
+        link: "https://disconnect.me/trackerprotection#categories-of-trackers",
       },
       social: {
         displayName: "Social",
-        description: "A Social media company sent or received your data.",
+        description: "A Social media company sent or received your data.", 
+        link: "https://disconnect.me/trackerprotection#categories-of-trackers", 
       },
     },
   },
   location: {
     displayName: "Location",
-    description: "An element of your location was found in your web traffic.",
+    description: "Your location was found in your web traffic.",
     types: {
       coarseLocation: {
         displayName: "Coarse Location",
         description:
-          "Your Coarse Location (latitude and longitude coordinates within 1 degree) were found in a request.",
+          "Your Coarse Location (imprecise coordinates) was found in your web traffic.", 
+        link: "https://myshadow.org/location-tracking",
       },
       fineLocation: {
         displayName: "Fine Location",
         description:
-          "Your Fine Location (latitude and longitude coordinates) were found in a request.",
+          "Your Fine Location (precise coordinates) was found in your web traffic.",
+          link: "https://myshadow.org/location-tracking",
       },
       zipCode: {
         displayName: "Zip Code",
-        description: "Your Zip Code was found in a request.",
+        description: "Your Zip Code was found in your web traffic.",
+        link: "https://myshadow.org/location-tracking",
       },
       streetAddress: {
         displayName: "Street Address",
-        description: "Your Street Address was found in a request.",
+        description: "Your Street Address was found in your web traffic.",
+        link: "https://myshadow.org/location-tracking",
       },
       city: {
         displayName: "City",
-        description: "Your City was found in a request.",
+        description: "Your City was found in your web traffic.",
+        link: "https://myshadow.org/location-tracking",
       },
       state: {
         displayName: "State",
-        description: "Your State was found in a request.",
+        description: "Your State was found in your web traffic.",
+        link: "https://myshadow.org/location-tracking",
       },
     },
   },
   watchlist: {
     displayName: "Watchlist",
-    description: "Evidence generated from your custom watchlist inputs.",
+    description: "Data based on your custom watchlist inputs.",
     types: {
       phoneNumber: {
         displayName: "Phone Number",
         description:
-          "A Phone Number from your watchlist was found in a request.",
+          "A Phone Number from your watchlist was found in your web traffic.",
+        link: "https://www.consumer.ftc.gov/blog/2016/09/how-did-company-get-my-info",
       },
       emailAddress: {
         displayName: "Email Address",
         description:
-          "An Email Address from your watchlist was found in a request.",
+          "An Email Address from your watchlist was found in your web traffic.", 
+        link: "https://www.consumer.ftc.gov/blog/2016/09/how-did-company-get-my-info",
       },
       encodedEmail: {
         displayName: "Encoded Email",
         description:
-          "An Email Address from your watchlist was found in an alternate representation (The Trade Desk's UID)", // this should be updated with a link or different wording
+          "An Email Address from your watchlist was found in your web traffic in an alternate representation (e.g., The Trade Desk's UID)",
+        link: "https://www.thetradedesk.com/us/about-us/industry-initiatives/unified-id-solution-2-0",
       },
+
       userKeyword: {
         displayName: "Keyword",
-        description: "A Keyword from your watchlist was found in a request.",
+        description: "A Keyword from your watchlist was found in your web traffic.",
+        link: "https://www.privacytechlab.org/", // link to our own article once available
       },
     },
   },
   tracking: {
     displayName: "Tracking",
-    description: "A tracking practice was flagged in your web traffic.",
+    description: "A tracking practice was found in your web traffic.",
     types: {
       trackingPixel: {
         displayName: "Tracking Pixel",
         description:
-          "A Tracking Pixel is code that silently pings a third-party to track your internet activity.",
+          "A Tracking Pixel (or web beacon) is code that silently pings a third-party to track your web activity.",
+        link: "https://en.wikipedia.org/wiki/Web_beacon",
       },
       possiblePixel: {
-        displayName: "Possible Pixel",
+        displayName: "Possible Tracking Pixel",
         description:
-          "A Tracking Pixel is code that silently pings a third-party to track your internet activity.",
+          "A Tracking Pixel (or web beacon) is code that silently pings a third-party to track your web activity.",
+        link: "https://en.wikipedia.org/wiki/Web_beacon", 
       },
       ipAddress: {
         displayName: "IP Address",
         description:
-          "Your IP Address identifies your device and can be used to fetch your location.",
+          "Your IP Address identifies your modem and can be used to identify your location.",
+        link: "https://iapp.org/news/a/are-ip-addresses-generated-when-users-visit-websites-personal-information/",
       },
       fingerprinting: {
         displayName: "Browser Fingerprinting",
         description:
-          "Browser Fingerprinting are practices that uniquely identify your browser to track activity across sessions.",
+          "Browser Fingerprinting is a practice that uniquely identifies your browser based on your screen size, OS, language, and other metadata.",
+        link: "https://en.wikipedia.org/wiki/Device_fingerprint",
       },
     },
   },
