@@ -1,5 +1,6 @@
 import { evidenceKeyval } from "../../background/analysis/interactDB/openDB"
 import { getHostname } from "../../background/analysis/utility/util"
+import { isChrome } from "../../background/background"
 import { settingsKeyval, watchlistKeyval } from "./openDB"
 
 /**
@@ -81,9 +82,11 @@ const notify = async (host) => {
  * not present it will run the notify function.
  */
 
+
+// WILL NEED TO CHANGE FOR CHROME
 const runNotifications = () => {
-  browser.tabs.onActivated.addListener((activeInfo) => {
-    browser.tabs.query({ currentWindow: true, active: true }).then((tabs) => {
+  if (isChrome){
+    const run = (tabs) => {
       const currentTab = tabs[0]
       const host = getHostname(currentTab.url)
       if (!sessionStorage.getItem(host)) {
@@ -92,8 +95,24 @@ const runNotifications = () => {
           sessionStorage.setItem(host, true)
         }, 3000)
       }
+    }
+    chrome.tabs.onActivated.addListener((activeInfo) => {
+      chrome.tabs.query({ currentWindow: true, active: true }, run)
     })
-  })
+  } else {
+    browser.tabs.onActivated.addListener((activeInfo) => {
+      browser.tabs.query({ currentWindow: true, active: true }).then((tabs) => {
+        const currentTab = tabs[0]
+        const host = getHostname(currentTab.url)
+        if (!sessionStorage.getItem(host)) {
+          setTimeout(() => {
+            notify(host)
+            sessionStorage.setItem(host, true)
+          }, 3000)
+        }
+      })
+    })
+  }
 }
 
 export default runNotifications

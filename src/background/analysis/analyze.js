@@ -10,7 +10,7 @@ analyze.js
 */
 
 import { Request } from "./classModels.js";
-import { evidenceQ } from "../background.js";
+import { evidenceQ, isChrome } from "../background.js";
 import { tagParent } from "./requestAnalysis/tagRequests.js";
 import { addToEvidenceStore } from "./interactDB/addEvidence.js";
 import { getAllEvidenceForRequest } from "./requestAnalysis/scanHTTP.js";
@@ -53,7 +53,7 @@ const onBeforeRequest = async (details, data) => {
     }
     else {
       try {
-        const rootUrlObj = await browser.tabs.get(details.tabId)
+        const rootUrlObj = isChrome ? await chrome.tabs.get(details.tabId) : await browser.tabs.get(details.tabId)
         request.rootUrl = rootUrlObj.url 
       }
       catch (err) {
@@ -83,7 +83,7 @@ const onBeforeRequest = async (details, data) => {
     }
     else {
       try {
-        const rootUrlObj = await browser.tabs.get(details.tabId)
+        const rootUrlObj = isChrome ? await chrome.tabs.get(details.tabId) : await browser.tabs.get
         request.rootUrl = rootUrlObj.url 
         buffer[details.requestId] = request
       }
@@ -92,6 +92,12 @@ const onBeforeRequest = async (details, data) => {
         buffer[details.requestId] = request
       }
     }
+  }
+
+  if (isChrome) {
+    request.responseData = ''
+    resolveBuffer(request.id, data)
+    return
   }
 
   // filter = you can now monitor a response before the request is sent
@@ -189,7 +195,13 @@ async function analyze(request, userData) {
   const reqUrl = getHostname(request.reqUrl)
   // Run cookie scan if we haven't seen this request url or it has been 1 minute since we last scanned
   if ( !(reqUrl in cookieUrlObject) || (currentTime - cookieUrlObject[reqUrl] > MINUTE_MILLISECONDS) ) {
-    allCookieEvidence = getAllEvidenceForCookies(await browser.cookies.getAll({domain: reqUrl}), request.rootUrl, reqUrl, userData)
+    if (isChrome) {
+      var cookies
+      await chrome.cookies.getAll({domain: reqUrl}, function (cs) {cookies = cs})
+      allCookieEvidence = getAllEvidenceForCookies(cookies, request.rootUrl, reqUrl, userData)
+    } else {
+      allCookieEvidence = getAllEvidenceForCookies(await browser.cookies.getAll({domain: reqUrl}), request.rootUrl, reqUrl, userData)
+    }
     cookieUrlObject[reqUrl] = currentTime
   }
 

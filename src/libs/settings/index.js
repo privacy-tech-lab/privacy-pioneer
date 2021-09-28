@@ -64,7 +64,7 @@ export const getLabelStatus = async () => {
 export const toggleSnippet = async () => {
   let currentVal = await settingsKeyval.get(settingsModelsEnum.fullSnippet)
   await settingsKeyval.set(settingsModelsEnum.fullSnippet, !currentVal)
-  browser.runtime.sendMessage({ msg: "dataUpdated" })
+  chrome.runtime.sendMessage({ msg: "dataUpdated" })
 }
 
 /**
@@ -83,7 +83,7 @@ export const toggleOptimization = async () => {
     settingsModelsEnum.optimizePerformance
   )
   await settingsKeyval.set(settingsModelsEnum.optimizePerformance, !currentVal)
-  browser.runtime.sendMessage({ msg: "dataUpdated" })
+  chrome.runtime.sendMessage({ msg: "dataUpdated" })
 }
 
 /**
