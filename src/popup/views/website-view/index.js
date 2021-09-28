@@ -45,13 +45,13 @@ const WebsiteView = () => {
    * Navigate to route in options page based on urlHash
    */
   const navigate = ({ urlHash = "" }) => {
-    const url = browser.runtime.getURL("options.html")
-    browser.tabs.query({ url: url }, function (tabs) {
+    const url = chrome.runtime.getURL("options.html")
+    chrome.tabs.query({ url: url }, function (tabs) {
       if (tabs.length) {
-        browser.tabs.update(tabs[0].id, { active: true, url: url + urlHash })
-        browser.tabs.reload()
+        chrome.tabs.update(tabs[0].id, { active: true, url: url + urlHash })
+        chrome.tabs.reload()
       } else {
-        browser.tabs.create({ url: url + urlHash })
+        chrome.tabs.create({ url: url + urlHash })
       }
     })
     // closes the popup on navigation to options home or watchlist
@@ -110,11 +110,11 @@ const WebsiteView = () => {
       }
     }
 
-    browser.runtime.onMessage.addListener(message)
-    browser.runtime.sendMessage({ msg: "background.currentTab" })
+    chrome.runtime.onMessage.addListener(message)
+    chrome.runtime.sendMessage({ msg: "background.currentTab" })
 
     return () => {
-      browser.runtime.onMessage.removeListener(message)
+      chrome.runtime.onMessage.removeListener(message)
     }
   }, [])
 

@@ -6,6 +6,7 @@ privacy-tech-lab, https://www.privacytechlab.org/
 import { regexSearch, coordinateSearch, urlSearch, locationKeywordSearch, fingerprintSearch, ipSearch, pixelSearch, encodedEmailSearch, dynamicPixelSearch } from "./searchFunctions.js"
 import { permissionEnum, typeEnum, resourceTypeEnum } from "../classModels.js"
 import { lengthHeuristic } from "../requestAnalysis/earlyTermination/heuristics.js";
+import { isChrome } from "../../background.js";
 
 
 /**
@@ -69,7 +70,11 @@ function getAllEvidenceForRequest(request, userData) {
     }
   }
 
-  executeAndPush(urlSearch(rootUrl, reqUrl, request.urlClassification))
+  if (isChrome) {
+    //expush disconnect url search
+  } else {
+    executeAndPush(urlSearch(rootUrl, reqUrl, request.urlClassification))
+  }
 
 
   function earlyTermination() {

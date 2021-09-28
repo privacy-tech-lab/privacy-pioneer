@@ -38,7 +38,7 @@ const WatchlistView = () => {
    */
   const updateList = () => {
     watchlistKeyval.values().then((values) => setItems(values))
-    browser.runtime.sendMessage({
+    chrome.runtime.sendMessage({
       msg: "dataUpdated",
     })
   }

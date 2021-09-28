@@ -41,6 +41,7 @@ async function initiateDownload(exportDataType = exportTypeEnum.TSV, timeRange =
     // this URL encodes the data in the blob to be downloaded
     const downloadURL = blobToURL(dataBlob);
 
+    //MAY NEED TO CHANGE FOR CHROME
     var downloading = browser.downloads.download({
         url: downloadURL,
         filename: `privacy_pioneer_data.${exportDataType}`,
