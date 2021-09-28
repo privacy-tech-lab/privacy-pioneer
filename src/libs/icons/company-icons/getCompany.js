@@ -3,7 +3,7 @@ Licensed per https://github.com/privacy-tech-lab/privacy-pioneer/blob/main/LICEN
 privacy-tech-lab, https://www.privacytechlab.org/
 */
 
-import Parents from "../../assets/parents.json"
+import Parents from "../../../assets/parents.json"
 
 /**
  * Takes a given label Object and returns an array of
@@ -77,8 +77,4 @@ export const getParent = (website) => {
   }
 }
 
-export const getCompanyIconDict = () => {
-
-
-
-}
+export const getCompanyIconDict = () => {}

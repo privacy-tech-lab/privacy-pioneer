@@ -5,8 +5,8 @@ privacy-tech-lab, https://www.privacytechlab.org/
 
 import React from "react"
 import styled from "styled-components"
-import { getParent, getParents } from "../company-icons/getCompany.js"
-import WebsiteLogo, { CompanyLogo } from "../website-logo"
+import { getParent, getParents } from "../../icons/company-icons/getCompany.js"
+import WebsiteLogo, { CompanyLogo } from "../../components/website-logo"
 
 /**
  * Generally this would be in a style.js file

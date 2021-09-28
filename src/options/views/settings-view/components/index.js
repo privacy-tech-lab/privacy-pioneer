@@ -21,8 +21,8 @@ import {
   startStopTour,
   toggleLabel,
   toggleSnippet,
-  toggleOptimization
-} from "../../../../libs/settings"
+  toggleOptimization,
+} from "../../../../libs/indexed-db/settings"
 import {
   SSubtitle,
   SSettingHeader,
@@ -41,7 +41,7 @@ import {
   SDropdownOptions,
   SDropdownSelection,
   SSnippetToggle,
-  STourButton
+  STourButton,
 } from "./style"
 import { initiateDownload } from "../../../../exportData/initiateDownload"
 import { exportTypeEnum } from "../../../../background/analysis/classModels.js"
@@ -87,12 +87,12 @@ export const FullSnippetToggle = () => {
 
   return (
     <SSnippetToggle>
-        <ToggleSwitch
-          isActive={snippetStatus}
-          onClick={() => toggle()}
-          label={"Save Full HTTP Requests"}
-          spaceBetween
-        />
+      <ToggleSwitch
+        isActive={snippetStatus}
+        onClick={() => toggle()}
+        label={"Save Full HTTP Requests"}
+        spaceBetween
+      />
     </SSnippetToggle>
   )
 }
@@ -113,12 +113,12 @@ export const OptimizationToggle = () => {
 
   return (
     <SSnippetToggle>
-        <ToggleSwitch
-          isActive={optimizationStatus}
-          onClick={() => toggleOptimize()}
-          label={"Optimize Performance"}
-          spaceBetween
-        />
+      <ToggleSwitch
+        isActive={optimizationStatus}
+        onClick={() => toggleOptimize()}
+        label={"Optimize Performance"}
+        spaceBetween
+      />
     </SSnippetToggle>
   )
 }
@@ -305,19 +305,12 @@ export const DangerZone = () => {
 }
 
 export const Tour = () => {
-
   const history = useHistory()
-  
+
   const startTour = () => {
     startStopTour()
-    history.push('/')
+    history.push("/")
   }
-  
-  return (
-  <STourButton onClick={
-    startTour
-  }>
-    Tour
-  </STourButton>
-  )
+
+  return <STourButton onClick={startTour}>Tour</STourButton>
 }

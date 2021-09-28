@@ -5,7 +5,7 @@ privacy-tech-lab, https://www.privacytechlab.org/
 
 import React from "react"
 import styled from "styled-components"
-import { CompanyLogoSVG } from "../company-icons"
+import { CompanyLogoSVG } from "../../icons/company-icons"
 
 /**
  * Generally this would be in a style.js file

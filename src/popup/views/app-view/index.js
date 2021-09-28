@@ -9,7 +9,7 @@ import { AnimatePresence } from "framer-motion"
 import WebsiteView from "../website-view"
 import LabelView from "../label-view"
 import GlobalStyle from "../../../libs/global-style"
-import { getTheme, settingsEnum } from "../../../libs/settings"
+import { getTheme, settingsEnum } from "../../../libs/indexed-db/settings"
 
 /**
  * Root node of application that handles routing

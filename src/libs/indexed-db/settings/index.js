@@ -3,12 +3,12 @@ Licensed per https://github.com/privacy-tech-lab/privacy-pioneer/blob/main/LICEN
 privacy-tech-lab, https://www.privacytechlab.org/
 */
 
-import { settingsKeyval, watchlistKeyval } from "../indexed-db/openDB.js"
+import { settingsKeyval, watchlistKeyval } from "../openDB.js"
 import {
   settingsModelsEnum,
   permissionEnum,
-} from "../../background/analysis/classModels"
-import { evidenceKeyval } from "../../background/analysis/interactDB/openDB"
+} from "../../../background/analysis/classModels"
+import { evidenceKeyval } from "../../../background/analysis/interactDB/openDB"
 
 export const settingsEnum = Object.freeze({
   sameAsSystem: "sameAsSystem",

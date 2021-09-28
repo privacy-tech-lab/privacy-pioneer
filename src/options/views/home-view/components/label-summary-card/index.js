@@ -24,7 +24,7 @@ const LabelSummaryCard = ({ labeltype, websiteTotal, passWebsites }) => {
       onClick={() => {
         history.push({
           pathname: "/search",
-          state: [labeltype, passWebsites],
+          state: { labeltype, websites: passWebsites },
         })
         ReactTooltip.hide()
       }}

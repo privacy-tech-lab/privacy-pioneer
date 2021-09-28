@@ -6,8 +6,8 @@ privacy-tech-lab, https://www.privacytechlab.org/
 import React, { useEffect, useState } from "react"
 import Scaffold from "../../components/scaffold"
 import { css } from "@emotion/react"
-import WebsiteLogo from "../../../libs/website-logo"
-import LabelCard from "../../../libs/label-card"
+import WebsiteLogo from "../../../libs/components/website-logo"
+import LabelCard from "../../../libs/components/label-card"
 import * as Icons from "../../../libs/icons"
 import {
   SLeading,

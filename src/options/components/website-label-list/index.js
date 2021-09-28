@@ -4,8 +4,8 @@ privacy-tech-lab, https://www.privacytechlab.org/
 */
 
 import React from "react"
-import WebsiteBadge from "../../../libs/website-badge"
-import LabelCard from "../../../libs/label-card"
+import WebsiteBadge from "../../../libs/components/website-badge"
+import LabelCard from "../../../libs/components/label-card"
 import { SContainer, SItem, SLabel, SLabelGroup, SSeperator } from "./style"
 
 /**
@@ -18,17 +18,18 @@ import { SContainer, SItem, SLabel, SLabelGroup, SSeperator } from "./style"
 const LabelCards = ({ website, handleTap, allLabels, webLabels }) => {
   return webLabels.map((label, index) => {
     var requests = "hide"
-    if ( Object.entries(allLabels).length == 0 ) {
-        requests = "empty"
-    }
-    else {
+    if (Object.entries(allLabels).length == 0) {
+      requests = "empty"
+    } else {
       if (label in allLabels && website in allLabels[label]) {
-          requests = allLabels[label][website]
+        requests = allLabels[label][website]
       }
     }
 
-    if (requests == "hide") { return null}
-    
+    if (requests == "hide") {
+      return null
+    }
+
     return (
       <LabelCard
         key={index}

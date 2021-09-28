@@ -3,9 +3,8 @@ Licensed per https://github.com/privacy-tech-lab/privacy-pioneer/blob/main/LICEN
 privacy-tech-lab, https://www.privacytechlab.org/
 */
 
-import React, { useEffect, useState, useRef } from "react"
-import { useHistory } from "react-router"
-import { getWebsites, getLabels } from "../../../libs/indexed-db/getIdbData.js"
+import React, { useEffect, useState } from "react"
+import { useHistory, useLocation } from "react-router"
 import Scaffold from "../../components/scaffold"
 import WebsiteLabelList from "../../components/website-label-list"
 import LabelSummaryCardList from "./components/label-summary-card"
@@ -21,48 +20,28 @@ import {
   STitle,
 } from "./style"
 import { HomeTour, homeSteps } from "../../../libs/tour/index.js"
-import { getTourStatus } from "../../../libs/settings/index.js"
-
-const exData = require("../../../libs/tour/exData.json")
+import { homeInit } from "../../../libs/init.js"
 
 /**
  * Home page view containing overview and recently identified labels
  */
 const HomeView = () => {
   const history = useHistory()
+  const location = useLocation()
   const [websites, setWebsites] = useState({})
   const [labels, setLabels] = useState({})
   const [modal, setModal] = useState({ show: false })
-  const entries = Object.entries(websites)
   const [touring, setTouring] = useState(false)
+
+  const entries = Object.entries(websites)
+
   useEffect(() => {
     ReactTooltip.hide()
-    getTourStatus().then((res) => {
-      if (res) {
-        setTouring(true)
-        setWebsites(exData.labelArrayPerSite)
-        setLabels(exData.dataJson)
-        ReactTooltip.rebuild()
-        document
-          .getElementById("detail-modal")
-          .addEventListener("hidden.bs.modal", () => {
-            setModal({ show: false })
-          })
-      } else {
-        setTouring(false)
-        getWebsites().then((websites) => {
-          setWebsites(websites)
-          getLabels().then((labels) => {
-            setLabels(labels)
-            ReactTooltip.rebuild()
-          }),
-            document
-              .getElementById("detail-modal")
-              .addEventListener("hidden.bs.modal", () => {
-                setModal({ show: false })
-              })
-        })
-      }
+    homeInit({
+      setTouring,
+      setLabels,
+      setModal,
+      setWebsites,
     })
   }, [])
 
@@ -99,7 +78,10 @@ const HomeView = () => {
             </div>
             <SButtonText
               onClick={() => {
-                history.push("/search")
+                history.push({
+                  pathname: "/search",
+                  state: { websites: websites, labels: labels },
+                })
                 ReactTooltip.hide()
               }}
               data-place="left"

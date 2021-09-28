@@ -13,7 +13,7 @@ import AboutView from "../about-view"
 import SettingsView from "../settings-view"
 import SearchView from "../search-view"
 import GlobalStyle from "../../../libs/global-style"
-import { getTheme, settingsEnum } from "../../../libs/settings"
+import { getTheme, settingsEnum } from "../../../libs/indexed-db/settings"
 import ReactTooltip from "react-tooltip"
 
 /**

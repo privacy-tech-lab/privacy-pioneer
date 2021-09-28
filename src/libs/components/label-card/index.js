@@ -4,7 +4,7 @@ privacy-tech-lab, https://www.privacytechlab.org/
 */
 
 import React from "react"
-import * as Icons from "../icons"
+import * as Icons from "../../icons"
 import {
   SCard,
   SDescription,
@@ -18,9 +18,9 @@ import {
   SBadge,
   SContent,
 } from "./style"
-import { privacyLabels } from "../../background/analysis/classModels"
-import WebsiteLogo, { CompanyLogo } from "../website-logo"
-import { getParents } from "../company-icons/getCompany.js"
+import { privacyLabels } from "../../../background/analysis/classModels"
+import WebsiteLogo, { CompanyLogo } from "../../components/website-logo"
+import { getParents } from "../../icons/company-icons/getCompany.js"
 import Skeleton, { SkeletonTheme } from "react-loading-skeleton"
 
 /**
