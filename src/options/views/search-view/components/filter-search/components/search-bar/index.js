@@ -1,13 +1,14 @@
 import React, { useEffect } from "react"
 import { SInput, SInputContainer, SSearchContainer } from "./style"
-import * as Icons from "../../../../../../libs/icons"
+import * as Icons from "../../../../../../../libs/icons"
+import { removeLeadingWhiteSpace } from "../../../../../../../background/analysis/utility/util"
 
 const SearchBar = ({
   setQuery,
   placeholder,
   setPlaceholder,
-  filter,
   getPlaceholder,
+  filter,
 }) => {
   useEffect(() => {
     setPlaceholder(getPlaceholder())

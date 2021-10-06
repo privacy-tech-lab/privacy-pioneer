@@ -16,7 +16,7 @@ import {
   STitle,
   SHeaderBadge,
 } from "./style"
-import WebsiteBadge from "../components/website-badge"
+import WebsiteBadge from "../website-badge"
 import Item from "./components/item"
 
 /**

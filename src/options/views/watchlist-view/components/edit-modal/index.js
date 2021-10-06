@@ -32,7 +32,7 @@ import {
 } from "../../../../../background/analysis/classModels"
 import { Modal } from "bootstrap"
 import { AddressForm, KeywordForm } from "./components/forms"
-import inputValidator from "./components/input-validators"
+import validate from "./components/input-validators"
 import ReactTooltip from "react-tooltip"
 import {
   getState,
@@ -95,81 +95,6 @@ const EditModal = ({ keywordType, keyword, edit, id, updateList }) => {
     ReactTooltip.rebuild()
     return () => document.removeEventListener("mousedown", blur)
   }, [])
-
-  /**
-   * Reset the form if the input is not valid
-   */
-  const badInput = (type) => {
-    setInputValid(false)
-    setKeyType(type)
-  }
-
-  /**
-   * Validate a user input
-   */
-  const validate = () => {
-    if (
-      _keywordType == typeEnum.phoneNumber &&
-      !(
-        inputValidator.numRegex.test(_keyword) ||
-        inputValidator.numRegex2.test(_keyword)
-      )
-    ) {
-      badInput("phone number")
-      return false
-    } else if (
-      _keywordType == typeEnum.emailAddress &&
-      !(
-        inputValidator.emailRegex.test(_keyword) ||
-        inputValidator.emailRegex2.test(_keyword)
-      )
-    ) {
-      badInput("email address")
-      return false
-    } else if (
-      _keywordType == typeEnum.ipAddress &&
-      !(
-        inputValidator.ipRegex_4.test(_keyword) ||
-        inputValidator.ipRegex_6.test(_keyword)
-      )
-    ) {
-      badInput("IP address")
-      return false
-    } else if (
-      _keywordType == typeEnum.userKeyword &&
-      !inputValidator.userKeyword.test(_keyword)
-    ) {
-      badInput("keyword. Length should be 5 or greater.")
-      return false
-    } else if (_keywordType == permissionEnum.location) {
-      if (
-        (!_zip == undefined && !inputValidator.zipCode.test(_zip)) ||
-        !_zip == undefined
-      ) {
-        badInput("zip code")
-        return false
-      }
-      if (!(_state == undefined || _state in stateObj)) {
-        badInput("state abbreviation")
-        return false
-      }
-      if (_zip != undefined && _state != undefined) {
-        if (getState(_zip)[0] != _state) {
-          badInput("state / zip combination")
-          return false
-        }
-      }
-      if (!inputValidator.city_address.test(_city)) {
-        badInput("city")
-        return false
-      }
-      if (!inputValidator.city_address.test(_address)) {
-        badInput("address")
-        return false
-      }
-      return true
-    } else return true
-  }
 
   return (
     <>
@@ -261,7 +186,14 @@ const EditModal = ({ keywordType, keyword, edit, id, updateList }) => {
                   key = _keyword
                 }
                 // check if user input is valid
-                if (validate()) {
+                if (
+                  validate({
+                    keyword: _keyword,
+                    keywordType: _keywordType,
+                    setInputValid,
+                    setKeyType,
+                  })
+                ) {
                   if (await saveKeyword(key, _keywordType, id)) {
                     await updateList()
                     const modal = Modal.getInstance(

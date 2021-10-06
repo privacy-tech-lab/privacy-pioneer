@@ -6,8 +6,8 @@ privacy-tech-lab, https://www.privacytechlab.org/
 import React, { useRef, useState } from "react"
 import { SBadgeGroup, SBadge } from "./style"
 import Evidence from "../evidence"
-import { privacyLabels } from "../../../../background/analysis/classModels"
 import { Collapse } from "bootstrap"
+import { privacyLabels } from "../../../../../background/analysis/classModels"
 
 /**
  * Display of badges with sub types and collapse containing description and evidence
@@ -16,7 +16,11 @@ import { Collapse } from "bootstrap"
  * @param {string} label the associated label of this evidence
  */
 const Item = ({ request, url, label }) => {
-  const [evidence, setEvidence] = useState({ request: null, label: null, type: null })
+  const [evidence, setEvidence] = useState({
+    request: null,
+    label: null,
+    type: null,
+  })
   const collapseId = `${url}-${label}-collapse`
   const containerRef = useRef()
 
@@ -27,7 +31,6 @@ const Item = ({ request, url, label }) => {
    * @param {string} type The type of evidence
    */
   const inflateCollapse = (event, request, type) => {
-
     setEvidence({ request: request, label: label, type: type })
 
     const target = event.target
@@ -35,7 +38,10 @@ const Item = ({ request, url, label }) => {
       toggle: false,
     })
 
-    if (document.getElementById(collapseId).classList.contains("show") && target.classList.contains("active")) {
+    if (
+      document.getElementById(collapseId).classList.contains("show") &&
+      target.classList.contains("active")
+    ) {
       const matches = containerRef.current.querySelectorAll(".badge")
       matches.forEach(function (match) {
         match.classList.remove("active")
@@ -55,13 +61,22 @@ const Item = ({ request, url, label }) => {
     <>
       <SBadgeGroup ref={containerRef}>
         {Object.entries(request).map(([type, request]) => (
-          <SBadge key={type} className="badge" onClick={(event) => inflateCollapse(event, request, type)}>
+          <SBadge
+            key={type}
+            className="badge"
+            onClick={(event) => inflateCollapse(event, request, type)}
+          >
             {privacyLabels[label]["types"][type]["displayName"]}
-            {request.cookie?` 🍪`:null}
+            {request.cookie ? ` 🍪` : null}
           </SBadge>
         ))}
       </SBadgeGroup>
-      <Evidence request={evidence.request} collapseId={collapseId} label={evidence.label} type={evidence.type} />
+      <Evidence
+        request={evidence.request}
+        collapseId={collapseId}
+        label={evidence.label}
+        type={evidence.type}
+      />
     </>
   )
 }

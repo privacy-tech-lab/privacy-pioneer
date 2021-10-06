@@ -1,16 +1,26 @@
 import Filters from "./components/filters"
 import SearchBar from "./components/search-bar"
 import React, { useState } from "react"
-import { removeLeadingWhiteSpace } from "../../../../background/analysis/utility/util"
+import { CompanyLogoSVG } from "../../../../../libs/icons/company-icons"
+import { removeLeadingWhiteSpace } from "../../../../../background/analysis/utility/util"
+import { filter, filterLabelObject } from "./components/filterLabels"
 
 const FilterSearch = ({
-  allLabels,
-  webLabels,
-  setWebLabels,
-  allWebsites,
-  setFilter,
+  labels,
+  setFilteredLabels,
+  websites,
+  setFilteredWebsites,
   setShowEmpty,
+  location,
 }) => {
+  const getEmptyCompanyFilter = () => {
+    var mapping = {}
+    Object.keys(CompanyLogoSVG).map((company) => {
+      mapping[company] = false
+    })
+    return mapping
+  }
+
   /**
    * Takes in a type passed from the previous page and returns
    * the appropriate filter mapping
@@ -29,14 +39,28 @@ const FilterSearch = ({
     return mapping
   }
 
+  const [placeholder, setPlaceholder] = useState("")
+  const [query, setQuery] = useState("")
+  const [companyFilter, setCompanyFilter] = useState(getEmptyCompanyFilter())
+  const [permFilter, setPermFilter] = useState(
+    location.state && location.state.labeltype
+      ? getPermMapping(location.state.labeltype)
+      : {
+          monetization: true,
+          location: true,
+          watchlist: true,
+          tracking: true,
+        }
+  )
+
   /**
    * Filter websites based on user input string from text field
    * @param {string} keyString string the user entered
    */
-  const filter = (keyString, labels = webLabels) => {
+  const filter = (keyString) => {
     keyString = removeLeadingWhiteSpace(keyString).toLowerCase()
 
-    const filteredKeys = Object.keys(allWebsites).filter((k) =>
+    const filteredKeys = Object.keys(websites).filter((k) =>
       k.includes(keyString)
     )
 
@@ -45,15 +69,56 @@ const FilterSearch = ({
       if (Object.keys(websiteLevel).length > 0 && permFilter[perm]) {
         for (const website of Object.keys(websiteLevel)) {
           if (filteredKeys.includes(website))
-            filteredWebsites[website] = allWebsites[website]
+            filteredWebsites[website] = websites[website]
         }
       }
     }
-
     Object.keys(filteredWebsites) == 0
       ? setShowEmpty(true)
       : setShowEmpty(false)
-    setFilter(filteredWebsites)
+    setFilteredWebsites(filteredWebsites)
+  }
+
+  /**
+   * Looks for filters and applies them as appropriate.
+   *
+   * @param {string} keyString
+   */
+  const filterLabels = () => {
+    // filter gets passed as an array in DB call
+    var runFilter = false
+    var runCompanyFilter = false
+
+    for (const bool of Object.values(permFilter)) {
+      if (!bool) {
+        runFilter = true
+        break
+      }
+    }
+
+    for (const bool of Object.values(companyFilter)) {
+      if (bool) {
+        runCompanyFilter = true
+        break
+      }
+    }
+
+    setPlaceholder(getPlaceholder(runCompanyFilter))
+
+    if (runFilter || runCompanyFilter) {
+      const filtered = filterLabelObject(
+        labels,
+        permFilter,
+        companyFilter,
+        runCompanyFilter
+      )
+      setFilteredLabels(filtered)
+      filter(query, filtered)
+    } else {
+      setFilteredLabels(labels)
+      setFilteredWebsites(websites)
+      filter(query, labels)
+    }
   }
 
   /**
@@ -89,19 +154,6 @@ const FilterSearch = ({
     return updatedPlaceholder
   }
 
-  const [placeholder, setPlaceholder] = useState("")
-  const [query, setQuery] = useState("")
-  const [permFilter, setPermFilter] = useState(
-    location.state
-      ? getPermMapping(location.state.labeltype)
-      : {
-          monetization: true,
-          location: true,
-          watchlist: true,
-          tracking: true,
-        }
-  )
-
   return (
     <>
       <SearchBar
@@ -112,17 +164,11 @@ const FilterSearch = ({
         filter={filter}
       />
       <Filters
-        getPlaceholder={getPlaceholder}
-        setPlaceholder={setPlaceholder}
-        filter={filter}
+        filterLabels={filterLabels}
         permFilter={permFilter}
         setPermFilter={setPermFilter}
-        query={query}
-        webLabels={webLabels}
-        setWebLabels={setWebLabels}
-        allWebsites={allWebsites}
-        allLabels={allLabels}
-        setFilter={setFilter}
+        companyFilter={companyFilter}
+        setCompanyFilter={setCompanyFilter}
       />
     </>
   )

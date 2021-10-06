@@ -47,39 +47,41 @@ export const homeInit = ({ setWebsites, setLabels, setModal, setTouring }) => {
 
 export const searchInit = ({
   setTouring,
-  setAllWebsites,
-  setFilter,
-  setWebLabels,
-  setAllLabels,
+  setWebsites,
+  setFilteredWebsites,
+  setFilteredLabels,
+  setLabels,
+  websites,
 }) => {
   ReactTooltip.hide()
   getTourStatus().then((res) => {
     if (res) {
       setTouring(true)
-      setAllWebsites(exData.labelArrayPerSite)
-      setFilter(exData.labelArrayPerSite)
-      setWebLabels(exData.dataJson)
-      setAllLabels(exData.dataJson)
+      setWebsites(exData.labelArrayPerSite)
+      setFilteredWebsites(exData.labelArrayPerSite)
+      setFilteredLabels(exData.dataJson)
+      setLabels(exData.dataJson)
       ReactTooltip.rebuild()
     } else {
       setTouring(false)
       // if we're not passed the getWebsites call from previous:
       if (location.state === undefined) {
         getWebsites().then((websites) => {
-          setAllWebsites(websites)
-          setFilter(websites)
+          setWebsites(websites)
+          setFilteredWebsites(websites)
           getLabels().then((labels) => {
-            setWebLabels(labels)
-            setAllLabels(labels)
+            setFilteredLabels(labels)
+            setLabels(labels)
             ReactTooltip.rebuild()
           })
         })
       }
-      // if we are then allWebsties is already set. setWebLabels will be called by filterLabels
+      // if we are then allWebsties is already set. setFilteredLabels will be called by filterLabels
       else {
-        setFilter(allWebsites)
+        console.log("HELLO")
+        setFilteredWebsites(websites)
         getLabels().then((labels) => {
-          setAllLabels(labels)
+          setLabels(labels)
           filterLabels(labels)
         })
       }

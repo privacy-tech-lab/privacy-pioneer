@@ -5,17 +5,23 @@ privacy-tech-lab, https://www.privacytechlab.org/
 
 import React, { useEffect, useState } from "react"
 import Scaffold from "../../components/scaffold"
-import { SBackButton, STitle, STop, SEmpty, SFiltersDiv } from "./style"
-import { SContainer, SSubtitle } from "./style"
+import {
+  SBackButton,
+  STitle,
+  STop,
+  SEmpty,
+  SFiltersDiv,
+  SContainer,
+  SSubtitle,
+} from "./style"
 import * as Icons from "../../../libs/icons"
 import { Modal } from "bootstrap"
 import LabelModal from "../home-view/components/detail-modal"
 import WebsiteLabelList from "../../components/website-label-list"
 import { useHistory, useLocation } from "react-router"
 import { seeAllSteps, SeeAllTour } from "../../../libs/tour"
-import { CompanyLogoSVG } from "../../../libs/icons/company-icons"
 import { searchInit } from "../../../libs/init"
-import FilterSearch from "./filter-search"
+import FilterSearch from "./components/filter-search"
 
 /**
  * location.state = undefined | [permission, websites]
@@ -29,24 +35,21 @@ const SearchView = () => {
 
   const [modal, setModal] = useState({ show: false })
 
-  const [allWebsites, setAllWebsites] = useState(
-    location.state === undefined ? {} : location.state[1]
+  const [websites, setWebsites] = useState(
+    location.state ? location.state.websites ?? {} : {}
   ) // pass websites from previous page if possible
-  const [filteredSites, setFilter] = useState(
-    location.state ? location.state.websites : {}
+  const [filteredWebsites, setFilteredWebsites] = useState(
+    location.state ? location.state.websites ?? {} : {}
   )
 
-  const [allLabels, setAllLabels] = useState(
-    location.state ? location.state.labels : {}
+  const [labels, setLabels] = useState(
+    location.state ? location.state.labels ?? {} : {}
   )
-  const [webLabels, setWebLabels] = useState(
-    location.state ? location.state.labels : {}
+  const [filteredLabels, setFilteredLabels] = useState(
+    location.state ? location.state.labels ?? {} : {}
   )
-
-  //filtering
 
   const [showEmpty, setShowEmpty] = useState(false)
-
   const [touring, setTouring] = useState(false)
 
   const handleTap = (items) => {
@@ -58,10 +61,11 @@ const SearchView = () => {
   useEffect(() => {
     searchInit({
       setTouring,
-      setAllWebsites,
-      setFilter,
-      setWebLabels,
-      setAllLabels,
+      setWebsites,
+      setFilteredWebsites,
+      setFilteredLabels,
+      setLabels,
+      websites: websites,
     })
   }, [])
 
@@ -89,17 +93,18 @@ const SearchView = () => {
           </SSubtitle>
           <SFiltersDiv id="filtersTour">
             <FilterSearch
-              setWebLabels={setWebLabels}
-              webLabels={webLabels}
-              allLabels={allLabels}
-              allWebsites={allWebsites}
-              setFilter={setFilter}
+              setFilteredLabels={setFilteredLabels}
+              filteredLabels={filteredLabels}
+              labels={labels}
+              websites={websites}
+              setFilteredWebsites={setFilteredWebsites}
               setShowEmpty={setShowEmpty}
+              location={location}
             />
           </SFiltersDiv>
           <WebsiteLabelList
-            websites={filteredSites}
-            allLabels={webLabels}
+            websites={filteredWebsites}
+            allLabels={filteredLabels}
             handleTap={handleTap}
           />
           <SEmpty show={showEmpty}>

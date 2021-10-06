@@ -4,7 +4,7 @@ privacy-tech-lab, https://www.privacytechlab.org/
 */
 
 import React from "react"
-import LabelDetail from "../../../../../libs/label-detail"
+import LabelDetail from "../../../../../libs/components/label-detail"
 import {
   IconWrapper,
   SLeading,
@@ -36,7 +36,7 @@ const LabelModal = ({ label, requests, website, show }) => {
       >
         <SDialog className="modal-dialog">
           <SContent className="modal-content">
-            { show ? (
+            {show ? (
               <SModal>
                 <SNavigationBar>
                   <SLeading />
@@ -50,7 +50,11 @@ const LabelModal = ({ label, requests, website, show }) => {
                     </IconWrapper>
                   </STrailing>
                 </SNavigationBar>
-                <LabelDetail website={website} label={label} requests={requests} />
+                <LabelDetail
+                  website={website}
+                  label={label}
+                  requests={requests}
+                />
               </SModal>
             ) : null}
           </SContent>

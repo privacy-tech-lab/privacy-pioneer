@@ -22,14 +22,84 @@ const inputValidator = {
   ipRegex_6: new RegExp(
     /^(?:[0-9a-fA-F]{1,4}:){7}[0-9a-fA-F]{1,4}$|^::(?:[0-9a-fA-F]{1,4}:){0,6}[0-9a-fA-F]{1,4}$|^[0-9a-fA-F]{1,4}::(?:[0-9a-fA-F]{1,4}:){0,5}[0-9a-fA-F]{1,4}$|^[0-9a-fA-F]{1,4}:[0-9a-fA-F]{1,4}::(?:[0-9a-fA-F]{1,4}:){0,4}[0-9a-fA-F]{1,4}$|^(?:[0-9a-fA-F]{1,4}:){0,2}[0-9a-fA-F]{1,4}::(?:[0-9a-fA-F]{1,4}:){0,3}[0-9a-fA-F]{1,4}$|^(?:[0-9a-fA-F]{1,4}:){0,3}[0-9a-fA-F]{1,4}::(?:[0-9a-fA-F]{1,4}:){0,2}[0-9a-fA-F]{1,4}$|^(?:[0-9a-fA-F]{1,4}:){0,4}[0-9a-fA-F]{1,4}::(?:[0-9a-fA-F]{1,4}:)?[0-9a-fA-F]{1,4}$|^(?:[0-9a-fA-F]{1,4}:){0,5}[0-9a-fA-F]{1,4}::[0-9a-fA-F]{1,4}$|^(?:[0-9a-fA-F]{1,4}:){0,6}[0-9a-fA-F]{1,4}::$/
   ),
-  userKeyword: new RegExp(
-    /.{5,}/
-  ),
-  zipCode: new RegExp(
-    /\d{5}/
-  ),
-  city_address: new RegExp(
-    /.{3,}/
-  )
-};
-export default inputValidator;
+  userKeyword: new RegExp(/.{5,}/),
+  zipCode: new RegExp(/\d{5}/),
+  city_address: new RegExp(/.{3,}/),
+}
+
+/**
+ * Reset the form if the input is not valid
+ */
+const badInput = (type, setInputValid, setKeyType) => {
+  setInputValid(false)
+  setKeyType(type)
+}
+
+/**
+ * Validate a user input
+ */
+const validate = ({ keyword, keywordType, setInputValid, setKeyType }) => {
+  if (
+    keywordType == typeEnum.phoneNumber &&
+    !(
+      inputValidator.numRegex.test(keyword) ||
+      inputValidator.numRegex2.test(keyword)
+    )
+  ) {
+    badInput("phone number")
+    return false
+  } else if (
+    keywordType == typeEnum.emailAddress &&
+    !(
+      inputValidator.emailRegex.test(keyword) ||
+      inputValidator.emailRegex2.test(keyword)
+    )
+  ) {
+    badInput("email address")
+    return false
+  } else if (
+    keywordType == typeEnum.ipAddress &&
+    !(
+      inputValidator.ipRegex_4.test(keyword) ||
+      inputValidator.ipRegex_6.test(keyword)
+    )
+  ) {
+    badInput("IP address")
+    return false
+  } else if (
+    keywordType == typeEnum.userKeyword &&
+    !inputValidator.userKeyword.test(keyword)
+  ) {
+    badInput("keyword. Length should be 5 or greater.")
+    return false
+  } else if (keywordType == permissionEnum.location) {
+    if (
+      (!_zip == undefined && !inputValidator.zipCode.test(_zip)) ||
+      !_zip == undefined
+    ) {
+      badInput("zip code")
+      return false
+    }
+    if (!(_state == undefined || _state in stateObj)) {
+      badInput("state abbreviation")
+      return false
+    }
+    if (_zip != undefined && _state != undefined) {
+      if (getState(_zip)[0] != _state) {
+        badInput("state / zip combination")
+        return false
+      }
+    }
+    if (!inputValidator.city_address.test(_city)) {
+      badInput("city")
+      return false
+    }
+    if (!inputValidator.city_address.test(_address)) {
+      badInput("address")
+      return false
+    }
+    return true
+  } else return true
+}
+
+export default validate
