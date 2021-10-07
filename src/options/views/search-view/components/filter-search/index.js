@@ -3,7 +3,7 @@ import SearchBar from "./components/search-bar"
 import React, { useState } from "react"
 import { CompanyLogoSVG } from "../../../../../libs/icons/company-icons"
 import { removeLeadingWhiteSpace } from "../../../../../background/analysis/utility/util"
-import { filter, filterLabelObject } from "./components/filterLabels"
+import { filterLabelObject } from "./components/filterLabels"
 
 const FilterSearch = ({
   labels,

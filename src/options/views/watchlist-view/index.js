@@ -84,8 +84,8 @@ const WatchlistView = () => {
         <div className="modal-dialog modal-dialog-centered">
           {modalConfig.show ? (
             <EditModal
-              keywordType={modalConfig.keywordType}
-              keyword={
+              passKeywordType={modalConfig.keywordType}
+              passKeyword={
                 modalConfig.keywordType != permissionEnum.location
                   ? modalConfig.keyword
                   : modalConfig.location

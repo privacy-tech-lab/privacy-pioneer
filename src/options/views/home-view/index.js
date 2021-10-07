@@ -4,7 +4,7 @@ privacy-tech-lab, https://www.privacytechlab.org/
 */
 
 import React, { useEffect, useState } from "react"
-import { useHistory, useLocation } from "react-router"
+import { useHistory } from "react-router"
 import Scaffold from "../../components/scaffold"
 import WebsiteLabelList from "../../components/website-label-list"
 import LabelSummaryCardList from "./components/label-summary-card"
@@ -27,7 +27,6 @@ import { homeInit } from "../../../libs/init.js"
  */
 const HomeView = () => {
   const history = useHistory()
-  const location = useLocation()
   const [websites, setWebsites] = useState({})
   const [labels, setLabels] = useState({})
   const [modal, setModal] = useState({ show: false })

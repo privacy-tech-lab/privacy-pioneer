@@ -45,9 +45,9 @@ const AboutView = () => {
           </SArrow>
         </SQuestion>
 
-        <div className="collapse" id={question}>
-          <SAnswer>{answer}</SAnswer>
-        </div>
+        <SAnswer className="collapse" id={question}>
+          {answer}
+        </SAnswer>
       </SQuestionCard>
     )
   }

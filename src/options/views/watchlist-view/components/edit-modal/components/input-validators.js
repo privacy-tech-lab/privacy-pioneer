@@ -3,6 +3,14 @@ Licensed per https://github.com/privacy-tech-lab/privacy-pioneer/blob/main/LICEN
 privacy-tech-lab, https://www.privacytechlab.org/
 */
 
+import {
+  typeEnum,
+  permissionEnum,
+} from "../../../../../../background/analysis/classModels"
+import {
+  stateObj,
+  getState,
+} from "../../../../../../background/analysis/buildUserData/structuredRoutines"
 // allows for input validation of items a user is attempting to add to their watch list
 
 const inputValidator = {
@@ -28,17 +36,26 @@ const inputValidator = {
 }
 
 /**
- * Reset the form if the input is not valid
- */
-const badInput = (type, setInputValid, setKeyType) => {
-  setInputValid(false)
-  setKeyType(type)
-}
-
-/**
  * Validate a user input
  */
-const validate = ({ keyword, keywordType, setInputValid, setKeyType }) => {
+const validate = ({
+  keyword,
+  keywordType,
+  setInputValid,
+  setKeyType,
+  city,
+  state,
+  zip,
+  address,
+}) => {
+  /**
+   * Reset the form if the input is not valid
+   */
+  const badInput = (type) => {
+    setInputValid(false)
+    setKeyType(type)
+  }
+
   if (
     keywordType == typeEnum.phoneNumber &&
     !(
@@ -74,27 +91,27 @@ const validate = ({ keyword, keywordType, setInputValid, setKeyType }) => {
     return false
   } else if (keywordType == permissionEnum.location) {
     if (
-      (!_zip == undefined && !inputValidator.zipCode.test(_zip)) ||
-      !_zip == undefined
+      (!zip == undefined && !inputValidator.zipCode.test(zip)) ||
+      !zip == undefined
     ) {
       badInput("zip code")
       return false
     }
-    if (!(_state == undefined || _state in stateObj)) {
+    if (!(state == undefined || state in stateObj)) {
       badInput("state abbreviation")
       return false
     }
-    if (_zip != undefined && _state != undefined) {
-      if (getState(_zip)[0] != _state) {
+    if (zip != undefined && state != undefined) {
+      if (getState(zip)[0] != state) {
         badInput("state / zip combination")
         return false
       }
     }
-    if (!inputValidator.city_address.test(_city)) {
+    if (!inputValidator.city_address.test(city)) {
       badInput("city")
       return false
     }
-    if (!inputValidator.city_address.test(_address)) {
+    if (!inputValidator.city_address.test(address)) {
       badInput("address")
       return false
     }

@@ -33,24 +33,13 @@ const SearchView = () => {
   const history = useHistory()
   const location = useLocation()
 
-  const [modal, setModal] = useState({ show: false })
-
-  const [websites, setWebsites] = useState(
-    location.state ? location.state.websites ?? {} : {}
-  ) // pass websites from previous page if possible
-  const [filteredWebsites, setFilteredWebsites] = useState(
-    location.state ? location.state.websites ?? {} : {}
-  )
-
-  const [labels, setLabels] = useState(
-    location.state ? location.state.labels ?? {} : {}
-  )
-  const [filteredLabels, setFilteredLabels] = useState(
-    location.state ? location.state.labels ?? {} : {}
-  )
-
+  const [websites, setWebsites] = useState({})
+  const [filteredWebsites, setFilteredWebsites] = useState({})
+  const [labels, setLabels] = useState({})
+  const [filteredLabels, setFilteredLabels] = useState({})
   const [showEmpty, setShowEmpty] = useState(false)
   const [touring, setTouring] = useState(false)
+  const [modal, setModal] = useState({ show: false })
 
   const handleTap = (items) => {
     const modal = new Modal(document.getElementById("detail-modal"))
@@ -60,12 +49,12 @@ const SearchView = () => {
 
   useEffect(() => {
     searchInit({
+      location,
       setTouring,
       setWebsites,
       setFilteredWebsites,
-      setFilteredLabels,
       setLabels,
-      websites: websites,
+      setFilteredLabels,
     })
   }, [])
 

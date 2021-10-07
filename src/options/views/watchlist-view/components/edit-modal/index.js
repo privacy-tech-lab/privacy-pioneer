@@ -34,29 +34,25 @@ import { Modal } from "bootstrap"
 import { AddressForm, KeywordForm } from "./components/forms"
 import validate from "./components/input-validators"
 import ReactTooltip from "react-tooltip"
-import {
-  getState,
-  stateObj,
-} from "../../../../../background/analysis/buildUserData/structuredRoutines"
 
 /**
  * Popup modal to create/edit keyword
  */
-const EditModal = ({ keywordType, keyword, edit, id, updateList }) => {
+const EditModal = ({ passKeywordType, passKeyword, edit, id, updateList }) => {
   const dropdownRef = useRef()
   const [showDropdown, setDropdown] = useState(false)
-  const [_keywordType, setKeywordType] = useState(
-    edit ? keywordType : "Select Type"
+  const [keywordType, setKeywordType] = useState(
+    edit ? passKeywordType : "Select Type"
   )
-  const [_keyword, setKeyword] = useState(edit ? keyword : "")
-  const [_address, setAddress] = useState(
+  const [keyword, setKeyword] = useState(edit ? passKeyword : "")
+  const [address, setAddress] = useState(
     edit ? keyword[typeEnum.streetAddress] ?? null : ""
   )
-  const [_city, setCity] = useState(edit ? keyword[typeEnum.city] ?? null : "")
-  const [_state, setStateloc] = useState(
+  const [city, setCity] = useState(edit ? keyword[typeEnum.city] ?? null : "")
+  const [state, setStateloc] = useState(
     edit ? keyword[typeEnum.state] ?? null : ""
   )
-  const [_zip, setZip] = useState(edit ? keyword[typeEnum.zipCode] ?? null : "")
+  const [zip, setZip] = useState(edit ? keyword[typeEnum.zipCode] ?? null : "")
   const [inputValid, setInputValid] = useState(true)
   const [keyType, setKeyType] = useState("")
 
@@ -112,13 +108,7 @@ const EditModal = ({ keywordType, keyword, edit, id, updateList }) => {
             </STrailing>
           </SNavigationBar>
           <SType>
-            <SHeader
-              data-place="left"
-              // data-tip={"test"}
-              data-tip="hello world"
-            >
-              TYPE
-            </SHeader>
+            <SHeader>TYPE</SHeader>
             <SDropdown
               ref={dropdownRef}
               onClick={() => {
@@ -142,26 +132,26 @@ const EditModal = ({ keywordType, keyword, edit, id, updateList }) => {
                 ))}
               </SDropdownOptions>
               <SDropdownSelection>
-                {_keywordType in keywordTypes
-                  ? keywordTypes[_keywordType]["displayName"]
+                {keywordType in keywordTypes
+                  ? keywordTypes[keywordType]["displayName"]
                   : "Select Type"}
                 <Icons.ChevronDown size="24px" />
               </SDropdownSelection>
             </SDropdown>
           </SType>
-          {_keywordType != permissionEnum.location ? (
+          {keywordType != permissionEnum.location ? (
             <KeywordForm
-              keywordType={_keywordType}
+              keywordType={keywordType}
               onChange={handleKeywordChange}
-              value={_keyword}
+              value={keyword}
             />
           ) : (
             <AddressForm
               onChange={handleAddressChange}
-              city={_city}
-              state={_state}
-              zip={_zip}
-              streetAddress={_address}
+              city={city}
+              state={state}
+              zip={zip}
+              streetAddress={address}
             />
           )}
           {inputValid ? null : (
@@ -174,27 +164,31 @@ const EditModal = ({ keywordType, keyword, edit, id, updateList }) => {
             <SAction
               onClick={async () => {
                 let key
-                if (_keywordType == permissionEnum.location) {
+                if (keywordType == permissionEnum.location) {
                   key = {
-                    [typeEnum.streetAddress]: _address,
-                    [typeEnum.zipCode]: _zip,
-                    [typeEnum.state]: _state,
-                    [typeEnum.city]: _city,
-                    display: `${_address}, ${_city}, ${_state} ${_zip}`,
+                    [typeEnum.streetAddress]: address,
+                    [typeEnum.zipCode]: zip,
+                    [typeEnum.state]: state,
+                    [typeEnum.city]: city,
+                    display: `${address}, ${city}, ${state} ${zip}`,
                   }
                 } else {
-                  key = _keyword
+                  key = keyword
                 }
                 // check if user input is valid
                 if (
                   validate({
-                    keyword: _keyword,
-                    keywordType: _keywordType,
+                    keyword,
+                    keywordType,
                     setInputValid,
                     setKeyType,
+                    state,
+                    city,
+                    zip,
+                    address,
                   })
                 ) {
-                  if (await saveKeyword(key, _keywordType, id)) {
+                  if (await saveKeyword(key, keywordType, id)) {
                     await updateList()
                     const modal = Modal.getInstance(
                       document.getElementById("edit-modal")

@@ -21,7 +21,6 @@ import {
   ExportData,
   LabelToggle,
 } from "./components/data-settings"
-import { ToggleSwitch } from "./components/toggle-switch"
 import { ThemeSelection } from "./components/theme-settings"
 import { DangerZone } from "./components/danger-settings"
 import { Tour } from "./components/tour-settings"

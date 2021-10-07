@@ -3,23 +3,20 @@ import { getWebsites, getLabels } from "./indexed-db/getIdbData"
 import exData from "./tour/exData.json"
 import { getTourStatus } from "./indexed-db/settings"
 
-export const tourInit = ({ setTouring, setWebsites, setLabels, setModal }) => {
+/**
+ *
+ * Sets given states to example data for tour
+ */
+export const tourInit = ({ setTouring, setWebsites, setLabels }) => {
   setTouring(true)
   setWebsites(exData.labelArrayPerSite)
   setLabels(exData.dataJson)
   ReactTooltip.rebuild()
 }
 
-export const labelInit = ({ setWebsites, setLabels }) => {
-  getWebsites().then((websites) => {
-    setWebsites(websites)
-    getLabels().then((labels) => {
-      setLabels(labels)
-      ReactTooltip.rebuild()
-    })
-  })
-}
-
+/**
+ * Initializes Home-View states. Makes call to the data base to populate data
+ */
 export const homeInit = ({ setWebsites, setLabels, setModal, setTouring }) => {
   getTourStatus().then((res) => {
     if (res) {
@@ -31,10 +28,12 @@ export const homeInit = ({ setWebsites, setLabels, setModal, setTouring }) => {
       })
     } else {
       setTouring(false)
-      labelInit({
-        setWebsites,
-        setLabels,
-        setModal,
+      getWebsites().then((websites) => {
+        setWebsites(websites)
+        getLabels().then((labels) => {
+          setLabels(labels)
+          ReactTooltip.rebuild()
+        })
       })
     }
   })
@@ -45,13 +44,17 @@ export const homeInit = ({ setWebsites, setLabels, setModal, setTouring }) => {
     })
 }
 
+/**
+ * Initializes Search-View states. If location.state is not undefined, it
+ * grabs data from previous page else it calls to the database
+ */
 export const searchInit = ({
   setTouring,
   setWebsites,
   setFilteredWebsites,
   setFilteredLabels,
   setLabels,
-  websites,
+  location,
 }) => {
   ReactTooltip.hide()
   getTourStatus().then((res) => {
@@ -75,15 +78,11 @@ export const searchInit = ({
             ReactTooltip.rebuild()
           })
         })
-      }
-      // if we are then allWebsties is already set. setFilteredLabels will be called by filterLabels
-      else {
-        console.log("HELLO")
-        setFilteredWebsites(websites)
-        getLabels().then((labels) => {
-          setLabels(labels)
-          filterLabels(labels)
-        })
+      } else {
+        setWebsites(location.state.websites)
+        setFilteredWebsites(location.state.websites)
+        setLabels(location.state.labels)
+        setFilteredLabels(location.state.labels)
       }
     }
   })
