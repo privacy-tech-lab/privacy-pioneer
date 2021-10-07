@@ -17,7 +17,7 @@ import {
   SArrow,
   SAbout,
 } from "./style"
-import { FAQ } from "./faq"
+import { FAQ } from "./components/faq"
 import { ArrowDown } from "../../../libs/icons"
 import ReactTooltip from "react-tooltip"
 import penguin from "../../../assets/logos/Happy.svg"
