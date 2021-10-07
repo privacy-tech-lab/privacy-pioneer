@@ -28,7 +28,7 @@ import {
   SDropdownSelection,
   SSnippetToggle,
 } from "./style"
-import { initiateDownload } from "../../../../../exportData/initiateDownload"
+import { initiateDownload } from "../../../../../libs/exportData/initiateDownload"
 import { exportTypeEnum } from "../../../../../background/analysis/classModels.js"
 
 export const FullSnippetToggle = () => {
