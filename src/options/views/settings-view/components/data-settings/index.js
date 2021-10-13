@@ -31,6 +31,9 @@ import {
 import { initiateDownload } from "../../../../../libs/exportData/initiateDownload"
 import { exportTypeEnum } from "../../../../../background/analysis/classModels.js"
 
+/**
+ * Toggles whether the user views the full snippet of evidence
+ */
 export const FullSnippetToggle = () => {
   const [snippetStatus, setSnippetStatus] = useState(false)
 
@@ -57,6 +60,9 @@ export const FullSnippetToggle = () => {
   )
 }
 
+/**
+ * Toggles Optimization
+ */
 export const OptimizationToggle = () => {
   const [optimizationStatus, setOptimizationStatus] = useState(true)
 
@@ -83,6 +89,9 @@ export const OptimizationToggle = () => {
   )
 }
 
+/**
+ * Toggles each label from user view
+ */
 export const LabelToggle = () => {
   const [labelStatus, SetLabelStatus] = useState({
     [permissionEnum.location]: true,
@@ -124,7 +133,9 @@ export const LabelToggle = () => {
     </SLabelToggle>
   )
 }
-
+/**
+ * Button for exporting data in specific format and date range
+ */
 export const ExportData = () => {
   const [showDropdown, setDropdown] = useState(false)
   const [timeRange, setTimeRange] = useState(timeRangeEnum.allTime.timestamp)

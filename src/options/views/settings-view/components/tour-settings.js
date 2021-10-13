@@ -28,7 +28,9 @@ const STourButton = styled.div`
     filter: brightness(1.05);
   }
 `
-
+/**
+ * Settings for restarting the tour
+ */
 export const Tour = () => {
   const history = useHistory()
 

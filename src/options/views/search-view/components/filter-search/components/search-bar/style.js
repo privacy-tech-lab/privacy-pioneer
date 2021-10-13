@@ -1,5 +1,7 @@
 import styled from "styled-components"
 
+//styling for search bar component
+
 export const SInput = styled.input`
   box-sizing: border-box;
   -moz-box-sizing: border-box;

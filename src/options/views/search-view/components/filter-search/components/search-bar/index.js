@@ -2,6 +2,9 @@ import React, { useEffect } from "react"
 import { SInput, SInputContainer, SSearchContainer } from "./style"
 import * as Icons from "../../../../../../../libs/icons"
 
+/**
+ * Filters Viewed Websites based on typed input on Search bar
+ */
 const SearchBar = ({
   setQuery,
   placeholder,

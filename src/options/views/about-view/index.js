@@ -24,6 +24,7 @@ import penguin from "../../../assets/logos/Happy.svg"
 
 /**
  * About page view
+ * Uses Collapse from bootstrap to get drop down effect
  */
 const AboutView = () => {
   const QuestionCard = ({ question, answer }) => {

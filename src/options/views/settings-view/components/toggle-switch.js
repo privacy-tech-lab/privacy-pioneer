@@ -32,7 +32,9 @@ export const SSwitchLabel = styled.div`
   align-self: center;
   margin-right: 24px;
 `
-
+/**
+ * General Toggle Switch used in various settings sections
+ */
 export const ToggleSwitch = ({ isActive, label, onClick, spaceBetween }) => (
   <div
     style={{

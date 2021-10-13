@@ -4,6 +4,7 @@ privacy-tech-lab, https://www.privacytechlab.org/
 */
 
 import styled from "styled-components"
+//styling for Label view
 
 export const SLeading = styled.div`
   margin-left: 16px;

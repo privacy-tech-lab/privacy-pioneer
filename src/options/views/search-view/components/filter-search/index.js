@@ -5,6 +5,11 @@ import { CompanyLogoSVG } from "../../../../../libs/icons/company-icons"
 import { removeLeadingWhiteSpace } from "../../../../../background/analysis/utility/util"
 import { filterLabelObject } from "./components/filterLabels"
 
+/**
+ * Combination of filter section and search section
+ * Both components need common functions and states
+ * Broken up in order to increase readability
+ */
 const FilterSearch = ({
   labels,
   setFilteredLabels,
@@ -13,6 +18,9 @@ const FilterSearch = ({
   setShowEmpty,
   location,
 }) => {
+  /**
+   * maps all stored companies to false to initialize filters
+   */
   const getEmptyCompanyFilter = () => {
     var mapping = {}
     Object.keys(CompanyLogoSVG).map((company) => {

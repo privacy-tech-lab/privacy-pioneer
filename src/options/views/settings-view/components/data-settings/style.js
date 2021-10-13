@@ -4,8 +4,8 @@ privacy-tech-lab, https://www.privacytechlab.org/
 */
 
 import styled from "styled-components"
-import { motion } from "framer-motion"
 
+//styling for Data Section component
 export const SLabelToggle = styled.div`
   margin-left: 8px;
   flex-direction: column;

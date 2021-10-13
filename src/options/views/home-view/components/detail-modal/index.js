@@ -22,7 +22,7 @@ import { privacyLabels } from "../../../../../background/analysis/classModels"
 
 /**
  * Modal popup detailing information collected and shared.
- * Destination after clicking a 'label card'
+ * Destination after clicking a 'label card' used in home view
  */
 const LabelModal = ({ label, requests, website, show }) => {
   return (

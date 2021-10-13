@@ -19,7 +19,7 @@ import ReactTooltip from "react-tooltip"
 /**
  * Root node of application that handles routing
  * With the help of AnimatePresence from 'Framer Motion' we can animate between route changes
- *  See Scaffold component for specific animation
+ * See Scaffold component for specific animation
  */
 const AppView = () => {
   const location = useLocation()

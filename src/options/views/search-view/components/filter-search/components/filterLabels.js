@@ -1,3 +1,6 @@
+/**
+ * Function to filter labels with company and Permission filters
+ */
 export const filterLabelObject = (
   allLabels,
   permFilter,

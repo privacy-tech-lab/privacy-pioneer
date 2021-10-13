@@ -3,6 +3,7 @@ Licensed per https://github.com/privacy-tech-lab/privacy-pioneer/blob/main/LICEN
 privacy-tech-lab, https://www.privacytechlab.org/
 */
 
+//styling for Home View
 import styled from "styled-components"
 
 export const SContainer = styled.section`

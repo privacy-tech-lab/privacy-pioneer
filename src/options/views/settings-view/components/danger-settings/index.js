@@ -15,7 +15,13 @@ import {
   SDangerButton,
 } from "./style"
 
+/**
+ * Danger section of Settings involving deletion from the database
+ */
 export const DangerZone = () => {
+  /**
+   * Deletes all stored evidence from DB on press
+   */
   const handleEvidence = () => {
     if (
       confirm(
@@ -25,7 +31,9 @@ export const DangerZone = () => {
       deleteEvidenceDB()
     }
   }
-
+  /**
+   * Deletes Keywords from watchlist from DB on press
+   */
   const handleWatchlist = () => {
     if (
       confirm(

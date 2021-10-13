@@ -3,12 +3,13 @@ Licensed per https://github.com/privacy-tech-lab/privacy-pioneer/blob/main/LICEN
 privacy-tech-lab, https://www.privacytechlab.org/
 */
 
+//styling for Detail Modal Compoenent
+
 import styled from "styled-components"
 
 export const SContainer = styled.div``
 
-export const SDialog = styled.div`
-`
+export const SDialog = styled.div``
 
 export const SContent = styled.div`
   background-color: var(--cardColor);

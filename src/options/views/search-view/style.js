@@ -3,6 +3,8 @@ Licensed per https://github.com/privacy-tech-lab/privacy-pioneer/blob/main/LICEN
 privacy-tech-lab, https://www.privacytechlab.org/
 */
 
+//styling for Search View
+
 import { motion } from "framer-motion"
 import styled from "styled-components"
 

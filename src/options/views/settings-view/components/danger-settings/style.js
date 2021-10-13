@@ -4,7 +4,8 @@ privacy-tech-lab, https://www.privacytechlab.org/
 */
 
 import styled from "styled-components"
-import { motion } from "framer-motion"
+
+//styling for Danger section component
 
 export const SSubtitle = styled.div`
   color: var(--secondaryTextColor);

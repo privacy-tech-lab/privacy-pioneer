@@ -6,6 +6,8 @@ privacy-tech-lab, https://www.privacytechlab.org/
 import styled from "styled-components"
 import logo from "../../../assets/logos/Rocket.svg"
 
+//styling for website view
+
 export const SLeading = styled.div`
   display: flex;
   flex-direction: row;

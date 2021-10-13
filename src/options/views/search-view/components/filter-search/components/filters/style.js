@@ -1,5 +1,7 @@
 import styled from "styled-components"
 
+//styling for filters component
+
 export const SFilterRow = styled.div`
   display: ${(props) => (props.show ? "flex" : "none")};
   flex-direction: row;

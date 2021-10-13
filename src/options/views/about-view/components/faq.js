@@ -5,12 +5,23 @@ privacy-tech-lab, https://www.privacytechlab.org/
 
 import React from "react"
 
+/**
+ * File for all of the questions and answers for the FAQ Page
+ * Done in this file format in order to maintain links
+ */
 export const FAQ = {
   "Does Privacy Pioneer collect any of my data?": (
     <text>
       Absolutely not! Our extension is entirely local to your computer—we do not
       store any data outside of your browser. Feel free to check the source code
-      of Privacy Pioneer at <a href="https://github.com/privacy-tech-lab/privacy-pioneer" target="_blank">Privacy Pioneer's GitHub</a>.
+      of Privacy Pioneer at{" "}
+      <a
+        href="https://github.com/privacy-tech-lab/privacy-pioneer"
+        target="_blank"
+      >
+        Privacy Pioneer's GitHub
+      </a>
+      .
     </text>
   ),
   "How does Privacy Pioneer process my data?": (
@@ -62,11 +73,25 @@ export const FAQ = {
       have occurred with the appropriate labels. Note that Privacy Pioneer does
       not block or intervene with these procedures; Privacy Pioneer is an
       information-focused browser extension intending to give you greater
-      understanding of the web. If you want to block tracking or ad services in 
+      understanding of the web. If you want to block tracking or ad services in
       the first place, consider tools like&nbsp;
-      <a href="https://addons.mozilla.org/en-US/firefox/addon/disconnect/?utm_source=addons.mozilla.org&utm_medium=referral&utm_content=search" target="_blank">Disconnect</a>,&nbsp;
-      <a href="https://privacybadger.org/" target="_blank">Privacy Badger</a>,&nbsp; 
-      <a href="https://addons.mozilla.org/en-US/firefox/addon/ublock-origin/" target="_blank">uBlockOrigin</a> 
+      <a
+        href="https://addons.mozilla.org/en-US/firefox/addon/disconnect/?utm_source=addons.mozilla.org&utm_medium=referral&utm_content=search"
+        target="_blank"
+      >
+        Disconnect
+      </a>
+      ,&nbsp;
+      <a href="https://privacybadger.org/" target="_blank">
+        Privacy Badger
+      </a>
+      ,&nbsp;
+      <a
+        href="https://addons.mozilla.org/en-US/firefox/addon/ublock-origin/"
+        target="_blank"
+      >
+        uBlockOrigin
+      </a>
       , or a proxy service.
     </text>
   ),
@@ -112,8 +137,8 @@ export const FAQ = {
     ),
   "Where can I reach you?": (
     <text>
-      Send us an email at sebastian@privacytechlab.org. We would love to hear from you! You
-      can also learn more about our work at{" "}
+      Send us an email at sebastian@privacytechlab.org. We would love to hear
+      from you! You can also learn more about our work at{" "}
       <a href="https://www.privacytechlab.org/" target="_blank">
         {" "}
         privacy-tech-lab

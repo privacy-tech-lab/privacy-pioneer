@@ -29,7 +29,9 @@ const SThemeIcon = styled(motion.div)`
     props.theme == props.selTheme ? "5px solid #6b219f" : null};
   border-radius: 50%;
 `
-
+/**
+ * Theming section for Settings View
+ */
 export const ThemeSelection = ({ changeTheme }) => {
   const [selTheme, setSelTheme] = useState("")
   useEffect(

@@ -26,7 +26,8 @@ import { DangerZone } from "./components/danger-settings"
 import { Tour } from "./components/tour-settings"
 
 /**
- * Settings page view
+ * Settings page view to adjust various settings. All Settings are broken into seperate
+ * components in order to cut down lines from main settings-view
  */
 const SettingsView = ({ changeTheme }) => {
   useEffect(() => {

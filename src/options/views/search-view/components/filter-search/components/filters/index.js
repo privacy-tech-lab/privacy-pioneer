@@ -4,6 +4,11 @@ import { SFilterRow, SFilterRowItem, SCompaniesButton } from "./style"
 import { permissionEnum } from "../../../../../../../background/analysis/classModels"
 import * as Icons from "../../../../../../../libs/icons"
 
+/**
+ * Filters for search view page. This includes Permissions and stored companies. Adjusts
+ * listed websites and permissions depending on selected filters
+ */
+
 const Filters = ({
   permFilter,
   setPermFilter,

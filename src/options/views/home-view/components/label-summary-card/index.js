@@ -11,7 +11,8 @@ import { useHistory } from "react-router"
 import ReactTooltip from "react-tooltip"
 
 /**
- * Summary card that highlights notable stat from identified label
+ * Summary card that highlights notable stats from identified label
+ * namely it states how many websites you have visited have used that label
  */
 const LabelSummaryCard = ({
   labeltype,

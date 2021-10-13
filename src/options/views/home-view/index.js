@@ -24,6 +24,7 @@ import { homeInit } from "../../../libs/init.js"
 
 /**
  * Home page view containing overview and recently identified labels
+ * grabs from the DB to populate the page
  */
 const HomeView = () => {
   const history = useHistory()
