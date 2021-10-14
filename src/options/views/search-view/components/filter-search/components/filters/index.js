@@ -15,7 +15,20 @@ const Filters = ({
   companyFilter,
   setCompanyFilter,
   filterLabels,
+  getEmptyCompanyFilter,
 }) => {
+  const noCompaniesSelected = () => {
+    for (const value of Object.values(companyFilter)) {
+      if (value === true) return false
+    }
+    return true
+  }
+  const noPermsSelected = () => {
+    for (const value of Object.values(permFilter)) {
+      if (value === false) return false
+    }
+    return true
+  }
   const [showCompanies, setShowCompanies] = useState(false)
   return (
     <>
@@ -53,6 +66,25 @@ const Filters = ({
             {"Companies"}
           </SCompaniesButton>
         </SFilterRowItem>
+        {noCompaniesSelected() && noPermsSelected() ? null : (
+          <SFilterRowItem highlight>
+            <SCompaniesButton
+              onClick={() => {
+                Object.keys(permFilter).forEach(
+                  (perm) => (permFilter[perm] = true)
+                )
+                Object.keys(companyFilter).forEach(
+                  (company) => (companyFilter[company] = false)
+                )
+                setPermFilter(permFilter)
+                setCompanyFilter(companyFilter)
+                filterLabels()
+              }}
+            >
+              Reset Filter
+            </SCompaniesButton>
+          </SFilterRowItem>
+        )}
       </SFilterRow>
       <SFilterRow show={showCompanies}>
         {Object.entries(CompanyLogoSVG).map(([parent, logo]) => (

@@ -49,5 +49,6 @@ export const filterLabelObject = (
       delete updatedLabels[perm]
     }
   }
+  console.log(updatedLabels)
   return updatedLabels
 }

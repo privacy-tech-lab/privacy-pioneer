@@ -17,6 +17,7 @@ const FilterSearch = ({
   setFilteredWebsites,
   setShowEmpty,
   location,
+  filteredWebsites,
 }) => {
   /**
    * maps all stored companies to false to initialize filters
@@ -122,6 +123,10 @@ const FilterSearch = ({
       )
       setFilteredLabels(filtered)
       filter(query, filtered)
+      if (Object.entries(filtered).length == 0) {
+        setFilteredWebsites({})
+        setShowEmpty(true)
+      }
     } else {
       setFilteredLabels(labels)
       setFilteredWebsites(websites)
@@ -177,6 +182,7 @@ const FilterSearch = ({
         setPermFilter={setPermFilter}
         companyFilter={companyFilter}
         setCompanyFilter={setCompanyFilter}
+        getEmptyCompanyFilter={getEmptyCompanyFilter}
       />
     </>
   )

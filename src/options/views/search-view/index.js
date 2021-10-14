@@ -89,6 +89,7 @@ const SearchView = () => {
               setFilteredWebsites={setFilteredWebsites}
               setShowEmpty={setShowEmpty}
               location={location}
+              filteredWebsites={filteredWebsites}
             />
           </SFiltersDiv>
           <WebsiteLabelList
