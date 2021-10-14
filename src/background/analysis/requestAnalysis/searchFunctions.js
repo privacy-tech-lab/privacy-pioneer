@@ -14,6 +14,7 @@ import { regexSpecialChar, escapeRegExp } from "../utility/regexFunctions.js"
 import { getHostname } from "../utility/util.js"
 import { watchlistKeyval } from "../../../libs/indexed-db/openDB.js"
 import { watchlistHashGen, createEvidenceObj } from "../utility/util.js"
+import { COORDINATE_PAIR_DIST, FINE_LOCATION_BOUND, COARSE_LOCATION_BOUND } from "../constants.js"
 
 
 /**
@@ -157,7 +158,7 @@ function coordinateSearch(strReq, locData, rootUrl, reqUrl) {
    */
   function findPair(matchArr, goal, arrIndex, matchIndex, deltaBound, typ) {
     // we want lat and lng to be in close proximity
-    let bound = matchIndex + 250
+    let bound = matchIndex + COORDINATE_PAIR_DIST
     let j = arrIndex + 1
     while ( j < matchArr.length ) {
       let match = matchArr[j]
@@ -204,8 +205,8 @@ function coordinateSearch(strReq, locData, rootUrl, reqUrl) {
     }
   }
 
-  iterateMatchArray(.1, typeEnum.fineLocation) // we define tight location as within .1 degree lng/lat
-  iterateMatchArray(1, typeEnum.coarseLocation) // we define coarse location as within 1 degree lng/lat
+  iterateMatchArray(FINE_LOCATION_BOUND, typeEnum.fineLocation) // we define tight location as within .1 degree lng/lat. See constants.js for exp
+  iterateMatchArray(COARSE_LOCATION_BOUND, typeEnum.coarseLocation) // we define coarse location as within 1 degree lng/lat. See constants.js for exp
   
   return output
 }
