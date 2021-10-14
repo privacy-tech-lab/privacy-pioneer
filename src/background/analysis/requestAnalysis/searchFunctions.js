@@ -272,13 +272,11 @@ function regexSearch(strReq, keywordObj, rootUrl, reqUrl, type, perm = permissio
 function fingerprintSearch(strReq, networkKeywords, rootUrl, reqUrl) {
   var output = []
   const fpElems = networkKeywords[permissionEnum.tracking][typeEnum.fingerprinting]
-  for (const [k, v] of Object.entries(fpElems)) {
-    for (const keyword of v){
-      const idxKeyword = strReq.indexOf(keyword);
-      if (idxKeyword != -1){
-        output.push(createEvidenceObj(permissionEnum.tracking, rootUrl, strReq, reqUrl, typeEnum.fingerprinting, [idxKeyword, idxKeyword + keyword.length]));
-        break;
-      }
+  for (const keyword of fpElems){
+    const idxKeyword = strReq.indexOf(keyword);
+    if (idxKeyword != -1){
+      output.push(createEvidenceObj(permissionEnum.tracking, rootUrl, strReq, reqUrl, typeEnum.fingerprinting, [idxKeyword, idxKeyword + keyword.length]));
+      break;
     }
   }
   return output
