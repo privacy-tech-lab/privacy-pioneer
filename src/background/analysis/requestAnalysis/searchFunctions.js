@@ -158,7 +158,7 @@ function coordinateSearch(strReq, locData, rootUrl, reqUrl) {
    */
   function findPair(matchArr, goal, arrIndex, matchIndex, deltaBound, typ) {
     // we want lat and lng to be in close proximity
-    let bound = matchIndex + COORDINATE_PAIR_DIST
+    let bound = matchIndex + COORDINATE_PAIR_DIST // see constants.js for exp
     let j = arrIndex + 1
     while ( j < matchArr.length ) {
       let match = matchArr[j]
