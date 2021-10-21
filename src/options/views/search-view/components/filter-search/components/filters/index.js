@@ -60,7 +60,7 @@ const Filters = ({
                 companyFilter[company] = false
               })
               setCompanyFilter(companyFilter)
-              filterLabels()
+              // filterLabels()
             }}
           >
             {"Companies"}

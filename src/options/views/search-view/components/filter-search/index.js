@@ -13,11 +13,11 @@ import { filterLabelObject } from "./components/filterLabels"
 const FilterSearch = ({
   labels,
   setFilteredLabels,
+  filteredLabels,
   websites,
   setFilteredWebsites,
   setShowEmpty,
   location,
-  filteredWebsites,
 }) => {
   /**
    * maps all stored companies to false to initialize filters
@@ -66,18 +66,24 @@ const FilterSearch = ({
    * Filter websites based on user input string from text field
    * @param {string} keyString string the user entered
    */
-  const filter = (keyString) => {
+  const filter = (keyString, filtered) => {
     keyString = removeLeadingWhiteSpace(keyString).toLowerCase()
 
     const filteredKeys = Object.keys(websites).filter((k) =>
       k.includes(keyString)
     )
-
     var filteredWebsites = {}
     for (const [perm, websiteLevel] of Object.entries(labels)) {
-      if (Object.keys(websiteLevel).length > 0 && permFilter[perm]) {
+      if (
+        Object.keys(websiteLevel).length > 0 &&
+        permFilter[perm] &&
+        Object.keys(filtered).includes(perm)
+      ) {
         for (const website of Object.keys(websiteLevel)) {
-          if (filteredKeys.includes(website))
+          if (
+            filteredKeys.includes(website) &&
+            Object.keys(filtered[perm]).includes(website)
+          )
             filteredWebsites[website] = websites[website]
         }
       }
@@ -123,13 +129,13 @@ const FilterSearch = ({
       )
       setFilteredLabels(filtered)
       filter(query, filtered)
+
       if (Object.entries(filtered).length == 0) {
         setFilteredWebsites({})
         setShowEmpty(true)
       }
     } else {
       setFilteredLabels(labels)
-      setFilteredWebsites(websites)
       filter(query, labels)
     }
   }
