@@ -120,7 +120,7 @@ Privacy Pioneer is analyzing the following privacy practices for each first and 
 
 ## Extension Architecture
 
-An overview of the architecture of Privacy Pioneer is available [separately](https://github.com/privacy-tech-lab/privacy-pioneer/blob/main/architecture_overview.md).
+An overview of the architecture of Privacy Pioneer is available [separately](https://github.com/privacy-tech-lab/privacy-pioneer/blob/main/architecture_overview.md). (The document is up to date as of its most recent commit date. Later architectural changes are not reflected.)
 
 ## Third Party Libraries and Resources
 
