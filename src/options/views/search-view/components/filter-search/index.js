@@ -13,7 +13,6 @@ import { filterLabelObject } from "./components/filterLabels"
 const FilterSearch = ({
   labels,
   setFilteredLabels,
-  filteredLabels,
   websites,
   setFilteredWebsites,
   setShowEmpty,

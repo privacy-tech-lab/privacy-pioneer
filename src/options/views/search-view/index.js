@@ -3,25 +3,25 @@ Licensed per https://github.com/privacy-tech-lab/privacy-pioneer/blob/main/LICEN
 privacy-tech-lab, https://www.privacytechlab.org/
 */
 
+import { Modal } from "bootstrap"
 import React, { useEffect, useState } from "react"
+import { useHistory, useLocation } from "react-router"
+import * as Icons from "../../../libs/icons"
+import { searchInit } from "../../../libs/init"
+import { seeAllSteps, SeeAllTour } from "../../../libs/tour"
 import Scaffold from "../../components/scaffold"
+import WebsiteLabelList from "../../components/website-label-list"
+import LabelModal from "../home-view/components/detail-modal"
+import FilterSearch from "./components/filter-search"
 import {
   SBackButton,
-  STitle,
-  STop,
+  SContainer,
   SEmpty,
   SFiltersDiv,
-  SContainer,
   SSubtitle,
+  STitle,
+  STop,
 } from "./style"
-import * as Icons from "../../../libs/icons"
-import { Modal } from "bootstrap"
-import LabelModal from "../home-view/components/detail-modal"
-import WebsiteLabelList from "../../components/website-label-list"
-import { useHistory, useLocation } from "react-router"
-import { seeAllSteps, SeeAllTour } from "../../../libs/tour"
-import { searchInit } from "../../../libs/init"
-import FilterSearch from "./components/filter-search"
 
 /**
  * location.state = undefined | [permission, websites]
@@ -83,13 +83,11 @@ const SearchView = () => {
           <SFiltersDiv id="filtersTour">
             <FilterSearch
               setFilteredLabels={setFilteredLabels}
-              filteredLabels={filteredLabels}
               labels={labels}
               websites={websites}
               setFilteredWebsites={setFilteredWebsites}
               setShowEmpty={setShowEmpty}
               location={location}
-              filteredWebsites={filteredWebsites}
             />
           </SFiltersDiv>
           <WebsiteLabelList
