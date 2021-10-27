@@ -156,7 +156,7 @@ async function importData() {
 
     // build fingerprinting info. Adding fingerprinting library keywords,
     // JSON list methods
-    networkKeywords[permissionEnum.tracking][typeEnum.fingerprinting] = keywords["FINGERPRINT"]
+    networkKeywords[permissionEnum.tracking][typeEnum.fingerprinting] = keywords["FINGERPRINT"]["fpLibraryList"]
 
     networkKeywords = hashUserDictValues(networkKeywords);
 

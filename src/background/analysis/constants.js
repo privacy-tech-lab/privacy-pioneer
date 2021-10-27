@@ -33,3 +33,34 @@ export const EVIDENCE_THRESHOLD = 30
  */
 
 export const MINUTE_MILLISECONDS = 60000
+
+
+/**
+ * Constants used by coordinate search routine in searchFunctions.js
+ * Defines 
+ *  1) COORDINATE_PAIR_DIST : INT
+ *    the definition of proximity in the string between lat/lng 
+ *    (i.e they need to be at least this within COORDINATE_PAIR_DIST 
+ *     num of chars to be considered a lat/lng pair )
+ * 
+ *    So if, we choose COORDINATE_PAIR_DIST = 15 and we find your exact coordinates
+ *    but with lng 50 chars apart from lat, we create neither the fine location
+ *    or coarse location label. 
+ * 
+ *    Pair dist equally affects fine/coarse location
+ * 
+ *  2) FINE_LOCATION_BOUND : FLOAT / COARSE_LOCATION_BOUND : FLOAT
+ *      The definition of fine location and coarse location
+ *      (i.e within how many degrees does the absolute value of the 
+ *      potentiallat/lng need to be ) 
+ * 
+ *      So if we choose BOUND = 5.0, 
+ *      and we have users lat = 10.0 lng = 10.0 from the browser location API, 
+ *      (5.0, 15.0) would be a match.
+ *      In the same example if we choose BOUND = 2.5, (5.0, 15.0) would not be
+ *      a match, but (7.5, 12.5) and (9.0, 9.0) would be matches.
+ */
+
+export const COORDINATE_PAIR_DIST = 300
+export const FINE_LOCATION_BOUND = .1
+export const COARSE_LOCATION_BOUND = 1.0
