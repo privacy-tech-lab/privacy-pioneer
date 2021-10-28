@@ -17,13 +17,14 @@ import {
   SArrow,
   SAbout,
 } from "./style"
-import { FAQ } from "./faq"
+import { FAQ } from "./components/faq"
 import { ArrowDown } from "../../../libs/icons"
 import ReactTooltip from "react-tooltip"
 import penguin from "../../../assets/logos/Happy.svg"
 
 /**
  * About page view
+ * Uses Collapse from bootstrap to get drop down effect
  */
 const AboutView = () => {
   const QuestionCard = ({ question, answer }) => {
@@ -45,9 +46,9 @@ const AboutView = () => {
           </SArrow>
         </SQuestion>
 
-        <div className="collapse" id={question}>
-          <SAnswer>{answer}</SAnswer>
-        </div>
+        <SAnswer className="collapse" id={question}>
+          {answer}
+        </SAnswer>
       </SQuestionCard>
     )
   }

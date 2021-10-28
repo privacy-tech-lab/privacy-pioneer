@@ -4,6 +4,7 @@ privacy-tech-lab, https://www.privacytechlab.org/
 */
 
 import styled from "styled-components"
+//styling for watchlist view
 
 export const SContainer = styled.section`
   ${(props) => (props.marginTop ? "margin-top: 32px;" : "margin-top: 0px;")}

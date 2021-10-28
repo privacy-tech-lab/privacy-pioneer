@@ -13,13 +13,13 @@ import AboutView from "../about-view"
 import SettingsView from "../settings-view"
 import SearchView from "../search-view"
 import GlobalStyle from "../../../libs/global-style"
-import { getTheme, settingsEnum } from "../../../libs/settings"
+import { getTheme, settingsEnum } from "../../../libs/indexed-db/settings"
 import ReactTooltip from "react-tooltip"
 
 /**
  * Root node of application that handles routing
  * With the help of AnimatePresence from 'Framer Motion' we can animate between route changes
- *  See Scaffold component for specific animation
+ * See Scaffold component for specific animation
  */
 const AppView = () => {
   const location = useLocation()

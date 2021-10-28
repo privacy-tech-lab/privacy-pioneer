@@ -4,7 +4,7 @@ privacy-tech-lab, https://www.privacytechlab.org/
 */
 
 import React from "react"
-import LabelDetail from "../../../../../libs/label-detail"
+import LabelDetail from "../../../../../libs/components/label-detail"
 import {
   IconWrapper,
   SLeading,
@@ -22,7 +22,7 @@ import { privacyLabels } from "../../../../../background/analysis/classModels"
 
 /**
  * Modal popup detailing information collected and shared.
- * Destination after clicking a 'label card'
+ * Destination after clicking a 'label card' used in home view
  */
 const LabelModal = ({ label, requests, website, show }) => {
   return (
@@ -36,7 +36,7 @@ const LabelModal = ({ label, requests, website, show }) => {
       >
         <SDialog className="modal-dialog">
           <SContent className="modal-content">
-            { show ? (
+            {show ? (
               <SModal>
                 <SNavigationBar>
                   <SLeading />
@@ -50,7 +50,11 @@ const LabelModal = ({ label, requests, website, show }) => {
                     </IconWrapper>
                   </STrailing>
                 </SNavigationBar>
-                <LabelDetail website={website} label={label} requests={requests} />
+                <LabelDetail
+                  website={website}
+                  label={label}
+                  requests={requests}
+                />
               </SModal>
             ) : null}
           </SContent>

@@ -13,7 +13,7 @@ background.js
 
 import { evidenceKeyval as evidenceIDB } from "./analysis/interactDB/openDB"
 import { onBeforeRequest } from "./analysis/analyze.js"
-import { setDefaultSettings } from "../libs/settings/index.js"
+import { setDefaultSettings } from "../libs/indexed-db/settings/index.js"
 import { importData } from "./analysis/buildUserData/importSearchData.js"
 import runNotifications from "../libs/indexed-db/notifications"
 import Queue from "queue"

@@ -6,7 +6,6 @@ privacy-tech-lab, https://www.privacytechlab.org/
 import { watchlistKeyval } from "./openDB.js"
 import { evidenceKeyval as evidenceIDB } from "../../background/analysis/interactDB/openDB.js"
 import { watchlistHashGen } from "../../background/analysis/utility/util.js"
-import { getState } from "../../background/analysis/buildUserData/structuredRoutines.js"
 import {
   keywordTypes,
   permissionEnum,

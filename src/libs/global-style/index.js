@@ -4,7 +4,7 @@ privacy-tech-lab, https://www.privacytechlab.org/
 */
 
 import { createGlobalStyle, css } from "styled-components"
-import { settingsEnum } from "../settings"
+import { settingsEnum } from "../indexed-db/settings"
 
 /**
  * Global style targeted for popup

@@ -8,7 +8,7 @@ import {
   permissionEnum,
   privacyLabels,
 } from "../../background/analysis/classModels"
-import { getExcludedLabels } from "../settings/index.js"
+import { getExcludedLabels } from "../indexed-db/settings"
 
 /**
  * Get identified labels of website from indexedDB
@@ -17,7 +17,7 @@ import { getExcludedLabels } from "../settings/index.js"
  */
 export const getWebsiteLabels = async (website, excludedLabels = []) => {
   try {
-    var evidence = await evidenceIDB.get(website) 
+    var evidence = await evidenceIDB.get(website)
 
     const result = {}
     for (const [label, value] of Object.entries(evidence)) {

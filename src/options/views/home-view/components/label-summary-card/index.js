@@ -7,14 +7,19 @@ import React from "react"
 import { privacyLabels } from "../../../../../background/analysis/classModels"
 import * as Icons from "../../../../../libs/icons"
 import { SContainer, SFooter, SHeader, SLabel, STotal } from "./style"
-import { filterKeywordEnum } from "../../../../../background/analysis/classModels"
 import { useHistory } from "react-router"
 import ReactTooltip from "react-tooltip"
 
 /**
- * Summary card that highlights notable stat from identified label
+ * Summary card that highlights notable stats from identified label
+ * namely it states how many websites you have visited have used that label
  */
-const LabelSummaryCard = ({ labeltype, websiteTotal, passWebsites }) => {
+const LabelSummaryCard = ({
+  labeltype,
+  websiteTotal,
+  passWebsites,
+  passLabels,
+}) => {
   const history = useHistory()
   return (
     <SContainer
@@ -24,7 +29,11 @@ const LabelSummaryCard = ({ labeltype, websiteTotal, passWebsites }) => {
       onClick={() => {
         history.push({
           pathname: "/search",
-          state: [labeltype, passWebsites],
+          state: {
+            labeltype: labeltype,
+            websites: passWebsites,
+            labels: passLabels,
+          },
         })
         ReactTooltip.hide()
       }}
@@ -58,6 +67,7 @@ const LabelSummaryCardList = ({ labels, passWebsites }) => {
         labeltype={labeltype}
         websiteTotal={numOfWebsites}
         passWebsites={passWebsites}
+        passLabels={labels}
       />
     )
   })

@@ -3,6 +3,8 @@ Licensed per https://github.com/privacy-tech-lab/privacy-pioneer/blob/main/LICEN
 privacy-tech-lab, https://www.privacytechlab.org/
 */
 
+//styling for App View components
+
 import styled, { css } from "styled-components"
 
 export const SNavBar = styled.nav`

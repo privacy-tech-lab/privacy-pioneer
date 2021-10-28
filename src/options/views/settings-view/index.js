@@ -16,18 +16,18 @@ import {
   SSeperator,
 } from "./style"
 import {
-  ToggleSwitch,
-  ThemeSelection,
-  ExportData,
-  DangerZone,
-  LabelToggle,
   FullSnippetToggle,
-  Tour,
-  OptimizationToggle
-} from "./components"
+  OptimizationToggle,
+  ExportData,
+  LabelToggle,
+} from "./components/data-settings"
+import { ThemeSelection } from "./components/theme-settings"
+import { DangerZone } from "./components/danger-settings"
+import { Tour } from "./components/tour-settings"
 
 /**
- * Settings page view
+ * Settings page view to adjust various settings. All Settings are broken into seperate
+ * components in order to cut down lines from main settings-view
  */
 const SettingsView = ({ changeTheme }) => {
   useEffect(() => {
@@ -61,7 +61,7 @@ const SettingsView = ({ changeTheme }) => {
             <DangerZone />
             <FullSnippetToggle />
             <OptimizationToggle />
-            <Tour/>
+            <Tour />
           </SSection>
         </SBody>
       </SContainer>
