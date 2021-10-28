@@ -6,11 +6,11 @@ privacy-tech-lab, https://www.privacytechlab.org/
 import {
   typeEnum,
   permissionEnum,
-} from "../../../../../../background/analysis/classModels"
+} from "../../../../../../background/analysis/classModels.js"
 import {
   stateObj,
   getState,
-} from "../../../../../../background/analysis/buildUserData/structuredRoutines"
+} from "../../../../../../background/analysis/buildUserData/structuredRoutines.js"
 // allows for input validation of items a user is attempting to add to their watch list
 
 const inputValidator = {
@@ -102,7 +102,8 @@ const validate = ({
       return false
     }
     if (zip != undefined && state != undefined) {
-      if (getState(zip)[0] != state) {
+      const st = getState(zip)
+      if (typeof(st) != "undefined" && st[0] != state) {
         badInput("state / zip combination")
         return false
       }
