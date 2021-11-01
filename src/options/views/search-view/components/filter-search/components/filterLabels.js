@@ -51,3 +51,21 @@ export const filterLabelObject = (
   }
   return updatedLabels
 }
+
+/**
+* Takes in a type passed from the previous page and returns
+* the appropriate filter mapping
+* @param {string} typ
+* @returns {Dict}
+*/
+
+export const getPermMapping = (typ) => {
+ const mapping = {
+   monetization: false,
+   location: false,
+   watchlist: false,
+   tracking: false,
+ }
+ mapping[typ] = true
+ return mapping
+}
