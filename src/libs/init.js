@@ -2,6 +2,7 @@ import ReactTooltip from "react-tooltip"
 import { getWebsites, getLabels } from "./indexed-db/getIdbData"
 import exData from "./tour/exData.json"
 import { getTourStatus } from "./indexed-db/settings"
+import { filterLabelObject, getPermMapping } from "../options/views/search-view/components/filter-search/components/filterLabels.js"
 
 /**
  *
@@ -79,11 +80,30 @@ export const searchInit = ({
           })
         })
       } else {
-        setWebsites(location.state.websites)
-        setFilteredWebsites(location.state.websites)
-        setLabels(location.state.labels)
-        setFilteredLabels(location.state.labels)
-      }
+        if (location.state.labeltype === undefined) {
+          setWebsites(location.state.websites)
+          setFilteredWebsites(location.state.websites)
+          setLabels(location.state.labels)
+          setFilteredLabels(location.state.labels)
+        }
+        else {
+          // case where we are passed a filter
+          setWebsites(location.state.websites)
+          setLabels(location.state.labels)
+          const filteredLabels = filterLabelObject( location.state.labels, getPermMapping(location.state.labeltype) )
+
+          // remove websites without labels after filter
+          var filteredWebsites = {}
+          for (const [perm, siteObject] of Object.entries(filteredLabels)) {
+            for (const site of Object.keys(siteObject)){
+              filteredWebsites[site] = location.state.websites[site]
+            }
+          }
+          // set values
+          setFilteredLabels(filteredLabels)
+          setFilteredWebsites(filteredWebsites)
+        }
+      } 
     }
   })
 }

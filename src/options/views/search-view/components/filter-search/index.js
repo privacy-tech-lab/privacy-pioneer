@@ -3,7 +3,8 @@ import SearchBar from "./components/search-bar"
 import React, { useState } from "react"
 import { CompanyLogoSVG } from "../../../../../libs/icons/company-icons"
 import { removeLeadingWhiteSpace } from "../../../../../background/analysis/utility/util"
-import { filterLabelObject } from "./components/filterLabels"
+import { filterLabelObject, getPermMapping } from "./components/filterLabels"
+
 
 /**
  * Combination of filter section and search section
@@ -26,24 +27,6 @@ const FilterSearch = ({
     Object.keys(CompanyLogoSVG).map((company) => {
       mapping[company] = false
     })
-    return mapping
-  }
-
-  /**
-   * Takes in a type passed from the previous page and returns
-   * the appropriate filter mapping
-   * @param {string} typ
-   * @returns {Dict}
-   */
-
-  const getPermMapping = (typ) => {
-    const mapping = {
-      monetization: false,
-      location: false,
-      watchlist: false,
-      tracking: false,
-    }
-    mapping[typ] = true
     return mapping
   }
 
