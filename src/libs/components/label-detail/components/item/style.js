@@ -29,6 +29,7 @@ export const SBadge = styled.div`
 export const SBadgeGroup = styled.div`
   display: flex;
   flex-direction: row;
+  flex-wrap: wrap;
   .active {
     background-color: var(--primaryBrandTintColor);
     color: var(--primaryBrandColor);
