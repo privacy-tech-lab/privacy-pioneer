@@ -2,6 +2,7 @@ import HtmlWebpackPlugin from "html-webpack-plugin"
 import TerserPlugin from "terser-webpack-plugin"
 import CopyPlugin from "copy-webpack-plugin"
 import { resolve as _resolve } from "path"
+import nodeExternals from 'webpack-node-externals'
 
 const bundleFrontendScripts = (env, argv) => {
   const isDev = argv.mode === "development"
@@ -120,6 +121,9 @@ const bundleBackgroundScripts = (env, argv) => {
         }),
       ],
     },
+    target:'node',
+    externalsPresets: { node: true },
+    externals: [nodeExternals()]
   }
 }
 

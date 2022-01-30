@@ -3,7 +3,8 @@ Licensed per https://github.com/privacy-tech-lab/privacy-pioneer/blob/main/LICEN
 privacy-tech-lab, https://www.privacytechlab.org/
 */
 
-import { PhoneNumberUtil } from "google-libphonenumber";
+// import { PhoneNumberUtil } from "google-libphonenumber";
+import * as libPhone from 'google-libphonenumber';
 
 /**
  * Uses google's libphonenumber library to reformat the user's phone number
@@ -17,8 +18,11 @@ import { PhoneNumberUtil } from "google-libphonenumber";
  */
 function buildPhone(userNumber) {
 
-    const PNF = require('google-libphonenumber').PhoneNumberFormat;
-    const phoneUtil = require('google-libphonenumber').PhoneNumberUtil.getInstance();
+    // const PNF = require('google-libphonenumber').PhoneNumberFormat;
+    // const phoneUtil = require('google-libphonenumber').PhoneNumberUtil.getInstance();
+
+    const PNF = libPhone.PhoneNumberFormat;
+    const phoneUtil = libPhone.PhoneNumberUtil.getInstance();
 
     // check that user put in valid number. If yes, run routine.
     // harcoded US here

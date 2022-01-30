@@ -4,7 +4,8 @@ privacy-tech-lab, https://www.privacytechlab.org/
 */
 
 import { getHostname } from '../utility/util.js'
-const parentJson = require('../../../assets/parents.json');
+// const parentJson = require('../../../assets/parents.json');
+import parentJson from "../../../assets/parents.json";
 
 
 

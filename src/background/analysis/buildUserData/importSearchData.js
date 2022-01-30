@@ -19,8 +19,10 @@ import { watchlistHashGen } from "../utility/util.js";
 import { settingsKeyval } from "../../../libs/indexed-db/openDB.js";
 
 // import keywords, services JSONs
-const keywords = require("../../../assets/keywords.json");
-const services = require("../../../assets/services.json");
+// const keywords = require("../../../assets/keywords.json");
+// const services = require("../../../assets/services.json");
+import keywords from '../../../assets/keywords.json';
+import services from '../../../assets/services.json';
 
 /**
  * Used to build all the data we search for in our analysis. This includes data in the watchlist DB and the JSON lists.
