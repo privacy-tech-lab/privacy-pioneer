@@ -15,8 +15,7 @@ import { getHostname } from "../utility/util.js"
 import { watchlistKeyval } from "../../../libs/indexed-db/openDB.js"
 import { watchlistHashGen, createEvidenceObj } from "../utility/util.js"
 import { COORDINATE_PAIR_DIST, FINE_LOCATION_BOUND, COARSE_LOCATION_BOUND } from "../constants.js"
-// import { loadModel } from "../ml/jsRun.js"
-import { mlRunner } from "../ml/jsRun.js"
+import { loadModel } from "../ml/jsRun.js"
 
 
 /**
@@ -242,8 +241,6 @@ function regexSearch(strReq, keywordObj, rootUrl, reqUrl, type, perm = permissio
     const res = strReq.search(re)
     if (res != -1) { 
       output.push(createEvidenceObj(perm, rootUrl, strReq, reqUrl, type, [res, res + keyword.length], keywordIDWatch));
-      mlRunner(`"[CLS] /geo/location/dnsfeed","responseData":"dnsfeed({\"country\":\"US\",\"state\":\"CA\",\"stateName\":\"<TARGET_ST>\",\"zipcode\":\<TARGET_ZIP>",\"timezone\":\"America/<TARGET_CITY>\",\"latitude\":\"<TARGET_LAT>\",\"longitude\" [SEP]"`)
-      // loadModel()
     }
   } 
   else if (keyword instanceof RegExp) {
@@ -313,6 +310,7 @@ function pixelSearch(strReq, networkKeywords, rootUrl, reqUrl) {
     if (searchIndex != -1) {
         let reqUrlIndex = strReq.indexOf(reqUrl)
         output.push(createEvidenceObj(permissionEnum.tracking, rootUrl, strReq, reqUrl, typeEnum.trackingPixel, [reqUrlIndex, reqUrlIndex + reqUrl.length]))
+        loadModel()
     }
   }
   return output
