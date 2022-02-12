@@ -90,6 +90,7 @@ const bundleBackgroundScripts = (env, argv) => {
     stats: "errors-warnings",
     devtool: isDev ? "eval-source-map" : "source-map",
     entry: { background: "./src/background/background.js" },
+    // module: {rules: [{ test: /\.ts$/, use: 'ts-loader' }]},
     resolve: {
       modules: [__dirname, "src", "node_modules"],
       extensions: ["*", ".js", ".jsx", ".tsx", ".ts"],

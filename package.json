@@ -53,6 +53,7 @@
     "rimraf": "^3.0.2",
     "style-loader": "^2.0.0",
     "terser-webpack-plugin": "^5.1.1",
+    "ts-loader": "^9.2.6",
     "wait-on": "^5.2.1",
     "web-ext": "^6.0.0",
     "webpack": "^5.25.0",
