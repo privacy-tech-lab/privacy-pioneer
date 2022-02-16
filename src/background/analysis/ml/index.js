@@ -1,20 +1,19 @@
-import {join} from 'path';
 import WordPieceTokenizer from './bertTokenizer';
-const DEFAUT_VOCAB_PATH = join( '.', 'vocab.json');
+// const DEFAUT_VOCAB_PATH = './vocab.json'
 
-function isPunctuation(cp: number): boolean {
+function isPunctuation(cp) {
   // Checks a cp is a punctuation character or not.
   return (punctuations.indexOf(cp) !== -1);
 }
 
-function runStripAccents(text: string){
+function runStripAccents(text){
   // strips accent marks from text
   text = text.normalize("NFD");
-  nsmarks.forEach((cp: number) => {text = text.replace(String.fromCodePoint(cp), "")});
+  nsmarks.forEach((cp) => {text = text.replace(String.fromCodePoint(cp), "")});
   return text;
 }
 
-function isWhiteSpace(cp: number): boolean{
+function isWhiteSpace(cp){
   // \t, \n, and \r are technically control characters but we treat them
   // as whitespace since they are generally considered as such.
   if (cp === 32 || cp === 9 || cp === 10 || cp === 13) {
@@ -26,7 +25,7 @@ function isWhiteSpace(cp: number): boolean{
   return false;
 }
 
-function isControl(cp: number): boolean{
+function isControl(cp){
   // "\t" "\n" "\r" are technically control characters but we count them as whitespace
   // characters.
   if (ctlchar.indexOf(cp) !== -1 && cp !== 9 && cp !== 10 && cp !== 13){
@@ -35,7 +34,7 @@ function isControl(cp: number): boolean{
   return false;
 }
 
-function runSplitOnPunctuation(text: string){
+function runSplitOnPunctuation(text){
   // Splits punctuation with a space on a piece of text
   // e.g.:
   // "abc?" -> "abc ?"
@@ -63,7 +62,7 @@ function runSplitOnPunctuation(text: string){
   return String.fromCodePoint(...output);
 }
 
-function cleanText(text: string){
+function cleanText(text){
   //Performs invalid character removal and whitespace cleanup on text.
   const output = [];
   for (let i = 0; i < text.length; i++){
@@ -82,25 +81,25 @@ function cleanText(text: string){
 }
 
 export class BertTokenizer{
-  //Runs basic tokenization (punctuation splitting, lower casing, etc.).
-  private doLowerCase: boolean;
-  tokenizer: WordPieceTokenizer;
-  clsId: number;
-  sepId: number;
-  maxSeqLength: number;
+    constructor({
+        doLowerCase,
+        tokenizer,
+        clsId,
+        sepId,
+        maxSeqLength
+    }) {
+        this.doLowerCase = true;
+        this.maxSeqLength = 128;
+        this.tokenizer = new WordPieceTokenizer();
+        this.tokenizer.load();
+        this.doLowerCase = doLowerCase;
+        this.maxSeqLength = maxSeqLength;
+        this.clsId = this.convertTokensToId('[CLS]')[0];
+        this.sepId = this.convertTokensToId('[SEP]')[0];
 
-  constructor(pathToVocabulary: string = DEFAUT_VOCAB_PATH,
-              doLowerCase: boolean = true,
-              maxSeqLength: number = 128){
-    this.tokenizer = new WordPieceTokenizer();
-    this.tokenizer.load(pathToVocabulary);
-    this.doLowerCase = doLowerCase;
-    this.maxSeqLength = maxSeqLength;
-    this.clsId = this.convertTokensToId('[CLS]')[0];
-    this.sepId = this.convertTokensToId('[SEP]')[0];
-  }
+    }
 
-  tokenize(text: string){
+  tokenize(text){
     text = cleanText(text);
     text = runSplitOnPunctuation(text);
     text = runStripAccents(text);
@@ -110,24 +109,24 @@ export class BertTokenizer{
     return this.tokenizer.tokenize(text);
   }
 
-  convertIdsToTokens(ids: number[]){
-    let tokens: string[] = [];
+  convertIdsToTokens(ids){
+    let tokens = [];
     ids.forEach( id => {tokens.push(this.tokenizer.vocab[id])});
     return tokens;
   }
 
-  convertTokensToId(token: string){
+  convertTokensToId(token){
     //convert a token directly to token ID without any pre processing
     return this.tokenizer.tokenize(token);
   }
 
-  convertSingleExample(text: string){
+  convertSingleExample(text){
     // converts single example to feature input. This is derived from:
     // https://github.com/google-research/bert/blob/88a817c37f788702a363ff935fd173b6dc6ac0d6/run_classifier.py#L377-L476
 
-    let inputIds: number[] = [];
-    let inputMask: number[] = [];
-    let segmentIds: number[] = [];
+    let inputIds = [];
+    let inputMask = [];
+    let segmentIds = [];
     const tokenIds = this.tokenize(text);
 
     inputIds.push(this.clsId)

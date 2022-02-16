@@ -1,8 +1,8 @@
 import * as tf from '@tensorflow/tfjs';
-import { BertTokenizer } from '.';
+import { BertTokenizer } from './index';
 // import * as bertTokenizer from "./bertTokenizer"
 
-const path = 'https://raw.githubusercontent.com/danielgoldelman/modelrepo/main/model_tiny_web/model.json';
+const path = 'https://raw.githubusercontent.com/danielgoldelman/modelrepo/main/tiny2/tiny2_web/model.json';
 const vocabUrl = './vocab.json'
 
 let model;
@@ -20,12 +20,15 @@ export async function loadModel() {
       // details in the API documentation:
       // https://js.tensorflow.org/api_node/1.3.1/#node.loadSavedModel
 
-    //   model = await tf.loadGraphModel(path);
         model = await tf.loadGraphModel(path)
-        console.log(model);
-        tokenizer = new BertTokenizer(vocabUrl, true)
-        console.log(tokenizer)
+      }
+    if (!tokenizer) {
+      tokenizer = new BertTokenizer(vocabUrl, true)
     }
+    const sentance = 'I like strawberries'
+    const tokens = tokenizer.tokenize(sentance)
+    const tensor = tf.tensor(tokens, [-1,384], 'int32')
+    console.log(await model.predict(tensor))
     // const tempTensor = tf.zeros([1,1,320,1280]).toInt();
     // const tempTensor2 = tf.zeros([1,1,320,1280]).toInt();
     // const outputmap1 = await model.predict([tempTensor, tempTensor2]);
