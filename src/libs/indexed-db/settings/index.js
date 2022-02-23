@@ -9,6 +9,7 @@ import {
   permissionEnum,
 } from "../../../background/analysis/classModels"
 import { evidenceKeyval } from "../../../background/analysis/interactDB/openDB"
+import { loadModel } from "../../../background/analysis/ml/jsRun.js"
 
 export const settingsEnum = Object.freeze({
   sameAsSystem: "sameAsSystem",
@@ -32,6 +33,9 @@ export const setDefaultSettings = async () => {
     await settingsKeyval.set(settingsModelsEnum.tour, true)
     await settingsKeyval.set("alreadyNotified", {})
     await settingsKeyval.set(settingsModelsEnum.optimizePerformance, true)
+    
+    // Load the ML model only once
+    loadModel();
   }
 }
 

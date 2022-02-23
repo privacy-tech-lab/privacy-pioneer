@@ -15,7 +15,7 @@ import { getHostname } from "../utility/util.js"
 import { watchlistKeyval } from "../../../libs/indexed-db/openDB.js"
 import { watchlistHashGen, createEvidenceObj } from "../utility/util.js"
 import { COORDINATE_PAIR_DIST, FINE_LOCATION_BOUND, COARSE_LOCATION_BOUND } from "../constants.js"
-import { loadModel } from "../ml/jsRun.js"
+import { useModel } from "../ml/jsRun.js"
 
 
 /**
@@ -310,7 +310,9 @@ function pixelSearch(strReq, networkKeywords, rootUrl, reqUrl) {
     if (searchIndex != -1) {
         let reqUrlIndex = strReq.indexOf(reqUrl)
         output.push(createEvidenceObj(permissionEnum.tracking, rootUrl, strReq, reqUrl, typeEnum.trackingPixel, [reqUrlIndex, reqUrlIndex + reqUrl.length]))
-        loadModel()
+
+        // Tester
+        useModel(strReq.substring(reqUrlIndex-10,reqUrlIndex+reqUrl.length+10));
     }
   }
   return output
