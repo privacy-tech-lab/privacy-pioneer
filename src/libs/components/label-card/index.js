@@ -40,7 +40,7 @@ const LabelCard = ({ requests, website, label, margin, onTap, popup }) => {
   const getDescription = () => {
     const firstPartyTip = `${
       label.charAt(0).toUpperCase() + label.slice(1)
-    } date was collected by ${website}.`
+    } data was collected by ${website}.`
     const thirdPartyTip = ` A website you visited shared some of your ${label} data with other websites.`
     if (collected && urls.length > 1) {
       return (
