@@ -10,21 +10,15 @@
 </p>
 
 <!-- <p align="center">
-  <a href="https://addons.mozilla.org/en-US/firefox/user/12247904/"><img src="https://github.com/privacy-tech-lab/privacy-pioneer/blob/main/firefox-add-ons-badge.png" alt="Firefox Add Ons badge" width = "125" height = "45"></a> 
+  <a href="https://addons.mozilla.org/en-US/firefox/user/12247904/"><img src="https://github.com/privacy-tech-lab/privacy-pioneer/blob/main/firefox-add-ons-badge.png" alt="Firefox Add Ons badge" width = "125" height = "45"></a>
 <p/> -->
 
 # Privacy Pioneer
-
-
 
 <p align="center">
 <img src="src\assets\logos\Moon.svg" width="250" height="250">
 </p>
 
-
-  
-  
-  
 The idea of Privacy Pioneer is to help users understand the privacy implications of their visits to websites. For example, the following URL-encoded string contains the latitude and longitude of a device:
 
 > https%3A%2F%2Fwww.example.com%2Flocation%3Flat%3D32.715736%26lon%3D%20-117.161087
@@ -33,7 +27,7 @@ If such a string is sent via an HTTP POST request, it can be concluded that a si
 
 Currently, we only support Firefox.
 
-Privacy Pioneer is developed and maintained by **Owen Kaplan (@notowen333)**, **Daniel Goldelman (@danielgoldelman)**, **Logan Brown (@Lr-Brown)**, and **Sebastian Zimmeck (@SebastianZimmeck)** of the [privacy-tech-lab](https://www.privacytechlab.org/). **Rafael Goldstein (@rgoldstein01)** and **David Baraka (@davebaraka)** contributed earlier.
+Privacy Pioneer is developed and maintained by **Daniel Goldelman (@danielgoldelman)**, **Logan Brown (@Lr-Brown)**, **Justin Casler (@JustinCasler)**, and **Sebastian Zimmeck (@SebastianZimmeck)** of the [privacy-tech-lab](https://www.privacytechlab.org/). **Owen Kaplan (@notowen333)**, **Rafael Goldstein (@rgoldstein01)**, and **David Baraka (@davebaraka)** contributed earlier.
 
 Contact us with any questions or comments at sebastian@privacytechlab.org.
 
@@ -137,10 +131,26 @@ It also uses the following resources.
 
 We thank the developers.
 
+<p align="center">
+  <a href="https://www.privacytechlab.org/"><img src="./plt_logo.png" width="200px" height="200px" alt="privacy-tech-lab logo"></a>
+<p>
+
+<p align="center"><strong>We would like to thank our financial supporters!</strong></p><br>
+
+<p align="center">Major financial support provided by Google.</p>
 
 <p align="center">
-  <a href="https://www.privacytechlab.org/"><img src="https://github.com/privacy-tech-lab/privacy-pioneer/blob/main/plt_logo.png" alt="privacy-tech-lab logo"></a><p/>
+  <a href="">
+    <img class="img-fluid" src="" height="100px" alt="">
+  </a>
+</p>
 
+<p align="center">Additional financial support provided by Wesleyan University.</p>
 
+<p align="center">
+  <a href="https://www.wesleyan.edu/mathcs/cs/index.html">
+    <img class="img-fluid" src="./wesleyan_shield.png" height="70px" alt="Wesleyan University Logo">
+  </a>
+</p>
 
-
+<p align="center">Conclusions reached or positions taken are our own and not necessarily those of our financial supporters, its trustees, officers, or staff.</p>
