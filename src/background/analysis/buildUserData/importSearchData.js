@@ -11,7 +11,7 @@ both the URL and the keyword list for words and URLs to look for in the
 network requests
 */
 import { getLocationData, filterGeocodeResponse } from "./getLocationData.js"
-import { buildPhone, getState, buildIpRegex, buildZipRegex, stateObj } from './structuredRoutines.js'
+import { buildPhone, getState, buildIpRegex, buildZipRegex, stateObj, buildGeneralRegex } from './structuredRoutines.js'
 import { typeEnum, permissionEnum, settingsModelsEnum, KeywordObject } from "../classModels.js"
 import {setEmail, digestMessage, hexToBase64} from '../requestAnalysis/encodedEmail.js';
 import { getWatchlistDict, hashUserDictValues, createKeywordObj } from "./structureUserData.js";
@@ -153,7 +153,11 @@ async function importData() {
 
     // if we have user keywords, we add them to the network keywords (formated as arr)
     if (typeEnum.userKeyword in user_store_dict) {
-        networkKeywords[permissionEnum.watchlist][typeEnum.userKeyword] = user_store_dict[typeEnum.userKeyword]
+        var regexKeywords = []
+        user_store_dict[typeEnum.userKeyword].forEach(async (keyword) => {
+            regexKeywords.push(buildGeneralRegex(keyword))
+        })
+        networkKeywords[permissionEnum.watchlist][typeEnum.userKeyword] = regexKeywords
     }
 
     if (typeEnum.ipAddress in user_store_dict) {

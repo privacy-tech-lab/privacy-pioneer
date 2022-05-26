@@ -335,5 +335,26 @@ function buildZipRegex(zip) {
     return new RegExp(`[^0-9]${zip}[^0-9]`)
 }
 
+function buildGeneralRegex(genString) {
 
-export { buildPhone, getState, buildIpRegex, buildZipRegex, stateObj }
+    var regexString = []
+
+    for ( let i = 0; i < genString.length; i ++) {
+
+        const c = genString.charAt(i)
+        // add digits regularly
+        if ( (c >= '0' && c <= '9') || (c >= 'A' && c <= 'Z') || (c >= 'a' && c <= 'z') ) {
+            regexString.push(c)
+        }
+        // optional non-digit otherwise
+        else {
+            regexString.push('\.?')
+        }
+    }
+
+    const newGenReg = regexString.join('')
+    return new RegExp(newGenReg)
+}
+
+
+export { buildPhone, getState, buildIpRegex, buildZipRegex, stateObj, buildGeneralRegex }
