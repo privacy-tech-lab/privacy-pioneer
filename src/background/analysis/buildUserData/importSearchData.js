@@ -137,17 +137,24 @@ async function importData() {
 
     // if the user entered an email/s, add it to network keywords (formated as arr)
     if (typeEnum.emailAddress in user_store_dict) {
-        networkKeywords[permissionEnum.watchlist][typeEnum.emailAddress] = user_store_dict[typeEnum.emailAddress]
-        var encodedEmails = {}
+        var normalEmails = [];
+        var encodedEmails = {};
         user_store_dict[typeEnum.emailAddress].forEach(async (email) => {
+
+            // add the normal email as a regex where the non alphanumeric characters are possibly changed or not present
+            normalEmails.push(new RegExp(buildGeneralRegex(email)))
+
+            // add encoded emails
             const digestHex = await digestMessage(setEmail(email));
             const base64Encoded = hexToBase64(digestHex);
             const urlBase64Encoded = encodeURIComponent(base64Encoded);
             const origHash = watchlistHashGen(typeEnum.emailAddress, email)
             const base64EncodedObj = createKeywordObj(base64Encoded, typeEnum.emailAddress, origHash);
             const urlBase64EncodedObj = createKeywordObj(urlBase64Encoded, typeEnum.emailAddress, origHash);
-            encodedEmails[email] = [base64EncodedObj, urlBase64EncodedObj]
+            encodedEmails[email] = [base64EncodedObj, urlBase64EncodedObj];
         })
+
+        networkKeywords[permissionEnum.watchlist][typeEnum.emailAddress] = normalEmails
         networkKeywords[permissionEnum.watchlist][typeEnum.encodedEmail] = encodedEmails
     }
 

@@ -62,7 +62,7 @@ function hexToBase64(hexStr) {
       ? String.fromCharCode(parseInt(hexStr.substring(i - 1, i + 1), 16))
       : "";
   }
-  return btoa(base64);
+  return base64.toString("base64");
 }
 
 export {setEmail, digestMessage, hexToBase64}
