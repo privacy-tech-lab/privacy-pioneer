@@ -143,7 +143,7 @@ We thank the developers.
   </a>
 </p>
 
-<p align="center">Additional financial support provided by Wesleyan University.</p>
+<p align="center">Additional financial support provided by the Anil Fernando Endowment and Wesleyan University.</p>
 
 <p align="center">
   <a href="https://www.wesleyan.edu/mathcs/cs/index.html">
