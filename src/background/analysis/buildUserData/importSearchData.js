@@ -11,7 +11,7 @@ both the URL and the keyword list for words and URLs to look for in the
 network requests
 */
 import { getLocationData, filterGeocodeResponse } from "./getLocationData.js"
-import { buildPhone, getState, buildIpRegex, buildZipRegex, stateObj } from './structuredRoutines.js'
+import { buildPhone, getState, buildIpRegex, buildZipRegex, stateObj, buildGeneralRegex } from './structuredRoutines.js'
 import { typeEnum, permissionEnum, settingsModelsEnum, KeywordObject } from "../classModels.js"
 import {setEmail, digestMessage, hexToBase64} from '../requestAnalysis/encodedEmail.js';
 import { getWatchlistDict, hashUserDictValues, createKeywordObj } from "./structureUserData.js";
@@ -137,23 +137,34 @@ async function importData() {
 
     // if the user entered an email/s, add it to network keywords (formated as arr)
     if (typeEnum.emailAddress in user_store_dict) {
-        networkKeywords[permissionEnum.watchlist][typeEnum.emailAddress] = user_store_dict[typeEnum.emailAddress]
-        var encodedEmails = {}
+        var normalEmails = [];
+        var encodedEmails = {};
         user_store_dict[typeEnum.emailAddress].forEach(async (email) => {
+
+            // add the normal email as a regex where the non alphanumeric characters are possibly changed or not present
+            normalEmails.push(new RegExp(buildGeneralRegex(email)))
+
+            // add encoded emails
             const digestHex = await digestMessage(setEmail(email));
             const base64Encoded = hexToBase64(digestHex);
             const urlBase64Encoded = encodeURIComponent(base64Encoded);
             const origHash = watchlistHashGen(typeEnum.emailAddress, email)
             const base64EncodedObj = createKeywordObj(base64Encoded, typeEnum.emailAddress, origHash);
             const urlBase64EncodedObj = createKeywordObj(urlBase64Encoded, typeEnum.emailAddress, origHash);
-            encodedEmails[email] = [base64EncodedObj, urlBase64EncodedObj]
+            encodedEmails[email] = [base64EncodedObj, urlBase64EncodedObj];
         })
+
+        networkKeywords[permissionEnum.watchlist][typeEnum.emailAddress] = normalEmails
         networkKeywords[permissionEnum.watchlist][typeEnum.encodedEmail] = encodedEmails
     }
 
     // if we have user keywords, we add them to the network keywords (formated as arr)
     if (typeEnum.userKeyword in user_store_dict) {
-        networkKeywords[permissionEnum.watchlist][typeEnum.userKeyword] = user_store_dict[typeEnum.userKeyword]
+        var regexKeywords = []
+        user_store_dict[typeEnum.userKeyword].forEach(async (keyword) => {
+            regexKeywords.push(buildGeneralRegex(keyword))
+        })
+        networkKeywords[permissionEnum.watchlist][typeEnum.userKeyword] = regexKeywords
     }
 
     if (typeEnum.ipAddress in user_store_dict) {

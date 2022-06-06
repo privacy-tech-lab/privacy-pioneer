@@ -331,9 +331,42 @@ function buildIpRegex(ipAddress) {
 
 }
 
+/**
+ * Converts a zip code string into a regex
+ * 
+ * @param {string} zip 
+ * @returns regex of the zip code with any non digit on either side
+ */
 function buildZipRegex(zip) {
     return new RegExp(`[^0-9]${zip}[^0-9]`)
 }
 
+/**
+ * Converts a general keyword string into a regex
+ * 
+ * @param {string} genString 
+ * @returns regex of the original string with optional characters instead of any non-alphanumeric characters
+ */
+function buildGeneralRegex(genString) {
 
-export { buildPhone, getState, buildIpRegex, buildZipRegex, stateObj }
+    var regexString = []
+
+    for ( let i = 0; i < genString.length; i ++) {
+
+        const c = genString.charAt(i)
+        // add digits regularly
+        if ( (c >= '0' && c <= '9') || (c >= 'A' && c <= 'Z') || (c >= 'a' && c <= 'z') ) {
+            regexString.push(c)
+        }
+        // optional non-digit otherwise
+        else {
+            regexString.push('\.?')
+        }
+    }
+
+    const newGenReg = regexString.join('')
+    return new RegExp(newGenReg)
+}
+
+
+export { buildPhone, getState, buildIpRegex, buildZipRegex, stateObj, buildGeneralRegex }
