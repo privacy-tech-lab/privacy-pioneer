@@ -20,6 +20,7 @@ import {
   OptimizationToggle,
   ExportData,
   LabelToggle,
+  IPLayerToggle,
 } from "./components/data-settings"
 import { ThemeSelection } from "./components/theme-settings"
 import { DangerZone } from "./components/danger-settings"
@@ -61,6 +62,15 @@ const SettingsView = ({ changeTheme }) => {
             <DangerZone />
             <FullSnippetToggle />
             <OptimizationToggle />
+            <IPLayerToggle 
+              onClick={() => {
+                confirm(
+                  "We use an external API from ip-api.com that holds your ip address for one minute, and then deletes it from their database. Click 'OK' to add your public IP address to your watchlist. \n\nAlternatively, you can search 'What's my IP?', then copy and paste the result into our IP address keyword form."
+                )
+                  ? console.log('aaaa')
+                  : null
+                }}
+            />
             <Tour />
           </SSection>
         </SBody>
