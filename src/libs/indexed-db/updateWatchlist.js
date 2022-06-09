@@ -115,6 +115,9 @@ const deleteKeyword = async (id) => {
 
   // delete from watchlist
   await watchlistKeyval.delete(id)
+
+  // reset the datastream
+  browser.runtime.sendMessage({ msg: "dataUpdated" })
 }
 
 export { saveKeyword, deleteKeyword, toggleNotifications }
