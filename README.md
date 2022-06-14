@@ -112,6 +112,8 @@ Privacy Pioneer is analyzing the following privacy practices for each first and 
   - Email Address
   - Custom Keywords
 
+**Note**: Privacy Pioneer is using an external service that will receive a user's IP address to query Location data that will be used to identify the user's Location in web traffic of visited websites. We tried our best to ensure that the external service's data practices are privacy-preserving. A user's IP address is sent to the service upon restarting the browser or making changes to the Watchlist.
+
 ## 5. Extension Architecture
 
 An overview of the architecture of Privacy Pioneer is available [separately](https://github.com/privacy-tech-lab/privacy-pioneer/blob/main/architecture_overview.md). (The document is up to date as of its most recent commit date. Later architectural changes are not reflected.)
