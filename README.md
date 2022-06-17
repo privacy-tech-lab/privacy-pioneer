@@ -112,7 +112,7 @@ Privacy Pioneer is analyzing the following privacy practices for each first and 
   - Email Address
   - Custom Keywords
 
-**Note**: Privacy Pioneer is using an external service that will receive a user's IP address to query Location data that will be used to identify the user's Location in web traffic of visited websites. We tried our best to ensure that the external service's data practices are privacy-preserving. A user's IP address is sent to the service upon restarting the browser or making changes to the Watchlist.
+**Note**: Privacy Pioneer uses an external service, [ipinfo.io](https://ipinfo.io/), to automate the identification of a user's Location in web traffic of visited websites. For this purpose Privacy Pioneer sends a user's IP address to ipinfo.io when the user restarts the browser or makes changes to the Watchlist. According to ipinfo.io's terms, it will keep a user's IP address in its logs for 1 year but will not use it beyond log maintenance or share it with anyone.
 
 ## 5. Extension Architecture
 
