@@ -128,11 +128,11 @@ const WebsiteView = () => {
           }
           trailing={
             <STrailing>
-              <SIconWrapper onClick={() => navigate({ urlHash: "#watchlist" })}>
-                <Icons.Radar size="24px" />
-              </SIconWrapper>
               <SIconWrapper onClick={() => navigate({ urlHash: "#" })}>
                 <Icons.Home size="32px" />
+              </SIconWrapper>
+              <SIconWrapper onClick={() => navigate({ urlHash: "#watchlist" })}>
+                <Icons.Radar size="24px" />
               </SIconWrapper>
             </STrailing>
           }
