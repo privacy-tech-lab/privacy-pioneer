@@ -331,6 +331,12 @@ function buildIpRegex(ipAddress) {
 
 }
 
+/**
+ * Converts a zip code string into a regex
+ * 
+ * @param {string} zip 
+ * @returns regex of the zip code with any non digit on either side
+ */
 function buildZipRegex(zip) {
     return new RegExp(`[^0-9]${zip}[^0-9]`)
 }
@@ -341,7 +347,7 @@ function buildZipRegex(zip) {
  * @param {string} genString 
  * @returns regex of the original string with optional characters instead of any non-alphanumeric characters
  */
- function buildGeneralRegex(genString) {
+function buildGeneralRegex(genString) {
 
     var regexString = []
 

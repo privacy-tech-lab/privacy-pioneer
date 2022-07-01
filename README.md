@@ -27,7 +27,7 @@ If such a string is sent via an HTTP POST request, it can be concluded that a si
 
 Currently, we only support Firefox.
 
-Privacy Pioneer is developed and maintained by **Daniel Goldelman (@danielgoldelman)**, **Logan Brown (@Lr-Brown)**, **Justin Casler (@JustinCasler)**, and **Sebastian Zimmeck (@SebastianZimmeck)** of the [privacy-tech-lab](https://www.privacytechlab.org/). **Hamza Harkous (@harkous)** has also collaborated with the team on the research. **Owen Kaplan (@notowen333)**, **Rafael Goldstein (@rgoldstein01)**, and **David Baraka (@davebaraka)** contributed earlier.
+Privacy Pioneer is developed and maintained by **Daniel Goldelman (@danielgoldelman)**, **Logan Brown (@Lr-Brown)**, **Justin Casler (@JustinCasler)**, and **Sebastian Zimmeck (@SebastianZimmeck)** of the [privacy-tech-lab](https://www.privacytechlab.org/). **Hamza Harkous (@harkous)** is also collaborating with the team on the research. **Owen Kaplan (@notowen333)**, **Rafael Goldstein (@rgoldstein01)**, and **David Baraka (@davebaraka)** contributed earlier.
 
 Contact us with any questions or comments at sebastian@privacytechlab.org.
 
@@ -112,6 +112,8 @@ Privacy Pioneer is analyzing the following privacy practices for each first and 
   - Email Address
   - Custom Keywords
 
+**Note**: Privacy Pioneer uses an external service, [ipinfo.io](https://ipinfo.io/), to automate the identification of a user's Location in web traffic of visited websites. For this purpose Privacy Pioneer sends a user's IP address to ipinfo.io when the user restarts the browser or makes changes to the Watchlist. According to ipinfo.io's terms, it will keep a user's IP address in its logs for 1 year but will not use it beyond log maintenance or share it with anyone.
+
 ## 5. Extension Architecture
 
 An overview of the architecture of Privacy Pioneer is available [separately](https://github.com/privacy-tech-lab/privacy-pioneer/blob/main/architecture_overview.md). (The document is up to date as of its most recent commit date. Later architectural changes are not reflected.)
@@ -138,12 +140,12 @@ We thank the developers.
 <p align="center">Major financial support provided by Google.</p>
 
 <p align="center">
-  <a href="https://research.google/outreach/research-scholar-program/recipients/">
+  <a href="https://research.google/outreach/research-scholar-program/recipients/?category=2022/">
     <img class="img-fluid" src="./google_logo.png" height="80px" alt="Google Logo">
   </a>
 </p>
 
-<p align="center">Additional financial support provided by Wesleyan University.</p>
+<p align="center">Additional financial support provided by the Anil Fernando Endowment and Wesleyan University.</p>
 
 <p align="center">
   <a href="https://www.wesleyan.edu/mathcs/cs/index.html">
