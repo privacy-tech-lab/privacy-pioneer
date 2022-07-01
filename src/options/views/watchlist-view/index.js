@@ -25,6 +25,7 @@ import {
 } from "../../../background/analysis/classModels"
 import ReactTooltip from "react-tooltip"
 import { saveKeyword } from "../../../libs/indexed-db/updateWatchlist.js"
+import { apiIPToken } from "../../../libs/holdAPI"
 
 /**
  * Watchlist page view allowing user to add/modify keywords
@@ -49,10 +50,10 @@ const WatchlistView = () => {
    * @returns Nothing. Updates the watchlist with the fetched IP Address.
    */
   const getIP = async () => {
-    await fetch("http://ip-api.com/json/")
+    await fetch("http://ipinfo.io/json?token" + apiIPToken)
       .then((data) => data.json())
       .then(async function (data) {
-        const myIP = data.query
+        const myIP = data.ip
         if (await saveKeyword(myIP, typeEnum.ipAddress, null)) {
           await updateList()
         }

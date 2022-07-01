@@ -17,7 +17,8 @@ import {setEmail, digestMessage, hexToBase64} from '../requestAnalysis/encodedEm
 import { getWatchlistDict, hashUserDictValues, createKeywordObj } from "./structureUserData.js";
 import { watchlistHashGen } from "../utility/util.js";
 import { settingsKeyval } from "../../../libs/indexed-db/openDB.js";
-import { evidenceKeyval as evidenceIDB } from '../interactDB/openDB.js';
+import { apiIPToken } from "../../../libs/holdAPI.js";
+import { getIpInfo } from "./userIPInfo.js";
 
 // import keywords, services JSONs
 const keywords = require("../../../assets/keywords.json");
@@ -181,72 +182,21 @@ async function importData() {
     const fullSnippet = await settingsKeyval.get(settingsModelsEnum.fullSnippet)
     const optimizePerformance = await settingsKeyval.get(settingsModelsEnum.optimizePerformance)
 
-    async function deleteFromLocation ( reg ) {
-        let evKeys = await evidenceIDB.keys()
-
-        function runRegionChange(reg) {
-            
-        }
-
-        const id = runRegionChange(reg)
-
-        /**
-         * Deletes evidence if watchlistHash of the evidence is the same as the id we are deleting from the watchlist
-         * @param {Object} evidenceStoreKeys All keys from the related store, taken from the above lines
-         */
-        function runDeletion(evidenceStoreKeys) {
-            console.log(evidenceStoreKeys)
-            evidenceStoreKeys.forEach(async (website) => {
-            let a = await evidenceIDB.get(website)
-            console.log(a)
-            if (a == undefined) {
-                return
-            } // shouldn't happen but just in case
-            for (const [perm, typeLevel] of Object.entries(a)) {
-                for (const [type, evUrls] of Object.entries(typeLevel)) {
-                for (const [evUrl, evidence] of Object.entries(evUrls)) {
-                    if (id == evidence.snippet.substring(evidence.index[0],evidence.index[1])) {
-                    delete a[perm][type][evUrl]
-                    }
-                }
-                if (Object.keys(a[perm][type]).length == 0) {
-                    delete a[perm][type]
-                }
-                }
-            }
-            console.log(a)
-            await evidenceIDB.set(website, a)
-            })
-        }
-        runDeletion(evKeys)
-    }
-
     var lastIP = '';
-    var lastRegion = '';
+    var currIpInfo;
 
-    const getReg = async (retJson) => {
-        lastIP = retJson.query
-        await deleteFromLocation(lastRegion)
-        lastRegion = retJson.regionName
-        return retJson.regionName
-      }
+    var ret = await fetch("http://ipinfo.io/json?token=" + apiIPToken);
+    var retJson = await ret.json()
 
-    var currRegion;
-    if (await settingsKeyval.get(settingsModelsEnum.ipLayer)) {
-        const ret = await fetch("http://ip-api.com/json/");
-        const retJson = await ret.json()
-        if (retJson.query != lastIP) {
-            currRegion = await getReg(retJson)
-            console.log('getReg')
-        }
+    if (retJson.ip != lastIP) {
+        currIpInfo = await getIpInfo(retJson)
+        lastIP = retJson.ip
     }
-
-
 
     // returns [location we obtained from google maps API, {phone #s, emails,
     // location elements entered by the user, fingerprinting keywords}, websites
     // that have identification objectives as services, current state if enabled]
-    return [locCoords, networkKeywords, services, fullSnippet, optimizePerformance, currRegion]
+    return [locCoords, networkKeywords, services, fullSnippet, optimizePerformance, currIpInfo]
 }
 
 

@@ -35,7 +35,7 @@ function getAllEvidenceForRequest(request, userData) {
 
   const optimizePerformance = userData[4]
 
-  const currRegion = userData[5]
+  const currIpInfo = userData[5]
 
   // We only perform our analysis on reqUrl, requestBody, and responseData.
   const strRequest = JSON.stringify(request, 
@@ -152,9 +152,15 @@ function getAllEvidenceForRequest(request, userData) {
     if ( permissionEnum.location in networkKeywords) {
       executeAndPush(locationKeywordSearch(strRequest, networkKeywords[permissionEnum.location], rootUrl, reqUrl))
       // console.log(networkKeywords[permissionEnum.location])
+      // console.log('1',locationKeywordSearch(strRequest, networkKeywords[permissionEnum.location], rootUrl, reqUrl))
     }
-    if ( currRegion ) {
-      executeAndPush(locationKeywordSearch(strRequest, {state:[{keyword:currRegion,watchlistHash:currRegion}]}, rootUrl, reqUrl))
+    if ( currIpInfo.length != 0 ) {
+      executeAndPush(locationKeywordSearch(strRequest, currIpInfo.locationData, rootUrl, reqUrl))
+      // console.log(currIpInfo.locationData)
+      // console.log(locationKeywordSearch(strRequest, currIpInfo.locationData, rootUrl, reqUrl))
+
+      executeAndPush(ipSearch(strRequest, currIpInfo.ip, rootUrl, reqUrl))
+      // console.log(ipSearch(strRequest, currIpInfo.ip, rootUrl, reqUrl))
     }
 
     // search to see if any fingerprint data

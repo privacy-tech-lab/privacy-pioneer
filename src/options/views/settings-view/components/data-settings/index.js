@@ -14,11 +14,9 @@ import {
   getLabelStatus,
   getSnippetStatus,
   getOptimizationStatus,
-  getIPLayerStatus,
   toggleLabel,
   toggleSnippet,
   toggleOptimization,
-  toggleIPLayerSetting
 } from "../../../../../libs/indexed-db/settings"
 import {
   SExportButton,
@@ -85,47 +83,6 @@ export const OptimizationToggle = () => {
         isActive={optimizationStatus}
         onClick={() => toggleOptimize()}
         label={"Optimize Performance"}
-        spaceBetween
-      />
-    </SSnippetToggle>
-  )
-}
-
-export const IPLayerToggle = () => {
-  const [ipLayerStatus, setIpLayerStatus] = useState(true);
-
-  useEffect(() => {
-    getIPLayerStatus().then((res) => {
-      setIpLayerStatus(res)
-    })
-  });
-
-  const toggleIPLayer = () => {
-    toggleIPLayerSetting()
-    setIpLayerStatus(!ipLayerStatus)
-  }
-
-  return (
-    <SSnippetToggle>
-      <ToggleSwitch
-        isActive={ipLayerStatus}
-        onClick={() => {
-          if (!ipLayerStatus) {
-            confirm(
-              "We use an external API from ip-api.com that holds your ip address for one minute, and then deletes it from their database. Clicking 'OK' will add your public IP address to a special list within Privacy Pioneer. We will use this obtain extremely accurate location data to be searched for in your web traffic."
-            )
-              ? toggleIPLayer()
-              : null
-            } else {
-              confirm(
-                "Turning off this feature will give less accurate location data, but will not send your public IP to ip-api.com"
-              ) 
-              ? toggleIPLayer()
-              : null
-            }
-          }
-        }
-        label={"Toggle IP Layer"}
         spaceBetween
       />
     </SSnippetToggle>

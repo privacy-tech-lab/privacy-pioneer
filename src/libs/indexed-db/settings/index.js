@@ -32,7 +32,6 @@ export const setDefaultSettings = async () => {
     await settingsKeyval.set(settingsModelsEnum.tour, true)
     await settingsKeyval.set("alreadyNotified", {})
     await settingsKeyval.set(settingsModelsEnum.optimizePerformance, true)
-    await settingsKeyval.set(settingsModelsEnum.ipLayer, true)
   }
 }
 
@@ -92,18 +91,6 @@ export const toggleOptimization = async () => {
  */
 export const getOptimizationStatus = async () => {
   return await settingsKeyval.get(settingsModelsEnum.optimizePerformance)
-}
-
-export const toggleIPLayerSetting = async () => {
-  let currentVal = await settingsKeyval.get(
-    settingsModelsEnum.ipLayer
-  )
-  await settingsKeyval.set(settingsModelsEnum.ipLayer, !currentVal)
-  browser.runtime.sendMessage({ msg: "dataUpdated" })
-}
-
-export const getIPLayerStatus = async () => {
-  return await settingsKeyval.get(settingsModelsEnum.ipLayer)
 }
 
 /**

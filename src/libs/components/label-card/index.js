@@ -112,7 +112,6 @@ const LabelCard = ({ requests, website, label, margin, onTap, popup }) => {
                   <div
                     data-place="bottom"
                     data-tip="hello world"
-                    data-tip={company}
                     key={company}
                   >
                     <CompanyLogo parent={company} margin={"0px 6px 0px 6px"} />

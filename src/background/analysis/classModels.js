@@ -419,6 +419,5 @@ export const keywordTypes = Object.freeze({
 export const settingsModelsEnum = Object.freeze({
   fullSnippet: "fullSnippet",
   tour: "tour",
-  optimizePerformance: "optimizePerformance",
-  ipLayer: "ipLayer"
+  optimizePerformance: "optimizePerformance"
 })

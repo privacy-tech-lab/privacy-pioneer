@@ -10,7 +10,7 @@ import { useHistory, useParams } from "react-router-dom"
 import { SLeading } from "./style"
 import LabelDetail from "../../../libs/components/label-detail"
 import NavBar from "../../components/nav-bar"
-import { privacyLabels } from "../../../background/analysis/classModels"
+import { permissionEnum, privacyLabels } from "../../../background/analysis/classModels"
 import { getWebsiteLabels } from "../../../libs/indexed-db/getIdbData.js"
 
 /**
@@ -25,7 +25,31 @@ const LabelView = () => {
   const website = params.website // Get website passed from route
   const label = params.label // Get label passed from route
 
-  useEffect(() => getWebsiteLabels(website).then((labels) => setRequests(labels?.[label] ?? {})), [])
+  useEffect(() => getWebsiteLabels(website).then((labels) => {
+    var result = {};
+    for (const [labelL, value] of Object.entries(labels)) {
+      if (labelL != permissionEnum.location && labelL != permissionEnum.tracking){
+        result[labelL] = value
+      } else {
+        for (const [url, typeVal] of Object.entries(value)) {
+          for (const [type, e] of Object.entries(typeVal)) {
+            if ( !(typeof e['watchlistHash'] === "string" )) {
+              // Add label in data to object
+              if (!(labelL in result)) {
+                result[labelL] = { [url]: { [type]: e } }
+              } else if (!(url in result[labelL])) {
+                result[labelL][url] = { [type]: e }
+              } else {
+                result[labelL][url][type] = e
+              }
+            }
+          }
+        }
+      }
+    }
+    const a = result?.[label]??{}
+    setRequests(a)
+  }), [])
 
   return (
     <Scaffold
