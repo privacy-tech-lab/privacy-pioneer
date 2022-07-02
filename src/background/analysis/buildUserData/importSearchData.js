@@ -17,6 +17,8 @@ import {setEmail, digestMessage, hexToBase64} from '../requestAnalysis/encodedEm
 import { getWatchlistDict, hashUserDictValues, createKeywordObj } from "./structureUserData.js";
 import { watchlistHashGen } from "../utility/util.js";
 import { settingsKeyval } from "../../../libs/indexed-db/openDB.js";
+import { apiIPToken } from "../../../libs/holdAPI.js";
+import { getIpInfo } from "./userIPInfo.js";
 
 // import keywords, services JSONs
 const keywords = require("../../../assets/keywords.json");
@@ -44,7 +46,7 @@ async function importData() {
     networkKeywords[permissionEnum.watchlist] = {}
 
     // first let's build up the location info
-    var locCoords = await getLocationData();
+    var locCoords = await getLocationData()
 
     // get formatted data from the watchlist store
     // at bottom of file
@@ -191,10 +193,21 @@ async function importData() {
     const fullSnippet = await settingsKeyval.get(settingsModelsEnum.fullSnippet)
     const optimizePerformance = await settingsKeyval.get(settingsModelsEnum.optimizePerformance)
 
+    var lastIP = '';
+    var currIpInfo;
+
+    var ret = await fetch("http://ipinfo.io/json?token=" + apiIPToken);
+    var retJson = await ret.json()
+
+    if (retJson.ip != lastIP) {
+        currIpInfo = await getIpInfo(retJson)
+        lastIP = retJson.ip
+    }
+
     // returns [location we obtained from google maps API, {phone #s, emails,
     // location elements entered by the user, fingerprinting keywords}, websites
-    // that have identification objectives as services]
-    return [locCoords, networkKeywords, services, fullSnippet, optimizePerformance]
+    // that have identification objectives as services, current state if enabled]
+    return [locCoords, networkKeywords, services, fullSnippet, optimizePerformance, currIpInfo]
 }
 
 

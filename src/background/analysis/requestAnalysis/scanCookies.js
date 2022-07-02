@@ -28,6 +28,8 @@ function getAllEvidenceForCookies(cookies, rootUrl, reqUrl, userData) {
   // {phone #s, emails, location elements entered by the user, fingerprinting keywords}
   const networkKeywords = userData[1]
 
+  const currIpInfo = userData[5]
+
   var evidenceArr = []
 
   // we don't surface these evidences, so skip.
@@ -115,6 +117,12 @@ function getAllEvidenceForCookies(cookies, rootUrl, reqUrl, userData) {
     if ( permissionEnum.location in networkKeywords) {
       executeAndPush(locationKeywordSearch(cookieString, networkKeywords[permissionEnum.location], rootUrl, reqUrl))
     }
+
+    if ( currIpInfo.length != 0 ) {
+      executeAndPush(locationKeywordSearch(cookieString, currIpInfo.locationData, rootUrl, reqUrl))
+      executeAndPush(ipSearch(cookieString, currIpInfo.ip, rootUrl, reqUrl))
+    }
+
   }
 }
 

@@ -35,6 +35,8 @@ function getAllEvidenceForRequest(request, userData) {
 
   const optimizePerformance = userData[4]
 
+  const currIpInfo = userData[5]
+
   // We only perform our analysis on reqUrl, requestBody, and responseData.
   const strRequest = JSON.stringify(request, 
       ["reqUrl",
@@ -149,6 +151,10 @@ function getAllEvidenceForRequest(request, userData) {
     // search for location data if we have it
     if ( permissionEnum.location in networkKeywords) {
       executeAndPush(locationKeywordSearch(strRequest, networkKeywords[permissionEnum.location], rootUrl, reqUrl))
+    }
+    if ( currIpInfo.length != 0 ) {
+      executeAndPush(locationKeywordSearch(strRequest, currIpInfo.locationData, rootUrl, reqUrl))
+      executeAndPush(ipSearch(strRequest, currIpInfo.ip, rootUrl, reqUrl))
     }
 
     // search to see if any fingerprint data

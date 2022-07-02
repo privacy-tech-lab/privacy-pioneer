@@ -28,6 +28,7 @@ import { getWebsiteLabels } from "../../../libs/indexed-db/getIdbData.js"
 import { getHostname } from "../../../background/analysis/utility/util.js"
 import { useHistory } from "react-router"
 import RiseLoader from "react-spinners/RiseLoader"
+import { evidenceDescription, permissionEnum } from "../../../background/analysis/classModels"
 
 /**
  * Page view containing current website and identified label cards
@@ -98,8 +99,30 @@ const WebsiteView = () => {
         const host = getHostname(request.data)
         checkOurOptions(request.data)
         getWebsiteLabels(host).then((labels) => {
-          setLabels(labels)
-          if (Object.keys(labels).length > 0) {
+          var result = {};
+          for (const [label, value] of Object.entries(labels)) {
+            if (label != permissionEnum.location && label != permissionEnum.tracking){
+              result[label] = value
+            } else {
+              for (const [url, typeVal] of Object.entries(value)) {
+                for (const [type, e] of Object.entries(typeVal)) {
+                  if ( !(typeof e['watchlistHash'] === "string" )) {
+                    // Add label in data to object
+                    if (!(label in result)) {
+                      result[label] = { [url]: { [type]: e } }
+                    } else if (!(url in result[label])) {
+                      result[label][url] = { [type]: e }
+                    } else {
+                      result[label][url][type] = e
+                    }
+                  }
+                }
+              }
+            }
+          }
+
+          setLabels(result)
+          if (Object.keys(result).length > 0) {
             setTimeout(() => {
               setEmpty(false), setLoading(false)
             }, 800)

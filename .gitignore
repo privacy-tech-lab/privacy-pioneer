@@ -120,3 +120,6 @@ dist
 
 # Custom
 dev
+
+# API Keys
+/src/libs/holdAPI.js
