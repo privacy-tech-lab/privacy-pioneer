@@ -61,6 +61,7 @@ export const homeSteps = [
     },
   },
   {
+    run: true,
     target: "#seeAllTour",
     content: (
       <div style={textStyles}>
@@ -70,7 +71,11 @@ export const homeSteps = [
       </div>
     ),
     spotlightClicks: true,
-    hideFooter: true,
+    styles: {
+      options: {
+        width: 440,
+      },
+    },
   },
 ]
 
