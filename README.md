@@ -31,7 +31,11 @@ Privacy Pioneer is developed and maintained by **Daniel Goldelman (@danielgoldel
 
 Contact us with any questions or comments at sebastian@privacytechlab.org.
 
-## 1. Development
+1. Research Publications
+
+- Owen Kaplan, [Creating Privacy Labels for the Web](http://summer21.research.wesleyan.edu/2021/07/27/creating-privacy-labels-for-the-web/), Summer Research 2021 Poster Session, Wesleyan University, Online, July 2021
+
+## 2. Development
 
 Ensure that you have [node and npm](https://www.npmjs.com/get-npm) installed.
 
@@ -55,7 +59,7 @@ A `dev` folder will be generated in the root directory, housing the generated ex
 
 **NOTE:** If you experience errors regarding missing dependencies (usually due to a newly incorporated node package), delete the `node_modules` folder and then re-run the installation steps above. You may also want to delete `package-lock.json` along with the `node_modules` folder as a second attempt to solve this issue.
 
-## 2. Production
+## 3. Production
 
 Build Privacy Pioneer for production to the `dist` folder by running:
 
@@ -68,7 +72,7 @@ npm run build
 
 The `web-ext` cli is included in the project. Learn more about packaging and signing for release at the [extension workshop](https://extensionworkshop.com/documentation/develop/getting-started-with-web-ext/).
 
-## 3. Source Directory Layout
+## 4. Source Directory Layout
 
 ```bash
 .
@@ -88,7 +92,7 @@ The `src/libs/indexed-db` directory, contains functions that communicate to the 
 
 Some logos and other assets are [here](https://docs.google.com/spreadsheets/d/1pmWIdsZv_lEIl9b3XRVXY2qe4mA-wedEM9K9kzkHnY0/edit#gid=0).
 
-## 4. Privacy Practice Analysis
+## 5. Privacy Practice Analysis
 
 Privacy Pioneer is analyzing the following privacy practices for each first and third party website.
 
@@ -114,11 +118,11 @@ Privacy Pioneer is analyzing the following privacy practices for each first and 
 
 **Note**: Privacy Pioneer uses an external service, [ipinfo.io](https://ipinfo.io/), to automate the identification of a user's Location in web traffic of visited websites. For this purpose Privacy Pioneer sends a user's IP address to ipinfo.io when the user restarts the browser or makes changes to the Watchlist. According to ipinfo.io's terms, it will keep a user's IP address in its logs for 1 year but will not use it beyond log maintenance or share it with anyone.
 
-## 5. Extension Architecture
+## 6. Extension Architecture
 
 An overview of the architecture of Privacy Pioneer is available [separately](https://github.com/privacy-tech-lab/privacy-pioneer/blob/main/architecture_overview.md). (The document is up to date as of its most recent commit date. Later architectural changes are not reflected.)
 
-## 6. Third Party Libraries and Resources
+## 7. Third Party Libraries and Resources
 
 Privacy Pioneer uses various [third party libraries](https://github.com/privacy-tech-lab/privacy-pioneer/blob/main/package.json).
 
@@ -133,7 +137,7 @@ It also uses the following resources.
 
 We thank the developers.
 
-## 7. Thank You!
+## 8. Thank You!
 
 <p align="center"><strong>We would like to thank our financial supporters!</strong></p><br>
 
