@@ -31,7 +31,7 @@ Privacy Pioneer is developed and maintained by **Daniel Goldelman (@danielgoldel
 
 Contact us with any questions or comments at sebastian@privacytechlab.org.
 
-1. Research Publications
+## 1. Research Publications
 
 - Owen Kaplan, [Creating Privacy Labels for the Web](http://summer21.research.wesleyan.edu/2021/07/27/creating-privacy-labels-for-the-web/), Summer Research 2021 Poster Session, Wesleyan University, Online, July 2021
 
