@@ -23,10 +23,8 @@ export const FIVE_SEC_IN_MILLIS = 5000
  * NOTE: This will change after testing has concluded
  * We would like to only have 1/3 of sites above this threshold and thus 
  * highlighted to the user as a site that takes a lot of data
- * 
- * Currently set to 30 based on general assumption. Testing required.
  */
-export const EVIDENCE_THRESHOLD = 30
+export const EVIDENCE_THRESHOLD = 45
 
 /**
  * Used in analyze.js for throttling cookie scan by time
