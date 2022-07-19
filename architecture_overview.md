@@ -8,19 +8,25 @@
 ### 2
 - These functions can be found in searchFunctions.js.
 
-- `locationKeywordSearch` looks for user inputted location elements, `urlSearch` takes Firefox's url classifications from the disconnect.me list, `coordinateSearch` looks for longitude and latitudes, `regexSearch` matches regular expression patterns passed to it, `fingerprintSearch` looks for text that matches the list that we have compiled (`src/assets/services.json`), `pixelSearch` looks for urls on our pixel list (`src/assets/keywords.json`), `dynamicPixelSearch` looks for common properties of a pixel, and `ipSearch` looks for inputted IP addresses sent to 3rd parties.
+- `locationKeywordSearch` looks for user inputted location elements, `urlSearch` takes Firefox's url classifications from the disconnect.me list, `coordinateSearch` looks for longitude and latitudes, `regexSearch` matches regular expression patterns passed to it, `fingerprintSearch` looks for text that matches the list that we have compiled (`src/assets/services.json`), `pixelSearch` looks for urls on our pixel list (`src/assets/keywords.json`), `dynamicPixelSearch` looks for common properties of a pixel, `ipSearch` looks for inputted IP addresses sent to 3rd parties, and `encodedEmailSearch` looks for emails that have been encoded in a few ways being sent to 3rd parties.
 
-- Some of these functions, like `locationKeywordSearch`, `regexSearch`, and `ipSearch` get passed user data from the watchlistKeyval.
+- Some of these functions, like `locationKeywordSearch`, `regexSearch`, and `ipSearch` get passed user data from the watchlistKeyval and the IP address-based dynamic data generation via ipinfo.io.
 
 ### 3
 
-- We format this user data as a list `[locCoords, networkKeywords, services, fullSnippet, optimizePerformance]` returned by the `importData()` function in `importSearchData.js`. 
+- We format this user data as a list `[locCoords, networkKeywords, services, fullSnippet, optimizePerformance, currIpInfo]` returned by the `importData()` function in `importSearchData.js`. 
 
 - `locCoords` use the getLocationData.js file which uses the navigator api to ask for the user's location. So, the location popup should come up here.
 
 - `networkKeywords` grabs all the user data in the watchlistKeyval, runs the appropriate structured routines in structuredRoutines.js (reformats phone numbers with google's api for example), and then returns everything as a dictionary.
 
 - `services` is the json from `src/assets/services.json`. This contains important websites that regularly perform invasive procedures, and we alert users to instances of their use.
+
+- `fullSnippet` is the user's choice to or not to store full HTTP snippets
+
+- `optimizePerformance` is the user's choice to or not to optimize performance
+
+- `currIpInfo` isthe user's current location and IP address as provided by ipinfo.io]
 
 - This function is called on load `importData().then((data) => {` in background.js. Then, we pass data to the listeners. If the user changes a value, either a setting or a watchlist item, `importData()` will be called again.
 
