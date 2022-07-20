@@ -206,7 +206,10 @@ async function importData() {
 
     // returns [location we obtained from google maps API, {phone #s, emails,
     // location elements entered by the user, fingerprinting keywords}, websites
-    // that have identification objectives as services, current state if enabled]
+    // that have identification objectives as services, the user's choice to or
+    // not to store full HTTP snippets, the user's choice to or not to optimize 
+    // performance, the user's current location and IP address as provided by 
+    // ipinfo.io]
     return [locCoords, networkKeywords, services, fullSnippet, optimizePerformance, currIpInfo]
 }
 
