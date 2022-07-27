@@ -93,7 +93,7 @@ function createKeywordObj(keyword, typ, hash = null, ) {
 
 function hashUserDictValues( networkKeywords ) {
 
-    const excludedSet = new Set( [ typeEnum.phoneNumber, typeEnum.encodedEmail, typeEnum.ipAddress ]) // these get hashed in importData
+    const excludedSet = new Set( [ typeEnum.phoneNumber, typeEnum.encodedEmail, typeEnum.ipAddress, typeEnum.userKeyword ]) // these get hashed in importData
 
     for ( const [t, valArr] of Object.entries(networkKeywords[permissionEnum.watchlist]) ) {
         if ( !(excludedSet.has(t)) ) {
