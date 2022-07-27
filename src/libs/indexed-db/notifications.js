@@ -1,3 +1,4 @@
+import { FIVE_SEC_IN_MILLIS } from "../../background/analysis/constants"
 import { evidenceKeyval } from "../../background/analysis/interactDB/openDB"
 import { getHostname } from "../../background/analysis/utility/util"
 import { settingsKeyval, watchlistKeyval } from "./openDB"
@@ -86,10 +87,10 @@ const runNotifications = () => {
     browser.tabs.query({ currentWindow: true, active: true }).then((tabs) => {
       const currentTab = tabs[0]
       const host = getHostname(currentTab.url)
-      if (!sessionStorage.getItem(host)) {
+      if (sessionStorage.getItem(host) + FIVE_SEC_IN_MILLIS > Date.now() || sessionStorage.getItem(host) === null) {
         setTimeout(() => {
           notify(host)
-          sessionStorage.setItem(host, true)
+          sessionStorage.setItem(host, Date.now())
         }, 3000)
       }
     })
