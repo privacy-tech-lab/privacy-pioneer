@@ -12,7 +12,7 @@ import ReactTooltip from "react-tooltip"
 
 /**
  * Summary card that highlights notable stats from identified label
- * namely it states how many websites you have visited have used that label
+ * namely it regions how many websites you have visited have used that label
  */
 const LabelSummaryCard = ({
   labeltype,
@@ -29,7 +29,7 @@ const LabelSummaryCard = ({
       onClick={() => {
         history.push({
           pathname: "/search",
-          state: {
+          region: {
             labeltype: labeltype,
             websites: passWebsites,
             labels: passLabels,

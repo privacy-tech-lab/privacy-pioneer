@@ -8,8 +8,8 @@ import {
   permissionEnum,
 } from "../../../../../../background/analysis/classModels.js"
 import {
-  stateObj,
-  getState,
+  regionObj,
+  getRegion,
 } from "../../../../../../background/analysis/buildUserData/structuredRoutines.js"
 // allows for input validation of items a user is attempting to add to their watch list
 
@@ -44,7 +44,7 @@ const validate = ({
   setInputValid,
   setKeyType,
   city,
-  state,
+  region,
   zip,
   address,
 }) => {
@@ -97,14 +97,14 @@ const validate = ({
       badInput("zip code")
       return false
     }
-    if (!(state == undefined || state in stateObj)) {
-      badInput("state abbreviation")
+    if (!(region == undefined || region in regoinObj)) {
+      badInput("region abbreviation")
       return false
     }
-    if (zip != undefined && state != undefined) {
-      const st = getState(zip)
-      if (typeof(st) != "undefined" && st[0] != state) {
-        badInput("state / zip combination")
+    if (zip != undefined && region != undefined) {
+      const st = getRegion(zip)
+      if (typeof(st) != "undefined" && st[0] != region) {
+        badInput("region / zip combination")
         return false
       }
     }

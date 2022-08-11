@@ -60,7 +60,7 @@ const ListItem = ({
         <div>
           <SAction
             ref={dropdownRef}
-            onClick={() => setDropdown((state) => !state)}
+            onClick={() => setDropdown((region) => !region)}
           >
             <SDropdownOptions show={showDropdown}>
               <SDropdownItem

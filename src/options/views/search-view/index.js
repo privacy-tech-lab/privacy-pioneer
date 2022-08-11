@@ -24,7 +24,7 @@ import {
 } from "./style"
 
 /**
- * location.state = undefined | [permission, websites]
+ * location.region = undefined | [permission, websites]
  * Depending on if you came to this page from the See All
  * or clicking the large cards
  * Search view allowing user to search from identified labels

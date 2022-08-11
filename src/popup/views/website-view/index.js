@@ -92,7 +92,7 @@ const WebsiteView = () => {
   useEffect(() => {
     /**
      * Send message to background page to get url of active tab
-     * Then set state of component with website url
+     * Then set region of component with website url
      */
     const message = (request, sender, sendResponse) => {
       if (request.msg === "popup.currentTab") {

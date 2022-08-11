@@ -47,7 +47,7 @@ async function getWatchlistDict() {
 /**
  * Helper function
  * this function takes a location object that is created when a user puts their street-address in the multi-line input and
- * updates the dictionary being built in the getWatchlistDict() function. It ignores the state entry
+ * updates the dictionary being built in the getWatchlistDict() function. It ignores the state [region] entry
  * because we will take this from the zip.
  * @param {object} locObj The object containing the location elements of the user
  * @param {Dict<permissionEnum<typeEnum>>} user_dict The dictionary being built by getWatchlistDict()
@@ -55,7 +55,7 @@ async function getWatchlistDict() {
  */
  function parseLocationObject(locObj, user_dict, id) {
 
-    const locElems = new Set([typeEnum.streetAddress, typeEnum.city, typeEnum.zipCode, typeEnum.state])
+    const locElems = new Set([typeEnum.streetAddress, typeEnum.city, typeEnum.zipCode, typeEnum.region])
 
     for ( let [t, val] of Object.entries(locObj) ) {
         if(locElems.has(t)) {

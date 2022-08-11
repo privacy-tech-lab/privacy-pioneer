@@ -80,7 +80,7 @@ const HomeView = () => {
               onClick={() => {
                 history.push({
                   pathname: "/search",
-                  state: { websites: websites, labels: labels },
+                  region: { websites: websites, labels: labels },
                 })
                 ReactTooltip.hide()
               }}

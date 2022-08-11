@@ -98,7 +98,7 @@
                         "timestamp": 1627654148121,
                         "permission": "location",
                         "rootUrl": "https://invasive_site.com",
-                        "snippet": "alue\":\"61hc7638492hck71-MLA\"},{\"name\":\"content-encoding\",\"value\":\"gzip\"},{\"name\":\"X-Firefox-Spdy\",\"value\":\"h2\"}],\"responseData\":\"dnsfeed({\\\"country\\\":\\\"US\\\",\\\"state\\\":\\\"NY\\\",\\\"stateName\\\":\\\"New York\\\",\\\"zipcode\\\":\\\"10013\\\",\\\"timezone\\\":\\\"America/New_York\\\",\\\"latitude\\\":\\\"40.72182\\\",\\\"longitude\\\":\\\"-74.00940\\\",\\\"city\\\":\\\"New York\\\",\\\"continent\\\":\\\"NA\\\"})\",\"requestBody\":null,\"details\":{\"requestId\":\"203\",\"url\":\"https://geolocation.onetrust.com/cookieconsentpub/v1/geo/location/dnsfeed\",\"originUrl\":\"https://www.invasive_site.com/\",\"documentUrl\":\"https://www.invasive_site.com/\",\"method\":\"GET\",\"type\":\"script\",\"tim",
+                        "snippet": "alue\":\"61hc7638492hck71-MLA\"},{\"name\":\"content-encoding\",\"value\":\"gzip\"},{\"name\":\"X-Firefox-Spdy\",\"value\":\"h2\"}],\"responseData\":\"dnsfeed({\\\"country\\\":\\\"US\\\",\\\"region\\\":\\\"NY\\\",\\\"regionName\\\":\\\"New York\\\",\\\"zipcode\\\":\\\"10013\\\",\\\"timezone\\\":\\\"America/New_York\\\",\\\"latitude\\\":\\\"40.72182\\\",\\\"longitude\\\":\\\"-74.00940\\\",\\\"city\\\":\\\"New York\\\",\\\"continent\\\":\\\"NA\\\"})\",\"requestBody\":null,\"details\":{\"requestId\":\"203\",\"url\":\"https://geolocation.onetrust.com/cookieconsentpub/v1/geo/location/dnsfeed\",\"originUrl\":\"https://www.invasive_site.com/\",\"documentUrl\":\"https://www.invasive_site.com/\",\"method\":\"GET\",\"type\":\"script\",\"tim",
                         "requestUrl": "https://geolocation.onetrust.com/cookieconsentpub/v1/geo/location/dnsfeed",
                         "typ": "fineLocation",
                         "index": [
@@ -112,7 +112,7 @@
                         "timestamp": 1627654148121,
                         "permission": "location",
                         "rootUrl": "https://invasive_site.com",
-                        "snippet": "alue\":\"61hc7638492hck71-MLA\"},{\"name\":\"content-encoding\",\"value\":\"gzip\"},{\"name\":\"X-Firefox-Spdy\",\"value\":\"h2\"}],\"responseData\":\"dnsfeed({\\\"country\\\":\\\"US\\\",\\\"state\\\":\\\"NY\\\",\\\"stateName\\\":\\\"New York\\\",\\\"zipcode\\\":\\\"10013\\\",\\\"timezone\\\":\\\"America/New_York\\\",\\\"latitude\\\":\\\"40.72182\\\",\\\"longitude\\\":\\\"-74.00940\\\",\\\"city\\\":\\\"New York\\\",\\\"continent\\\":\\\"NA\\\"})\",\"requestBody\":null,\"details\":{\"requestId\":\"203\",\"url\":\"https://geolocation.onetrust.com/cookieconsentpub/v1/geo/location/dnsfeed\",\"originUrl\":\"https://www.invasive_site.com/\",\"documentUrl\":\"https://www.invasive_site.com/\",\"method\":\"GET\",\"type\":\"script\",\"tim",
+                        "snippet": "alue\":\"61hc7638492hck71-MLA\"},{\"name\":\"content-encoding\",\"value\":\"gzip\"},{\"name\":\"X-Firefox-Spdy\",\"value\":\"h2\"}],\"responseData\":\"dnsfeed({\\\"country\\\":\\\"US\\\",\\\"region\\\":\\\"NY\\\",\\\"regionName\\\":\\\"New York\\\",\\\"zipcode\\\":\\\"10013\\\",\\\"timezone\\\":\\\"America/New_York\\\",\\\"latitude\\\":\\\"40.72182\\\",\\\"longitude\\\":\\\"-74.00940\\\",\\\"city\\\":\\\"New York\\\",\\\"continent\\\":\\\"NA\\\"})\",\"requestBody\":null,\"details\":{\"requestId\":\"203\",\"url\":\"https://geolocation.onetrust.com/cookieconsentpub/v1/geo/location/dnsfeed\",\"originUrl\":\"https://www.invasive_site.com/\",\"documentUrl\":\"https://www.invasive_site.com/\",\"method\":\"GET\",\"type\":\"script\",\"tim",
                         "requestUrl": "https://geolocation.onetrust.com/cookieconsentpub/v1/geo/location/dnsfeed",
                         "typ": "zipCode",
                         "index": [
@@ -122,13 +122,13 @@
                         "firstPartyRoot": true,
                         "parentCompany": null
                     },
-                    "state": {
+                    "region": {
                         "timestamp": 1627654148121,
                         "permission": "location",
                         "rootUrl": "https://invasive_site.com",
-                        "snippet": "alue\":\"61hc7638492hck71-MLA\"},{\"name\":\"content-encoding\",\"value\":\"gzip\"},{\"name\":\"X-Firefox-Spdy\",\"value\":\"h2\"}],\"responseData\":\"dnsfeed({\\\"country\\\":\\\"US\\\",\\\"state\\\":\\\"NY\\\",\\\"stateName\\\":\\\"New York\\\",\\\"zipcode\\\":\\\"10013\\\",\\\"timezone\\\":\\\"America/New_York\\\",\\\"latitude\\\":\\\"40.72182\\\",\\\"longitude\\\":\\\"-74.00940\\\",\\\"city\\\":\\\"New York\\\",\\\"continent\\\":\\\"NA\\\"})\",\"requestBody\":null,\"details\":{\"requestId\":\"203\",\"url\":\"https://geolocation.onetrust.com/cookieconsentpub/v1/geo/location/dnsfeed\",\"originUrl\":\"https://www.invasive_site.com/\",\"documentUrl\":\"https://www.invasive_site.com/\",\"method\":\"GET\",\"type\":\"script\",\"tim",
+                        "snippet": "alue\":\"61hc7638492hck71-MLA\"},{\"name\":\"content-encoding\",\"value\":\"gzip\"},{\"name\":\"X-Firefox-Spdy\",\"value\":\"h2\"}],\"responseData\":\"dnsfeed({\\\"country\\\":\\\"US\\\",\\\"region\\\":\\\"NY\\\",\\\"regionName\\\":\\\"New York\\\",\\\"zipcode\\\":\\\"10013\\\",\\\"timezone\\\":\\\"America/New_York\\\",\\\"latitude\\\":\\\"40.72182\\\",\\\"longitude\\\":\\\"-74.00940\\\",\\\"city\\\":\\\"New York\\\",\\\"continent\\\":\\\"NA\\\"})\",\"requestBody\":null,\"details\":{\"requestId\":\"203\",\"url\":\"https://geolocation.onetrust.com/cookieconsentpub/v1/geo/location/dnsfeed\",\"originUrl\":\"https://www.invasive_site.com/\",\"documentUrl\":\"https://www.invasive_site.com/\",\"method\":\"GET\",\"type\":\"script\",\"tim",
                         "requestUrl": "https://geolocation.onetrust.com/cookieconsentpub/v1/geo/location/dnsfeed",
-                        "typ": "state",
+                        "typ": "region",
                         "index": [
                             190,
                             198
@@ -138,13 +138,13 @@
                     }
                 },
                 "invasive_site.com": {
-                    "state": {
+                    "region": {
                         "timestamp": 1627654148121,
                         "permission": "location",
                         "rootUrl": "https://invasive_site.com",
-                        "snippet": "alue\":\"ksue738462hd739f-MLA\"},{\"name\":\"content-encoding\",\"value\":\"gzip\"},{\"name\":\"X-Firefox-Spdy\",\"value\":\"h2\"}],\"responseData\":\"acsfeed({\\\"alkcgek\\\":\\\"12183628463\\\",\\\"acleuxhef\\\":\\\"927d93764yfoc83yr\\\",\\\"country\\\":\\\"US\\\",\\\"state\\\":\\\"NY\\\",\\\"stateName\\\":\\\"New York\\\",\\\"timezone\\\":\\\"America/New_York\\\",\\\"city\\\":\\\"New York\\\",\\\"continent\\\":\\\"NA\\\"})\",\"requestBody\":null,\"details\":{\"requestId\":\"203\",\"url\":\"https://invasive_site.com/achelcuehf/v1/acsfeed\",\"originUrl\":\"https://www.invasive_site.com/\",\"documentUrl\":\"https://www.invasive_site.com/\",\"method\":\"GET\",\"type\":\"script\",\"tim",
+                        "snippet": "alue\":\"ksue738462hd739f-MLA\"},{\"name\":\"content-encoding\",\"value\":\"gzip\"},{\"name\":\"X-Firefox-Spdy\",\"value\":\"h2\"}],\"responseData\":\"acsfeed({\\\"alkcgek\\\":\\\"12183628463\\\",\\\"acleuxhef\\\":\\\"927d93764yfoc83yr\\\",\\\"country\\\":\\\"US\\\",\\\"region\\\":\\\"NY\\\",\\\"regionName\\\":\\\"New York\\\",\\\"timezone\\\":\\\"America/New_York\\\",\\\"city\\\":\\\"New York\\\",\\\"continent\\\":\\\"NA\\\"})\",\"requestBody\":null,\"details\":{\"requestId\":\"203\",\"url\":\"https://invasive_site.com/achelcuehf/v1/acsfeed\",\"originUrl\":\"https://www.invasive_site.com/\",\"documentUrl\":\"https://www.invasive_site.com/\",\"method\":\"GET\",\"type\":\"script\",\"tim",
                         "requestUrl": "https://invasive_site.com/achelcuehf/v1/acsfeed",
-                        "typ": "state",
+                        "typ": "region",
                         "index": [
                             254,
                             262

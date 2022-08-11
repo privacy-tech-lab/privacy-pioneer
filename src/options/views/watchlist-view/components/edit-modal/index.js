@@ -49,8 +49,8 @@ const EditModal = ({ passKeywordType, passKeyword, edit, id, updateList }) => {
     edit ? keyword[typeEnum.streetAddress] ?? null : ""
   )
   const [city, setCity] = useState(edit ? keyword[typeEnum.city] ?? null : "")
-  const [state, setStateloc] = useState(
-    edit ? keyword[typeEnum.state] ?? null : ""
+  const [region, setRegionloc] = useState(
+    edit ? keyword[typeEnum.region] ?? null : ""
   )
   const [zip, setZip] = useState(edit ? keyword[typeEnum.zipCode] ?? null : "")
   const [inputValid, setInputValid] = useState(true)
@@ -70,8 +70,8 @@ const EditModal = ({ passKeywordType, passKeyword, edit, id, updateList }) => {
       case typeEnum.city:
         setCity(value)
         break
-      case typeEnum.state:
-        setStateloc(value)
+      case typeEnum.region:
+        setRegionloc(value)
         break
       case typeEnum.zipCode:
         setZip(value)
@@ -112,7 +112,7 @@ const EditModal = ({ passKeywordType, passKeyword, edit, id, updateList }) => {
             <SDropdown
               ref={dropdownRef}
               onClick={() => {
-                setDropdown((state) => !state)
+                setDropdown((region) => !region)
               }}
             >
               <SDropdownOptions show={showDropdown}>
@@ -149,7 +149,7 @@ const EditModal = ({ passKeywordType, passKeyword, edit, id, updateList }) => {
             <AddressForm
               onChange={handleAddressChange}
               city={city}
-              state={state}
+              region={region}
               zip={zip}
               streetAddress={address}
             />
@@ -168,9 +168,9 @@ const EditModal = ({ passKeywordType, passKeyword, edit, id, updateList }) => {
                   key = {
                     [typeEnum.streetAddress]: address,
                     [typeEnum.zipCode]: zip,
-                    [typeEnum.state]: state,
+                    [typeEnum.region]: region,
                     [typeEnum.city]: city,
-                    display: `${address}, ${city}, ${state} ${zip}`,
+                    display: `${address}, ${city}, ${region} ${zip}`,
                   }
                 } else {
                   key = keyword
@@ -182,7 +182,7 @@ const EditModal = ({ passKeywordType, passKeyword, edit, id, updateList }) => {
                     keywordType,
                     setInputValid,
                     setKeyType,
-                    state,
+                    region,
                     city,
                     zip,
                     address,

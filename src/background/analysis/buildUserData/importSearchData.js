@@ -11,7 +11,7 @@ both the URL and the keyword list for words and URLs to look for in the
 network requests
 */
 import { getLocationData, filterGeocodeResponse } from "./getLocationData.js"
-import { buildPhone, getState, buildIpRegex, buildZipRegex, stateObj, buildGeneralRegex } from './structuredRoutines.js'
+import { buildPhone, getRegion, buildIpRegex, buildZipRegex, regionObj, buildGeneralRegex } from './structuredRoutines.js'
 import { typeEnum, permissionEnum, settingsModelsEnum, KeywordObject } from "../classModels.js"
 import {setEmail, digestMessage, hexToBase64} from '../requestAnalysis/encodedEmail.js';
 import { getWatchlistDict, hashUserDictValues, createKeywordObj } from "./structureUserData.js";
@@ -77,41 +77,41 @@ async function importData() {
 
     if (typeEnum.zipCode in user_store_dict) {
         const userZip = user_store_dict[typeEnum.zipCode]
-        var userStateArr = []
+        var userRegionArr = []
         var userZipArr = []
         userZip.forEach( zip => {
             const locHash = zip[1]
             const zipRegex = buildZipRegex(zip[0])
             const zipObj = new KeywordObject({keyword: zipRegex, keywordHash: locHash})
             userZipArr.push(zipObj)
-            let abrev, state;
+            let abrev, region;
             
-            // try to get the state from the zip
-            const stArr = getState(zip[0])
+            // try to get the region from the zip
+            const stArr = getRegion(zip[0])
             if (typeof(stArr) !== 'undefined') {
-                [abrev, state] = stArr
-                userStateArr.push(new KeywordObject({keyword: state, keywordHash: locHash})) 
+                [abrev, region] = stArr
+                userRegionArr.push(new KeywordObject({keyword: region, keywordHash: locHash})) 
             }
         } )
-        if ( userStateArr === undefined || userStateArr.length == 0 ) {
+        if ( userRegionArr === undefined || userRegionArr.length == 0 ) {
             // invalid zip input
         }
-        else { locElems[typeEnum.state] = userStateArr }
+        else { locElems[typeEnum.region] = userRegionArr }
 
         locElems[typeEnum.zipCode] = userZipArr
     }
 
-    if (typeEnum.state in user_store_dict) {
+    if (typeEnum.region in user_store_dict) {
         // init the arr if we didn't grab it from the zip above
-        if (!(typeEnum.state in locElems)) {
-            locElems[typeEnum.state] = []
+        if (!(typeEnum.region in locElems)) {
+            locElems[typeEnum.region] = []
         }
 
-        const userState = user_store_dict[typeEnum.state]
-        userState.forEach( state => {
-            for (const [abrev, regex] of Object.entries(stateObj)) {
-                if (abrev == state[0] && !locElems[typeEnum.state].includes(abrev)) {
-                    locElems[typeEnum.state].push(new KeywordObject({keyword: regex, keywordHash: state[1]}))
+        const userRegion = user_store_dict[typeEnum.region]
+        userRegion.forEach( region => {
+            for (const [abrev, regex] of Object.entries(regionObj)) {
+                if (abrev == region[0] && !locElems[typeEnum.region].includes(abrev)) {
+                    locElems[typeEnum.region].push(new KeywordObject({keyword: regex, keywordHash: region[1]}))
                 }
             }
         })
