@@ -64,7 +64,7 @@ function buildPhone(userNumber) {
  * Used in importSearch.js
  *
  * @param {string} zipString
- * @returns {Array<any>|Array<undefined>} An array containing [undefined, undefined] if invalid input, or [st abrev string, state regex] if valid input
+ * @returns {Array<any>|Array<undefined>} An array containing [undefined, undefined] if invalid input, or [st abrev string, region regex] if valid input
  */
  function getRegion(zipString) {
 
@@ -84,7 +84,7 @@ function buildPhone(userNumber) {
     let st;
     let region;
 
-    /* Code cases alphabetized by state [region] */
+    /* Code cases alphabetized by region */
     if (zipcode >= 35000 && zipcode <= 36999) {
         st = 'AL';
         region = /Alabama/i;
