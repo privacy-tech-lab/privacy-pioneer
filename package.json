@@ -19,6 +19,7 @@
     }
   },
   "dependencies": {
+    "async": "^3.2.4",
     "bootstrap": "^5.0.0",
     "framer-motion": "^4.0.3",
     "glob-parent": "^6.0.2",
