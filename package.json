@@ -21,6 +21,7 @@
   "dependencies": {
     "bootstrap": "^5.0.0",
     "framer-motion": "^4.0.3",
+    "glob-parent": "^6.0.2",
     "google-libphonenumber": "^3.2.19",
     "got": "^12.3.1",
     "idb": "^6.0.0",
