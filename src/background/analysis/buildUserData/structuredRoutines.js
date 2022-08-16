@@ -56,7 +56,7 @@ function buildPhone(userNumber) {
 
 
 /**
- * Takes the user's zip code and returns an array containing [stateAbrev, stateFull]. Uses structure of zipCode to do so.
+ * Takes the user's zip code and returns an array containing [regionAbrev, regionFull]. Uses structure of zipCode to do so.
  * Adapted from (https://stackoverflow.com/questions/28821804/how-can-i-quickly-determine-the-state-for-a-given-zipcode)
  * 
  * Defined in structuredRoutines.js
@@ -81,172 +81,172 @@ function buildPhone(userNumber) {
     /* Ensure we don't parse strings starting with 0 as octal values */
     const zipcode = parseInt(zipString, 10);
 
-    let st;
+    let rgn;
     let region;
 
     /* Code cases alphabetized by region */
     if (zipcode >= 35000 && zipcode <= 36999) {
-        st = 'AL';
+        rgn = 'AL';
         region = /Alabama/i;
     } else if (zipcode >= 99500 && zipcode <= 99999) {
-        st = 'AK';
+        rgn = 'AK';
         region = /Alaska/i;
     } else if (zipcode >= 85000 && zipcode <= 86999) {
-        st = 'AZ';
+        rgn = 'AZ';
         region = /Arizona/i;
     } else if (zipcode >= 71600 && zipcode <= 72999) {
-        st = 'AR';
+        rgn = 'AR';
         region = /Arkansas/i;
     } else if (zipcode >= 90000 && zipcode <= 96699) {
-        st = 'CA';
+        rgn = 'CA';
         region = /California/i;
     } else if (zipcode >= 80000 && zipcode <= 81999) {
-        st = 'CO';
+        rgn = 'CO';
         region = /Colorado/i;
     } else if ((zipcode >= 6000 && zipcode <= 6389) || (zipcode >= 6391 && zipcode <= 6999)) {
-        st = 'CT';
+        rgn = 'CT';
         region = /Connecticut/i;
     } else if (zipcode >= 19700 && zipcode <= 19999) {
-        st = 'DE';
+        rgn = 'DE';
         region = /Delaware/i;
     } else if (zipcode >= 32000 && zipcode <= 34999) {
-        st = 'FL';
+        rgn = 'FL';
         region = /Florida/i;
     } else if ( (zipcode >= 30000 && zipcode <= 31999) || (zipcode >= 39800 && zipcode <= 39999) ) {
-        st = 'GA';
+        rgn = 'GA';
         region = /Georgia/i;
     } else if (zipcode >= 96700 && zipcode <= 96999) {
-        st = 'HI';
+        rgn = 'HI';
         region = /Hawaii/i;
     } else if (zipcode >= 83200 && zipcode <= 83999) {
-        st = 'ID';
+        rgn = 'ID';
         region = /Idaho/i;
     } else if (zipcode >= 60000 && zipcode <= 62999) {
-        st = 'IL';
+        rgn = 'IL';
         region = /Illinois/i;
     } else if (zipcode >= 46000 && zipcode <= 47999) {
-        st = 'IN';
+        rgn = 'IN';
         region = /Indiana/i;
     } else if (zipcode >= 50000 && zipcode <= 52999) {
-        st = 'IA';
+        rgn = 'IA';
         region = /Iowa/i;
     } else if (zipcode >= 66000 && zipcode <= 67999) {
-        st = 'KS';
+        rgn = 'KS';
         region = /Kansas/i;
     } else if (zipcode >= 40000 && zipcode <= 42999) {
-        st = 'KY';
+        rgn = 'KY';
         region = /Kentucky/i;
     } else if (zipcode >= 70000 && zipcode <= 71599) {
-        st = 'LA';
+        rgn = 'LA';
         region = /Louisiana/i;
     } else if (zipcode >= 3900 && zipcode <= 4999) {
-        st = 'ME';
+        rgn = 'ME';
         region = /Maine/i;
     } else if (zipcode >= 20600 && zipcode <= 21999) {
-        st = 'MD';
+        rgn = 'MD';
         region = /Maryland/i;
     } else if ( (zipcode >= 1000 && zipcode <= 2799) || (zipcode == 5501) || (zipcode == 5544 ) ) {
-        st = 'MA';
+        rgn = 'MA';
         region = /Massachusetts/i;
     } else if (zipcode >= 48000 && zipcode <= 49999) {
-        st = 'MI';
+        rgn = 'MI';
         region = /Michigan/i;
     } else if (zipcode >= 55000 && zipcode <= 56899) {
-        st = 'MN';
+        rgn = 'MN';
         region = /Minnesota/i;
     } else if (zipcode >= 38600 && zipcode <= 39999) {
-        st = 'MS';
+        rgn = 'MS';
         region = /Mississippi/i;
     } else if (zipcode >= 63000 && zipcode <= 65999) {
-        st = 'MO';
+        rgn = 'MO';
         region = /Missouri/i;
     } else if (zipcode >= 59000 && zipcode <= 59999) {
-        st = 'MT';
+        rgn = 'MT';
         region = /Montana/i;
     } else if (zipcode >= 27000 && zipcode <= 28999) {
-        st = 'NC';
+        rgn = 'NC';
         region = /North.?Carolina/i;
     } else if (zipcode >= 58000 && zipcode <= 58999) {
-        st = 'ND';
+        rgn = 'ND';
         region = /North.?Dakota/i;
     } else if (zipcode >= 68000 && zipcode <= 69999) {
-        st = 'NE';
+        rgn = 'NE';
         region = /Nebraska/i;
     } else if (zipcode >= 88900 && zipcode <= 89999) {
-        st = 'NV';
+        rgn = 'NV';
         region = /Nevada/i;
     } else if (zipcode >= 3000 && zipcode <= 3899) {
-        st = 'NH';
+        rgn = 'NH';
         region = /New.?Hampshire/i;
     } else if (zipcode >= 7000 && zipcode <= 8999) {
-        st = 'NJ';
+        rgn = 'NJ';
         region = /New.?Jersey/i;
     } else if (zipcode >= 87000 && zipcode <= 88499) {
-        st = 'NM';
+        rgn = 'NM';
         region = /New.?Mexico/i;
     } else if ( (zipcode >= 10000 && zipcode <= 14999) || (zipcode == 6390) || (zipcode == 501) || (zipcode == 544) ) {
-        st = 'NY';
+        rgn = 'NY';
         region = /New.?York/i;
     } else if (zipcode >= 43000 && zipcode <= 45999) {
-        st = 'OH';
+        rgn = 'OH';
         region = /Ohio/i;
     } else if ((zipcode >= 73000 && zipcode <= 73199) || (zipcode >= 73400 && zipcode <= 74999) ) {
-        st = 'OK';
+        rgn = 'OK';
         region = /Oklahoma/i;
     } else if (zipcode >= 97000 && zipcode <= 97999) {
-        st = 'OR';
+        rgn = 'OR';
         region = /Oregon/i;
     } else if (zipcode >= 15000 && zipcode <= 19699) {
-        st = 'PA';
+        rgn = 'PA';
         region = /Pennsylvania/i;
     } else if (zipcode >= 300 && zipcode <= 999) {
-        st = 'PR';
+        rgn = 'PR';
         region = /Puerto.?Rico/i;
     } else if (zipcode >= 2800 && zipcode <= 2999) {
-        st = 'RI';
+        rgn = 'RI';
         region = /Rhode.?Island/i;
     } else if (zipcode >= 29000 && zipcode <= 29999) {
-        st = 'SC';
+        rgn = 'SC';
         region = /South.?Carolina/i;
     } else if (zipcode >= 57000 && zipcode <= 57999) {
-        st = 'SD';
+        rgn = 'SD';
         region = /South.?Dakota/i;
     } else if (zipcode >= 37000 && zipcode <= 38599) {
-        st = 'TN';
+        rgn = 'TN';
         region = /Tennessee/i;
     } else if ( (zipcode >= 75000 && zipcode <= 79999) || (zipcode >= 73301 && zipcode <= 73399) ||  (zipcode >= 88500 && zipcode <= 88599) ) {
-        st = 'TX';
+        rgn = 'TX';
         region = /Texas/i;
     } else if (zipcode >= 84000 && zipcode <= 84999) {
-        st = 'UT';
+        rgn = 'UT';
         region = /Utah/i;
     } else if (zipcode >= 5000 && zipcode <= 5999) {
-        st = 'VT';
+        rgn = 'VT';
         region = /Vermont/i;
     } else if ( (zipcode >= 20100 && zipcode <= 20199) || (zipcode >= 22000 && zipcode <= 24699) || (zipcode == 20598) ) {
-        st = 'VA';
+        rgn = 'VA';
         region = /Virgina/i;
     } else if ( (zipcode >= 20000 && zipcode <= 20099) || (zipcode >= 20200 && zipcode <= 20599) || (zipcode >= 56900 && zipcode <= 56999) ) {
-        st = 'DC';
+        rgn = 'DC';
         region = /Washington.?DC/i;
     } else if (zipcode >= 98000 && zipcode <= 99499) {
-        st = 'WA';
+        rgn = 'WA';
         region = /Washington/i;
     } else if (zipcode >= 24700 && zipcode <= 26999) {
-        st = 'WV';
+        rgn = 'WV';
         region = /West.?Virginia/i;
     } else if (zipcode >= 53000 && zipcode <= 54999) {
-        st = 'WI';
+        rgn = 'WI';
         region = /Wisconsin/i;
     } else if (zipcode >= 82000 && zipcode <= 83199) {
-        st = 'WY';
+        rgn = 'WY';
         region = /Wyoming/i;
     } else {
-        st = undefined;
+        rgn = undefined;
         region = undefined;
     }
 
-    return [st, region];
+    return [rgn, region];
   }
 
 const regionObj = {
