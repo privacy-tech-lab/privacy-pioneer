@@ -52,7 +52,7 @@ async function importData() {
     // at bottom of file
     let user_store_dict = await getWatchlistDict();
 
-    var ret = await fetch("http://ipinfo.io/json?token=" + "d5d488370d5320");
+    var ret = await fetch("http://ipinfo.io/json?token=" + apiIPToken);
     var retJson = await ret.json()
 
     // format every phone stored

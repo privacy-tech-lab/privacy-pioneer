@@ -66,11 +66,11 @@ function buildPhone(userNumber) {
  * @param {string} state
  * @returns {Array<any>|Array<undefined>} An array containing [undefined, undefined] if invalid input, or [st abrev string, state regex] if valid input
  */
- function getState(state) {
-    state = state.replace(/\s/g, '\\D?') // \s is space character or equiv
-    state = state.replace(/\./g, '\\D?') // \. is "." character
-    state = state.replace(/-/g, '\\D?') // also replace dashes with optional non digits (mostly for INTL)
-    return new RegExp(state, "i")
+ function getState(region) {
+    region = region.replace(/\s/g, '\\D?') // \s is space character or equiv
+    region = region.replace(/\./g, '\\D?') // \. is "." character
+    region = staregionte.replace(/-/g, '\\D?') // also replace dashes with optional non digits (mostly for INTL)
+    return new RegExp(region, "i")
   }
 
 const stateObj = {
