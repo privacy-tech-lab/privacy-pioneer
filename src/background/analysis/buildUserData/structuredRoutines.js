@@ -69,7 +69,7 @@ function buildPhone(userNumber) {
  function getState(region) {
     region = region.replace(/\s/g, '\\D?') // \s is space character or equiv
     region = region.replace(/\./g, '\\D?') // \. is "." character
-    region = staregionte.replace(/-/g, '\\D?') // also replace dashes with optional non digits (mostly for INTL)
+    region = region.replace(/-/g, '\\D?') // also replace dashes with optional non digits (mostly for INTL)
     return new RegExp(region, "i")
   }
 
