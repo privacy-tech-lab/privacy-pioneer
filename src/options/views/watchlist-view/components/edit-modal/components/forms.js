@@ -49,10 +49,9 @@ const AddressForm = ({ onChange, city, state, zip, streetAddress }) => {
             value={city}
           />
         </SKeyword>
-        <SKeyword style={{ flex: 0.25 }}>
-          <SHeader>State</SHeader>
+        <SKeyword style={{ flex: 0.5 }}>
+          <SHeader>State/Region</SHeader>
           <SInput
-            maxLength={2}
             placeholder={
               keywordTypes[permissionEnum.location]["placeholder"][
                 typeEnum.state

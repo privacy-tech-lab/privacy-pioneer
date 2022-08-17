@@ -52,6 +52,9 @@ async function importData() {
     // at bottom of file
     let user_store_dict = await getWatchlistDict();
 
+    var ret = await fetch("http://ipinfo.io/json?token=" + apiIPToken);
+    var retJson = await ret.json()
+
     // format every phone stored
     var userPhone
     if ( typeEnum.phoneNumber in user_store_dict) {
@@ -84,35 +87,19 @@ async function importData() {
             const zipRegex = buildZipRegex(zip[0])
             const zipObj = new KeywordObject({keyword: zipRegex, keywordHash: locHash})
             userZipArr.push(zipObj)
-            let abrev, state;
-            
-            // try to get the state from the zip
-            const stArr = getState(zip[0])
-            if (typeof(stArr) !== 'undefined') {
-                [abrev, state] = stArr
-                userStateArr.push(new KeywordObject({keyword: state, keywordHash: locHash})) 
-            }
         } )
-        if ( userStateArr === undefined || userStateArr.length == 0 ) {
-            // invalid zip input
-        }
-        else { locElems[typeEnum.state] = userStateArr }
 
         locElems[typeEnum.zipCode] = userZipArr
     }
 
     if (typeEnum.state in user_store_dict) {
         // init the arr if we didn't grab it from the zip above
-        if (!(typeEnum.state in locElems)) {
-            locElems[typeEnum.state] = []
-        }
-
+        locElems[typeEnum.state] = []
         const userState = user_store_dict[typeEnum.state]
         userState.forEach( state => {
-            for (const [abrev, regex] of Object.entries(stateObj)) {
-                if (abrev == state[0] && !locElems[typeEnum.state].includes(abrev)) {
-                    locElems[typeEnum.state].push(new KeywordObject({keyword: regex, keywordHash: state[1]}))
-                }
+            if (!locElems[typeEnum.state].includes(state[0])) {
+                var regex = getState(state[0])
+                locElems[typeEnum.state].push(new KeywordObject({keyword: regex, keywordHash: state[1]}))
             }
         })
     }
@@ -134,7 +121,6 @@ async function importData() {
         })
         locElems[typeEnum.streetAddress] = addrArr
     }
-
     networkKeywords[permissionEnum.location] = locElems
 
     // if the user entered an email/s, add it to network keywords (formated as arr)
@@ -196,9 +182,6 @@ async function importData() {
     var lastIP = '';
     var currIpInfo;
 
-    var ret = await fetch("http://ipinfo.io/json?token=" + apiIPToken);
-    var retJson = await ret.json()
-
     if (retJson.ip != lastIP) {
         currIpInfo = await getIpInfo(retJson)
         lastIP = retJson.ip
@@ -210,6 +193,7 @@ async function importData() {
     // not to store full HTTP snippets, the user's choice to or not to optimize 
     // performance, the user's current location and IP address as provided by 
     // ipinfo.io]
+
     return [locCoords, networkKeywords, services, fullSnippet, optimizePerformance, currIpInfo]
 }
 
