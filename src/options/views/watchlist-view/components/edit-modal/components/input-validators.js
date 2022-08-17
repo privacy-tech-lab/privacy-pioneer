@@ -97,7 +97,7 @@ const validate = ({
       badInput("zip code")
       return false
     }
-    if (!(region == undefined || region in regoinObj)) {
+    if (!(region == undefined || region in regionObj)) {
       badInput("region abbreviation")
       return false
     }
