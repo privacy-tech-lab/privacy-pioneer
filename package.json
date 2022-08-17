@@ -19,6 +19,7 @@
     }
   },
   "dependencies": {
+    "ansi-html": "^0.0.9",
     "ansi-regex": "^6.0.1",
     "async": "^3.2.4",
     "bootstrap": "^5.0.0",
