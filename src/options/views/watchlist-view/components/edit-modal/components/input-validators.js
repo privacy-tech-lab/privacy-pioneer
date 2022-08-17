@@ -97,17 +97,11 @@ const validate = ({
       badInput("zip code")
       return false
     }
-    if (!(region == undefined || region in regionObj)) {
-      badInput("region abbreviation")
+    /*
+    if (!(state == undefined || state in stateObj)) {
+      badInput("state abbreviation")
       return false
-    }
-    if (zip != undefined && region != undefined) {
-      const st = getRegion(zip)
-      if (typeof(st) != "undefined" && st[0] != region) {
-        badInput("region / zip combination")
-        return false
-      }
-    }
+    } */
     if (!inputValidator.city_address.test(city)) {
       badInput("city")
       return false
