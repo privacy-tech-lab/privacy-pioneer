@@ -106,7 +106,7 @@ Privacy Pioneer is analyzing the following privacy practices for each first and 
   - ZIP Code
   - Street Address
   - City
-  - State
+  - Region
 - Tracking
   - Tracking Pixel
   - IP Address

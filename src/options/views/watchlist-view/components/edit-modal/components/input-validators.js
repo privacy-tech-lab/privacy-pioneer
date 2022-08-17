@@ -8,8 +8,8 @@ import {
   permissionEnum,
 } from "../../../../../../background/analysis/classModels.js"
 import {
-  stateObj,
-  getState,
+  regionObj,
+  getRegion,
 } from "../../../../../../background/analysis/buildUserData/structuredRoutines.js"
 // allows for input validation of items a user is attempting to add to their watch list
 
@@ -44,7 +44,7 @@ const validate = ({
   setInputValid,
   setKeyType,
   city,
-  state,
+  region,
   zip,
   address,
 }) => {

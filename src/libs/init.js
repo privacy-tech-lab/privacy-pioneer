@@ -6,7 +6,7 @@ import { filterLabelObject, getPermMapping } from "../options/views/search-view/
 
 /**
  *
- * Sets given states to example data for tour
+ * Sets given regions to example data for tour
  */
 export const tourInit = ({ setTouring, setWebsites, setLabels }) => {
   setTouring(true)
@@ -16,7 +16,7 @@ export const tourInit = ({ setTouring, setWebsites, setLabels }) => {
 }
 
 /**
- * Initializes Home-View states. Makes call to the data base to populate data
+ * Initializes Home-View regions. Makes call to the data base to populate data
  */
 export const homeInit = ({ setWebsites, setLabels, setModal, setTouring }) => {
   getTourStatus().then((res) => {
@@ -46,7 +46,7 @@ export const homeInit = ({ setWebsites, setLabels, setModal, setTouring }) => {
 }
 
 /**
- * Initializes Search-View states. If location.state is not undefined, it
+ * Initializes Search-View regions. If location.region is not undefined, it
  * grabs data from previous page else it calls to the database
  */
 export const searchInit = ({
@@ -69,7 +69,7 @@ export const searchInit = ({
     } else {
       setTouring(false)
       // if we're not passed the getWebsites call from previous:
-      if (location.state === undefined) {
+      if (location.region === undefined) {
         getWebsites().then((websites) => {
           setWebsites(websites)
           setFilteredWebsites(websites)
@@ -80,23 +80,23 @@ export const searchInit = ({
           })
         })
       } else {
-        if (location.state.labeltype === undefined) {
-          setWebsites(location.state.websites)
-          setFilteredWebsites(location.state.websites)
-          setLabels(location.state.labels)
-          setFilteredLabels(location.state.labels)
+        if (location.region.labeltype === undefined) {
+          setWebsites(location.region.websites)
+          setFilteredWebsites(location.region.websites)
+          setLabels(location.region.labels)
+          setFilteredLabels(location.region.labels)
         }
         else {
           // case where we are passed a filter
-          setWebsites(location.state.websites)
-          setLabels(location.state.labels)
-          const filteredLabels = filterLabelObject( location.state.labels, getPermMapping(location.state.labeltype) )
+          setWebsites(location.region.websites)
+          setLabels(location.region.labels)
+          const filteredLabels = filterLabelObject( location.region.labels, getPermMapping(location.region.labeltype) )
 
           // remove websites without labels after filter
           var filteredWebsites = {}
           for (const [perm, siteObject] of Object.entries(filteredLabels)) {
             for (const site of Object.keys(siteObject)){
-              filteredWebsites[site] = location.state.websites[site]
+              filteredWebsites[site] = location.region.websites[site]
             }
           }
           // set values

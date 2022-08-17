@@ -8,7 +8,7 @@ import { filterLabelObject, getPermMapping } from "./components/filterLabels"
 
 /**
  * Combination of filter section and search section
- * Both components need common functions and states
+ * Both components need common functions and regions
  * Broken up in order to increase readability
  */
 const FilterSearch = ({
@@ -34,8 +34,8 @@ const FilterSearch = ({
   const [query, setQuery] = useState("")
   const [companyFilter, setCompanyFilter] = useState(getEmptyCompanyFilter())
   const [permFilter, setPermFilter] = useState(
-    location.state && location.state.labeltype
-      ? getPermMapping(location.state.labeltype)
+    location.region && location.region.labeltype
+      ? getPermMapping(location.region.labeltype)
       : {
           monetization: true,
           location: true,

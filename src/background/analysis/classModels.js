@@ -224,7 +224,7 @@ export const typeEnum = Object.freeze({
   zipCode: "zipCode",
   streetAddress: "streetAddress",
   city: "city",
-  state: "state",
+  region: "region",
 
   // watchlist types
   phoneNumber: "phoneNumber",
@@ -342,9 +342,9 @@ export const keywordTypes = Object.freeze({
         description: "Your City was found in your web traffic.",
         link: "https://myshadow.org/location-tracking",
       },
-      state: {
-        displayName: "State",
-        description: "Your State was found in your web traffic.",
+      region: {
+        displayName: "Region",
+        description: "Your Region was found in your web traffic.",
         link: "https://myshadow.org/location-tracking",
       },
     },

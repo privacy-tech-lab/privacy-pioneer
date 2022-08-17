@@ -56,7 +56,7 @@ function buildPhone(userNumber) {
 
 
 /**
- * Takes the user's zip code and returns an array containing [stateAbrev, stateFull]. Uses structure of zipCode to do so.
+ * Takes the user's zip code and returns an array containing [regionAbrev, regionFull]. Uses structure of zipCode to do so.
  * Adapted from (https://stackoverflow.com/questions/28821804/how-can-i-quickly-determine-the-state-for-a-given-zipcode)
  * 
  * Defined in structuredRoutines.js
@@ -66,14 +66,14 @@ function buildPhone(userNumber) {
  * @param {string} state
  * @returns {Array<any>|Array<undefined>} An array containing [undefined, undefined] if invalid input, or [st abrev string, state regex] if valid input
  */
- function getState(region) {
+ function getRegion(region) {
     region = region.replace(/\s/g, '\\D?') // \s is space character or equiv
     region = region.replace(/\./g, '\\D?') // \. is "." character
     region = region.replace(/-/g, '\\D?') // also replace dashes with optional non digits (mostly for INTL)
     return new RegExp(region, "i")
   }
 
-const stateObj = {
+const regionObj = {
     "AL": /Alabama/i,
     "AK": /Alaska/i,
     "AZ": /Arizona/i,
@@ -204,4 +204,4 @@ function buildGeneralRegex(genString) {
 }
 
 
-export { buildPhone, getState, buildIpRegex, buildZipRegex, stateObj, buildGeneralRegex }
+export { buildPhone, getRegion, buildIpRegex, buildZipRegex, regionObj, buildGeneralRegex }

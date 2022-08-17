@@ -11,7 +11,7 @@ both the URL and the keyword list for words and URLs to look for in the
 network requests
 */
 import { getLocationData, filterGeocodeResponse } from "./getLocationData.js"
-import { buildPhone, getState, buildIpRegex, buildZipRegex, stateObj, buildGeneralRegex } from './structuredRoutines.js'
+import { buildPhone, getRegion, buildIpRegex, buildZipRegex, regionObj, buildGeneralRegex } from './structuredRoutines.js'
 import { typeEnum, permissionEnum, settingsModelsEnum, KeywordObject } from "../classModels.js"
 import {setEmail, digestMessage, hexToBase64} from '../requestAnalysis/encodedEmail.js';
 import { getWatchlistDict, hashUserDictValues, createKeywordObj } from "./structureUserData.js";
@@ -80,7 +80,7 @@ async function importData() {
 
     if (typeEnum.zipCode in user_store_dict) {
         const userZip = user_store_dict[typeEnum.zipCode]
-        var userStateArr = []
+        var userRegionArr = []
         var userZipArr = []
         userZip.forEach( zip => {
             const locHash = zip[1]
@@ -92,7 +92,7 @@ async function importData() {
         locElems[typeEnum.zipCode] = userZipArr
     }
 
-    if (typeEnum.state in user_store_dict) {
+    if (typeEnum.region in user_store_dict) {
         // init the arr if we didn't grab it from the zip above
         locElems[typeEnum.state] = []
         const userState = user_store_dict[typeEnum.state]
