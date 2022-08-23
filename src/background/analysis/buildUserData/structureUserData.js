@@ -26,7 +26,7 @@ async function getWatchlistDict() {
         for (let [t, val] of Object.entries(keywordObject) ) {
             // we have either a type of key or an actual key
             // the multi-line input gets parsed with its own function
-            if (t == permissionEnum.location ) { parseLocationObject(val, user_store_dict, keywordObject.id) }
+            if (t == permissionEnum.location ) {parseLocationObject(val, user_store_dict, keywordObject.id) }
             if (t == 'type') { ktype = val }
             if (t == 'keyword') { keyword = val }
        }
@@ -108,4 +108,4 @@ function hashUserDictValues( networkKeywords ) {
     return networkKeywords
 }
 
-export { getWatchlistDict, hashUserDictValues, createKeywordObj }
+export { getWatchlistDict, hashUserDictValues, createKeywordObj}
