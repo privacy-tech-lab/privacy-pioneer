@@ -29,6 +29,8 @@ import { getHostname } from "../../../background/analysis/utility/util.js"
 import { useHistory } from "react-router"
 import RiseLoader from "react-spinners/RiseLoader"
 import { evidenceDescription, permissionEnum } from "../../../background/analysis/classModels"
+import { sortByTime } from "../label-view"
+import { IPINFO_IPKEY, IPINFO_ADDRESSKEY } from "../../../background/analysis/buildUserData/importSearchData.js"
 
 /**
  * Page view containing current website and identified label cards
@@ -99,6 +101,7 @@ const WebsiteView = () => {
         const host = getHostname(request.data)
         checkOurOptions(request.data)
         getWebsiteLabels(host).then((labels) => {
+          const currentTime = sortByTime(labels)
           var result = {};
           for (const [label, value] of Object.entries(labels)) {
             if (label != permissionEnum.location && label != permissionEnum.tracking){
@@ -106,7 +109,19 @@ const WebsiteView = () => {
             } else {
               for (const [url, typeVal] of Object.entries(value)) {
                 for (const [type, e] of Object.entries(typeVal)) {
-                  if ( !(typeof e['watchlistHash'] === "string" )) {
+
+                  //Check if the evidence has been added recently
+                  var timestamp = currentTime - e["timestamp"] < 1000000
+                  if((e['watchlistHash'] == IPINFO_IPKEY || IPINFO_ADDRESSKEY) && (timestamp)){
+                    if (!(label in result)) {
+                      result[label] = { [url]: { [type]: e } }
+                    } else if (!(url in result[label])) {
+                      result[label][url] = { [type]: e }
+                    } else {
+                      result[label][url][type] = e
+                    }
+                  }
+                  if ( !(typeof e['watchlistHash'] === "string" ) && (timestamp)) {
                     // Add label in data to object
                     if (!(label in result)) {
                       result[label] = { [url]: { [type]: e } }

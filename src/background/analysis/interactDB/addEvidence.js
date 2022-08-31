@@ -147,8 +147,12 @@ function updateFetchedDict(evidenceDict, e) {
       // if type is in the permission
       if (t in evidence[perm]) {
         let hardNo = reqUrl in evidence[perm][t]; //we have exactly this evidence already
-        // if we have less than 5 different reqUrl's for this permission and this is a unique reqUrl, we save the evidence
-        if ( !hardNo) {
+        // if we have the evidence update its timestamp
+        if (hardNo) {
+          evidence[perm][t][reqUrl]["timestamp"] = e["timestamp"]
+        }
+         // if we have less than 5 different reqUrl's for this permission and this is a unique reqUrl, we save the evidence
+        if (!hardNo) {
           evidence[perm][t][reqUrl] = e
         }
         else { return evidence }

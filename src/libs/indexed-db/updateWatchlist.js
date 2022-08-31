@@ -24,7 +24,7 @@ const saveKeyword = async (keyword, type, id) => {
   // Validate
   if (type in keywordTypes && keyword) {
     let key
-    //id == ip when this is the ipinfo generated ip keyword
+    //id == ip || loc when this is the ipinfo generated ip keyword
     if(id == 'ip'){
       key = IPINFO_IPKEY
     }else if (id == 'loc'){

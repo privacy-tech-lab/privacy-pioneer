@@ -118,11 +118,6 @@ function getAllEvidenceForCookies(cookies, rootUrl, reqUrl, userData) {
       executeAndPush(locationKeywordSearch(cookieString, networkKeywords[permissionEnum.location], rootUrl, reqUrl))
     }
 
-    if ( currIpInfo.length != 0 ) {
-      executeAndPush(locationKeywordSearch(cookieString, currIpInfo.locationData, rootUrl, reqUrl))
-      executeAndPush(ipSearch(cookieString, currIpInfo.ip, rootUrl, reqUrl))
-    }
-
   }
 }
 

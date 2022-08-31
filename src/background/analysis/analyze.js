@@ -17,7 +17,6 @@ import { getAllEvidenceForRequest } from "./requestAnalysis/scanHTTP.js";
 import { MAX_BYTE_LEN, MINUTE_MILLISECONDS } from "./constants.js";
 import { getAllEvidenceForCookies } from "./requestAnalysis/scanCookies.js";
 import { getHostname } from "./utility/util.js";
-
 // Temporary container to hold network requests while properties are being added from listener callbacks
 const buffer = {}
 
@@ -40,7 +39,6 @@ const decoder = new TextDecoder("utf-8")
  * @returns {Void} Calls resolveBuffer (in analyze.js)
  */
 const onBeforeRequest = async (details, data) => {
-  
   let request
 
   if (details.requestId in buffer) {
@@ -93,7 +91,6 @@ const onBeforeRequest = async (details, data) => {
       }
     }
   }
-
   // filter = you can now monitor a response before the request is sent
   const filter = browser.webRequest.filterResponseData(details.requestId)
 
@@ -160,7 +157,7 @@ function resolveBuffer(id, data) {
   
   else {
     // I don't think this will ever happen, but just in case, maybe a redirect?
-    console.log(`ERROR: REQUEST WITH ID: ${id} NOT IN BUFFER`)
+    console.log(`ERROR: REQUEST WITH ID: ${id} NOT IN BUFFER: `)
   }
 }
 
@@ -180,9 +177,7 @@ const cookieUrlObject = {}
  * @returns {void} calls a number of functions
  */
 async function analyze(request, userData) {
-
   const allEvidence = getAllEvidenceForRequest(request, userData);
-
   const currentTime = Date.now()
   var allCookieEvidence = []
   
