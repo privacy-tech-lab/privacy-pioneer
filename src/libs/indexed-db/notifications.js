@@ -83,7 +83,7 @@ const notify = async (host) => {
  */
 
 const runNotifications = () => {
-  browser.tabs.onActivated.addListener((activeInfo) => {
+  browser.webNavigation.onDOMContentLoaded.addListener((activeInfo) => {
     browser.tabs.query({ currentWindow: true, active: true }).then((tabs) => {
       const currentTab = tabs[0]
       const host = getHostname(currentTab.url)
