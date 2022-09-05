@@ -12,6 +12,7 @@ import { openDB } from "idb"
     upgrade(db) {
       db.createObjectStore("watchlist")
       db.createObjectStore("userSettings")
+      db.createObjectStore("userAnalytics")
     },
   })
   
@@ -58,6 +59,28 @@ import { openDB } from "idb"
     async values() {
       return (await dbPromise).getAll("userSettings")
     },
+
+    
   }
 
-export { watchlistKeyval, settingsKeyval }
+  const analyticsKeyval = {
+    async get(key) {
+      return (await dbPromise).get("userAnayltics", key)
+    },
+    async set(key, val) {
+      return (await dbPromise).put("userAnalytics", val, key)
+    },
+    async delete(key) {
+      return (await dbPromise).delete("userAnalytics", key)
+    },
+    async clear() {
+      return (await dbPromise).clear("userAnalytics")
+    },
+    async keys() {
+      return (await dbPromise).getAllKeys("userAnalytics")
+    },
+    async values() {
+      return (await dbPromise).getAll("userAnalytics")
+    },
+  }
+export { watchlistKeyval, settingsKeyval, analyticsKeyval }
