@@ -14,7 +14,7 @@ import { keywordTypes } from "../../../../../../background/analysis/classModels"
 /**
  * Form for a user to input their address
  */
-const AddressForm = ({ onChange, city, state, zip, streetAddress }) => {
+const AddressForm = ({ onChange, city, region, zip, streetAddress }) => {
   return (
     <SForm>
       <SKeyword>
@@ -49,17 +49,16 @@ const AddressForm = ({ onChange, city, state, zip, streetAddress }) => {
             value={city}
           />
         </SKeyword>
-        <SKeyword style={{ flex: 0.25 }}>
-          <SHeader>State</SHeader>
+        <SKeyword style={{ flex: 0.5 }}>
+          <SHeader>State/Region</SHeader>
           <SInput
-            maxLength={2}
             placeholder={
               keywordTypes[permissionEnum.location]["placeholder"][
-                typeEnum.state
+                typeEnum.region
               ]
             }
-            onChange={(e) => onChange(typeEnum.state, e.target.value)}
-            value={state}
+            onChange={(e) => onChange(typeEnum.region, e.target.value)}
+            value={region}
           />
         </SKeyword>
 

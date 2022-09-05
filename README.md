@@ -27,7 +27,7 @@ If such a string is sent via an HTTP POST request, it can be concluded that a si
 
 Currently, we only support Firefox.
 
-Privacy Pioneer is developed and maintained by **Daniel Goldelman (@danielgoldelman)**, **Logan Brown (@Lr-Brown)**, **Justin Casler (@JustinCasler)**, and **Sebastian Zimmeck (@SebastianZimmeck)** of the [privacy-tech-lab](https://www.privacytechlab.org/). **Hamza Harkous (@harkous)** is also collaborating with the team on the research. **Owen Kaplan (@notowen333)**, **Rafael Goldstein (@rgoldstein01)**, and **David Baraka (@davebaraka)** contributed earlier.
+Privacy Pioneer is developed and maintained by **Daniel Goldelman (@danielgoldelman)**, **Logan Brown (@Lr-Brown)**, **Justin Casler (@JustinCasler)**, **Judeley Jean-Charles (@jjeancharles)**, and **Sebastian Zimmeck (@SebastianZimmeck)** of the [privacy-tech-lab](https://www.privacytechlab.org/). **Hamza Harkous (@harkous)** is also collaborating with the team on the research. **Owen Kaplan (@notowen333)**, **Rafael Goldstein (@rgoldstein01)**, and **David Baraka (@davebaraka)** contributed earlier.
 
 Contact us with any questions or comments at sebastian@privacytechlab.org.
 
@@ -106,7 +106,7 @@ Privacy Pioneer is analyzing the following privacy practices for each first and 
   - ZIP Code
   - Street Address
   - City
-  - State
+  - Region
 - Tracking
   - Tracking Pixel
   - IP Address

@@ -124,7 +124,7 @@ setDefaultSettings()
  * downloadDelta: https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/API/downloads/onChanged#downloaddelta
  */
 browser.downloads.onChanged.addListener(async function (downloadDelta) {
-  const status = downloadDelta.state.current
+  const status = downloadDelta.region.current
   // if the download is finished, we fetch the url for the download and revoke that object URL
   if (status === "complete" || status === "interrupted") {
     const id = downloadDelta.id

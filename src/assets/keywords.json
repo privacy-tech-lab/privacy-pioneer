@@ -28,7 +28,16 @@
       "ib.adnxs.com",
       "idsync.rlcdn.com",
       "p.brsrvr.com",
-      "adservice.google.com"
+      "adservice.google.com",
+      "googletagmanager.com/gtag/js",
+      "api.thetradedesk.com/v3/",
+      "api2.amplitude.com/2/httpapi",
+      "api2.eu.amplitude.com/2/httpapi",
+      "cdn.heapanalytics.com",
+      "cdn.mxpnl.com/libs/mixpanel-2-latest.min.js",
+      "tags.tiqcdn.com/utag/",
+      "app.pendo.io/api/",
+      "web-sdk.smartlook.com/"
     ]
   },
   "FINGERPRINT": {

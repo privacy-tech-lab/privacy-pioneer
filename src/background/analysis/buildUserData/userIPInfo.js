@@ -17,7 +17,7 @@ async function deleteFromLocation ( ) {
         for (const [perm, typeLevel] of Object.entries(a)) {
             for (const [type, evUrls] of Object.entries(typeLevel)) {
                 for (const [evUrl, evidence] of Object.entries(evUrls)) {
-                    if ((evidence.typ in ['state', 'ipAddress', 'city', 'zipCode']) && !evidence.watchlist) {
+                    if ((evidence.typ in ['region', 'ipAddress', 'city', 'zipCode']) && !evidence.watchlist) {
                     delete a[perm][type][evUrl]
                     }
                 }
@@ -40,9 +40,9 @@ export const getIpInfo = async (retJson) => {
     var curr = {
         'ip': {'keyword': buildIpRegex(retJson.ip), 'watchlistHash': ''},
         'locationData': {
-            'city': [{'keyword': retJson.city, 'watchlistHash': ''}],
-            'state': [{'keyword': buildGeneralRegex(retJson.region), 'watchlistHash': ''}],
-            'zipCode': [{'keyword': buildZipRegex(retJson.postal), 'watchlistHash': ''}]
+            'city': [{'keyword': retJson.city, 'watchlistHash': ""}],
+            'state': [{'keyword': buildGeneralRegex(retJson.region), 'watchlistHash': ""}],
+            'zipCode': [{'keyword': buildZipRegex(retJson.postal), 'watchlistHash': ""}]
         }
     };
     return curr

@@ -8,7 +8,7 @@ import { filterLabelObject, getPermMapping } from "./components/filterLabels"
 
 /**
  * Combination of filter section and search section
- * Both components need common functions and states
+ * Both components need common functions and regions
  * Broken up in order to increase readability
  */
 const FilterSearch = ({
@@ -34,8 +34,8 @@ const FilterSearch = ({
   const [query, setQuery] = useState("")
   const [companyFilter, setCompanyFilter] = useState(getEmptyCompanyFilter())
   const [permFilter, setPermFilter] = useState(
-    location.state && location.state.labeltype
-      ? getPermMapping(location.state.labeltype)
+    location.region && location.region.labeltype
+      ? getPermMapping(location.region.labeltype)
       : {
           monetization: true,
           location: true,
@@ -48,7 +48,7 @@ const FilterSearch = ({
    * Filter websites based on user input string from text field
    * @param {string} keyString string the user entered
    */
-  const filter = (keyString, filtered) => {
+  const filter = (keyString) => {
     keyString = removeLeadingWhiteSpace(keyString).toLowerCase()
 
     const filteredKeys = Object.keys(websites).filter((k) =>
@@ -58,13 +58,11 @@ const FilterSearch = ({
     for (const [perm, websiteLevel] of Object.entries(labels)) {
       if (
         Object.keys(websiteLevel).length > 0 &&
-        permFilter[perm] &&
-        Object.keys(filtered).includes(perm)
+        permFilter[perm] //checks that the permission is currently toggled on in the filter 
       ) {
         for (const website of Object.keys(websiteLevel)) {
           if (
-            filteredKeys.includes(website) &&
-            Object.keys(filtered[perm]).includes(website)
+            filteredKeys.includes(website) 
           )
             filteredWebsites[website] = websites[website]
         }

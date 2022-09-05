@@ -153,7 +153,7 @@ export const ExportData = () => {
   return (
     <SExportSection>
       <SDropdown
-        onClick={() => setDropdown((state) => !state)}
+        onClick={() => setDropdown((region) => !region)}
         ref={dropdownRef}
       >
         <SDropdownOptions show={showDropdown}>
