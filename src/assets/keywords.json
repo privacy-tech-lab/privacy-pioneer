@@ -37,7 +37,14 @@
       "cdn.mxpnl.com/libs/mixpanel-2-latest.min.js",
       "tags.tiqcdn.com/utag/",
       "app.pendo.io/api/",
-      "web-sdk.smartlook.com/"
+      "web-sdk.smartlook.com/",
+      "js-tag.zemanta.com/zcpt.js",
+      "connect.facebook.net/en_US/fbevents.js",
+      "static.ads-twitter.com/uwt.js",
+      "bat.bing.com/bat.js",
+      "trackingjs.com",
+      "analytics.tiktok.com/i18n/pixel/events.js",
+      "api.trackingmore.com"
     ]
   },
   "FINGERPRINT": {
