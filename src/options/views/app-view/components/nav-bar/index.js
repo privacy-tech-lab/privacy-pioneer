@@ -36,6 +36,15 @@ const NavBar = () => {
     }
   }
 
+  /**
+ * Notification for button clicked
+ */
+
+  const handleClick = (item) => {
+    console.log(item);
+  }
+
+
   useEffect(() => {
     if (history.location.pathname.includes("/watchlist")) {
       setTab(1)
@@ -51,7 +60,7 @@ const NavBar = () => {
   return (
     <SNavBar>
       <SLeading>
-        <SLeadingContainer onClick={() => configureRoute("/")}>
+        <SLeadingContainer onClick={() => {configureRoute("/"); handleClick('Privacy Pioneer Logo was clicked (Not sure how important this is)')}}>
           <SBrandIcon src={logo} alt="Logo" />
           <SBrandTitle>Privacy Pioneer</SBrandTitle>
         </SLeadingContainer>
@@ -59,7 +68,7 @@ const NavBar = () => {
       <STrailing id="navbarTour">
         <SNavAction
           active={tab === 0}
-          onClick={() => configureRoute("/")}
+          onClick={() => {configureRoute("/"); handleClick('Home Button in Extension Page was clicked')}}
           data-place="bottom"
           data-tip="See your recent browsing history and all generated labels"
         >
@@ -68,7 +77,7 @@ const NavBar = () => {
         </SNavAction>
         <SNavAction
           active={tab === 1}
-          onClick={() => configureRoute("/watchlist")}
+          onClick={() => {configureRoute("/watchlist"); handleClick('Watchlist in Extension Page clicked')}}
           data-place="bottom"
           data-tip="Enter personal keywords that Privacy Pioneer will look out for while you browse"
         >
@@ -77,7 +86,7 @@ const NavBar = () => {
         </SNavAction>
         <SNavAction
           active={tab === 2}
-          onClick={() => configureRoute("/settings")}
+          onClick={() => {configureRoute("/settings"); handleClick('Settings in Extension Page was clicked')}}
           data-place="bottom"
           data-tip="Control Privacy Pioneer’s settings"
         >
@@ -86,7 +95,7 @@ const NavBar = () => {
         </SNavAction>
         <SNavAction
           active={tab === 3}
-          onClick={() => configureRoute("/about")}
+          onClick={() => {configureRoute("/about"); handleClick('About Button in Extension was clicked')}}
           data-place="bottom"
           data-tip="About Privacy Pioneer"
         >

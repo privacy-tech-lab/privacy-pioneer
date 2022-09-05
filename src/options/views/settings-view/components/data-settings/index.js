@@ -32,6 +32,14 @@ import { initiateDownload } from "../../../../../libs/exportData/initiateDownloa
 import { exportTypeEnum } from "../../../../../background/analysis/classModels.js"
 
 /**
+ * Notification for button clicked
+ */
+
+ const handleClick = (item) => {
+  console.log(item);
+}
+
+/**
  * Toggles whether the user views the full snippet of evidence
  */
 export const FullSnippetToggle = () => {
@@ -52,7 +60,7 @@ export const FullSnippetToggle = () => {
     <SSnippetToggle>
       <ToggleSwitch
         isActive={snippetStatus}
-        onClick={() => toggle()}
+        onClick={() => {toggle(); handleClick('Save Full HTTP Request Clicked')}}
         label={"Save Full HTTP Requests"}
         spaceBetween
       />
@@ -81,7 +89,7 @@ export const OptimizationToggle = () => {
     <SSnippetToggle>
       <ToggleSwitch
         isActive={optimizationStatus}
-        onClick={() => toggleOptimize()}
+        onClick={() => {toggleOptimize(); handleClick('Optimize Button Clicked')}}
         label={"Optimize Performance"}
         spaceBetween
       />
@@ -124,7 +132,7 @@ export const LabelToggle = () => {
       {Object.values(permissionEnum).map((label) => (
         <ToggleSwitch
           isActive={labelStatus[label]}
-          onClick={() => toggle(label)}
+          onClick={() => {toggle(label); handleClick('Label Toggle [{label}] clicked')}}
           label={label.charAt(0).toUpperCase() + label.slice(1)}
           key={label}
           spaceBetween
@@ -153,7 +161,7 @@ export const ExportData = () => {
   return (
     <SExportSection>
       <SDropdown
-        onClick={() => setDropdown((region) => !region)}
+        onClick={() => {setDropdown((region) => !region); handleClick('Export Data Time Dropdown')}}
         ref={dropdownRef}
       >
         <SDropdownOptions show={showDropdown}>
@@ -162,6 +170,7 @@ export const ExportData = () => {
               onClick={() => {
                 setTimeRange(timestamp)
                 setTitle(title)
+                handleClick('Export Data time was picked')
               }}
               key={title}
             >
@@ -177,12 +186,16 @@ export const ExportData = () => {
       <SExportButton
         onClick={() => {
           initiateDownload(exportTypeEnum.TSV, timeRange)
+          handleClick('TSV Download Clicked')
         }}
       >
         TSV
       </SExportButton>
       <SExportButton
-        onClick={() => initiateDownload(exportTypeEnum.JSON, timeRange)}
+        onClick={() => {
+          initiateDownload(exportTypeEnum.JSON, timeRange)
+          handleClick('JSON Download Clicked')
+        }}
       >
         JSON
       </SExportButton>

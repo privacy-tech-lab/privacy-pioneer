@@ -29,6 +29,16 @@ const SThemeIcon = styled(motion.div)`
     props.theme == props.selTheme ? "5px solid #6b219f" : null};
   border-radius: 50%;
 `
+
+  /**
+* Notification for button clicked
+*/
+
+const handleClick = (item) => {
+  console.log(item);
+}
+
+
 /**
  * Theming section for Settings View
  */
@@ -53,7 +63,7 @@ export const ThemeSelection = ({ changeTheme }) => {
         selTheme={selTheme}
         theme={settingsEnum.light}
         whileHover={{ scale: 1.1 }}
-        onTap={() => setETheme(settingsEnum.light)}
+        onTap={() => {setETheme(settingsEnum.light); handleClick('Light Theme was Clicked')}}
       >
         <Icons.Sun size={48} />
       </SThemeIcon>
@@ -61,7 +71,7 @@ export const ThemeSelection = ({ changeTheme }) => {
         selTheme={selTheme}
         theme={settingsEnum.dark}
         whileHover={{ scale: 1.1 }}
-        onTap={() => setETheme(settingsEnum.dark)}
+        onTap={() => {setETheme(settingsEnum.dark); handleClick('Dark Theme Setting Clicked')}}
       >
         <Icons.Moon size={48} />
       </SThemeIcon>
@@ -69,7 +79,7 @@ export const ThemeSelection = ({ changeTheme }) => {
         theme={settingsEnum.sameAsSystem}
         selTheme={selTheme}
         whileHover={{ scale: 1.1 }}
-        onTap={() => setETheme(settingsEnum.sameAsSystem)}
+        onTap={() => {setETheme(settingsEnum.sameAsSystem); handleClick('Same as System Theme was Clicked')}}
       >
         <Icons.Settings size={48} />
       </SThemeIcon>

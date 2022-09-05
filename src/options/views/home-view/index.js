@@ -35,6 +35,15 @@ const HomeView = () => {
 
   const entries = Object.entries(websites)
 
+  /**
+ * Notification for button clicked
+ */
+
+  const handleClick = (item) => {
+    console.log(item);
+  }
+
+
   useEffect(() => {
     ReactTooltip.hide()
     homeInit({
@@ -82,6 +91,7 @@ const HomeView = () => {
                   pathname: "/search",
                   region: { websites: websites, labels: labels },
                 })
+                handleClick('See All History Button was Clicked'),
                 ReactTooltip.hide()
               }}
               data-place="left"

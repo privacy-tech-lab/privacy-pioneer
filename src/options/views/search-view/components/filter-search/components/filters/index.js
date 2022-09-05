@@ -5,6 +5,14 @@ import { permissionEnum } from "../../../../../../../background/analysis/classMo
 import * as Icons from "../../../../../../../libs/icons"
 
 /**
+ * Notification for button clicked
+ */
+
+const handleClick = (item) => {
+  console.log(item);
+}
+
+/**
  * Filters for search view page. This includes Permissions and stored companies. Adjusts
  * listed websites and permissions depending on selected filters
  */
@@ -37,8 +45,9 @@ const Filters = ({
           <SFilterRowItem
             onClick={() => {
               permFilter[permission] = !permFilter[permission]
-              setPermFilter(permFilter)
               filterLabels()
+              setPermFilter(permFilter)
+              handleClick('Filter [Monetization.....] clicked')
             }}
             key={permission}
             highlight={permFilter[permission]}
@@ -50,6 +59,7 @@ const Filters = ({
         <SFilterRowItem
           onClick={() => {
             setShowCompanies(!showCompanies)
+            handleClick('Companies button clicked')
           }}
           key={"Companies"}
           highlight={showCompanies}
@@ -79,6 +89,8 @@ const Filters = ({
                 setPermFilter(permFilter)
                 setCompanyFilter(companyFilter)
                 filterLabels()
+                handleClick('Reset Filter Chosen')
+                
               }}
             >
               Reset Filter
@@ -93,6 +105,7 @@ const Filters = ({
               companyFilter[parent] = !companyFilter[parent]
               setCompanyFilter(companyFilter)
               filterLabels()
+              handleClick('Company Logo Clicked')
             }}
             key={parent}
             highlight={companyFilter[parent]}

@@ -89,6 +89,16 @@ const WebsiteView = () => {
     }
   }
 
+  /**
+* Notification for button clicked
+*/
+
+  const handleClick = (item) => {
+    console.log(item);
+  }
+
+
+
   useEffect(() => {
     /**
      * Send message to background page to get url of active tab
@@ -101,12 +111,12 @@ const WebsiteView = () => {
         getWebsiteLabels(host).then((labels) => {
           var result = {};
           for (const [label, value] of Object.entries(labels)) {
-            if (label != permissionEnum.location && label != permissionEnum.tracking){
+            if (label != permissionEnum.location && label != permissionEnum.tracking) {
               result[label] = value
             } else {
               for (const [url, typeVal] of Object.entries(value)) {
                 for (const [type, e] of Object.entries(typeVal)) {
-                  if ( !(typeof e['watchlistHash'] === "string" )) {
+                  if (!(typeof e['watchlistHash'] === "string")) {
                     // Add label in data to object
                     if (!(label in result)) {
                       result[label] = { [url]: { [type]: e } }
@@ -151,10 +161,10 @@ const WebsiteView = () => {
           }
           trailing={
             <STrailing>
-              <SIconWrapper onClick={() => navigate({ urlHash: "#" })}>
+              <SIconWrapper onClick={() => { navigate({ urlHash: "#" }); handleClick('home button') }}>
                 <Icons.Home size="32px" />
               </SIconWrapper>
-              <SIconWrapper onClick={() => navigate({ urlHash: "#watchlist" })}>
+              <SIconWrapper onClick={() => { navigate({ urlHash: "#watchlist" }); handleClick('watchlist button') }}>
                 <Icons.Radar size="24px" />
               </SIconWrapper>
             </STrailing>
@@ -191,10 +201,11 @@ const WebsiteView = () => {
                 <LabelCard
                   popup
                   key={label}
-                  onTap={() =>
+                  onTap={() => {
                     history.push({
                       pathname: `/website/${website}/label/${label}`,
-                    })
+                    }); handleClick('Privacy Practiced Label clicked')
+                  }
                   }
                   margin="16px 16px 8px 16px"
                   label={label}

@@ -86,6 +86,14 @@ const EditModal = ({ passKeywordType, passKeyword, edit, id, updateList }) => {
     setKeyword(value)
   }
 
+  /**
+ * Notification for button clicked
+ */
+
+const handleClick = (item) => {
+  console.log(item);
+}
+
   useEffect(() => {
     document.addEventListener("mousedown", blur)
     ReactTooltip.rebuild()
@@ -113,6 +121,7 @@ const EditModal = ({ passKeywordType, passKeyword, edit, id, updateList }) => {
               ref={dropdownRef}
               onClick={() => {
                 setDropdown((region) => !region)
+                handleClick('Type Dropdown')
               }}
             >
               <SDropdownOptions show={showDropdown}>
@@ -124,6 +133,7 @@ const EditModal = ({ passKeywordType, passKeyword, edit, id, updateList }) => {
                       setKeywordType(key)
                       setInputValid(true)
                       setKeyword("")
+                      handleClick('Not Sure')
                     }}
                     key={index}
                   >

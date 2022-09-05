@@ -23,6 +23,16 @@ import ReactTooltip from "react-tooltip"
 import penguin from "../../../assets/logos/Happy.svg"
 
 /**
+ * Notification for button clicked
+ */
+
+const handleClick = (item) => {
+  console.log(item);
+}
+
+
+
+/**
  * About page view
  * Uses Collapse from bootstrap to get drop down effect
  */
@@ -38,7 +48,7 @@ const AboutView = () => {
     })
 
     return (
-      <SQuestionCard onClick={() => setOpen(!open)}>
+      <SQuestionCard onClick={() => {setOpen(!open); handleClick('FAQ Dropdown Clicked')}}>
         <SQuestion>
           {question}
           <SArrow>

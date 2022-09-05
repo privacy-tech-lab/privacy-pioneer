@@ -26,6 +26,8 @@ import {
 import ReactTooltip from "react-tooltip"
 import { saveKeyword } from "../../../libs/indexed-db/updateWatchlist.js"
 import { apiIPToken } from "../../../libs/holdAPI"
+import { getButtonPress } from "../../../libs/indexed-db/getAnalytics"
+import { handleClick } from "../../../libs/indexed-db/getAnalytics"
 
 /**
  * Watchlist page view allowing user to add/modify keywords
@@ -59,6 +61,16 @@ const WatchlistView = () => {
         }
       })
   }
+
+  /**
+ * Notification for button clicked
+ */
+
+/**"const handleClick = (item) => {
+  
+  (async() => await getButtonPress(item, new Date()))()
+  console.log(item);
+}" **/
 
   useEffect(() => {
     ReactTooltip.hide()
@@ -122,6 +134,7 @@ const WatchlistView = () => {
                   configModal({ show: true })
                   const modal = new Modal(document.getElementById("edit-modal"))
                   modal.show()
+                  handleClick('Add Keyword Button clicked')
                 }}
               >
                 <Icons.Plus size="24px" />
@@ -130,6 +143,7 @@ const WatchlistView = () => {
 
               <SAddButton
                 onClick={() => {
+                  handleClick('Add IP Button')
                   confirm(
                     "We use an external API from ip-api.com that holds your ip address for one minute, and then deletes it from their database. Click 'OK' to add your public IP address to your watchlist. \n\nAlternatively, you can search 'What's my IP?', then copy and paste the result into our IP address keyword form."
                   )

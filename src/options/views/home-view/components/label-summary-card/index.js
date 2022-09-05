@@ -11,6 +11,14 @@ import { useHistory } from "react-router"
 import ReactTooltip from "react-tooltip"
 
 /**
+ * Notification for button clicked
+ */
+const handleClick = (item) => {
+  console.log(item);
+}
+
+
+/**
  * Summary card that highlights notable stats from identified label
  * namely it regions how many websites you have visited have used that label
  */
@@ -35,6 +43,7 @@ const LabelSummaryCard = ({
             labels: passLabels,
           },
         })
+        handleClick('Overview Summary Label was clicked [can add the variable that says which exact label]')
         ReactTooltip.hide()
       }}
     >
