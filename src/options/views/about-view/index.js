@@ -21,16 +21,7 @@ import { FAQ } from "./components/faq"
 import { ArrowDown } from "../../../libs/icons"
 import ReactTooltip from "react-tooltip"
 import penguin from "../../../assets/logos/Happy.svg"
-
-/**
- * Notification for button clicked
- */
-
-const handleClick = (item) => {
-  console.log(item);
-}
-
-
+import { handleClick } from "../../../libs/indexed-db/getAnalytics"
 
 /**
  * About page view
@@ -48,7 +39,10 @@ const AboutView = () => {
     })
 
     return (
-      <SQuestionCard onClick={() => {setOpen(!open); handleClick('FAQ Dropdown Clicked')}}>
+      <SQuestionCard onClick={() => {
+        setOpen(!open)
+        handleClick('FAQ Dropdown Clicked')}
+        }>
         <SQuestion>
           {question}
           <SArrow>

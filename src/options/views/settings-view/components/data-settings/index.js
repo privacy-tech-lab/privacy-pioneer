@@ -30,14 +30,7 @@ import {
 } from "./style"
 import { initiateDownload } from "../../../../../libs/exportData/initiateDownload"
 import { exportTypeEnum } from "../../../../../background/analysis/classModels.js"
-
-/**
- * Notification for button clicked
- */
-
- const handleClick = (item) => {
-  console.log(item);
-}
+import { handleClick } from "../../../../../libs/indexed-db/getAnalytics"
 
 /**
  * Toggles whether the user views the full snippet of evidence
@@ -60,7 +53,10 @@ export const FullSnippetToggle = () => {
     <SSnippetToggle>
       <ToggleSwitch
         isActive={snippetStatus}
-        onClick={() => {toggle(); handleClick('Save Full HTTP Request Clicked')}}
+        onClick={() => {
+          toggle()
+          handleClick('Save Full HTTP Request Clicked')
+        }}
         label={"Save Full HTTP Requests"}
         spaceBetween
       />
@@ -89,7 +85,10 @@ export const OptimizationToggle = () => {
     <SSnippetToggle>
       <ToggleSwitch
         isActive={optimizationStatus}
-        onClick={() => {toggleOptimize(); handleClick('Optimize Button Clicked')}}
+        onClick={() => {
+          toggleOptimize()
+          handleClick('Optimize Button Clicked')
+        }}
         label={"Optimize Performance"}
         spaceBetween
       />
@@ -132,7 +131,10 @@ export const LabelToggle = () => {
       {Object.values(permissionEnum).map((label) => (
         <ToggleSwitch
           isActive={labelStatus[label]}
-          onClick={() => {toggle(label); handleClick('Label Toggle [{label}] clicked')}}
+          onClick={() => {
+            toggle(label)
+            handleClick('Label Toggle [{label}] clicked')
+          }}
           label={label.charAt(0).toUpperCase() + label.slice(1)}
           key={label}
           spaceBetween
@@ -161,7 +163,10 @@ export const ExportData = () => {
   return (
     <SExportSection>
       <SDropdown
-        onClick={() => {setDropdown((region) => !region); handleClick('Export Data Time Dropdown')}}
+        onClick={() => {
+          setDropdown((region) => !region)
+          handleClick('Export Data Time Dropdown')
+        }}
         ref={dropdownRef}
       >
         <SDropdownOptions show={showDropdown}>

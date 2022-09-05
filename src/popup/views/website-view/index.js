@@ -89,16 +89,6 @@ const WebsiteView = () => {
     }
   }
 
-  /**
-* Notification for button clicked
-*/
-
-  const handleClick = (item) => {
-    console.log(item);
-  }
-
-
-
   useEffect(() => {
     /**
      * Send message to background page to get url of active tab
@@ -161,10 +151,16 @@ const WebsiteView = () => {
           }
           trailing={
             <STrailing>
-              <SIconWrapper onClick={() => { navigate({ urlHash: "#" }); handleClick('home button') }}>
+              <SIconWrapper onClick={() => {
+                navigate({ urlHash: "#" })
+                handleClick('home button')
+              }}>
                 <Icons.Home size="32px" />
               </SIconWrapper>
-              <SIconWrapper onClick={() => { navigate({ urlHash: "#watchlist" }); handleClick('watchlist button') }}>
+              <SIconWrapper onClick={() => {
+                navigate({ urlHash: "#watchlist" })
+                handleClick('watchlist button')
+              }}>
                 <Icons.Radar size="24px" />
               </SIconWrapper>
             </STrailing>
@@ -204,7 +200,8 @@ const WebsiteView = () => {
                   onTap={() => {
                     history.push({
                       pathname: `/website/${website}/label/${label}`,
-                    }); handleClick('Privacy Practiced Label clicked')
+                    })
+                    handleClick('Privacy Practiced Label clicked')
                   }
                   }
                   margin="16px 16px 8px 16px"

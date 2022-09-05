@@ -26,7 +26,6 @@ import {
 import ReactTooltip from "react-tooltip"
 import { saveKeyword } from "../../../libs/indexed-db/updateWatchlist.js"
 import { apiIPToken } from "../../../libs/holdAPI"
-import { getButtonPress } from "../../../libs/indexed-db/getAnalytics"
 import { handleClick } from "../../../libs/indexed-db/getAnalytics"
 
 /**
@@ -61,16 +60,6 @@ const WatchlistView = () => {
         }
       })
   }
-
-  /**
- * Notification for button clicked
- */
-
-/**"const handleClick = (item) => {
-  
-  (async() => await getButtonPress(item, new Date()))()
-  console.log(item);
-}" **/
 
   useEffect(() => {
     ReactTooltip.hide()
@@ -134,7 +123,7 @@ const WatchlistView = () => {
                   configModal({ show: true })
                   const modal = new Modal(document.getElementById("edit-modal"))
                   modal.show()
-                  handleClick('Add Keyword Button clicked')
+                  handleClick('Add Keyword Button')
                 }}
               >
                 <Icons.Plus size="24px" />

@@ -22,15 +22,7 @@ import {
   STitle,
   STop,
 } from "./style"
-
-/**
- * Notification for button clicked
- */
-
- const handleClick = (item) => {
-  console.log(item);
-}
-
+import { handleClick } from "../../../libs/indexed-db/getAnalytics"
 
 /**
  * location.region = undefined | [permission, websites]
@@ -79,7 +71,10 @@ const SearchView = () => {
         <SContainer>
           <STop>
             <SBackButton
-              onClick={() => {history.goBack(); handleClick('Go back to home page from History')}}
+              onClick={() => {
+                history.goBack()
+                handleClick('Go back to home page from History')
+              }}
               whileHover={{ scale: 1.2 }}
             >
               <Icons.Arrow size={18} />

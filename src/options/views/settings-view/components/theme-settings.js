@@ -13,6 +13,7 @@ import {
 
 import styled from "styled-components"
 import { motion } from "framer-motion"
+import { handleClick } from "../../../../libs/indexed-db/getAnalytics"
 
 const SThemeSection = styled.div`
   display: flex;
@@ -29,15 +30,6 @@ const SThemeIcon = styled(motion.div)`
     props.theme == props.selTheme ? "5px solid #6b219f" : null};
   border-radius: 50%;
 `
-
-  /**
-* Notification for button clicked
-*/
-
-const handleClick = (item) => {
-  console.log(item);
-}
-
 
 /**
  * Theming section for Settings View
@@ -63,7 +55,10 @@ export const ThemeSelection = ({ changeTheme }) => {
         selTheme={selTheme}
         theme={settingsEnum.light}
         whileHover={{ scale: 1.1 }}
-        onTap={() => {setETheme(settingsEnum.light); handleClick('Light Theme was Clicked')}}
+        onTap={() => {
+          setETheme(settingsEnum.light)
+          handleClick('Light Theme was Clicked')
+        }}
       >
         <Icons.Sun size={48} />
       </SThemeIcon>
@@ -79,7 +74,10 @@ export const ThemeSelection = ({ changeTheme }) => {
         theme={settingsEnum.sameAsSystem}
         selTheme={selTheme}
         whileHover={{ scale: 1.1 }}
-        onTap={() => {setETheme(settingsEnum.sameAsSystem); handleClick('Same as System Theme was Clicked')}}
+        onTap={() => {
+          setETheme(settingsEnum.sameAsSystem)
+          handleClick('Same as System Theme was Clicked')
+        }}
       >
         <Icons.Settings size={48} />
       </SThemeIcon>

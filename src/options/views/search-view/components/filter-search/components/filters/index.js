@@ -3,14 +3,7 @@ import { CompanyLogoSVG } from "../../../../../../../libs/icons/company-icons"
 import { SFilterRow, SFilterRowItem, SCompaniesButton } from "./style"
 import { permissionEnum } from "../../../../../../../background/analysis/classModels"
 import * as Icons from "../../../../../../../libs/icons"
-
-/**
- * Notification for button clicked
- */
-
-const handleClick = (item) => {
-  console.log(item);
-}
+import { handleClick } from "../../../../../../../libs/indexed-db/getAnalytics"
 
 /**
  * Filters for search view page. This includes Permissions and stored companies. Adjusts
@@ -90,7 +83,6 @@ const Filters = ({
                 setCompanyFilter(companyFilter)
                 filterLabels()
                 handleClick('Reset Filter Chosen')
-                
               }}
             >
               Reset Filter

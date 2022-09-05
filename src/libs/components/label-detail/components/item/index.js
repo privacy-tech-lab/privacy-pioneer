@@ -8,6 +8,7 @@ import { SBadgeGroup, SBadge } from "./style"
 import Evidence from "../evidence"
 import { Collapse } from "bootstrap"
 import { privacyLabels } from "../../../../../background/analysis/classModels"
+import { handleClick } from "../../../../indexed-db/getAnalytics"
 
 /**
  * Display of badges with sub types and collapse containing description and evidence
@@ -23,16 +24,6 @@ const Item = ({ request, url, label }) => {
   })
   const collapseId = `${url}-${label}-collapse`
   const containerRef = useRef()
-
-  /**
-* Notification for button clicked
-*/
-
-  const handleClick = (item) => {
-    console.log(item);
-  }
-
-
 
   /**
    * Show/hide collapse and populate with evidence data
@@ -74,7 +65,9 @@ const Item = ({ request, url, label }) => {
           <SBadge
             key={type}
             className="badge"
-            onClick={(event) => {inflateCollapse(event, request, type); handleClick('Description Button (ip adress, zip code) etc [Works for All]')}}
+            onClick={(event) => {
+              inflateCollapse(event, request, type)
+              handleClick('Description Button (ip adress, zip code) etc [Works for All]')}}
           >
             {privacyLabels[label]["types"][type]["displayName"]}
             {request.cookie ? ` 🍪` : null}

@@ -7,6 +7,7 @@ import React from "react"
 import WebsiteBadge from "../../../libs/components/website-badge"
 import LabelCard from "../../../libs/components/label-card"
 import { SContainer, SItem, SLabel, SLabelGroup, SSeperator } from "./style"
+import { handleClick } from "../../../libs/indexed-db/getAnalytics"
 
 /**
  * Makes label cards for a given website
@@ -15,15 +16,6 @@ import { SContainer, SItem, SLabel, SLabelGroup, SSeperator } from "./style"
  * @param allLabels
  * @param webLabels
  */
-
-  /**
-* Notification for button clicked
-*/
-
-const handleClick = (item) => {
-  console.log(item);
-}
-
 
 const LabelCards = ({ website, handleTap, allLabels, webLabels }) => {
   return webLabels.map((label, index) => {
@@ -44,7 +36,8 @@ const LabelCards = ({ website, handleTap, allLabels, webLabels }) => {
       <LabelCard
         key={index}
         onTap={() => {
-          handleTap({ label, requests, website, show: true }); handleClick('Recent Label Card was Clicked')
+          handleTap({ label, requests, website, show: true })
+          handleClick('Recent Label Card')
         }}
         margin="8px 16px 0px 0px"
         label={label}

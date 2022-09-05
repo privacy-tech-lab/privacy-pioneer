@@ -7,6 +7,7 @@ import React, { useEffect, useState } from "react"
 import { useHistory, useLocation } from "react-router"
 import logo from "../../../../../assets/logos/Rocket.svg"
 import * as Icons from "../../../../../libs/icons"
+import { handleClick } from "../../../../../libs/indexed-db/getAnalytics"
 import {
   SNavBar,
   SLeading,
@@ -36,15 +37,6 @@ const NavBar = () => {
     }
   }
 
-  /**
- * Notification for button clicked
- */
-
-  const handleClick = (item) => {
-    console.log(item);
-  }
-
-
   useEffect(() => {
     if (history.location.pathname.includes("/watchlist")) {
       setTab(1)
@@ -60,7 +52,10 @@ const NavBar = () => {
   return (
     <SNavBar>
       <SLeading>
-        <SLeadingContainer onClick={() => {configureRoute("/"); handleClick('Privacy Pioneer Logo was clicked (Not sure how important this is)')}}>
+        <SLeadingContainer onClick={() => {
+          configureRoute("/")
+          handleClick('Privacy Pioneer Logo was clicked (Not sure how important this is)')
+        }}>
           <SBrandIcon src={logo} alt="Logo" />
           <SBrandTitle>Privacy Pioneer</SBrandTitle>
         </SLeadingContainer>
@@ -68,7 +63,11 @@ const NavBar = () => {
       <STrailing id="navbarTour">
         <SNavAction
           active={tab === 0}
-          onClick={() => {configureRoute("/"); handleClick('Home Button in Extension Page was clicked')}}
+          onClick={() => {
+            configureRoute("/")
+            handleClick('Home Button in Extension Page was clicked')
+          }
+          }
           data-place="bottom"
           data-tip="See your recent browsing history and all generated labels"
         >
@@ -77,7 +76,10 @@ const NavBar = () => {
         </SNavAction>
         <SNavAction
           active={tab === 1}
-          onClick={() => {configureRoute("/watchlist"); handleClick('Watchlist in Extension Page clicked')}}
+          onClick={() => { 
+            configureRoute("/watchlist")
+            handleClick('Watchlist in Extension Page clicked') 
+          }}
           data-place="bottom"
           data-tip="Enter personal keywords that Privacy Pioneer will look out for while you browse"
         >
@@ -86,7 +88,10 @@ const NavBar = () => {
         </SNavAction>
         <SNavAction
           active={tab === 2}
-          onClick={() => {configureRoute("/settings"); handleClick('Settings in Extension Page was clicked')}}
+          onClick={() => { 
+            configureRoute("/settings")
+            handleClick('Settings in Extension Page was clicked') 
+          }}
           data-place="bottom"
           data-tip="Control Privacy Pioneer’s settings"
         >
@@ -95,7 +100,10 @@ const NavBar = () => {
         </SNavAction>
         <SNavAction
           active={tab === 3}
-          onClick={() => {configureRoute("/about"); handleClick('About Button in Extension was clicked')}}
+          onClick={() => { 
+            configureRoute("/about")
+            handleClick('About Button in Extension was clicked') 
+          }}
           data-place="bottom"
           data-tip="About Privacy Pioneer"
         >

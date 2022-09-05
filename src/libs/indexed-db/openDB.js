@@ -58,9 +58,7 @@ import { openDB } from "idb"
     },
     async values() {
       return (await dbPromise).getAll("userSettings")
-    },
-
-    
+    }, 
   }
 
   const analyticsKeyval = {

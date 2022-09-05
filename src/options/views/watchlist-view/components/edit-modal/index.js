@@ -34,6 +34,7 @@ import { Modal } from "bootstrap"
 import { AddressForm, KeywordForm } from "./components/forms"
 import validate from "./components/input-validators"
 import ReactTooltip from "react-tooltip"
+import { handleClick } from "../../../../../libs/indexed-db/getAnalytics"
 
 /**
  * Popup modal to create/edit keyword
@@ -86,14 +87,6 @@ const EditModal = ({ passKeywordType, passKeyword, edit, id, updateList }) => {
     setKeyword(value)
   }
 
-  /**
- * Notification for button clicked
- */
-
-const handleClick = (item) => {
-  console.log(item);
-}
-
   useEffect(() => {
     document.addEventListener("mousedown", blur)
     ReactTooltip.rebuild()
@@ -133,7 +126,7 @@ const handleClick = (item) => {
                       setKeywordType(key)
                       setInputValid(true)
                       setKeyword("")
-                      handleClick('Not Sure')
+                      handleClick('Type Picked[can put specific type later (something to do with the index or key)]')
                     }}
                     key={index}
                   >
@@ -203,6 +196,7 @@ const handleClick = (item) => {
                     const modal = Modal.getInstance(
                       document.getElementById("edit-modal")
                     )
+                    handleClick('Watchlist Modal Save Button (Only works when valid)')
                     modal.hide()
                   }
                 }
