@@ -198,8 +198,9 @@ const EditModal = ({ passKeywordType, passKeyword, edit, id, updateList }) => {
                       document.getElementById("edit-modal")
                     )
                      /*handleClick('Watchlist Modal Save Button (Only works when valid)') */
-                     await handleClick('[Modal Saved] ' + keywordType.toString() + ': ' + key.toString())/ /* For adresses it shows object object need to fix*/ 
+                      /* For adresses it shows object object need to fix*/ 
                     modal.hide()
+                    await handleClick('[Modal Saved] ' + keywordType.toString() + ': ' + key.toString())
                     
                   }
                 }

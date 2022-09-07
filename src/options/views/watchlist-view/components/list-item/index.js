@@ -19,6 +19,7 @@ import {
 } from "../../../../../libs/indexed-db/updateWatchlist.js"
 import { keywordTypes } from "../../../../../background/analysis/classModels"
 import { Modal } from "bootstrap"
+import { handleClick } from "../../../../../libs/indexed-db/getAnalytics"
 
 /**
  * List item displaying keyword and type
@@ -67,6 +68,7 @@ const ListItem = ({
                 onClick={async () => {
                   await deleteKeyword(id, type)
                   await updateList()
+                  await handleClick('[Watchlist Deleted] ' + type.toString() + ': ' + keyword.toString())
                 }}
               >
                 Delete
@@ -95,6 +97,7 @@ const ListItem = ({
             onClick={async () => {
               await toggleNotifications(id)
               await updateList()
+              await handleClick('Alerted: ' + keyword.toString()) /*Cannot differ when unalerted need to fix*/
             }}
           >
             {notification ? (
