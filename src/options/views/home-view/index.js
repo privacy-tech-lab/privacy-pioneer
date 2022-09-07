@@ -21,6 +21,7 @@ import {
 } from "./style"
 import { HomeTour, homeSteps } from "../../../libs/tour/index.js"
 import { homeInit } from "../../../libs/init.js"
+import { handleClick } from "../../../libs/indexed-db/getAnalytics"
 
 /**
  * Home page view containing overview and recently identified labels
@@ -34,15 +35,6 @@ const HomeView = () => {
   const [touring, setTouring] = useState(false)
 
   const entries = Object.entries(websites)
-
-  /**
- * Notification for button clicked
- */
-
-  const handleClick = (item) => {
-    console.log(item);
-  }
-
 
   useEffect(() => {
     ReactTooltip.hide()

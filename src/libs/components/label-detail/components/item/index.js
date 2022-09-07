@@ -67,7 +67,8 @@ const Item = ({ request, url, label }) => {
             className="badge"
             onClick={(event) => {
               inflateCollapse(event, request, type)
-              handleClick('Description Button (ip adress, zip code) etc [Works for All]')}}
+              handleClick('Description Button: ' + type.toString())
+            }} /* description button, add text to determine which things */
           >
             {privacyLabels[label]["types"][type]["displayName"]}
             {request.cookie ? ` 🍪` : null}

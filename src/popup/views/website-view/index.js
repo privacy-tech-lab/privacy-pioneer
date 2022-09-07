@@ -29,6 +29,7 @@ import { getHostname } from "../../../background/analysis/utility/util.js"
 import { useHistory } from "react-router"
 import RiseLoader from "react-spinners/RiseLoader"
 import { evidenceDescription, permissionEnum } from "../../../background/analysis/classModels"
+import { handleClick } from "../../../libs/indexed-db/getAnalytics"
 
 /**
  * Page view containing current website and identified label cards
@@ -201,7 +202,7 @@ const WebsiteView = () => {
                     history.push({
                       pathname: `/website/${website}/label/${label}`,
                     })
-                    handleClick('Privacy Practiced Label clicked')
+                    handleClick('Website View Label Card: ' + label.toString()) /* label card in website view add string */
                   }
                   }
                   margin="16px 16px 8px 16px"

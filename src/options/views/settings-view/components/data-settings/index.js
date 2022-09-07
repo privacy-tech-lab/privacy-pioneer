@@ -204,6 +204,14 @@ export const ExportData = () => {
       >
         JSON
       </SExportButton>
+      <SExportButton
+        onClick={() => {
+          handleClick('Analytics Export Button')
+        }}>
+          Analytics Export
+      </SExportButton>
+
+
     </SExportSection>
   )
 }

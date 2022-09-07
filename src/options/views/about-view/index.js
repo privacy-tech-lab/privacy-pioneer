@@ -41,7 +41,7 @@ const AboutView = () => {
     return (
       <SQuestionCard onClick={() => {
         setOpen(!open)
-        handleClick('FAQ Dropdown Clicked')}
+        handleClick('FAQ Dropdown: ' + question.toString())} /*faq dropdown clicked */
         }>
         <SQuestion>
           {question}

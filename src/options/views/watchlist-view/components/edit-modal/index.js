@@ -126,7 +126,7 @@ const EditModal = ({ passKeywordType, passKeyword, edit, id, updateList }) => {
                       setKeywordType(key)
                       setInputValid(true)
                       setKeyword("")
-                      handleClick('Type Picked[can put specific type later (something to do with the index or key)]')
+                      handleClick('Watchlist Type Picked: ' + key.toString()) /* add more to string to specify */
                     }}
                     key={index}
                   >
@@ -193,11 +193,14 @@ const EditModal = ({ passKeywordType, passKeyword, edit, id, updateList }) => {
                 ) {
                   if (await saveKeyword(key, keywordType, id)) {
                     await updateList()
+                    
                     const modal = Modal.getInstance(
                       document.getElementById("edit-modal")
                     )
-                    handleClick('Watchlist Modal Save Button (Only works when valid)')
+                     /*handleClick('Watchlist Modal Save Button (Only works when valid)') */
+                     await handleClick('[Modal Saved] ' + keywordType.toString() + ': ' + key.toString())/ /* For adresses it shows object object need to fix*/ 
                     modal.hide()
+                    
                   }
                 }
               }}
