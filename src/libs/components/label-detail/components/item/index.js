@@ -67,7 +67,7 @@ const Item = ({ request, url, label }) => {
             className="badge"
             onClick={(event) => {
               inflateCollapse(event, request, type)
-              handleClick('Description Button: ' + type.toString())
+              handleClick('Description Button: ' + type.toString() + " Third Party: " + url.toString()) //Could not add the website, it is taken right before
             }} /* description button, add text to determine which things */
           >
             {privacyLabels[label]["types"][type]["displayName"]}

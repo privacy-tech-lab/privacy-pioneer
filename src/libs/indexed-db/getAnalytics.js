@@ -11,6 +11,8 @@ export async function getButtonPress (buttonName, timePressed) {
     await analyticsKeyval.set(hash, {
         buttonName,
         timePressed,
+        //View Page
+        //Website so we could see what websites users may check a certain location with twitter or etc
     })
 }
 

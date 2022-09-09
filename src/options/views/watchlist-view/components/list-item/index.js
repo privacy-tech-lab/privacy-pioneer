@@ -86,6 +86,7 @@ const ListItem = ({
                   }))
                   const modal = new Modal(document.getElementById("edit-modal"))
                   modal.show()
+                  handleClick('Watchlist Edit [' + type.toString() + '] : ' + keyword.toString())
                 }}
               >
                 Edit
@@ -97,7 +98,7 @@ const ListItem = ({
             onClick={async () => {
               await toggleNotifications(id)
               await updateList()
-              await handleClick('Alerted: ' + keyword.toString()) /*Cannot differ when unalerted need to fix*/
+              await handleClick((notification ? 'Unalerted' : 'Alerted') + keyword.toString()) /*Cannot differ when unalerted need to fix*/
             }}
           >
             {notification ? (
