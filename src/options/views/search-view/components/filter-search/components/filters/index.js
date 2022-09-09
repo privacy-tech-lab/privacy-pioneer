@@ -40,7 +40,7 @@ const Filters = ({
               permFilter[permission] = !permFilter[permission]
               filterLabels()
               setPermFilter(permFilter)
-              handleClick('Filter [Monetization.....] clicked')
+              handleClick(permission.toString() + ' Filter Button Activated: ' + (permFilter[permission]).toString())
             }}
             key={permission}
             highlight={permFilter[permission]}
@@ -97,7 +97,7 @@ const Filters = ({
               companyFilter[parent] = !companyFilter[parent]
               setCompanyFilter(companyFilter)
               filterLabels()
-              handleClick('Company Logo Clicked')
+              handleClick(parent.toString() + ' Company Filter Activated: ' + companyFilter[parent].toString())
             }}
             key={parent}
             highlight={companyFilter[parent]}

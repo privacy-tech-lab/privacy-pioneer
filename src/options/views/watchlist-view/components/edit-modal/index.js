@@ -193,15 +193,15 @@ const EditModal = ({ passKeywordType, passKeyword, edit, id, updateList }) => {
                 ) {
                   if (await saveKeyword(key, keywordType, id)) {
                     await updateList()
-                    
+
                     const modal = Modal.getInstance(
                       document.getElementById("edit-modal")
                     )
-                     /*handleClick('Watchlist Modal Save Button (Only works when valid)') */
-                      /* For adresses it shows object object need to fix*/ 
+                    /*handleClick('Watchlist Modal Save Button (Only works when valid)') */
+                    /* For adresses it shows object object need to fix*/
                     modal.hide()
-                    await handleClick('[Modal Saved] ' + keywordType.toString() + ': ' + key.toString())
-                    
+                    await handleClick('Watchlist ' + (edit ? "Updated " : "Saved ") + "[" + keywordType.toString() + "]" + ': ' + key.toString())
+
                   }
                 }
               }}
