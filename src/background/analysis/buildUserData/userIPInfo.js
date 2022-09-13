@@ -38,11 +38,11 @@ async function deleteFromLocation ( ) {
 export const getIpInfo = async (retJson) => {
     await deleteFromLocation()
     var curr = {
-        'ip': {'keyword': buildIpRegex(retJson.ip), 'watchlistHash': buildIpRegex(retJson.ip)},
+        'ip': {'keyword': buildIpRegex(retJson.ip), 'watchlistHash': ''},
         'locationData': {
-            'city': [{'keyword': retJson.city, 'watchlistHash': retJson.city}],
-            'region': [{'keyword': buildGeneralRegex(retJson.region), 'watchlistHash': buildGeneralRegex(retJson.region)}],
-            'zipCode': [{'keyword': buildZipRegex(retJson.postal), 'watchlistHash': buildZipRegex(retJson.postal)}]
+            'city': [{'keyword': retJson.city, 'watchlistHash': ""}],
+            'state': [{'keyword': buildGeneralRegex(retJson.region), 'watchlistHash': ""}],
+            'zipCode': [{'keyword': buildZipRegex(retJson.postal), 'watchlistHash': ""}]
         }
     };
     return curr

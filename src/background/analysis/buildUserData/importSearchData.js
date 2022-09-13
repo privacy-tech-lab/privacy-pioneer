@@ -150,7 +150,10 @@ async function importData() {
     if (typeEnum.userKeyword in user_store_dict) {
         var regexKeywords = []
         user_store_dict[typeEnum.userKeyword].forEach(async (keyword) => {
-            regexKeywords.push(buildGeneralRegex(keyword))
+            const wordRegex = buildGeneralRegex(keyword)
+            const origHash = watchlistHashGen(typeEnum.userKeyword, keyword)
+            const wordObj = createKeywordObj(wordRegex, typeEnum.userKeyword, origHash)
+            regexKeywords.push(wordObj)
         })
         networkKeywords[permissionEnum.watchlist][typeEnum.userKeyword] = regexKeywords
     }

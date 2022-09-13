@@ -69,6 +69,7 @@ const toggleNotifications = async (id) => {
       Notification.permission == "denied"
     ) {
       Notification.requestPermission()
+      window.alert('In order for notifications to work, you will need to enable notifications for FireFox by going to\n\nSettings > System > Notifications and actions on Windows or\n\nSystem Preferences > Notifications > FireFox on Mac.')
     }
   }
   watchlistKeyval.set(id, data)
