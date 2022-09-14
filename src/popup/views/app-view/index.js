@@ -6,8 +6,8 @@ privacy-tech-lab, https://www.privacytechlab.org/
 import React, { useState, useEffect } from "react"
 import { Route, Switch, useLocation } from "react-router-dom"
 import { AnimatePresence } from "framer-motion"
-import WebsiteView from "../website-view"
-import LabelView from "../label-view"
+import WebsiteView from "../website-view" 
+import { LabelView } from "../label-view"
 import GlobalStyle from "../../../libs/global-style"
 import { getTheme, settingsEnum } from "../../../libs/indexed-db/settings"
 

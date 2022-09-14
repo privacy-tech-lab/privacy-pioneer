@@ -18,7 +18,6 @@ import { getExcludedLabels } from "../indexed-db/settings"
 export const getWebsiteLabels = async (website, excludedLabels = []) => {
   try {
     var evidence = await evidenceIDB.get(website)
-
     const result = {}
     for (const [label, value] of Object.entries(evidence)) {
       for (const [type, requests] of Object.entries(value)) {

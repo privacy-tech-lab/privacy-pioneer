@@ -12,7 +12,30 @@ import LabelDetail from "../../../libs/components/label-detail"
 import NavBar from "../../components/nav-bar"
 import { permissionEnum, privacyLabels } from "../../../background/analysis/classModels"
 import { getWebsiteLabels } from "../../../libs/indexed-db/getIdbData.js"
+import { evidenceKeyval as evidenceIDB } from "../../../background/analysis/interactDB/openDB.js"
+import { IPINFO_IPKEY, IPINFO_ADDRESSKEY } from "../../../background/analysis/buildUserData/importSearchData.js"
 
+
+function sortByTime(labels) {
+  var newestTime = 0 
+  for (const [labelL, value] of Object.entries(labels)) {
+    for (const [url, typeVal] of Object.entries(value)) {
+      for (const [type, e] of Object.entries(typeVal)) {
+        //display the ipinfo labels
+        if(Object.keys(privacyLabels["location"]["types"]).includes(type)){
+          for(let[a,b] of Object.entries(e)){
+            if(a == "timestamp"){
+              if(b > newestTime){
+                newestTime = b
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+  return newestTime
+}
 /**
  * Page view detailing information collected and shared.
  * Destination after clicking a 'label card'
@@ -26,6 +49,11 @@ const LabelView = () => {
   const label = params.label // Get label passed from route
 
   useEffect(() => getWebsiteLabels(website).then((labels) => {
+
+    //Gets the newest entry's timestamp
+
+    const currentTime = sortByTime(labels)
+
     var result = {};
     for (const [labelL, value] of Object.entries(labels)) {
       if (labelL != permissionEnum.location && labelL != permissionEnum.tracking){
@@ -33,7 +61,20 @@ const LabelView = () => {
       } else {
         for (const [url, typeVal] of Object.entries(value)) {
           for (const [type, e] of Object.entries(typeVal)) {
-            if ( !(typeof e['watchlistHash'] === "string" )) {
+            //display the ipinfo labels
+
+            //Check if the evidence has been added recently
+            var timestamp = currentTime - e["timestamp"] < 1000000
+            if((e['watchlistHash'] == IPINFO_IPKEY || IPINFO_ADDRESSKEY) && (timestamp)){
+              if (!(labelL in result)) {
+                result[labelL] = { [url]: { [type]: e } }
+              } else if (!(url in result[labelL])) {
+                result[labelL][url] = { [type]: e }
+              } else {
+                result[labelL][url][type] = e
+              }
+            }
+            else if (!(typeof e['watchlistHash'] === "string") && (timestamp)) {
               // Add label in data to object
               if (!(labelL in result)) {
                 result[labelL] = { [url]: { [type]: e } }
@@ -70,4 +111,4 @@ const LabelView = () => {
   )
 }
 
-export default LabelView
+export{ LabelView, sortByTime}

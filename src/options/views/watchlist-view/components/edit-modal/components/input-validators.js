@@ -32,7 +32,7 @@ const inputValidator = {
   ),
   userKeyword: new RegExp(/.{5,}/),
   zipCode: new RegExp(/\d{5}/),
-  city_address: new RegExp(/.{3,}/),
+  city_address: new RegExp(/.{5,}/),
 }
 
 /**
@@ -97,11 +97,6 @@ const validate = ({
       badInput("zip code")
       return false
     }
-    /*
-    if (!(state == undefined || state in stateObj)) {
-      badInput("state abbreviation")
-      return false
-    } */
     if (!inputValidator.city_address.test(city)) {
       badInput("city")
       return false

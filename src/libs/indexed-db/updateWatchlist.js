@@ -10,7 +10,7 @@ import {
   keywordTypes,
   permissionEnum,
 } from "../../background/analysis/classModels.js"
-
+import { IPINFO_IPKEY, IPINFO_ADDRESSKEY} from "../../background/analysis/buildUserData/importSearchData.js"
 /**
  * Saves/updates keyword from watchlist store
  * Updates keyword when 'id' is not undefined
@@ -24,9 +24,14 @@ const saveKeyword = async (keyword, type, id) => {
   // Validate
   if (type in keywordTypes && keyword) {
     let key
-    if (id != null) {
+    //id == ip || loc when this is the ipinfo generated ip keyword
+    if(id == 'ip'){
+      key = IPINFO_IPKEY
+    }else if (id == 'loc'){
+      key = IPINFO_ADDRESSKEY
+    }else if (id != null){
       key = id
-    } else if (type == permissionEnum.location) {
+    }else if (type == permissionEnum.location) {
       let watchlist = await watchlistKeyval.values()
       var maxNum = 0
       watchlist.forEach((el) => {

@@ -1,5 +1,5 @@
 import ReactTooltip from "react-tooltip"
-import { getWebsites, getLabels } from "./indexed-db/getIdbData"
+import { getWebsites, getLabels, } from "./indexed-db/getIdbData"
 import exData from "./tour/exData.json"
 import { getTourStatus } from "./indexed-db/settings"
 import { filterLabelObject, getPermMapping } from "../options/views/search-view/components/filter-search/components/filterLabels.js"
