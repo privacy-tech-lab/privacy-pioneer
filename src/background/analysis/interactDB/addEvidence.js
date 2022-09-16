@@ -46,10 +46,9 @@ async function addToEvidenceStore(evidenceToAdd, parent, rootU, requestU, saveFu
 
   const ts = Date.now()
   const rootUrl = getHostname(rootU)
-
   var evidence = await evidenceKeyval.get(rootUrl)
   if (evidence === undefined) { evidence = {} }
-
+  let userData
   /**
    * Unpacks and updates an evidence object to add to to our stores in evidenceIDB
    * 
@@ -86,9 +85,88 @@ async function addToEvidenceStore(evidenceToAdd, parent, rootU, requestU, saveFu
 
         evidenceObject.snippet = evidenceObject.snippet.substring(start - frontBuffer, end + endBuffer)
         evidenceObject.index = [frontBuffer, frontBuffer + end - start]
+        userData = evidenceObject.snippet.substring(evidenceObject.index[0],evidenceObject.index[1])
+        console.log(evidenceObject)
+        console.log(userData)
       }
     }
+    var dataTypes = {
+      zipCode: "<TARGET_ZIP>",
+      city: "<TARGET_CITY>",
+      region: "<TARGET_REGION>"
+    }
+    var corTypes = {
+      coarseLocation: "<TARGET_LAT>",
+      fineLocation: "<TARGET_LNG>"
+    }
+    function tokenize(str, dataTy, userData) {
 
+      // if simple RE, then replace
+      if (dataTy in dataTypes) {
+          let MlString = str.replace(userData, dataTypes[dataTy])
+          return MlString
+      }
+      // otherwise do more complicated coordinate replace (see below)
+      else if (dataTy in corTypes){
+          return tokenizeCoors(str, dataTy, userData)
+      }
+    }
+      /**
+       * @param {string} str str we're operating on 
+       * @param {string} latLng either "lat" or "lng"
+       * @returns {string}
+       */
+      function tokenizeCoors(str, latLng, userData) {
+  
+          // loop to replace floating points that are within 1.0 of the users lat/lng
+          var replaced = true
+          while (replaced) {
+  
+            replaced = false
+            const matches = str.matchAll(/\D\d{1,3}\.\d{1,10}/g)
+            const matchArr = Array.from(matches)
+            
+            for (const match of matchArr) {
+                
+                const startIndex = match.index + 1
+                const endIndex = startIndex + match[0].length - 1
+                const asFloat = parseFloat(str.slice(startIndex, endIndex))
+                
+                // replace either lat or lng with generic. If we replace, start loop over
+                if (latLng == "lat" && Math.abs(Math.abs(useerData) - asFloat) < 1) {
+                    MlString = str.slice(0, startIndex).concat(config.tokenMapping["lat"]).concat(str.slice(endIndex))
+                    replaced = true
+                    break
+                }                
+                if (latLng == "lng" && Math.abs(Math.abs(useerData) - asFloat) < 1) {
+                    MLstring = str.slice(0, startIndex).concat(config.tokenMapping["lng"]).concat(str.slice(endIndex))
+                    replaced = true
+                    break
+                }
+            }
+            return MlString 
+          }
+      }
+    function svgCheck(strReq, stIdx, endIdx){
+      var begin = stIdx < 400 ? strReq.slice(0, endIdx) : strReq.slice(stIdx - 400, endIdx)
+      var end = endIdx + 400 < strReq.length ? strReq.slice(endIdx, endIdx + 400) : strReq.slice(endIdx, strReq.length)
+      var full = begin.concat(end)  
+      var SVG = [...full.matchAll(/svg/gi)]
+      var path = [...full.matchAll(/path/gi)]
+      var nums = [...full.matchAll(/\d{2,5}/gm)]
+      var dash = [...full.matchAll(/[-|.]{1,5}/gm)]
+      if(SVG.length + path.length == 0 && nums.length < 100 && dash.length < 100){
+          return true
+      }
+      return false
+   }
+    //what if they want full snippit
+    if(evidenceObject.snippet != null){
+      if(svgCheck(evidenceObject.snippet, evidenceObject.index[0], evidenceObject.index[1])){
+        tokenize(evidenceObject.snippet, evidenceObject.typ, userData)
+      }
+
+    }
     if (!saveFullSnippet && !evidenceObject.cookie){
       cutDownSnippet(evidenceObject)
     }
