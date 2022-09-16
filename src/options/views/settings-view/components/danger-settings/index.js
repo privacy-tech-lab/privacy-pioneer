@@ -30,7 +30,7 @@ export const DangerZone = () => {
       )
     ) {
       deleteEvidenceDB()
-      handleClick('Delete ALL Data', "Settings", null, null , null)
+      handleClick('Delete ALL Data', "Settings", null, null, null)
     }
   }
   /**
@@ -43,7 +43,7 @@ export const DangerZone = () => {
       )
     ) {
       deleteKeywordDB()
-      handleClick('Delete ALL Watchlist', "Settings", null, null , null)
+      handleClick('Delete ALL Watchlist', "Settings", null, null, null)
     }
   }
   return (
@@ -53,13 +53,19 @@ export const DangerZone = () => {
       <div style={{ display: "flex", flexDirection: "row", marginTop: "12px" }}>
         <SDangerButton
           data-tip="Delete all of the data that we have collected from your local storage"
-          onClick={handleEvidence}     
+          onClick={() => {
+            handleEvidence
+            handleClick("Delete Data", "Settings", null, null, null)
+          }}
         >
           Delete Data
         </SDangerButton>
         <SDangerButton
           data-tip="Delete all of the keywords you've added from the watchlist"
-          onClick={handleWatchlist}
+          onClick={() => {
+            handleWatchlist
+            handleClick("Delete Watchlist", "Settings", null, null, null)
+          }}
         >
           Delete Watchlist
         </SDangerButton>

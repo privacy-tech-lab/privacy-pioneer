@@ -54,7 +54,7 @@ const NavBar = () => {
       <SLeading>
         <SLeadingContainer onClick={() => {
           configureRoute("/")
-          handleClick(('Privacy Pioneer Logo'), "Home", null, null, null)
+          handleClick(('Privacy Pioneer Logo'), "Nav-Bar", null, null, null)
         }}>
           <SBrandIcon src={logo} alt="Logo" />
           <SBrandTitle>Privacy Pioneer</SBrandTitle>

@@ -12,6 +12,7 @@ import LabelDetail from "../../../libs/components/label-detail"
 import NavBar from "../../components/nav-bar"
 import { permissionEnum, privacyLabels } from "../../../background/analysis/classModels"
 import { getWebsiteLabels } from "../../../libs/indexed-db/getIdbData.js"
+import { handleClick } from "../../../libs/indexed-db/getAnalytics"
 
 /**
  * Page view detailing information collected and shared.
@@ -56,7 +57,10 @@ const LabelView = () => {
       navigationBar={
         <NavBar
           leading={
-            <SLeading onClick={() => history.replace({ pathname: `/` })}>
+            <SLeading onClick={() => { 
+              history.replace({ pathname: `/` })
+              handleClick("Go Back from Label Card (Website)", "Website", null, null, null)
+            }}>
               <Icons.Back size="24px" />
             </SLeading>
           }

@@ -55,7 +55,7 @@ export const FullSnippetToggle = () => {
         isActive={snippetStatus}
         onClick={() => {
           toggle()
-          handleClick(('Save Full HTTP Request'), "Settings", null, null, null)
+          handleClick(('Save Full HTTP Request Off: ' + snippetStatus.toString()), "Settings", null, null, null)
         }}
         label={"Save Full HTTP Requests"}
         spaceBetween
@@ -87,7 +87,7 @@ export const OptimizationToggle = () => {
         isActive={optimizationStatus}
         onClick={() => {
           toggleOptimize()
-          handleClick('Optimize Performance Toggle', "Settings", null, null, null)
+          handleClick('Optimize Performance Toggle Off: ' + optimizationStatus.toString(), "Settings", null, null, null)
         }}
         label={"Optimize Performance"}
         spaceBetween
@@ -133,7 +133,7 @@ export const LabelToggle = () => {
           isActive={labelStatus[label]}
           onClick={() => {
             toggle(label)
-            handleClick(('(Labels Toggle: ' + label.toString()), "Settings", null, null, null )
+            handleClick(("[" + label.toString() + "] " + 'Labels Toggle On: ' + labelStatus[label].toString()), "Settings", null, null, null)
           }}
           label={label.charAt(0).toUpperCase() + label.slice(1)}
           key={label}
@@ -209,7 +209,7 @@ export const ExportData = () => {
           initiateAnalyitcsDownload(exportTypeEnum.JSON, timeRange)
           handleClick('Analytics Export Button', "Settings", null, null, null)
         }}>
-          Analytics Export
+        Analytics
       </SExportButton>
 
 

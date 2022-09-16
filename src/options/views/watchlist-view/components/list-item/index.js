@@ -61,7 +61,11 @@ const ListItem = ({
         <div>
           <SAction
             ref={dropdownRef}
-            onClick={() => setDropdown((region) => !region)}
+            onClick={() => {
+              setDropdown((region) => !region)
+              handleClick('Watchlist Options', "Watchlist", null, null, null)
+            
+            }}
           >
             <SDropdownOptions show={showDropdown}>
               <SDropdownItem

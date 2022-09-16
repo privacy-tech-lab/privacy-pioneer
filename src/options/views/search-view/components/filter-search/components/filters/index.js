@@ -53,7 +53,7 @@ const Filters = ({
         <SFilterRowItem
           onClick={() => {
             setShowCompanies(!showCompanies)
-            handleClick('Companies button clicked')
+            handleClick('Companies Filter Button', "History", null, null, null)
           }}
           key={"Companies"}
           highlight={showCompanies}
