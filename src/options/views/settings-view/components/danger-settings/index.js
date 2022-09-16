@@ -4,6 +4,7 @@ privacy-tech-lab, https://www.privacytechlab.org/
 */
 
 import React from "react"
+import { handleClick } from "../../../../../libs/indexed-db/getAnalytics"
 import {
   deleteEvidenceDB,
   deleteKeywordDB,
@@ -29,6 +30,7 @@ export const DangerZone = () => {
       )
     ) {
       deleteEvidenceDB()
+      handleClick('Delete ALL Data', "Settings", null, null , null)
     }
   }
   /**
@@ -41,6 +43,7 @@ export const DangerZone = () => {
       )
     ) {
       deleteKeywordDB()
+      handleClick('Delete ALL Watchlist', "Settings", null, null , null)
     }
   }
   return (
@@ -50,7 +53,7 @@ export const DangerZone = () => {
       <div style={{ display: "flex", flexDirection: "row", marginTop: "12px" }}>
         <SDangerButton
           data-tip="Delete all of the data that we have collected from your local storage"
-          onClick={handleEvidence}
+          onClick={handleEvidence}     
         >
           Delete Data
         </SDangerButton>
