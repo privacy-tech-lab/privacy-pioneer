@@ -73,7 +73,7 @@ const SearchView = () => {
             <SBackButton
               onClick={() => {
                 history.goBack()
-                handleClick('Go back to home page from History')
+                handleClick(('Go Back (from History)'), "History", null, null, null)
               }}
               whileHover={{ scale: 1.2 }}
             >

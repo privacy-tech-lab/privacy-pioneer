@@ -114,7 +114,7 @@ const EditModal = ({ passKeywordType, passKeyword, edit, id, updateList }) => {
               ref={dropdownRef}
               onClick={() => {
                 setDropdown((region) => !region)
-                handleClick('Type Dropdown')
+                handleClick('Type Dropdown', "Watchlist Modal", null, null, null)
               }}
             >
               <SDropdownOptions show={showDropdown}>
@@ -126,7 +126,7 @@ const EditModal = ({ passKeywordType, passKeyword, edit, id, updateList }) => {
                       setKeywordType(key)
                       setInputValid(true)
                       setKeyword("")
-                      handleClick('Watchlist Type Picked: ' + key.toString()) /* add more to string to specify */
+                      handleClick(('Watchlist Type Picked: ' + key.toString()), "Watchlist Modal", null, null, null) /* add more to string to specify */
                     }}
                     key={index}
                   >
@@ -200,7 +200,7 @@ const EditModal = ({ passKeywordType, passKeyword, edit, id, updateList }) => {
                     /*handleClick('Watchlist Modal Save Button (Only works when valid)') */
                     /* For adresses it shows object object need to fix*/
                     modal.hide()
-                    await handleClick('Watchlist ' + (edit ? "Updated " : "Saved ") + "[" + keywordType.toString() + "]" + ': ' + key.toString())
+                    await handleClick(('Watchlist ' + (edit ? "Updated " : "Saved ") + "[" + keywordType.toString() + "]" + ': ' + key.toString()), "Watchlist Modal", null, null, null)
 
                   }
                 }

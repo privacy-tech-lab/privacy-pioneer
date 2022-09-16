@@ -57,7 +57,7 @@ export const ThemeSelection = ({ changeTheme }) => {
         whileHover={{ scale: 1.1 }}
         onTap={() => {
           setETheme(settingsEnum.light)
-          handleClick('Light Theme was Clicked')
+          handleClick(('Light Theme'), "Settings", null, null, null)
         }}
       >
         <Icons.Sun size={48} />
@@ -66,7 +66,10 @@ export const ThemeSelection = ({ changeTheme }) => {
         selTheme={selTheme}
         theme={settingsEnum.dark}
         whileHover={{ scale: 1.1 }}
-        onTap={() => {setETheme(settingsEnum.dark); handleClick('Dark Theme Setting Clicked')}}
+        onTap={() => {
+          setETheme(settingsEnum.dark)
+          handleClick(('Dark Theme Setting'), "Settings", null, null, null)
+        }}
       >
         <Icons.Moon size={48} />
       </SThemeIcon>
@@ -76,7 +79,7 @@ export const ThemeSelection = ({ changeTheme }) => {
         whileHover={{ scale: 1.1 }}
         onTap={() => {
           setETheme(settingsEnum.sameAsSystem)
-          handleClick('Same as System Theme was Clicked')
+          handleClick(('Same as System Theme'), "Settings", null, null, null)
         }}
       >
         <Icons.Settings size={48} />

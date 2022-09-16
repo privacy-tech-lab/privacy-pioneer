@@ -37,7 +37,7 @@ const LabelCards = ({ website, handleTap, allLabels, webLabels }) => {
         key={index}
         onTap={() => {
           handleTap({ label, requests, website, show: true })
-          handleClick('History Label Card (including Recents): ' + label.toString() + 'Website: ' + website.toString()) /* Label Card from History */
+          handleClick(('History Label Card (including Recents): ' + label.toString() + ' Website: ' + website.toString()), "History/Recent", website.toString(), null, null) /* Label Card from History */
         }}
         margin="8px 16px 0px 0px"
         label={label}

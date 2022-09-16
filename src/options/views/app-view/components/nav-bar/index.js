@@ -54,7 +54,7 @@ const NavBar = () => {
       <SLeading>
         <SLeadingContainer onClick={() => {
           configureRoute("/")
-          handleClick('Privacy Pioneer Logo was clicked (Not sure how important this is)')
+          handleClick(('Privacy Pioneer Logo'), "Home", null, null, null)
         }}>
           <SBrandIcon src={logo} alt="Logo" />
           <SBrandTitle>Privacy Pioneer</SBrandTitle>
@@ -65,7 +65,7 @@ const NavBar = () => {
           active={tab === 0}
           onClick={() => {
             configureRoute("/")
-            handleClick('Home Button in Extension Page was clicked')
+            handleClick(('Home Button'), "Nav-Bar", null, null, null)
           }
           }
           data-place="bottom"
@@ -78,7 +78,7 @@ const NavBar = () => {
           active={tab === 1}
           onClick={() => { 
             configureRoute("/watchlist")
-            handleClick('Watchlist in Extension Page clicked') 
+            handleClick(('Watchlist'), "Nav-Bar", null, null, null) 
           }}
           data-place="bottom"
           data-tip="Enter personal keywords that Privacy Pioneer will look out for while you browse"
@@ -90,7 +90,7 @@ const NavBar = () => {
           active={tab === 2}
           onClick={() => { 
             configureRoute("/settings")
-            handleClick('Settings in Extension Page was clicked') 
+            handleClick(('Settings'), "Nav-Bar", null, null, null) 
           }}
           data-place="bottom"
           data-tip="Control Privacy Pioneer’s settings"
@@ -102,7 +102,7 @@ const NavBar = () => {
           active={tab === 3}
           onClick={() => { 
             configureRoute("/about")
-            handleClick('About Button in Extension was clicked') 
+            handleClick(('About'), "Nav-Bar", null, null, null) 
           }}
           data-place="bottom"
           data-tip="About Privacy Pioneer"

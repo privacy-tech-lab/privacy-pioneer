@@ -83,7 +83,7 @@ const HomeView = () => {
                   pathname: "/search",
                   region: { websites: websites, labels: labels },
                 })
-                handleClick('See All History Button was Clicked'),
+                handleClick(('See All History'), "Home", null, null, null),
                 ReactTooltip.hide()
               }}
               data-place="left"

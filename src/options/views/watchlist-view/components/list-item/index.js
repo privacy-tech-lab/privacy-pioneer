@@ -68,7 +68,7 @@ const ListItem = ({
                 onClick={async () => {
                   await deleteKeyword(id, type)
                   await updateList()
-                  await handleClick('[Watchlist Deleted] ' + type.toString() + ': ' + keyword.toString())
+                  await handleClick(('[Watchlist Deleted] ' + type.toString() + ': ' + keyword.toString()), "Watchlist", null, null, null)
                 }}
               >
                 Delete
@@ -86,7 +86,7 @@ const ListItem = ({
                   }))
                   const modal = new Modal(document.getElementById("edit-modal"))
                   modal.show()
-                  handleClick('Watchlist Edit [' + type.toString() + '] : ' + keyword.toString())
+                  handleClick(('Watchlist Edit [' + type.toString() + '] : ' + keyword.toString()), "Watchlist", null, null, null)
                 }}
               >
                 Edit
@@ -98,7 +98,7 @@ const ListItem = ({
             onClick={async () => {
               await toggleNotifications(id)
               await updateList()
-              await handleClick((notification ? 'Unalerted' : 'Alerted') + keyword.toString()) /*Cannot differ when unalerted need to fix*/
+              await handleClick(((notification ? 'Unalerted ' : 'Alerted ') + type.toString() + ": " + keyword.toString()), "Watchlist", null, null, null) /*Cannot differ when unalerted need to fix*/
             }}
           >
             {notification ? (

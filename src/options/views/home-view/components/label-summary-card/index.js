@@ -36,7 +36,7 @@ const LabelSummaryCard = ({
             labels: passLabels,
           },
         })
-        handleClick(labeltype.toString()) /*Overview Summary Label add*/
+        handleClick(("Overview Label: " + labeltype.toString()), "Home", null, null, (labeltype.toString() + ' Only')) /*Overview Summary Label add*/
         ReactTooltip.hide()
       }}
     >

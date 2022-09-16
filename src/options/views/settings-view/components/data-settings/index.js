@@ -55,7 +55,7 @@ export const FullSnippetToggle = () => {
         isActive={snippetStatus}
         onClick={() => {
           toggle()
-          handleClick('Save Full HTTP Request Clicked')
+          handleClick(('Save Full HTTP Request'), "Settings", null, null, null)
         }}
         label={"Save Full HTTP Requests"}
         spaceBetween
@@ -87,7 +87,7 @@ export const OptimizationToggle = () => {
         isActive={optimizationStatus}
         onClick={() => {
           toggleOptimize()
-          handleClick('Optimize Button Clicked')
+          handleClick('Optimize Performance Toggle', "Settings", null, null, null)
         }}
         label={"Optimize Performance"}
         spaceBetween
@@ -133,7 +133,7 @@ export const LabelToggle = () => {
           isActive={labelStatus[label]}
           onClick={() => {
             toggle(label)
-            handleClick('Label Toggle [{label}] clicked')
+            handleClick(('(Labels Toggle: ' + label.toString()), "Settings", null, null, null )
           }}
           label={label.charAt(0).toUpperCase() + label.slice(1)}
           key={label}
@@ -165,7 +165,7 @@ export const ExportData = () => {
       <SDropdown
         onClick={() => {
           setDropdown((region) => !region)
-          handleClick('Export Data Time Dropdown')
+          handleClick(('Export Data Time Dropdown'), "Settings", null, null, null)
         }}
         ref={dropdownRef}
       >
@@ -175,7 +175,7 @@ export const ExportData = () => {
               onClick={() => {
                 setTimeRange(timestamp)
                 setTitle(title)
-                handleClick('Export Data time was picked')
+                handleClick('Export Data Time: ' + title.toString())
               }}
               key={title}
             >
@@ -191,7 +191,7 @@ export const ExportData = () => {
       <SExportButton
         onClick={() => {
           initiateDownload(exportTypeEnum.TSV, timeRange)
-          handleClick('TSV Download Clicked')
+          handleClick('TSV Download', "Settings", null, null, null)
         }}
       >
         TSV
@@ -199,14 +199,14 @@ export const ExportData = () => {
       <SExportButton
         onClick={() => {
           initiateDownload(exportTypeEnum.JSON, timeRange)
-          handleClick('JSON Download Clicked')
+          handleClick('JSON Download', "Settings", null, null, null)
         }}
       >
         JSON
       </SExportButton>
       <SExportButton
         onClick={() => {
-          handleClick('Analytics Export Button')
+          handleClick('Analytics Export Button', "Settings", null, null, null)
         }}>
           Analytics Export
       </SExportButton>
