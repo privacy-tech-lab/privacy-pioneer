@@ -28,7 +28,7 @@ import {
   SDropdownSelection,
   SSnippetToggle,
 } from "./style"
-import { initiateDownload } from "../../../../../libs/exportData/initiateDownload"
+import { initiateAnalyitcsDownload, initiateDownload } from "../../../../../libs/exportData/initiateDownload"
 import { exportTypeEnum } from "../../../../../background/analysis/classModels.js"
 import { handleClick } from "../../../../../libs/indexed-db/getAnalytics"
 
@@ -206,6 +206,7 @@ export const ExportData = () => {
       </SExportButton>
       <SExportButton
         onClick={() => {
+          initiateAnalyitcsDownload(exportTypeEnum.JSON, timeRange)
           handleClick('Analytics Export Button', "Settings", null, null, null)
         }}>
           Analytics Export
