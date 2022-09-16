@@ -1,6 +1,11 @@
 {
   "name": "privacy-pioneer",
   "version": "0.0.1",
+  "jest": {
+    "setupFiles": [
+        "fake-indexeddb/auto"
+    ]
+  },
   "scripts": {
     "prestart": "rimraf dev",
     "start": "concurrently -k npm:dev:frontend npm:dev:background npm:dev:extension",
@@ -8,7 +13,8 @@
     "dev:background": "webpack --watch --config-name background --mode development",
     "dev:extension": "wait-on ./dev/manifest.json && cd dev && web-ext run --watch-file bundle.background.js --start-url about:debugging#/runtime/this-firefox",
     "prebuild": "rimraf dist",
-    "build": "webpack -c webpack.config.babel.js --mode production"
+    "build": "webpack -c webpack.config.babel.js --mode production",
+    "test": "jest"
   },
   "repository": "https://github.com/privacy-tech-lab/privacy-pioneer",
   "license": "MIT",
@@ -56,8 +62,10 @@
     "concurrently": "^6.0.0",
     "copy-webpack-plugin": "^8.0.0",
     "css-loader": "^5.1.2",
+    "fake-indexeddb": "^4.0.0",
     "file-loader": "^6.2.0",
     "html-webpack-plugin": "^5.3.1",
+    "jest": "^29.0.2",
     "jsdoc": "^3.6.7",
     "rimraf": "^3.0.2",
     "style-loader": "^2.0.0",
