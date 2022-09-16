@@ -29,6 +29,14 @@ const saveKeyword = async (keyword, type, id) => {
       key = IPINFO_IPKEY
     }else if (id == 'loc'){
       key = IPINFO_ADDRESSKEY
+      let watchlist = await watchlistKeyval.values()
+      var maxNum = 0
+      watchlist.forEach((el) => {
+        if (el.type == permissionEnum.location) {
+          maxNum = Math.max(maxNum, el.locNum)
+        }
+      })
+      maxNum = (maxNum + 1).toString()
     }else if (id != null){
       key = id
     }else if (type == permissionEnum.location) {
