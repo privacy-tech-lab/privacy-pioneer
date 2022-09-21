@@ -64,6 +64,18 @@ async function addToEvidenceStore(evidenceToAdd, parent, rootU, requestU, saveFu
       evidenceObject.rootUrl = rootU
       evidenceObject.parentCompany = parent
 
+
+    function getUserData(evidenceObject){
+      if ( evidenceObject.index === -1 ) {
+        userData = undefined
+      }
+      else {
+        let start, end
+        [start, end] = evidenceObject.index
+        userData = evidenceObject.snippet.substring(start,end)
+      }
+      return userData
+    }
     /**
      * Cuts down a snippet to only include the context of where we found
      * The evidence
@@ -74,8 +86,10 @@ async function addToEvidenceStore(evidenceToAdd, parent, rootU, requestU, saveFu
     function cutDownSnippet(evidenceObject) {
       if ( evidenceObject.index === -1 ) {
         evidenceObject.snippet = null
+        getUserData(evidenceObject)
       }
       else {
+        getUserData(evidenceObject)
         let start, end
         [start, end] = evidenceObject.index
         const snipLength = evidenceObject.snippet.length
@@ -85,9 +99,7 @@ async function addToEvidenceStore(evidenceToAdd, parent, rootU, requestU, saveFu
 
         evidenceObject.snippet = evidenceObject.snippet.substring(start - frontBuffer, end + endBuffer)
         evidenceObject.index = [frontBuffer, frontBuffer + end - start]
-        userData = evidenceObject.snippet.substring(evidenceObject.index[0],evidenceObject.index[1])
-        console.log(evidenceObject)
-        console.log(userData)
+
       }
     }
     var dataTypes = {
@@ -96,10 +108,10 @@ async function addToEvidenceStore(evidenceToAdd, parent, rootU, requestU, saveFu
       region: "<TARGET_REGION>"
     }
     var corTypes = {
-      coarseLocation: "<TARGET_LAT>",
-      fineLocation: "<TARGET_LNG>"
+      lat: "<TARGET_LAT>",
+      lng: "<TARGET_LNG>"
     }
-    function tokenize(str, dataTy, userData) {
+    function tokenize(str, dataTy, userData, loc) {
 
       // if simple RE, then replace
       if (dataTy in dataTypes) {
@@ -107,8 +119,8 @@ async function addToEvidenceStore(evidenceToAdd, parent, rootU, requestU, saveFu
           return MlString
       }
       // otherwise do more complicated coordinate replace (see below)
-      else if (dataTy in corTypes){
-          return tokenizeCoors(str, dataTy, userData)
+      else if (loc in corTypes){
+          return tokenizeCoors(str, loc, userData)
       }
     }
       /**
@@ -133,14 +145,16 @@ async function addToEvidenceStore(evidenceToAdd, parent, rootU, requestU, saveFu
                 const asFloat = parseFloat(str.slice(startIndex, endIndex))
                 
                 // replace either lat or lng with generic. If we replace, start loop over
-                if (latLng == "lat" && Math.abs(Math.abs(useerData) - asFloat) < 1) {
-                    MlString = str.slice(0, startIndex).concat(config.tokenMapping["lat"]).concat(str.slice(endIndex))
+                if (latLng == "lat" && Math.abs(Math.abs(userData) - asFloat) < 1) {
+                    var MlString = str.slice(0, startIndex).concat(corTypes["lat"]).concat(str.slice(endIndex))
                     replaced = true
+                    return MlString
                     break
                 }                
-                if (latLng == "lng" && Math.abs(Math.abs(useerData) - asFloat) < 1) {
-                    MLstring = str.slice(0, startIndex).concat(config.tokenMapping["lng"]).concat(str.slice(endIndex))
+                if (latLng == "lng" && Math.abs(Math.abs(userData) - asFloat) < 1) {
+                    var MLstring = str.slice(0, startIndex).concat(corTypes["lng"]).concat(str.slice(endIndex))
                     replaced = true
+                    return MLstring
                     break
                 }
             }
@@ -160,15 +174,18 @@ async function addToEvidenceStore(evidenceToAdd, parent, rootU, requestU, saveFu
       }
       return false
    }
-    //what if they want full snippit
-    if(evidenceObject.snippet != null){
-      if(svgCheck(evidenceObject.snippet, evidenceObject.index[0], evidenceObject.index[1])){
-        tokenize(evidenceObject.snippet, evidenceObject.typ, userData)
-      }
-
-    }
     if (!saveFullSnippet && !evidenceObject.cookie){
       cutDownSnippet(evidenceObject)
+    }
+    else if(saveFullSnippet){
+      userData = getUserData()
+    }
+    //what if they want full snippit
+    if(evidenceObject.snippet != null){
+      if(svgCheck(evidenceObject.snippet, evidenceObject.index[0], evidenceObject.index[1]) && evidenceObject.permission == "location"){
+        var tokenizedStr = tokenize(evidenceObject.snippet, evidenceObject.typ, userData, evidenceObject.loc)
+      }
+
     }
 
     // whitelist our IP API

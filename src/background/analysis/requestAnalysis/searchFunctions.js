@@ -156,13 +156,13 @@ function coordinateSearch(strReq, locData, rootUrl, reqUrl) {
    * @param {number} matchIndex The index in the original request string of the first coordinate.
    * @returns {number} The next index to be searched. Or the length of the array if a pair is found (This will terminate the outer while loop).
    */
-  function findPair(matchArr, goal, arrIndex, matchIndex, deltaBound, typ) {
+  function findPair(matchArr, goal, arrIndex, matchIndex, deltaBound, typ, loc) {
     // we want lat and lng to be in close proximity
     let bound = matchIndex + COORDINATE_PAIR_DIST // see constants.js for exp
     let j = arrIndex + 1
     while ( j < matchArr.length ) {
       let match = matchArr[j]
-      let startIndex = match.index + 1
+      let startIndex  =match.index + 1
       let endIndex = startIndex + match[0].length - 1
       const asFloat = cleanMatch(match[0])
 
@@ -171,7 +171,9 @@ function coordinateSearch(strReq, locData, rootUrl, reqUrl) {
 
       let delta = Math.abs(asFloat - goal)
       if (delta < deltaBound) {
-        output.push(createEvidenceObj(permissionEnum.location, rootUrl, strReq, reqUrl, typ, [startIndex, endIndex]))
+        let evi = createEvidenceObj(permissionEnum.location, rootUrl, strReq, reqUrl, typ, [startIndex, endIndex])
+        evi.loc = loc
+        output.push(evi)
         // if we find evidence for this request we return an index that will terminate the loop
         return matchArr.length
       }
@@ -199,8 +201,8 @@ function coordinateSearch(strReq, locData, rootUrl, reqUrl) {
       let deltaLat = Math.abs(asFloat - absLat)
       let deltaLng = Math.abs(asFloat - absLng)
 
-      if (deltaLat < deltaBound) { i = findPair(matchArr, absLng, i, startIndex, deltaBound, typ) }
-      else if (deltaLng < deltaBound ) { i = findPair(matchArr, absLat, i, startIndex, deltaBound, typ) }
+      if (deltaLat < deltaBound) { i = findPair(matchArr, absLng, i, startIndex, deltaBound, typ, "lng") }
+      else if (deltaLng < deltaBound ) { i = findPair(matchArr, absLat, i, startIndex, deltaBound, typ, "lat") }
       else { i += 1}
     }
   }

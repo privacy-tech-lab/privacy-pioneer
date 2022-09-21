@@ -101,6 +101,7 @@ function getHostname(url) {
  * @param {number} watchlistHash 
  * @param {string|undefined} extraDetail 
  * @param {boolean} cutDown
+ * @param {string|undefined} loc
  * @returns {Evidence}
  */
 function createEvidenceObj(
@@ -124,7 +125,8 @@ function createEvidenceObj(
     firstPartyRoot: undefined,
     parentCompany: undefined,
     watchlistHash: watchlistHash,
-    extraDetail: extraDetail
+    extraDetail: extraDetail,
+    loc: undefined
   } )
 
   return e
