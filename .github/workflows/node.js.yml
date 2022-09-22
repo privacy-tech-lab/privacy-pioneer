@@ -27,5 +27,5 @@ jobs:
         node-version: ${{ matrix.node-version }}
         cache: 'npm'
     - run: echo export const apiIPToken = ${{ secrets.APIIPTOKEN }}> src/libs/holdAPI.js
-    - run: npm ci
+    - run: npm i
     - run: npm test
