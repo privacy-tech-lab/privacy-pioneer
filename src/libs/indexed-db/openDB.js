@@ -5,6 +5,7 @@ privacy-tech-lab, https://www.privacytechlab.org/
 
 import { openDB } from "idb"
 
+
 /**
  * Create/open indexed-db to store keywords for watchlist
  */
