@@ -1,5 +1,5 @@
-import { watchlistKeyval } from "../../../../libs/indexed-db/openDB";
-import { saveKeyword } from "../../../../libs/indexed-db/updateWatchlist";
+import { watchlistKeyval } from "../../libs/indexed-db/openDB";
+import { saveKeyword } from "../../libs/indexed-db/updateWatchlist";
 
 test('add general item to the watchlist', async () => {
     const res = await saveKeyword("This is a Test", "userKeyword", '12345')
