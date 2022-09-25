@@ -1,9 +1,9 @@
 /*
 Licensed per https://github.com/privacy-tech-lab/privacy-pioneer/blob/main/LICENSE
-privacy-tech-lab, https://www.privacytechlab.org/
+privacy-tech-lab, https://privacytechlab.org/
 */
 
-import React from "react"
+import React from "react";
 import {
   SBody,
   SContent,
@@ -15,9 +15,9 @@ import {
   SThirdParty,
   STitle,
   SHeaderBadge,
-} from "./style"
-import WebsiteBadge from "../website-badge"
-import Item from "./components/item"
+} from "./style";
+import WebsiteBadge from "../website-badge";
+import Item from "./components/item";
 
 /**
  * Detailed view of label and third parties
@@ -26,30 +26,30 @@ import Item from "./components/item"
  * @param {Array<object>} requests evidence objects we created
  */
 const LabelDetail = ({ label, website, requests }) => {
-  const urls = Object.keys(requests) // detected request urls containing identified data
-  const collected = urls.includes(website) // Check if website collected data
+  const urls = Object.keys(requests); // detected request urls containing identified data
+  const collected = urls.includes(website); // Check if website collected data
 
   /**
    * Get first party description based on whether 'website' collected data
    */
   const firstPartyDescription = () => {
     if (collected) {
-      return `Collected the following ${label} data:`
+      return `Collected the following ${label} data:`;
     } else {
-      return `Did not collect ${label} data.`
+      return `Did not collect ${label} data.`;
     }
-  }
+  };
 
   /**
    * Get third party description based on whether 'website' shared data
    */
   const thirdPartyDescription = () => {
     if (collected && urls.length === 1) {
-      return `${website} did not share ${label} data.`
+      return `${website} did not share ${label} data.`;
     } else {
-      return `${website} shared ${label} data with the following third parties:`
+      return `${website} shared ${label} data with the following third parties:`;
     }
-  }
+  };
 
   return (
     <SBody>
@@ -77,11 +77,11 @@ const LabelDetail = ({ label, website, requests }) => {
                 <Item url={url} request={request} label={label} />
                 <SSeperator marginTop="16px" />
               </SItem>
-            )
+            );
         })}
       </SThirdParty>
     </SBody>
-  )
-}
+  );
+};
 
-export default LabelDetail
+export default LabelDetail;

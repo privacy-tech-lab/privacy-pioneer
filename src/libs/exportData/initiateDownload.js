@@ -1,13 +1,13 @@
 /*
 Licensed per https://github.com/privacy-tech-lab/privacy-pioneer/blob/main/LICENSE
-privacy-tech-lab, https://www.privacytechlab.org/
+privacy-tech-lab, https://privacytechlab.org/
 */
 
-import { createBlob } from "./createBlob.js"
+import { createBlob } from "./createBlob.js";
 import {
   exportTypeEnum,
   timeRangeEnum,
-} from "../../background/analysis/classModels.js"
+} from "../../background/analysis/classModels.js";
 
 /**
  * Enodes a blob into a URL
@@ -16,9 +16,9 @@ import {
  */
 function blobToURL(blob) {
   // creates a URL with the data from the blob passed
-  const dataURL = URL.createObjectURL(blob)
+  const dataURL = URL.createObjectURL(blob);
 
-  return dataURL
+  return dataURL;
 }
 
 /**
@@ -37,18 +37,18 @@ async function initiateDownload(
   exportDataType = exportTypeEnum.TSV,
   timeRange = timeRangeEnum.allTime
 ) {
-  const timeStampLowerBound = Date.now() - timeRange
+  const timeStampLowerBound = Date.now() - timeRange;
 
   // create the blob to be converted to a URL
-  const dataBlob = await createBlob(exportDataType, timeStampLowerBound)
+  const dataBlob = await createBlob(exportDataType, timeStampLowerBound);
 
   // this URL encodes the data in the blob to be downloaded
-  const downloadURL = blobToURL(dataBlob)
+  const downloadURL = blobToURL(dataBlob);
 
   var downloading = browser.downloads.download({
     url: downloadURL,
     filename: `privacy_pioneer_data.${exportDataType}`,
-  })
+  });
 }
 
-export { initiateDownload }
+export { initiateDownload };

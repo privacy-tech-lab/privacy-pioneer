@@ -1,14 +1,14 @@
 /*
 Licensed per https://github.com/privacy-tech-lab/privacy-pioneer/blob/main/LICENSE
-privacy-tech-lab, https://www.privacytechlab.org/
+privacy-tech-lab, https://privacytechlab.org/
 */
 
-import React from "react"
-import { privacyLabels } from "../../../../../background/analysis/classModels"
-import * as Icons from "../../../../../libs/icons"
-import { SContainer, SFooter, SHeader, SLabel, STotal } from "./style"
-import { useHistory } from "react-router"
-import ReactTooltip from "react-tooltip"
+import React from "react";
+import { privacyLabels } from "../../../../../background/analysis/classModels";
+import * as Icons from "../../../../../libs/icons";
+import { SContainer, SFooter, SHeader, SLabel, STotal } from "./style";
+import { useHistory } from "react-router";
+import ReactTooltip from "react-tooltip";
 
 /**
  * Summary card that highlights notable stats from identified label
@@ -20,7 +20,7 @@ const LabelSummaryCard = ({
   passWebsites,
   passLabels,
 }) => {
-  const history = useHistory()
+  const history = useHistory();
   return (
     <SContainer
       labeltype={labeltype}
@@ -34,8 +34,8 @@ const LabelSummaryCard = ({
             websites: passWebsites,
             labels: passLabels,
           },
-        })
-        ReactTooltip.hide()
+        });
+        ReactTooltip.hide();
       }}
     >
       <SHeader>
@@ -47,20 +47,20 @@ const LabelSummaryCard = ({
       </SHeader>
       <SFooter>Companies collected {labeltype} data.</SFooter>
     </SContainer>
-  )
-}
+  );
+};
 
 /**
  * List of Summary cards given label and stat {label:stat}
  * @param {object} labels label and stat {label:stat} object
  */
 const LabelSummaryCardList = ({ labels, passWebsites }) => {
-  const entries = Object.entries(labels)
+  const entries = Object.entries(labels);
   return entries.map(([labeltype, evidence]) => {
-    let numOfWebsites = 0
+    let numOfWebsites = 0;
     Object.values(evidence).forEach(
       (website) => (numOfWebsites += Object.keys(website).length)
-    )
+    );
     return (
       <LabelSummaryCard
         key={labeltype}
@@ -69,8 +69,8 @@ const LabelSummaryCardList = ({ labels, passWebsites }) => {
         passWebsites={passWebsites}
         passLabels={labels}
       />
-    )
-  })
-}
+    );
+  });
+};
 
-export default LabelSummaryCardList
+export default LabelSummaryCardList;

@@ -1,24 +1,24 @@
 /*
 Licensed per https://github.com/privacy-tech-lab/privacy-pioneer/blob/main/LICENSE
-privacy-tech-lab, https://www.privacytechlab.org/
+privacy-tech-lab, https://privacytechlab.org/
 */
 
-import React, { useEffect, useState } from "react"
-import * as Icons from "../../../../libs/icons"
+import React, { useEffect, useState } from "react";
+import * as Icons from "../../../../libs/icons";
 import {
   getTheme,
   setTheme,
   settingsEnum,
-} from "../../../../libs/indexed-db/settings"
+} from "../../../../libs/indexed-db/settings";
 
-import styled from "styled-components"
-import { motion } from "framer-motion"
+import styled from "styled-components";
+import { motion } from "framer-motion";
 
 const SThemeSection = styled.div`
   display: flex;
   flex-direction: row;
   justify-content: center;
-`
+`;
 
 const SThemeIcon = styled(motion.div)`
   display: flex;
@@ -28,25 +28,25 @@ const SThemeIcon = styled(motion.div)`
   outline: ${(props) =>
     props.theme == props.selTheme ? "5px solid #6b219f" : null};
   border-radius: 50%;
-`
+`;
 /**
  * Theming section for Settings View
  */
 export const ThemeSelection = ({ changeTheme }) => {
-  const [selTheme, setSelTheme] = useState("")
+  const [selTheme, setSelTheme] = useState("");
   useEffect(
     () =>
       getTheme().then((res) => {
-        if (res) setSelTheme(res)
+        if (res) setSelTheme(res);
       }),
     [selTheme]
-  )
+  );
 
   const setETheme = async (theme) => {
-    await setTheme(theme)
-    setSelTheme(theme)
-    changeTheme(theme)
-  }
+    await setTheme(theme);
+    setSelTheme(theme);
+    changeTheme(theme);
+  };
   return (
     <SThemeSection>
       <SThemeIcon
@@ -74,5 +74,5 @@ export const ThemeSelection = ({ changeTheme }) => {
         <Icons.Settings size={48} />
       </SThemeIcon>
     </SThemeSection>
-  )
-}
+  );
+};

@@ -1,10 +1,10 @@
 /*
 Licensed per https://github.com/privacy-tech-lab/privacy-pioneer/blob/main/LICENSE
-privacy-tech-lab, https://www.privacytechlab.org/
+privacy-tech-lab, https://privacytechlab.org/
 */
 
-import { motion } from "framer-motion"
-import styled from "styled-components"
+import { motion } from "framer-motion";
+import styled from "styled-components";
 
 export const SContainer = styled(motion.div)`
   display: flex;
@@ -13,7 +13,7 @@ export const SContainer = styled(motion.div)`
   margin: 0px;
   padding: 0px;
   border: 0;
-`
+`;
 
 export const SHeader = styled.div`
   margin-bottom: ${(props) => props.marginBottom};
@@ -21,7 +21,7 @@ export const SHeader = styled.div`
   font-size: 14px;
   font-weight: bold;
   color: var(--textColor);
-`
+`;
 
 export const SCodeBlock = styled(motion.div)`
   pre {
@@ -43,7 +43,7 @@ export const SCodeBlock = styled(motion.div)`
     font-weight: bold;
     color: #f44336;
   }
-`
+`;
 
 export const SBody = styled.div`
   overflow-x: scroll;
@@ -61,27 +61,27 @@ export const SBody = styled.div`
   code {
     white-space: nowrap !important;
   }
-`
+`;
 
 export const SBodyMod = styled.div`
-overflow: scroll;
-max-height: 100px;
-pre {
-  margin: 0px;
-  font-size: 12px;
-  line-height: 150%;
-  font-family: monospace;
-  white-space: pre;
-  white-space: pre-wrap;
-  white-space: -moz-pre-wrap;
-  white-space: -o-pre-wrap;
-  width: 100%;
-  display: block;
-  padding: 8px;
-  background: var(--textFieldColor);
-  border-radius: 8px;
-}
-`
+  overflow: scroll;
+  max-height: 100px;
+  pre {
+    margin: 0px;
+    font-size: 12px;
+    line-height: 150%;
+    font-family: monospace;
+    white-space: pre;
+    white-space: pre-wrap;
+    white-space: -moz-pre-wrap;
+    white-space: -o-pre-wrap;
+    width: 100%;
+    display: block;
+    padding: 8px;
+    background: var(--textFieldColor);
+    border-radius: 8px;
+  }
+`;
 
 export const SEvidenceDescription = styled.div`
   pre {
@@ -104,8 +104,8 @@ export const SEvidenceDescription = styled.div`
     color: var(--secondaryTextColor);
   }
   a {
-    color: var(--primaryBrandColor)
+    color: var(--primaryBrandColor);
   }
-`
+`;
 
-export const SCollapse = styled.div``
+export const SCollapse = styled.div``;

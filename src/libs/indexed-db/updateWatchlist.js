@@ -1,16 +1,19 @@
 /*
 Licensed per https://github.com/privacy-tech-lab/privacy-pioneer/blob/main/LICENSE
-privacy-tech-lab, https://www.privacytechlab.org/
+privacy-tech-lab, https://privacytechlab.org/
 */
 
-import { watchlistKeyval } from "./openDB.js"
-import { evidenceKeyval as evidenceIDB } from "../../background/analysis/interactDB/openDB.js"
-import { watchlistHashGen } from "../../background/analysis/utility/util.js"
+import { watchlistKeyval } from "./openDB.js";
+import { evidenceKeyval as evidenceIDB } from "../../background/analysis/interactDB/openDB.js";
+import { watchlistHashGen } from "../../background/analysis/utility/util.js";
 import {
   keywordTypes,
   permissionEnum,
-} from "../../background/analysis/classModels.js"
-import { IPINFO_IPKEY, IPINFO_ADDRESSKEY} from "../../background/analysis/buildUserData/importSearchData.js"
+} from "../../background/analysis/classModels.js";
+import {
+  IPINFO_IPKEY,
+  IPINFO_ADDRESSKEY,
+} from "../../background/analysis/buildUserData/importSearchData.js";
 /**
  * Saves/updates keyword from watchlist store
  * Updates keyword when 'id' is not undefined
@@ -23,34 +26,34 @@ import { IPINFO_IPKEY, IPINFO_ADDRESSKEY} from "../../background/analysis/buildU
 const saveKeyword = async (keyword, type, id) => {
   // Validate
   if (type in keywordTypes && keyword) {
-    let key
+    let key;
     //id == ip || loc when this is the ipinfo generated ip keyword
-    if(id == 'ip'){
-      key = IPINFO_IPKEY
-    }else if (id == 'loc'){
-      key = IPINFO_ADDRESSKEY
-      let watchlist = await watchlistKeyval.values()
-      var maxNum = 0
+    if (id == "ip") {
+      key = IPINFO_IPKEY;
+    } else if (id == "loc") {
+      key = IPINFO_ADDRESSKEY;
+      let watchlist = await watchlistKeyval.values();
+      var maxNum = 0;
       watchlist.forEach((el) => {
         if (el.type == permissionEnum.location) {
-          maxNum = Math.max(maxNum, el.locNum)
+          maxNum = Math.max(maxNum, el.locNum);
         }
-      })
-      maxNum = (maxNum + 1).toString()
-    }else if (id != null){
-      key = id
-    }else if (type == permissionEnum.location) {
-      let watchlist = await watchlistKeyval.values()
-      var maxNum = 0
+      });
+      maxNum = (maxNum + 1).toString();
+    } else if (id != null) {
+      key = id;
+    } else if (type == permissionEnum.location) {
+      let watchlist = await watchlistKeyval.values();
+      var maxNum = 0;
       watchlist.forEach((el) => {
         if (el.type == permissionEnum.location) {
-          maxNum = Math.max(maxNum, el.locNum)
+          maxNum = Math.max(maxNum, el.locNum);
         }
-      })
-      maxNum = (maxNum + 1).toString()
-      key = watchlistHashGen(type, maxNum)
+      });
+      maxNum = (maxNum + 1).toString();
+      key = watchlistHashGen(type, maxNum);
     } else {
-      key = watchlistHashGen(type, keyword)
+      key = watchlistHashGen(type, keyword);
     }
     type != permissionEnum.location
       ? await watchlistKeyval.set(key, {
@@ -65,28 +68,30 @@ const saveKeyword = async (keyword, type, id) => {
           id: key,
           locNum: maxNum,
           notification: false,
-        })
-    return true
+        });
+    return true;
   }
-  return false
-}
+  return false;
+};
 
 const toggleNotifications = async (id) => {
-  const data = await watchlistKeyval.get(id)
+  const data = await watchlistKeyval.get(id);
   if (data.notification) {
-    data.notification = false
+    data.notification = false;
   } else {
-    data.notification = true
+    data.notification = true;
     if (
       Notification.permission == "default" ||
       Notification.permission == "denied"
     ) {
-      Notification.requestPermission()
-      window.alert('In order for notifications to work, you will need to enable notifications for FireFox by going to\n\nSettings > System > Notifications and actions on Windows or\n\nSystem Preferences > Notifications > FireFox on Mac.')
+      Notification.requestPermission();
+      window.alert(
+        "In order for notifications to work, you will need to enable notifications for FireFox by going to\n\nSettings > System > Notifications and actions on Windows or\n\nSystem Preferences > Notifications > FireFox on Mac."
+      );
     }
   }
-  watchlistKeyval.set(id, data)
-}
+  watchlistKeyval.set(id, data);
+};
 
 /**
  * Deletes the keyword from the watchlist.
@@ -97,41 +102,41 @@ const toggleNotifications = async (id) => {
  * @returns {void} Nothing. Updates and deletes as described.
  */
 const deleteKeyword = async (id) => {
-  let evKeys = await evidenceIDB.keys()
+  let evKeys = await evidenceIDB.keys();
   /**
    * Deletes evidence if watchlistHash of the evidence is the same as the id we are deleting from the watchlist
    * @param {Object} evidenceStoreKeys All keys from the related store, taken from the above lines
    */
   function runDeletion(evidenceStoreKeys) {
     evidenceStoreKeys.forEach(async (website) => {
-      let a = await evidenceIDB.get(website)
+      let a = await evidenceIDB.get(website);
       if (a == undefined) {
-        return
+        return;
       } // shouldn't happen but just in case
       for (const [perm, typeLevel] of Object.entries(a)) {
         for (const [type, evUrls] of Object.entries(typeLevel)) {
           for (const [evUrl, evidence] of Object.entries(evUrls)) {
             if (id == evidence.watchlistHash) {
-              delete a[perm][type][evUrl]
+              delete a[perm][type][evUrl];
             }
           }
           if (Object.keys(a[perm][type]).length == 0) {
-            delete a[perm][type]
+            delete a[perm][type];
           }
         }
       }
-      await evidenceIDB.set(website, a)
-    })
+      await evidenceIDB.set(website, a);
+    });
   }
 
   // delete from Evidence
-  runDeletion(evKeys)
+  runDeletion(evKeys);
 
   // delete from watchlist
-  await watchlistKeyval.delete(id)
+  await watchlistKeyval.delete(id);
 
   // reset the datastream
-  browser.runtime.sendMessage({ msg: "dataUpdated" })
-}
+  browser.runtime.sendMessage({ msg: "dataUpdated" });
+};
 
-export { saveKeyword, deleteKeyword, toggleNotifications }
+export { saveKeyword, deleteKeyword, toggleNotifications };

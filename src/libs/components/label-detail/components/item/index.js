@@ -1,13 +1,13 @@
 /*
 Licensed per https://github.com/privacy-tech-lab/privacy-pioneer/blob/main/LICENSE
-privacy-tech-lab, https://www.privacytechlab.org/
+privacy-tech-lab, https://privacytechlab.org/
 */
 
-import React, { useRef, useState } from "react"
-import { SBadgeGroup, SBadge } from "./style"
-import Evidence from "../evidence"
-import { Collapse } from "bootstrap"
-import { privacyLabels } from "../../../../../background/analysis/classModels"
+import React, { useRef, useState } from "react";
+import { SBadgeGroup, SBadge } from "./style";
+import Evidence from "../evidence";
+import { Collapse } from "bootstrap";
+import { privacyLabels } from "../../../../../background/analysis/classModels";
 
 /**
  * Display of badges with sub types and collapse containing description and evidence
@@ -20,9 +20,9 @@ const Item = ({ request, url, label }) => {
     request: null,
     label: null,
     type: null,
-  })
-  const collapseId = `${url}-${label}-collapse`
-  const containerRef = useRef()
+  });
+  const collapseId = `${url}-${label}-collapse`;
+  const containerRef = useRef();
 
   /**
    * Show/hide collapse and populate with evidence data
@@ -31,31 +31,31 @@ const Item = ({ request, url, label }) => {
    * @param {string} type The type of evidence
    */
   const inflateCollapse = (event, request, type) => {
-    setEvidence({ request: request, label: label, type: type })
+    setEvidence({ request: request, label: label, type: type });
 
-    const target = event.target
+    const target = event.target;
     const collapse = new Collapse(document.getElementById(collapseId), {
       toggle: false,
-    })
+    });
 
     if (
       document.getElementById(collapseId).classList.contains("show") &&
       target.classList.contains("active")
     ) {
-      const matches = containerRef.current.querySelectorAll(".badge")
+      const matches = containerRef.current.querySelectorAll(".badge");
       matches.forEach(function (match) {
-        match.classList.remove("active")
-      })
-      collapse.hide()
+        match.classList.remove("active");
+      });
+      collapse.hide();
     } else {
-      const matches = containerRef.current.querySelectorAll(".badge")
+      const matches = containerRef.current.querySelectorAll(".badge");
       matches.forEach(function (match) {
-        match.classList.remove("active")
-      })
-      target.classList.add("active")
-      collapse.show()
+        match.classList.remove("active");
+      });
+      target.classList.add("active");
+      collapse.show();
     }
-  }
+  };
 
   return (
     <>
@@ -78,7 +78,7 @@ const Item = ({ request, url, label }) => {
         type={evidence.type}
       />
     </>
-  )
-}
+  );
+};
 
-export default Item
+export default Item;

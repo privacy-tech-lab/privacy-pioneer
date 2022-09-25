@@ -1,14 +1,14 @@
 /*
 Licensed per https://github.com/privacy-tech-lab/privacy-pioneer/blob/main/LICENSE
-privacy-tech-lab, https://www.privacytechlab.org/
+privacy-tech-lab, https://privacytechlab.org/
 */
 
-import { evidenceKeyval as evidenceIDB } from "../../background/analysis/interactDB/openDB.js"
+import { evidenceKeyval as evidenceIDB } from "../../background/analysis/interactDB/openDB.js";
 import {
   permissionEnum,
   privacyLabels,
-} from "../../background/analysis/classModels"
-import { getExcludedLabels } from "../indexed-db/settings"
+} from "../../background/analysis/classModels";
+import { getExcludedLabels } from "../indexed-db/settings";
 
 /**
  * Get identified labels of website from indexedDB
@@ -17,8 +17,8 @@ import { getExcludedLabels } from "../indexed-db/settings"
  */
 export const getWebsiteLabels = async (website, excludedLabels = []) => {
   try {
-    var evidence = await evidenceIDB.get(website)
-    const result = {}
+    var evidence = await evidenceIDB.get(website);
+    const result = {};
     for (const [label, value] of Object.entries(evidence)) {
       for (const [type, requests] of Object.entries(value)) {
         for (const [url, e] of Object.entries(requests)) {
@@ -30,21 +30,21 @@ export const getWebsiteLabels = async (website, excludedLabels = []) => {
           ) {
             // Add label in data to object
             if (!(label in result)) {
-              result[label] = { [url]: { [type]: e } }
+              result[label] = { [url]: { [type]: e } };
             } else if (!(url in result[label])) {
-              result[label][url] = { [type]: e }
+              result[label][url] = { [type]: e };
             } else {
-              result[label][url][type] = e
+              result[label][url][type] = e;
             }
           }
         }
       }
     }
-    return result
+    return result;
   } catch (error) {
-    return {}
+    return {};
   }
-}
+};
 
 /**
  * Get identified labels of all websites stored in indexedDB
@@ -52,19 +52,19 @@ export const getWebsiteLabels = async (website, excludedLabels = []) => {
  */
 
 const getAllWebsiteLabels = async (excludedLabels = []) => {
-  const weblabels = {}
-  const websites = await getWebsites()
+  const weblabels = {};
+  const websites = await getWebsites();
   try {
     Object.keys(websites).forEach((website) => {
       getWebsiteLabels(website, excludedLabels).then(
         (res) => (weblabels[website] = res)
-      )
-    })
-    return weblabels
+      );
+    });
+    return weblabels;
   } catch (error) {
-    return weblabels
+    return weblabels;
   }
-}
+};
 
 /**
  *
@@ -81,24 +81,24 @@ const getAllWebsiteLabels = async (excludedLabels = []) => {
  */
 const buildLabels = async (res, excludedLabels) => {
   try {
-    const websites = await evidenceIDB.keys()
+    const websites = await evidenceIDB.keys();
     for (const website of websites) {
-      const evidence = await evidenceIDB.get(website) // website evidence from indexedDB
+      const evidence = await evidenceIDB.get(website); // website evidence from indexedDB
       const labels = Object.keys(evidence).filter(
         (label) => label in privacyLabels && !excludedLabels.includes(label)
-      ) // verify label in privacy labels
-      const timestamp = getTimeStamp(evidence)
+      ); // verify label in privacy labels
+      const timestamp = getTimeStamp(evidence);
 
       if (labels.length && !(website in res)) {
-        res[website] = {}
-        res[website].labels = labels
-        res[website].timestamp = timestamp
+        res[website] = {};
+        res[website].labels = labels;
+        res[website].timestamp = timestamp;
       } // give priority to first party labels if we have the same key in both stores
     }
   } catch (error) {
-    return {}
+    return {};
   }
-}
+};
 
 /**
  * Get all identified websites and thier labels from indexedDB
@@ -107,42 +107,42 @@ const buildLabels = async (res, excludedLabels) => {
 
 export const getWebsites = async () => {
   try {
-    const excludedLabels = await getExcludedLabels()
-    const unsortedResult = {}
+    const excludedLabels = await getExcludedLabels();
+    const unsortedResult = {};
 
-    await buildLabels(unsortedResult, excludedLabels)
+    await buildLabels(unsortedResult, excludedLabels);
 
-    const sortedResult = sortEvidence(unsortedResult)
-    return sortedResult
+    const sortedResult = sortEvidence(unsortedResult);
+    return sortedResult;
   } catch (error) {
-    return {}
+    return {};
   }
-}
+};
 
 const getTimeStamp = (evidence) => {
-  var timestamp = 0
+  var timestamp = 0;
   Object.keys(evidence).forEach((permission) => {
     Object.keys(evidence[permission]).forEach((type) =>
       Object.keys(evidence[permission][type]).forEach((website) => {
         timestamp =
           evidence[permission][type][website].timestamp > timestamp
             ? evidence[permission][type][website].timestamp
-            : timestamp
+            : timestamp;
       })
-    )
-  })
-  return timestamp
-}
+    );
+  });
+  return timestamp;
+};
 
 const sortEvidence = (websites) => {
-  let entries = Object.entries(websites)
+  let entries = Object.entries(websites);
 
   entries.sort(function ([websiteA, evidenceA], [websiteB, evidenceB]) {
-    return evidenceB.timestamp - evidenceA.timestamp
-  })
+    return evidenceB.timestamp - evidenceA.timestamp;
+  });
 
-  return Object.fromEntries(entries)
-}
+  return Object.fromEntries(entries);
+};
 
 /**
  * Uses above function to iterate through websites
@@ -152,25 +152,25 @@ const sortEvidence = (websites) => {
  */
 
 export const getLabels = async (filter = null) => {
-  let res = {}
-  var excludedLabels = await getExcludedLabels()
+  let res = {};
+  var excludedLabels = await getExcludedLabels();
   if (filter !== null) {
     excludedLabels = excludedLabels.concat(
       filter.filter((label) => excludedLabels.indexOf(label) < 0)
-    )
+    );
   }
-  const labels = await getAllWebsiteLabels(excludedLabels)
-  const websites = Object.keys(await getWebsites())
+  const labels = await getAllWebsiteLabels(excludedLabels);
+  const websites = Object.keys(await getWebsites());
 
   Object.values(permissionEnum).forEach((label) => {
-    if (!excludedLabels.includes(label)) res[label] = {}
-  })
+    if (!excludedLabels.includes(label)) res[label] = {};
+  });
 
   websites.forEach((website) => {
     Object.keys(labels[website]).forEach((label) => {
-      res[label][website] = labels[website][label]
-    })
-  })
+      res[label][website] = labels[website][label];
+    });
+  });
 
-  return res
-}
+  return res;
+};

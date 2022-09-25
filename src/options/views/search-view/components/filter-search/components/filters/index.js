@@ -1,8 +1,13 @@
-import React, { useState } from "react"
-import { CompanyLogoSVG } from "../../../../../../../libs/icons/company-icons"
-import { SFilterRow, SFilterRowItem, SCompaniesButton } from "./style"
-import { permissionEnum } from "../../../../../../../background/analysis/classModels"
-import * as Icons from "../../../../../../../libs/icons"
+/*
+Licensed per https://github.com/privacy-tech-lab/privacy-pioneer/blob/main/LICENSE
+privacy-tech-lab, https://privacytechlab.org/
+*/
+
+import React, { useState } from "react";
+import { CompanyLogoSVG } from "../../../../../../../libs/icons/company-icons";
+import { SFilterRow, SFilterRowItem, SCompaniesButton } from "./style";
+import { permissionEnum } from "../../../../../../../background/analysis/classModels";
+import * as Icons from "../../../../../../../libs/icons";
 
 /**
  * Filters for search view page. This includes Permissions and stored companies. Adjusts
@@ -19,26 +24,26 @@ const Filters = ({
 }) => {
   const noCompaniesSelected = () => {
     for (const value of Object.values(companyFilter)) {
-      if (value === true) return false
+      if (value === true) return false;
     }
-    return true
-  }
+    return true;
+  };
   const noPermsSelected = () => {
     for (const value of Object.values(permFilter)) {
-      if (value === false) return false
+      if (value === false) return false;
     }
-    return true
-  }
-  const [showCompanies, setShowCompanies] = useState(false)
+    return true;
+  };
+  const [showCompanies, setShowCompanies] = useState(false);
   return (
     <>
       <SFilterRow show={true}>
         {Object.values(permissionEnum).map((permission) => (
           <SFilterRowItem
             onClick={() => {
-              permFilter[permission] = !permFilter[permission]
-              setPermFilter(permFilter)
-              filterLabels()
+              permFilter[permission] = !permFilter[permission];
+              setPermFilter(permFilter);
+              filterLabels();
             }}
             key={permission}
             highlight={permFilter[permission]}
@@ -49,7 +54,7 @@ const Filters = ({
         ))}
         <SFilterRowItem
           onClick={() => {
-            setShowCompanies(!showCompanies)
+            setShowCompanies(!showCompanies);
           }}
           key={"Companies"}
           highlight={showCompanies}
@@ -57,9 +62,9 @@ const Filters = ({
           <SCompaniesButton
             onClick={() => {
               Object.keys(companyFilter).map((company) => {
-                companyFilter[company] = false
-              })
-              setCompanyFilter(companyFilter)
+                companyFilter[company] = false;
+              });
+              setCompanyFilter(companyFilter);
               // filterLabels()
             }}
           >
@@ -72,13 +77,13 @@ const Filters = ({
               onClick={() => {
                 Object.keys(permFilter).forEach(
                   (perm) => (permFilter[perm] = true)
-                )
+                );
                 Object.keys(companyFilter).forEach(
                   (company) => (companyFilter[company] = false)
-                )
-                setPermFilter(permFilter)
-                setCompanyFilter(companyFilter)
-                filterLabels()
+                );
+                setPermFilter(permFilter);
+                setCompanyFilter(companyFilter);
+                filterLabels();
               }}
             >
               Reset Filter
@@ -90,9 +95,9 @@ const Filters = ({
         {Object.entries(CompanyLogoSVG).map(([parent, logo]) => (
           <SFilterRowItem
             onClick={() => {
-              companyFilter[parent] = !companyFilter[parent]
-              setCompanyFilter(companyFilter)
-              filterLabels()
+              companyFilter[parent] = !companyFilter[parent];
+              setCompanyFilter(companyFilter);
+              filterLabels();
             }}
             key={parent}
             highlight={companyFilter[parent]}
@@ -105,7 +110,7 @@ const Filters = ({
         ))}
       </SFilterRow>
     </>
-  )
-}
+  );
+};
 
-export default Filters
+export default Filters;

@@ -1,16 +1,16 @@
 /*
 Licensed per https://github.com/privacy-tech-lab/privacy-pioneer/blob/main/LICENSE
-privacy-tech-lab, https://www.privacytechlab.org/
+privacy-tech-lab, https://privacytechlab.org/
 */
 
 /*
  * Removes ".", "+" and everything after from the email
- * 
+ *
  * Defined in encodedEmail.js
- * 
+ *
  * Used in importSearchData.js
- * 
- * @param {string} email Email we want to create codes for based on UID 2.0 
+ *
+ * @param {string} email Email we want to create codes for based on UID 2.0
  * @returns {string} Email without . in username and removes '+' and everything following in username
  */
 function setEmail(email) {
@@ -24,11 +24,11 @@ function setEmail(email) {
 
 /**
  * Creates a hex of the email obtained by setEmail()
- * 
+ *
  * Defined in encodedEmail.js
- * 
+ *
  * Used in importSearchData.js
- * 
+ *
  * @param {string} email Email after setEmail()
  * @returns {Promise<string>} Hex of the email, SHA-256 encoded
  */
@@ -47,11 +47,11 @@ async function digestMessage(email) {
 
 /**
  * Creates base64 version of the return from digestMessage()
- * 
+ *
  * Defined in encodedEmail.js
- * 
+ *
  * Used in importSearchData.js
- * 
+ *
  * @param {string} hexStr String of the hexed email from digestMessage()
  * @returns Base 64 SHA-256 email as a string
  */
@@ -65,4 +65,4 @@ function hexToBase64(hexStr) {
   return base64.toString("base64");
 }
 
-export {setEmail, digestMessage, hexToBase64}
+export { setEmail, digestMessage, hexToBase64 };

@@ -1,10 +1,10 @@
 /*
 Licensed per https://github.com/privacy-tech-lab/privacy-pioneer/blob/main/LICENSE
-privacy-tech-lab, https://www.privacytechlab.org/
+privacy-tech-lab, https://privacytechlab.org/
 */
 
-import { createGlobalStyle, css } from "styled-components"
-import { settingsEnum } from "../indexed-db/settings"
+import { createGlobalStyle, css } from "styled-components";
+import { settingsEnum } from "../indexed-db/settings";
 
 /**
  * Global style targeted for popup
@@ -20,7 +20,7 @@ const Popup = css`
     font-family: "Source Sans Pro", sans-serif;
     line-height: normal;
   }
-`
+`;
 
 /**
  * Global style targeted for options page
@@ -40,7 +40,7 @@ const Options = css`
     color: var(--primaryTextColor);
     font-size: var(--body1);
   }
-`
+`;
 
 /**
  * Styled component that creates global style
@@ -65,7 +65,7 @@ const defaultTheme = css`
     --tintTextColor: #f2e8f9;
     --primaryHighlightColor: #6b219f;
   }
-`
+`;
 
 const darkTheme = css`
   :root {
@@ -80,19 +80,19 @@ const darkTheme = css`
     --tintTextColor: #6b219f;
     --primaryHighlightColor: #f2e8f9;
   }
-`
+`;
 
 const systemTheme = css`
   ${defaultTheme}
   @media (prefers-color-scheme: dark) {
     ${darkTheme}
   }
-`
+`;
 const GlobalStyle = createGlobalStyle`
   ${(props) => {
-    if (props.theme == settingsEnum.light) return defaultTheme
-    else if (props.theme == settingsEnum.dark) return darkTheme
-    else return systemTheme
+    if (props.theme == settingsEnum.light) return defaultTheme;
+    else if (props.theme == settingsEnum.dark) return darkTheme;
+    else return systemTheme;
   }}
   :root{
     // Font sizes
@@ -115,6 +115,6 @@ const GlobalStyle = createGlobalStyle`
   path, circle {
     fill: var(--primaryTextColor);
   }
-`
+`;
 
-export default GlobalStyle
+export default GlobalStyle;

@@ -1,12 +1,17 @@
-import JoyRide, { ACTIONS, STATUS } from "react-joyride"
-import React from "react"
-import { useHistory } from "react-router"
-import { startStopTour } from "../indexed-db/settings"
+/*
+Licensed per https://github.com/privacy-tech-lab/privacy-pioneer/blob/main/LICENSE
+privacy-tech-lab, https://privacytechlab.org/
+*/
+
+import JoyRide, { ACTIONS, STATUS } from "react-joyride";
+import React from "react";
+import { useHistory } from "react-router";
+import { startStopTour } from "../indexed-db/settings";
 
 const textStyles = {
   fontWeight: "bold",
   fontSize: `20px`,
-}
+};
 
 export const homeSteps = [
   {
@@ -77,23 +82,23 @@ export const homeSteps = [
       },
     },
   },
-]
+];
 
 export const HomeTour = ({ steps }) => {
-  const history = useHistory()
+  const history = useHistory();
 
   const checkEnd = (data) => {
-    const { action, index, status, type } = data
+    const { action, index, status, type } = data;
     if (STATUS.FINISHED == status) {
-      history.push("/search")
+      history.push("/search");
     } else if (STATUS.SKIPPED == status) {
-      startStopTour()
-      location.reload()
+      startStopTour();
+      location.reload();
     } else if (ACTIONS.CLOSE == action) {
-      startStopTour()
-      location.reload()
+      startStopTour();
+      location.reload();
     }
-  }
+  };
 
   return (
     <>
@@ -129,8 +134,8 @@ export const HomeTour = ({ steps }) => {
         }}
       />
     </>
-  )
-}
+  );
+};
 
 export const seeAllSteps = [
   {
@@ -173,7 +178,14 @@ export const seeAllSteps = [
     target: "#navbarTour",
     content: (
       <div style={textStyles}>
-        Please be aware that Privacy Pioneer uses an external service, ipinfo.io, to automate the identification of a user's Location in web traffic of visited websites. For this purpose Privacy Pioneer sends a user's IP address to ipinfo.io when the user restarts the browser or makes changes to the Watchlist. According to ipinfo.io's terms, it will keep a user's IP address in its logs for 1 year but will not use it beyond log maintenance or share it with anyone. If you do not consent to using this service, please remove Privacy Pioneer from your browser.
+        Please be aware that Privacy Pioneer uses an external service,
+        ipinfo.io, to automate the identification of a user's Location in web
+        traffic of visited websites. For this purpose Privacy Pioneer sends a
+        user's IP address to ipinfo.io when the user restarts the browser or
+        makes changes to the Watchlist. According to ipinfo.io's terms, it will
+        keep a user's IP address in its logs for 1 year but will not use it
+        beyond log maintenance or share it with anyone. If you do not consent to
+        using this service, please remove Privacy Pioneer from your browser.
         <br />
         <br />
         Enjoy Privacy Pioneer!
@@ -187,25 +199,25 @@ export const seeAllSteps = [
         width: 800,
       },
     },
-  }
-]
+  },
+];
 
 export const SeeAllTour = ({ steps }) => {
-  const history = useHistory()
+  const history = useHistory();
 
   const checkEnd = (data) => {
-    const { action, index, status, type } = data
+    const { action, index, status, type } = data;
     if (STATUS.FINISHED == status) {
-      startStopTour()
-      history.push("/")
+      startStopTour();
+      history.push("/");
     } else if (STATUS.SKIPPED == status) {
-      startStopTour()
-      location.reload()
+      startStopTour();
+      location.reload();
     } else if (ACTIONS.CLOSE == action) {
-      startStopTour()
-      location.reload()
+      startStopTour();
+      location.reload();
     }
-  }
+  };
 
   return (
     <>
@@ -241,5 +253,5 @@ export const SeeAllTour = ({ steps }) => {
         }}
       />
     </>
-  )
-}
+  );
+};

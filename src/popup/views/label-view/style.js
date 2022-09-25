@@ -1,9 +1,9 @@
 /*
 Licensed per https://github.com/privacy-tech-lab/privacy-pioneer/blob/main/LICENSE
-privacy-tech-lab, https://www.privacytechlab.org/
+privacy-tech-lab, https://privacytechlab.org/
 */
 
-import styled from "styled-components"
+import styled from "styled-components";
 //styling for Label view
 
 export const SLeading = styled.div`
@@ -15,4 +15,4 @@ export const SLeading = styled.div`
   :active {
     filter: brightness(1.25);
   }
-`
+`;

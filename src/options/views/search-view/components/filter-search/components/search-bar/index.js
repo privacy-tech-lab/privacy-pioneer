@@ -1,6 +1,11 @@
-import React, { useEffect } from "react"
-import { SInput, SInputContainer, SSearchContainer } from "./style"
-import * as Icons from "../../../../../../../libs/icons"
+/*
+Licensed per https://github.com/privacy-tech-lab/privacy-pioneer/blob/main/LICENSE
+privacy-tech-lab, https://privacytechlab.org/
+*/
+
+import React, { useEffect } from "react";
+import { SInput, SInputContainer, SSearchContainer } from "./style";
+import * as Icons from "../../../../../../../libs/icons";
 
 /**
  * Filters Viewed Websites based on typed input on Search bar
@@ -13,8 +18,8 @@ const SearchBar = ({
   filter,
 }) => {
   useEffect(() => {
-    setPlaceholder(getPlaceholder())
-  }, [])
+    setPlaceholder(getPlaceholder());
+  }, []);
 
   return (
     <SSearchContainer>
@@ -23,13 +28,13 @@ const SearchBar = ({
         <SInput
           placeholder={placeholder}
           onChange={(e) => {
-            filter(e.target.value)
-            setQuery(e.target.value)
+            filter(e.target.value);
+            setQuery(e.target.value);
           }}
         />
       </SInputContainer>
     </SSearchContainer>
-  )
-}
+  );
+};
 
-export default SearchBar
+export default SearchBar;

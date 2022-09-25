@@ -1,6 +1,6 @@
 /*
 Licensed per https://github.com/privacy-tech-lab/privacy-pioneer/blob/main/LICENSE
-privacy-tech-lab, https://www.privacytechlab.org/
+privacy-tech-lab, https://privacytechlab.org/
 */
 
 /*
@@ -11,7 +11,7 @@ requestModel.js
 
 import { openDB } from "idb";
 
-const storeKey = "firstPartyEvidence"
+const storeKey = "firstPartyEvidence";
 
 /**
  * @type {Promise}
@@ -26,11 +26,11 @@ const dbPromise = openDB("keyval-store", 1, {
 /**
  * The evidenceKeyval has two object stores. One for first party evidence and another for third party evidence.
  * Within each store, evidence is stored with the rootUrl as the key.
- * 
+ *
  * Defined in openDB.js
- * 
+ *
  * Used in backend (classModels.js, addEvidence.js, createBlob.js) and frontend (libs/indexed-db/index.js)
- * 
+ *
  * @class idbKeyval
  * @method get param(key) returns a promise with the value at a given key. undefined if no such key exists.
  * @method set param(key, val) sets a value at a key

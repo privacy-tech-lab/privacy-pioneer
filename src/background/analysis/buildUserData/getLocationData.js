@@ -1,6 +1,6 @@
 /*
 Licensed per https://github.com/privacy-tech-lab/privacy-pioneer/blob/main/LICENSE
-privacy-tech-lab, https://www.privacytechlab.org/
+privacy-tech-lab, https://privacytechlab.org/
 */
 
 /*
@@ -13,9 +13,9 @@ location info
 
 /**
  * Uses the navigator API to get the users coordinates.
- * 
+ *
  * Defined, used in getLocationData.js
- * 
+ *
  * @returns {object} An object with properties long and lat
  */
 const getCoords = async () => {
@@ -23,7 +23,7 @@ const getCoords = async () => {
     navigator.geolocation.getCurrentPosition(resolve, reject);
   });
 
-  // ex: if the user is in Middletown, this should return something near 
+  // ex: if the user is in Middletown, this should return something near
   // {72.6506, 41.5623}
   return {
     long: pos.coords.longitude,
@@ -33,11 +33,11 @@ const getCoords = async () => {
 
 /**
  * Calls getCoords to return an array containing [lat, long]. Returns [0,0] on error
- * 
+ *
  * Defined in getLocationData.js
- * 
+ *
  * Used in importSearch.js
- * 
+ *
  * @returns {Promise<Array<number>>} The coordinates of the user
  */
 export async function getLocationData() {

@@ -1,12 +1,12 @@
 /*
 Licensed per https://github.com/privacy-tech-lab/privacy-pioneer/blob/main/LICENSE
-privacy-tech-lab, https://www.privacytechlab.org/
+privacy-tech-lab, https://privacytechlab.org/
 */
 
-import React, { useEffect } from "react"
-import styled from "styled-components"
-import { motion } from "framer-motion"
-import { useHistory, useLocation } from "react-router-dom"
+import React, { useEffect } from "react";
+import styled from "styled-components";
+import { motion } from "framer-motion";
+import { useHistory, useLocation } from "react-router-dom";
 
 /**
  * Generally this would be in a style.js file
@@ -21,7 +21,7 @@ const SScaffold = styled(motion.main)`
   margin-bottom: 32px;
   display: flex;
   flex-direction: column;
-`
+`;
 
 /**
  * Implements the basic deisgn visual layout stucture.
@@ -29,8 +29,8 @@ const SScaffold = styled(motion.main)`
  * It handles animations from page to page
  */
 const Scaffold = (props) => {
-  const history = useHistory()
-  const location = useLocation()
+  const history = useHistory();
+  const location = useLocation();
 
   /**
    * This is an attempt to restore scroll position when navigating between pages using session storage
@@ -39,16 +39,31 @@ const Scaffold = (props) => {
    * I don't think it's working perfectly at the moment
    */
   const configureScrollPosition = (history, location) => {
-    if (history.action === "POP" && location.pathname === history.location.pathname) {
-      const pageYOffset = window.sessionStorage.getItem(`pageYOffset-${location.pathname}`) ?? 0
-      window.sessionStorage.removeItem(`pageYOffset-${history.location.pathname}`)
-      window.scrollTo(0, pageYOffset)
-    } else if (history.action === "PUSH" && location.pathname === history.location.pathname) {
-      window.scrollTo(0, 0)
-    } else if (history.action === "PUSH" && location.pathname !== history.location.pathname) {
-      window.sessionStorage.setItem(`pageYOffset-${location.pathname}`, window.pageYOffset)
+    if (
+      history.action === "POP" &&
+      location.pathname === history.location.pathname
+    ) {
+      const pageYOffset =
+        window.sessionStorage.getItem(`pageYOffset-${location.pathname}`) ?? 0;
+      window.sessionStorage.removeItem(
+        `pageYOffset-${history.location.pathname}`
+      );
+      window.scrollTo(0, pageYOffset);
+    } else if (
+      history.action === "PUSH" &&
+      location.pathname === history.location.pathname
+    ) {
+      window.scrollTo(0, 0);
+    } else if (
+      history.action === "PUSH" &&
+      location.pathname !== history.location.pathname
+    ) {
+      window.sessionStorage.setItem(
+        `pageYOffset-${location.pathname}`,
+        window.pageYOffset
+      );
     }
-  }
+  };
 
   return (
     <SScaffold
@@ -60,7 +75,7 @@ const Scaffold = (props) => {
     >
       {props.children}
     </SScaffold>
-  )
-}
+  );
+};
 
-export default Scaffold
+export default Scaffold;

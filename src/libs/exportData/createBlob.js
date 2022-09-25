@@ -1,11 +1,11 @@
 /*
 Licensed per https://github.com/privacy-tech-lab/privacy-pioneer/blob/main/LICENSE
-privacy-tech-lab, https://www.privacytechlab.org/
+privacy-tech-lab, https://privacytechlab.org/
 */
 
-import { exportTypeEnum } from "../../background/analysis/classModels"
-import { evidenceKeyval } from "../../background/analysis/interactDB/openDB.js"
-import { buildTsvString } from "./createExportString.js"
+import { exportTypeEnum } from "../../background/analysis/classModels";
+import { evidenceKeyval } from "../../background/analysis/interactDB/openDB.js";
+import { buildTsvString } from "./createExportString.js";
 
 /**
  * Gets all evidence and returns an array of Evidence objects. No params.
@@ -13,12 +13,12 @@ import { buildTsvString } from "./createExportString.js"
  * @returns {Promise<Array<Evidence>>} An array of all the evidence objects in the IndexedDB
  */
 async function buildEvidenceAsArray(timeStampLB) {
-  var evidenceArr = []
+  var evidenceArr = [];
 
   // update the arr with evidence
-  evidenceArr = await walkStoreAndBuildArr(evidenceArr, timeStampLB)
+  evidenceArr = await walkStoreAndBuildArr(evidenceArr, timeStampLB);
 
-  return evidenceArr
+  return evidenceArr;
 }
 
 /**
@@ -29,23 +29,23 @@ async function buildEvidenceAsArray(timeStampLB) {
  * @returns {Promise<Array<Evidence>>}
  */
 async function walkStoreAndBuildArr(evidenceObjectArr, timeStampLB) {
-  const allKeys = await evidenceKeyval.keys()
+  const allKeys = await evidenceKeyval.keys();
 
   // iterate through all the rootUrls we have in the store
   for (const key of allKeys) {
-    const evidenceDict = await evidenceKeyval.get(key)
+    const evidenceDict = await evidenceKeyval.get(key);
     for (const [permLevel, typeLevel] of Object.entries(evidenceDict)) {
       for (const [type, reqUrlLevel] of Object.entries(typeLevel)) {
         for (const [reqUrl, evidenceObject] of Object.entries(reqUrlLevel)) {
           if (evidenceObject.timestamp > timeStampLB) {
-            evidenceObjectArr.push(evidenceObject)
+            evidenceObjectArr.push(evidenceObject);
           }
         }
       }
     }
   }
 
-  return evidenceObjectArr
+  return evidenceObjectArr;
 }
 
 /**
@@ -55,9 +55,9 @@ async function walkStoreAndBuildArr(evidenceObjectArr, timeStampLB) {
  * @returns {Blob} A mime-type JSON Blob
  */
 function createJsonBlob(arr) {
-  const jsonData = JSON.stringify(arr)
+  const jsonData = JSON.stringify(arr);
 
-  return new Blob([jsonData], { type: "application/json" })
+  return new Blob([jsonData], { type: "application/json" });
 }
 
 /**
@@ -67,9 +67,9 @@ function createJsonBlob(arr) {
  * @returns {Blob} A mime-type tsv Blob
  */
 function createTsvBlob(arr) {
-  const blobString = buildTsvString(arr)
+  const blobString = buildTsvString(arr);
 
-  return new Blob([blobString], { type: "text/tab-separated-values" })
+  return new Blob([blobString], { type: "text/tab-separated-values" });
 }
 
 /**
@@ -79,16 +79,16 @@ function createTsvBlob(arr) {
  * @returns {Promise<Blob>}
  */
 async function createBlob(blobType = exportTypeEnum.TSV, timeStampLB) {
-  const dataArr = await buildEvidenceAsArray(timeStampLB)
+  const dataArr = await buildEvidenceAsArray(timeStampLB);
 
   switch (blobType) {
     case exportTypeEnum.JSON:
-      return createJsonBlob(dataArr)
+      return createJsonBlob(dataArr);
     case exportTypeEnum.TSV:
-      return createTsvBlob(dataArr)
+      return createTsvBlob(dataArr);
     default:
-      return createTsvBlob(dataArr)
+      return createTsvBlob(dataArr);
   }
 }
 
-export { createBlob }
+export { createBlob };

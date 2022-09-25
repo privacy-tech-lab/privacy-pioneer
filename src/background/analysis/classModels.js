@@ -1,6 +1,6 @@
 /*
 Licensed per https://github.com/privacy-tech-lab/privacy-pioneer/blob/main/LICENSE
-privacy-tech-lab, https://www.privacytechlab.org/
+privacy-tech-lab, https://privacytechlab.org/
 */
 
 /*
@@ -36,14 +36,14 @@ export class Request {
     type,
     urlClassification,
   }) {
-    this.id = id
-    this.rootUrl = rootUrl
-    this.reqUrl = reqUrl
-    this.requestBody = requestBody
-    this.responseData = responseData
-    this.error = error
-    this.type = type
-    this.urlClassification = urlClassification
+    this.id = id;
+    this.rootUrl = rootUrl;
+    this.reqUrl = reqUrl;
+    this.requestBody = requestBody;
+    this.responseData = responseData;
+    this.error = error;
+    this.type = type;
+    this.urlClassification = urlClassification;
   }
 }
 
@@ -58,7 +58,7 @@ export const resourceTypeEnum = Object.freeze({
   subFrame: "sub_frame",
   WebSocket: "websocket",
   mainFrame: "main_frame",
-})
+});
 
 /**
  * An evidence object created from a request
@@ -87,22 +87,21 @@ export class Evidence {
     parentCompany,
     watchlistHash,
     extraDetail,
-    cookie
+    cookie,
   }) {
-    this.timestamp = timestamp
-    this.permission = permission
-    this.rootUrl = rootUrl
-    this.snippet = snippet
-    this.requestUrl = requestUrl
-    this.typ = typ
-    this.index = index === undefined ? -1 : index
-    this.parentCompany = parentCompany
-    this.watchlistHash = watchlistHash
-    this.extraDetail = extraDetail
-    this.cookie = cookie
+    this.timestamp = timestamp;
+    this.permission = permission;
+    this.rootUrl = rootUrl;
+    this.snippet = snippet;
+    this.requestUrl = requestUrl;
+    this.typ = typ;
+    this.index = index === undefined ? -1 : index;
+    this.parentCompany = parentCompany;
+    this.watchlistHash = watchlistHash;
+    this.extraDetail = extraDetail;
+    this.cookie = cookie;
   }
 }
-
 
 /**
  * Used for the TSV export to describe evidence object
@@ -110,40 +109,39 @@ export class Evidence {
  */
 export const evidenceDescription = Object.freeze({
   timestamp: {
-    title: "Timestamp"
+    title: "Timestamp",
   },
   permission: {
-    title: "Permission"
+    title: "Permission",
   },
   rootUrl: {
-    title: "Root URL"
+    title: "Root URL",
   },
   snippet: {
-    title: "HTTP Snippet"
+    title: "HTTP Snippet",
   },
   requestUrl: {
-    title: "Request URL"
+    title: "Request URL",
   },
   typ: {
-    title: "Type"
+    title: "Type",
   },
   index: {
-    title: "Index"
+    title: "Index",
   },
   parentCompany: {
-    title: "Parent Company"
+    title: "Parent Company",
   },
   watchlistHash: {
-    title: 'Watchlist Hash'
+    title: "Watchlist Hash",
   },
   extraDetail: {
-    title: "Extra Detail"
+    title: "Extra Detail",
   },
   cookie: {
-    title: "Cookie?"
-  }
-})
-
+    title: "Cookie?",
+  },
+});
 
 /**
  * @class KeywordObject
@@ -152,11 +150,10 @@ export const evidenceDescription = Object.freeze({
  */
 export class KeywordObject {
   constructor({ keyword, keywordHash }) {
-    this.keyword = keyword
-    this.keywordHash = keywordHash
+    this.keyword = keyword;
+    this.keywordHash = keywordHash;
   }
 }
-
 
 /**
  * @enum {string} Enum used to reference file formats that are available for export
@@ -164,7 +161,7 @@ export class KeywordObject {
 export const exportTypeEnum = Object.freeze({
   JSON: "JSON",
   TSV: "tsv",
-})
+});
 
 /**
  * @enum {number} Enum used to convert times to milliseconds. (Date.now uses milliseconds)
@@ -195,7 +192,7 @@ export const timeRangeEnum = Object.freeze({
     timestamp: 1.577e12,
     title: "All Time",
   },
-})
+});
 
 /**
  * permissions are the broader category that types belong to (see typeEnum)
@@ -206,7 +203,7 @@ export const permissionEnum = Object.freeze({
   location: "location",
   watchlist: "watchlist",
   tracking: "tracking",
-})
+});
 
 /**
  * All types fall under a permission (see permissionEnum)
@@ -237,7 +234,7 @@ export const typeEnum = Object.freeze({
   possiblePixel: "possiblePixel",
   ipAddress: "ipAddress",
   fingerprinting: "fingerprinting",
-})
+});
 
 /**
  * An object containing the keyword types for the watchlist and information to populate defaults.
@@ -281,7 +278,7 @@ export const keywordTypes = Object.freeze({
     toolTip:
       "Google: What's my IP?. We will only flag instances where your IP is shared with a 3rd party. All websites you connect to have access to your IP address.",
   },
-})
+});
 
 /**
  * An object used by the front end to create labels. Before displaying evidence pulled from the DB, the front-end checks that the
@@ -289,7 +286,7 @@ export const keywordTypes = Object.freeze({
  *
  * @type {object}
  */
- export const privacyLabels = Object.freeze({
+export const privacyLabels = Object.freeze({
   monetization: {
     displayName: "Monetization",
     description: "Practices used to monetize web traffic.",
@@ -306,8 +303,8 @@ export const keywordTypes = Object.freeze({
       },
       social: {
         displayName: "Social",
-        description: "A Social media company sent or received your data.", 
-        link: "https://disconnect.me/trackerprotection#categories-of-trackers", 
+        description: "A Social media company sent or received your data.",
+        link: "https://disconnect.me/trackerprotection#categories-of-trackers",
       },
     },
   },
@@ -318,14 +315,14 @@ export const keywordTypes = Object.freeze({
       coarseLocation: {
         displayName: "Coarse Location",
         description:
-          "Your Coarse Location (imprecise coordinates) was found in your web traffic.", 
+          "Your Coarse Location (imprecise coordinates) was found in your web traffic.",
         link: "https://myshadow.org/location-tracking",
       },
       fineLocation: {
         displayName: "Fine Location",
         description:
           "Your Fine Location (precise coordinates) was found in your web traffic.",
-          link: "https://myshadow.org/location-tracking",
+        link: "https://myshadow.org/location-tracking",
       },
       zipCode: {
         displayName: "Zip Code",
@@ -362,7 +359,7 @@ export const keywordTypes = Object.freeze({
       emailAddress: {
         displayName: "Email Address",
         description:
-          "An Email Address from your watchlist was found in your web traffic.", 
+          "An Email Address from your watchlist was found in your web traffic.",
         link: "https://www.consumer.ftc.gov/blog/2016/09/how-did-company-get-my-info",
       },
       encodedEmail: {
@@ -374,7 +371,8 @@ export const keywordTypes = Object.freeze({
 
       userKeyword: {
         displayName: "Keyword",
-        description: "A Keyword from your watchlist was found in your web traffic.",
+        description:
+          "A Keyword from your watchlist was found in your web traffic.",
         link: "https://www.privacytechlab.org/", // link to our own article once available
       },
     },
@@ -393,7 +391,7 @@ export const keywordTypes = Object.freeze({
         displayName: "Possible Tracking Pixel",
         description:
           "A Tracking Pixel (or web beacon) is code that silently pings a third-party to track your web activity.",
-        link: "https://en.wikipedia.org/wiki/Web_beacon", 
+        link: "https://en.wikipedia.org/wiki/Web_beacon",
       },
       ipAddress: {
         displayName: "IP Address",
@@ -409,7 +407,7 @@ export const keywordTypes = Object.freeze({
       },
     },
   },
-})
+});
 
 /**
  * settingsModelsEnum object to remove strings from codebase
@@ -419,5 +417,5 @@ export const keywordTypes = Object.freeze({
 export const settingsModelsEnum = Object.freeze({
   fullSnippet: "fullSnippet",
   tour: "tour",
-  optimizePerformance: "optimizePerformance"
-})
+  optimizePerformance: "optimizePerformance",
+});

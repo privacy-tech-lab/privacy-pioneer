@@ -1,9 +1,9 @@
 /*
 Licensed per https://github.com/privacy-tech-lab/privacy-pioneer/blob/main/LICENSE
-privacy-tech-lab, https://www.privacytechlab.org/
+privacy-tech-lab, https://privacytechlab.org/
 */
 
-import styled from "styled-components"
+import styled from "styled-components";
 
 export const SBadge = styled.div`
   cursor: pointer;
@@ -24,7 +24,7 @@ export const SBadge = styled.div`
   padding-top: 4px;
   padding-bottom: 4px;
   font-weight: bold;
-`
+`;
 
 export const SBadgeGroup = styled.div`
   display: flex;
@@ -35,4 +35,4 @@ export const SBadgeGroup = styled.div`
     color: var(--primaryBrandColor);
     border-color: var(--primaryBrandTintColor);
   }
-`
+`;
