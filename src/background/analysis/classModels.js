@@ -373,7 +373,7 @@ export const privacyLabels = Object.freeze({
         displayName: "Keyword",
         description:
           "A Keyword from your watchlist was found in your web traffic.",
-        link: "https://www.privacytechlab.org/", // link to our own article once available
+        link: "https://privacytechlab.org/", // link to our own article once available
       },
     },
   },
