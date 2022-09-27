@@ -23,11 +23,13 @@ const getCoords = async () => {
     navigator.geolocation.getCurrentPosition(resolve, reject);
   });
 
-  // ex: if the user is in Middletown, this should return something near
-  // {72.6506, 41.5623}
+
+  // ex: if the user is in Middletown, this should return something near 
+  // {41.5623, 72.6506}
+
   return {
-    long: pos.coords.longitude,
     lat: pos.coords.latitude,
+    long: pos.coords.longitude,
   };
 };
 

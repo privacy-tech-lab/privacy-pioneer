@@ -50,13 +50,12 @@ async function addToEvidenceStore(
     });
   }
 
-  const ts = Date.now();
-  const rootUrl = getHostname(rootU);
 
-  var evidence = await evidenceKeyval.get(rootUrl);
-  if (evidence === undefined) {
-    evidence = {};
-  }
+  const ts = Date.now()
+  const rootUrl = getHostname(rootU)
+  var evidence = await evidenceKeyval.get(rootUrl)
+  if (evidence === undefined) { evidence = {} }
+  let userData
 
   /**
    * Unpacks and updates an evidence object to add to to our stores in evidenceIDB
@@ -68,40 +67,136 @@ async function addToEvidenceStore(
    */
   function unpackAndUpdate(evidenceObject) {
     // if this is a valid object
-    if (evidenceObject.rootUrl) {
-      evidenceObject.timestamp = ts;
-      evidenceObject.rootUrl = rootU;
-      evidenceObject.parentCompany = parent;
 
+    if (evidenceObject.rootUrl){
+      evidenceObject.timestamp = ts
+      evidenceObject.rootUrl = rootU
+      evidenceObject.parentCompany = parent
+
+
+    function getUserData(evidenceObject){
+      if ( evidenceObject.index === -1 ) {
+        userData = undefined
+      }
+      else {
+        let start, end
+        [start, end] = evidenceObject.index
+        userData = evidenceObject.snippet.substring(start,end)
+      }
+      return userData
+    }
+    /**
+     * Cuts down a snippet to only include the context of where we found
+     * The evidence
+     * 
+     * @param {Evidence} evidenceObject 
+     * @returns {void} updates evidenceObject
+     */
+    function cutDownSnippet(evidenceObject) {
+      if ( evidenceObject.index === -1 ) {
+        evidenceObject.snippet = null
+        getUserData(evidenceObject)
+      }
+      else {
+        getUserData(evidenceObject)
+        let start, end
+        [start, end] = evidenceObject.index
+        const snipLength = evidenceObject.snippet.length
+
+        const frontBuffer = start < 250 ? start : 250
+        const endBuffer = end + 250 < snipLength ? 250 : snipLength - end - 1
+
+        evidenceObject.snippet = evidenceObject.snippet.substring(start - frontBuffer, end + endBuffer)
+        evidenceObject.index = [frontBuffer, frontBuffer + end - start]
+
+      }
+    }
+    var dataTypes = {
+      zipCode: "<TARGET_ZIP>",
+      city: "<TARGET_CITY>",
+      region: "<TARGET_REGION>"
+    }
+    var corTypes = {
+      lat: "<TARGET_LAT>",
+      lng: "<TARGET_LNG>"
+    }
+    function tokenize(str, dataTy, userData, loc) {
+
+      // if simple RE, then replace
+      if (dataTy in dataTypes) {
+          let MlString = str.replace(userData, dataTypes[dataTy])
+          return MlString
+      }
+      // otherwise do more complicated coordinate replace (see below)
+      else if (loc in corTypes){
+          return tokenizeCoors(str, loc, userData)
+      }
+    }
       /**
-       * Cuts down a snippet to only include the context of where we found
-       * The evidence
-       *
-       * @param {Evidence} evidenceObject
-       * @returns {void} updates evidenceObject
+       * @param {string} str str we're operating on 
+       * @param {string} latLng either "lat" or "lng"
+       * @returns {string}
        */
-      function cutDownSnippet(evidenceObject) {
-        if (evidenceObject.index === -1) {
-          evidenceObject.snippet = null;
-        } else {
-          let start, end;
-          [start, end] = evidenceObject.index;
-          const snipLength = evidenceObject.snippet.length;
-
-          const frontBuffer = start < 250 ? start : 250;
-          const endBuffer = end + 250 < snipLength ? 250 : snipLength - end - 1;
-
-          evidenceObject.snippet = evidenceObject.snippet.substring(
-            start - frontBuffer,
-            end + endBuffer
-          );
-          evidenceObject.index = [frontBuffer, frontBuffer + end - start];
-        }
+      function tokenizeCoors(str, latLng, userData) {
+  
+          // loop to replace floating points that are within 1.0 of the users lat/lng
+          var replaced = true
+          while (replaced) {
+  
+            replaced = false
+            const matches = str.matchAll(/\D\d{1,3}\.\d{1,10}/g)
+            const matchArr = Array.from(matches)
+            
+            for (const match of matchArr) {
+                
+                const startIndex = match.index + 1
+                const endIndex = startIndex + match[0].length - 1
+                const asFloat = parseFloat(str.slice(startIndex, endIndex))
+                
+                // replace either lat or lng with generic. If we replace, start loop over
+                if (latLng == "lat" && Math.abs(Math.abs(userData) - asFloat) < 1) {
+                    var MlString = str.slice(0, startIndex).concat(corTypes["lat"]).concat(str.slice(endIndex))
+                    replaced = true
+                    return MlString
+                    break
+                }                
+                if (latLng == "lng" && Math.abs(Math.abs(userData) - asFloat) < 1) {
+                    var MLstring = str.slice(0, startIndex).concat(corTypes["lng"]).concat(str.slice(endIndex))
+                    replaced = true
+                    return MLstring
+                    break
+                }
+            }
+            return MlString 
+          }
+      }
+    function svgCheck(strReq, stIdx, endIdx){
+      var begin = stIdx < 400 ? strReq.slice(0, endIdx) : strReq.slice(stIdx - 400, endIdx)
+      var end = endIdx + 400 < strReq.length ? strReq.slice(endIdx, endIdx + 400) : strReq.slice(endIdx, strReq.length)
+      var full = begin.concat(end)  
+      var SVG = [...full.matchAll(/svg/gi)]
+      var path = [...full.matchAll(/path/gi)]
+      var nums = [...full.matchAll(/\d{2,5}/gm)]
+      var dash = [...full.matchAll(/[-|.]{1,5}/gm)]
+      if(SVG.length + path.length == 0 && nums.length < 100 && dash.length < 100){
+          return true
+      }
+      return false
+   }
+    if (!saveFullSnippet && !evidenceObject.cookie){
+      cutDownSnippet(evidenceObject)
+    }
+    else if(saveFullSnippet){
+      userData = getUserData()
+    }
+    //what if they want full snippit
+    if(evidenceObject.snippet != null){
+      if(svgCheck(evidenceObject.snippet, evidenceObject.index[0], evidenceObject.index[1]) && evidenceObject.permission == "location"){
+        var tokenizedStr = tokenize(evidenceObject.snippet, evidenceObject.typ, userData, evidenceObject.loc)
       }
 
-      if (!saveFullSnippet && !evidenceObject.cookie) {
-        cutDownSnippet(evidenceObject);
-      }
+    }
+
 
       // whitelist our IP API
       if (requestU == "http://ip-api.com/json/") {
@@ -109,6 +204,7 @@ async function addToEvidenceStore(
           resolve("whitelist IP API");
         });
       }
+
 
       let keys = Object.keys(evidenceObject);
       for (let key of keys) {
