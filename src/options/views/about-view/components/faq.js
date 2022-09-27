@@ -1,9 +1,9 @@
 /*
 Licensed per https://github.com/privacy-tech-lab/privacy-pioneer/blob/main/LICENSE
-privacy-tech-lab, https://www.privacytechlab.org/
+privacy-tech-lab, https://privacytechlab.org/
 */
 
-import React from "react"
+import React from "react";
 
 /**
  * File for all of the questions and answers for the FAQ Page
@@ -38,7 +38,7 @@ export const FAQ = {
   "Who are you?": (
     <text>
       We are academic researchers at Wesleyan University’s{" "}
-      <a href="https://www.privacytechlab.org/" target="_blank">
+      <a href="https://privacytechlab.org/" target="_blank">
         privacy-tech-lab
       </a>
       . We believe in privacy as a fundamental right. Our motivation is to
@@ -139,11 +139,11 @@ export const FAQ = {
     <text>
       Send us an email at sebastian@privacytechlab.org. We would love to hear
       from you! You can also learn more about our work at{" "}
-      <a href="https://www.privacytechlab.org/" target="_blank">
+      <a href="https://privacytechlab.org/" target="_blank">
         {" "}
         privacy-tech-lab
       </a>
       .
     </text>
   ),
-}
+};

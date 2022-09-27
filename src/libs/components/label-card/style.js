@@ -1,9 +1,9 @@
 /*
 Licensed per https://github.com/privacy-tech-lab/privacy-pioneer/blob/main/LICENSE
-privacy-tech-lab, https://www.privacytechlab.org/
+privacy-tech-lab, https://privacytechlab.org/
 */
 
-import styled from "styled-components"
+import styled from "styled-components";
 
 export const SCard = styled.div`
   cursor: pointer;
@@ -22,10 +22,10 @@ export const SCard = styled.div`
   :active {
     filter: brightness(1.05);
   }
-`
+`;
 export const SContent = styled.div`
   margin: 16px;
-`
+`;
 
 export const SSeperator = styled.div`
   display: flex;
@@ -35,42 +35,42 @@ export const SSeperator = styled.div`
   background-color: var(--seperatorColor);
   margin-top: ${(prop) => prop.marginTop};
   margin-bottom: ${(prop) => prop.marginBottom};
-`
+`;
 export const SLogo = styled.div`
   display: flex;
   flex-direction: row;
   margin-top: 8px;
   font-size: var(--headline);
   align-items: center;
-`
+`;
 
 export const SHeader = styled.div`
   display: flex;
   flex-direction: row;
   justify-content: space-between;
-`
+`;
 
 export const SHeaderLeading = styled.div`
   display: flex;
   flex-direction: row;
   align-items: center;
-`
+`;
 
 export const SHeaderTitle = styled.span`
   margin-left: 8px;
   font-weight: bold;
-`
+`;
 
 export const SHeaderTrailing = styled.div`
   height: 24px;
   width: 24px;
-`
+`;
 
 export const SDescription = styled.div`
   color: var(--secondaryTextColor);
   font-size: var(--body2);
   margin-top: 8px;
-`
+`;
 
 export const SBadge = styled.div`
   border: solid var(--primaryHighlightColor) 3px;
@@ -83,7 +83,7 @@ export const SBadge = styled.div`
   margin: 2px 4px;
   width: fit-content;
   font-weight: 600;
-`
+`;
 
 export const SMore = styled.div`
   display: flex;
@@ -102,4 +102,4 @@ export const SMore = styled.div`
   circle {
     fill: var(--primaryTextColor);
   }
-`
+`;

@@ -1,9 +1,9 @@
 /*
 Licensed per https://github.com/privacy-tech-lab/privacy-pioneer/blob/main/LICENSE
-privacy-tech-lab, https://www.privacytechlab.org/
+privacy-tech-lab, https://privacytechlab.org/
 */
 
-import Parents from "../../../assets/parents.json"
+import Parents from "../../../assets/parents.json";
 
 /**
  * Takes a given label Object and returns an array of
@@ -15,25 +15,25 @@ import Parents from "../../../assets/parents.json"
  */
 
 export const getParents = (labels) => {
-  const companies = {}
+  const companies = {};
   if (labels) {
     Object.keys(labels).forEach((website) => {
-      const evidenceType = Object.keys(labels[website])[0]
-      const company = labels[website][evidenceType]["parentCompany"]
+      const evidenceType = Object.keys(labels[website])[0];
+      const company = labels[website][evidenceType]["parentCompany"];
       if (company) {
         if (!Object.keys(companies).includes(company)) {
-          companies[company] = {}
-          companies[company]["websites"] = [website]
-        } else companies[company]["websites"].push(company)
+          companies[company] = {};
+          companies[company]["websites"] = [website];
+        } else companies[company]["websites"].push(company);
 
         if (companiesWithSVG.has(company)) {
-          companies[company]["hasIcon"] = true
-        } else companies[company]["hasIcon"] = false
+          companies[company]["hasIcon"] = true;
+        } else companies[company]["hasIcon"] = false;
       }
-    })
-    return companies
+    });
+    return companies;
   }
-}
+};
 
 // This is the list of companies we have SVGs for. Will be updated as needed
 export const companiesWithSVG = new Set([
@@ -52,7 +52,7 @@ export const companiesWithSVG = new Set([
   "Twitter",
   "Verizon",
   "Yandex",
-])
+]);
 
 /**
  * Obtains the parent company from the website name
@@ -65,16 +65,16 @@ export const getParent = (website) => {
     Parents.entriesOurs
   )) {
     if (childrenSites.includes(website) && companiesWithSVG.has(parentSite)) {
-      return parentSite
+      return parentSite;
     }
   }
   for (const [parentSite, childrenSites] of Object.entries(
     Parents.entriesDisconnect
   )) {
     if (childrenSites.includes(website) && companiesWithSVG.has(parentSite)) {
-      return parentSite
+      return parentSite;
     }
   }
-}
+};
 
-export const getCompanyIconDict = () => {}
+export const getCompanyIconDict = () => {};

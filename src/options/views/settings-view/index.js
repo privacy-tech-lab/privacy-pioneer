@@ -1,11 +1,11 @@
 /*
 Licensed per https://github.com/privacy-tech-lab/privacy-pioneer/blob/main/LICENSE
-privacy-tech-lab, https://www.privacytechlab.org/
+privacy-tech-lab, https://privacytechlab.org/
 */
 
-import React, { useEffect, useRef, useState } from "react"
-import Scaffold from "../../components/scaffold"
-import ReactTooltip from "react-tooltip"
+import React, { useEffect, useRef, useState } from "react";
+import Scaffold from "../../components/scaffold";
+import ReactTooltip from "react-tooltip";
 import {
   STitle,
   SContainer,
@@ -14,16 +14,16 @@ import {
   SBody,
   SSection,
   SSeperator,
-} from "./style"
+} from "./style";
 import {
   FullSnippetToggle,
   OptimizationToggle,
   ExportData,
   LabelToggle,
-} from "./components/data-settings"
-import { ThemeSelection } from "./components/theme-settings"
-import { DangerZone } from "./components/danger-settings"
-import { Tour } from "./components/tour-settings"
+} from "./components/data-settings";
+import { ThemeSelection } from "./components/theme-settings";
+import { DangerZone } from "./components/danger-settings";
+import { Tour } from "./components/tour-settings";
 
 /**
  * Settings page view to adjust various settings. All Settings are broken into seperate
@@ -31,9 +31,9 @@ import { Tour } from "./components/tour-settings"
  */
 const SettingsView = ({ changeTheme }) => {
   useEffect(() => {
-    ReactTooltip.rebuild()
-    ReactTooltip.hide()
-  }, [])
+    ReactTooltip.rebuild();
+    ReactTooltip.hide();
+  }, []);
   return (
     <Scaffold>
       <SContainer>
@@ -66,7 +66,7 @@ const SettingsView = ({ changeTheme }) => {
         </SBody>
       </SContainer>
     </Scaffold>
-  )
-}
+  );
+};
 
-export default SettingsView
+export default SettingsView;

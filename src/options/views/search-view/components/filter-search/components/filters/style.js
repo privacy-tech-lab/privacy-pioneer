@@ -1,4 +1,9 @@
-import styled from "styled-components"
+/*
+Licensed per https://github.com/privacy-tech-lab/privacy-pioneer/blob/main/LICENSE
+privacy-tech-lab, https://privacytechlab.org/
+*/
+
+import styled from "styled-components";
 
 //styling for filters component
 
@@ -8,7 +13,7 @@ export const SFilterRow = styled.div`
   align-items: center;
   margin-top: 7px;
   width: fit-content;
-`
+`;
 
 export const SFilterRowItem = styled.div`
   font-weight: bold;
@@ -18,10 +23,10 @@ export const SFilterRowItem = styled.div`
   padding: 4px;
   cursor: pointer;
   opacity: ${(props) => (props.highlight ? 1 : 0.6)};
-`
+`;
 export const SCompaniesButton = styled.div`
   background-color: #9b45d9;
   color: #ffffff;
   border-radius: 5px;
   padding: 5px;
-`
+`;

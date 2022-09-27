@@ -1,16 +1,16 @@
 /*
 Licensed per https://github.com/privacy-tech-lab/privacy-pioneer/blob/main/LICENSE
-privacy-tech-lab, https://www.privacytechlab.org/
+privacy-tech-lab, https://privacytechlab.org/
 */
 
 import {
   typeEnum,
   permissionEnum,
-} from "../../../../../../background/analysis/classModels.js"
+} from "../../../../../../background/analysis/classModels.js";
 import {
   regionObj,
   getRegion,
-} from "../../../../../../background/analysis/buildUserData/structuredRoutines.js"
+} from "../../../../../../background/analysis/buildUserData/structuredRoutines.js";
 // allows for input validation of items a user is attempting to add to their watch list
 
 const inputValidator = {
@@ -33,7 +33,7 @@ const inputValidator = {
   userKeyword: new RegExp(/.{5,}/),
   zipCode: new RegExp(/\d{5}/),
   city_address: new RegExp(/.{5,}/),
-}
+};
 
 /**
  * Validate a user input
@@ -52,9 +52,9 @@ const validate = ({
    * Reset the form if the input is not valid
    */
   const badInput = (type) => {
-    setInputValid(false)
-    setKeyType(type)
-  }
+    setInputValid(false);
+    setKeyType(type);
+  };
 
   if (
     keywordType == typeEnum.phoneNumber &&
@@ -63,8 +63,8 @@ const validate = ({
       inputValidator.numRegex2.test(keyword)
     )
   ) {
-    badInput("phone number")
-    return false
+    badInput("phone number");
+    return false;
   } else if (
     keywordType == typeEnum.emailAddress &&
     !(
@@ -72,8 +72,8 @@ const validate = ({
       inputValidator.emailRegex2.test(keyword)
     )
   ) {
-    badInput("email address")
-    return false
+    badInput("email address");
+    return false;
   } else if (
     keywordType == typeEnum.ipAddress &&
     !(
@@ -81,32 +81,32 @@ const validate = ({
       inputValidator.ipRegex_6.test(keyword)
     )
   ) {
-    badInput("IP address")
-    return false
+    badInput("IP address");
+    return false;
   } else if (
     keywordType == typeEnum.userKeyword &&
     !inputValidator.userKeyword.test(keyword)
   ) {
-    badInput("keyword. Length should be 5 or greater.")
-    return false
+    badInput("keyword. Length should be 5 or greater.");
+    return false;
   } else if (keywordType == permissionEnum.location) {
     if (
       (!zip == undefined && !inputValidator.zipCode.test(zip)) ||
       !zip == undefined
     ) {
-      badInput("zip code")
-      return false
+      badInput("zip code");
+      return false;
     }
     if (!inputValidator.city_address.test(city)) {
-      badInput("city")
-      return false
+      badInput("city");
+      return false;
     }
     if (!inputValidator.city_address.test(address)) {
-      badInput("address")
-      return false
+      badInput("address");
+      return false;
     }
-    return true
-  } else return true
-}
+    return true;
+  } else return true;
+};
 
-export default validate
+export default validate;

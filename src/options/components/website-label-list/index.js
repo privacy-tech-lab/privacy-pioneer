@@ -1,12 +1,12 @@
 /*
 Licensed per https://github.com/privacy-tech-lab/privacy-pioneer/blob/main/LICENSE
-privacy-tech-lab, https://www.privacytechlab.org/
+privacy-tech-lab, https://privacytechlab.org/
 */
 
-import React from "react"
-import WebsiteBadge from "../../../libs/components/website-badge"
-import LabelCard from "../../../libs/components/label-card"
-import { SContainer, SItem, SLabel, SLabelGroup, SSeperator } from "./style"
+import React from "react";
+import WebsiteBadge from "../../../libs/components/website-badge";
+import LabelCard from "../../../libs/components/label-card";
+import { SContainer, SItem, SLabel, SLabelGroup, SSeperator } from "./style";
 
 /**
  * Makes label cards for a given website
@@ -17,33 +17,33 @@ import { SContainer, SItem, SLabel, SLabelGroup, SSeperator } from "./style"
  */
 const LabelCards = ({ website, handleTap, allLabels, webLabels }) => {
   return webLabels.map((label, index) => {
-    var requests = "hide"
+    var requests = "hide";
     if (Object.entries(allLabels).length == 0) {
-      requests = "empty"
+      requests = "empty";
     } else {
       if (label in allLabels && website in allLabels[label]) {
-        requests = allLabels[label][website]
+        requests = allLabels[label][website];
       }
     }
 
     if (requests == "hide") {
-      return null
+      return null;
     }
 
     return (
       <LabelCard
         key={index}
         onTap={() => {
-          handleTap({ label, requests, website, show: true })
+          handleTap({ label, requests, website, show: true });
         }}
         margin="8px 16px 0px 0px"
         label={label}
         requests={requests}
         website={website}
       />
-    )
-  })
-}
+    );
+  });
+};
 
 /**
  * Displays a list of websites and a quick summary of their privacy labels
@@ -53,7 +53,7 @@ const LabelCards = ({ website, handleTap, allLabels, webLabels }) => {
  * @param webLabels
  */
 const WebsiteLabelList = ({ websites, recent, handleTap, allLabels }) => {
-  const entries = Object.entries(websites)
+  const entries = Object.entries(websites);
   return (
     <SContainer>
       {entries
@@ -73,7 +73,7 @@ const WebsiteLabelList = ({ websites, recent, handleTap, allLabels }) => {
           </SItem>
         ))}
     </SContainer>
-  )
-}
+  );
+};
 
-export default WebsiteLabelList
+export default WebsiteLabelList;

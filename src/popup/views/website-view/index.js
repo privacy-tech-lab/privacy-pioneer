@@ -1,13 +1,13 @@
 /*
 Licensed per https://github.com/privacy-tech-lab/privacy-pioneer/blob/main/LICENSE
-privacy-tech-lab, https://www.privacytechlab.org/
+privacy-tech-lab, https://privacytechlab.org/
 */
 
-import React, { useEffect, useState } from "react"
-import Scaffold from "../../components/scaffold"
-import WebsiteLogo from "../../../libs/components/website-logo"
-import LabelCard from "../../../libs/components/label-card"
-import * as Icons from "../../../libs/icons"
+import React, { useEffect, useState } from "react";
+import Scaffold from "../../components/scaffold";
+import WebsiteLogo from "../../../libs/components/website-logo";
+import LabelCard from "../../../libs/components/label-card";
+import * as Icons from "../../../libs/icons";
 import {
   SLeading,
   SBrandIcon,
@@ -21,59 +21,65 @@ import {
   SLoader,
   SEmpty,
   SEmptyText,
-} from "./style"
-import floating from "../../../assets/logos/Floating.svg"
-import NavBar from "../../components/nav-bar"
-import { getWebsiteLabels } from "../../../libs/indexed-db/getIdbData.js"
-import { getHostname } from "../../../background/analysis/utility/util.js"
-import { useHistory } from "react-router"
-import RiseLoader from "react-spinners/RiseLoader"
-import { evidenceDescription, permissionEnum } from "../../../background/analysis/classModels"
-import { sortByTime } from "../label-view"
-import { IPINFO_IPKEY, IPINFO_ADDRESSKEY } from "../../../background/analysis/buildUserData/importSearchData.js"
+} from "./style";
+import floating from "../../../assets/logos/Floating.svg";
+import NavBar from "../../components/nav-bar";
+import { getWebsiteLabels } from "../../../libs/indexed-db/getIdbData.js";
+import { getHostname } from "../../../background/analysis/utility/util.js";
+import { useHistory } from "react-router";
+import RiseLoader from "react-spinners/RiseLoader";
+import {
+  evidenceDescription,
+  permissionEnum,
+} from "../../../background/analysis/classModels";
+import { sortByTime } from "../label-view";
+import {
+  IPINFO_IPKEY,
+  IPINFO_ADDRESSKEY,
+} from "../../../background/analysis/buildUserData/importSearchData.js";
 
 /**
  * Page view containing current website and identified label cards
  */
 const WebsiteView = () => {
-  const history = useHistory()
-  const [website, setWebsite] = useState("...")
-  const [labels, setLabels] = useState({})
-  const [loading, setLoading] = useState(true)
-  const [empty, setEmpty] = useState(true)
-  const [ourOptions, setOurOptions] = useState(false)
+  const history = useHistory();
+  const [website, setWebsite] = useState("...");
+  const [labels, setLabels] = useState({});
+  const [loading, setLoading] = useState(true);
+  const [empty, setEmpty] = useState(true);
+  const [ourOptions, setOurOptions] = useState(false);
 
   /**
    * Navigate to route in options page based on urlHash
    */
   const navigate = ({ urlHash = "" }) => {
-    const url = browser.runtime.getURL("options.html")
+    const url = browser.runtime.getURL("options.html");
     browser.tabs.query({ url: url }, function (tabs) {
       if (tabs.length) {
-        browser.tabs.update(tabs[0].id, { active: true, url: url + urlHash })
-        browser.tabs.reload()
+        browser.tabs.update(tabs[0].id, { active: true, url: url + urlHash });
+        browser.tabs.reload();
       } else {
-        browser.tabs.create({ url: url + urlHash })
+        browser.tabs.create({ url: url + urlHash });
       }
-    })
+    });
     // closes the popup on navigation to options home or watchlist
     // removing the timeout breaks the code. may be a hacky solution
-    setTimeout(() => window.close(), 10)
-  }
+    setTimeout(() => window.close(), 10);
+  };
 
   /**
    * Get number of privacy labels identified
    */
   const getCount = () => {
-    const keys = Object.keys(labels)
+    const keys = Object.keys(labels);
     if (keys.length === 0) {
-      return "0 Privacy Practices Identified"
+      return "0 Privacy Practices Identified";
     } else if (keys.length === 1) {
-      return "1 Privacy Practice Identified"
+      return "1 Privacy Practice Identified";
     } else {
-      return `${keys.length} Privacy Practices Identified`
+      return `${keys.length} Privacy Practices Identified`;
     }
-  }
+  };
 
   /**
    * Checks if current site is the extension's options page
@@ -85,11 +91,11 @@ const WebsiteView = () => {
       hostName.search(/moz-extension/) != -1 &&
       hostName.search(/options.html#/) != -1
     ) {
-      setOurOptions(true)
+      setOurOptions(true);
     } else {
-      setOurOptions(false)
+      setOurOptions(false);
     }
-  }
+  };
 
   useEffect(() => {
     /**
@@ -98,37 +104,42 @@ const WebsiteView = () => {
      */
     const message = (request, sender, sendResponse) => {
       if (request.msg === "popup.currentTab") {
-        const host = getHostname(request.data)
-        checkOurOptions(request.data)
+        const host = getHostname(request.data);
+        checkOurOptions(request.data);
         getWebsiteLabels(host).then((labels) => {
-          const currentTime = sortByTime(labels)
+          const currentTime = sortByTime(labels);
           var result = {};
           for (const [label, value] of Object.entries(labels)) {
-            if (label != permissionEnum.location && label != permissionEnum.tracking){
-              result[label] = value
+            if (
+              label != permissionEnum.location &&
+              label != permissionEnum.tracking
+            ) {
+              result[label] = value;
             } else {
               for (const [url, typeVal] of Object.entries(value)) {
                 for (const [type, e] of Object.entries(typeVal)) {
-
                   //Check if the evidence has been added recently
-                  var timestamp = currentTime - e["timestamp"] < 1000000
-                  if((e['watchlistHash'] == IPINFO_IPKEY || IPINFO_ADDRESSKEY) && (timestamp)){
+                  var timestamp = currentTime - e["timestamp"] < 1000000;
+                  if (
+                    (e["watchlistHash"] == IPINFO_IPKEY || IPINFO_ADDRESSKEY) &&
+                    timestamp
+                  ) {
                     if (!(label in result)) {
-                      result[label] = { [url]: { [type]: e } }
+                      result[label] = { [url]: { [type]: e } };
                     } else if (!(url in result[label])) {
-                      result[label][url] = { [type]: e }
+                      result[label][url] = { [type]: e };
                     } else {
-                      result[label][url][type] = e
+                      result[label][url][type] = e;
                     }
                   }
-                  if ( !(typeof e['watchlistHash'] === "string" ) && (timestamp)) {
+                  if (!(typeof e["watchlistHash"] === "string") && timestamp) {
                     // Add label in data to object
                     if (!(label in result)) {
-                      result[label] = { [url]: { [type]: e } }
+                      result[label] = { [url]: { [type]: e } };
                     } else if (!(url in result[label])) {
-                      result[label][url] = { [type]: e }
+                      result[label][url] = { [type]: e };
                     } else {
-                      result[label][url][type] = e
+                      result[label][url][type] = e;
                     }
                   }
                 }
@@ -136,24 +147,24 @@ const WebsiteView = () => {
             }
           }
 
-          setLabels(result)
+          setLabels(result);
           if (Object.keys(result).length > 0) {
             setTimeout(() => {
-              setEmpty(false), setLoading(false)
-            }, 800)
-          } else setTimeout(() => setLoading(false), 2000)
-        })
-        setWebsite(host)
+              setEmpty(false), setLoading(false);
+            }, 800);
+          } else setTimeout(() => setLoading(false), 2000);
+        });
+        setWebsite(host);
       }
-    }
+    };
 
-    browser.runtime.onMessage.addListener(message)
-    browser.runtime.sendMessage({ msg: "background.currentTab" })
+    browser.runtime.onMessage.addListener(message);
+    browser.runtime.sendMessage({ msg: "background.currentTab" });
 
     return () => {
-      browser.runtime.onMessage.removeListener(message)
-    }
-  }, [])
+      browser.runtime.onMessage.removeListener(message);
+    };
+  }, []);
 
   return (
     <Scaffold
@@ -222,7 +233,7 @@ const WebsiteView = () => {
         )
       }
     />
-  )
-}
+  );
+};
 
-export default WebsiteView
+export default WebsiteView;

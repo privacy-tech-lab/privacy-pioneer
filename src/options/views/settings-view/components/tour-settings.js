@@ -1,13 +1,13 @@
 /*
 Licensed per https://github.com/privacy-tech-lab/privacy-pioneer/blob/main/LICENSE
-privacy-tech-lab, https://www.privacytechlab.org/
+privacy-tech-lab, https://privacytechlab.org/
 */
 
-import React from "react"
+import React from "react";
 
-import { startStopTour } from "../../../../libs/indexed-db/settings"
-import { useHistory } from "react-router"
-import styled from "styled-components"
+import { startStopTour } from "../../../../libs/indexed-db/settings";
+import { useHistory } from "react-router";
+import styled from "styled-components";
 
 const STourButton = styled.div`
   display: flex;
@@ -27,17 +27,17 @@ const STourButton = styled.div`
   :active {
     filter: brightness(1.05);
   }
-`
+`;
 /**
  * Settings for restarting the tour
  */
 export const Tour = () => {
-  const history = useHistory()
+  const history = useHistory();
 
   const startTour = () => {
-    startStopTour()
-    history.push("/")
-  }
+    startStopTour();
+    history.push("/");
+  };
 
-  return <STourButton onClick={startTour}>Tour</STourButton>
-}
+  return <STourButton onClick={startTour}>Tour</STourButton>;
+};

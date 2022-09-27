@@ -1,14 +1,14 @@
 /*
 Licensed per https://github.com/privacy-tech-lab/privacy-pioneer/blob/main/LICENSE
-privacy-tech-lab, https://www.privacytechlab.org/
+privacy-tech-lab, https://privacytechlab.org/
 */
 
-import styled from "styled-components"
+import styled from "styled-components";
 //styling for watchlist view
 
 export const SContainer = styled.section`
   ${(props) => (props.marginTop ? "margin-top: 32px;" : "margin-top: 0px;")}
-`
+`;
 
 export const SHeader = styled.div`
   display: flex;
@@ -20,16 +20,16 @@ export const SHeader = styled.div`
       width: 50%;
     }
   }
-`
+`;
 
 export const STitle = styled.div`
   font-size: var(--title1);
   font-weight: bold;
-`
+`;
 
 export const SSubtitle = styled.div`
   color: var(--secondaryTextColor);
-`
+`;
 
 export const SAddButton = styled.div`
   cursor: pointer;
@@ -59,7 +59,7 @@ export const SAddButton = styled.div`
       margin-left: -4px;
     }
   }
-`
+`;
 
 export const SListHeader = styled.div`
   margin-top: 32px;
@@ -78,16 +78,16 @@ export const SListHeader = styled.div`
     :last-child {
     }
   }
-`
+`;
 
 export const SListContent = styled.div`
   display: flex;
   flex-direction: column;
-`
+`;
 export const SEmpty = styled.div`
   display: flex;
   justify-content: center;
   font-weight: 600;
   font-size: var(--title2);
   margin-top: 12%;
-`
+`;

@@ -1,10 +1,10 @@
 /*
 Licensed per https://github.com/privacy-tech-lab/privacy-pioneer/blob/main/LICENSE
-privacy-tech-lab, https://www.privacytechlab.org/
+privacy-tech-lab, https://privacytechlab.org/
 */
 
-import React, { useEffect, useState } from "react"
-import Scaffold from "../../components/scaffold"
+import React, { useEffect, useState } from "react";
+import Scaffold from "../../components/scaffold";
 import {
   SAddButton,
   SEmpty,
@@ -12,37 +12,37 @@ import {
   SListContent,
   SListHeader,
   STitle,
-} from "./style"
-import { SContainer, SSubtitle } from "./style"
-import * as Icons from "../../../libs/icons"
-import ListItem from "./components/list-item"
-import EditModal from "./components/edit-modal"
-import { watchlistKeyval } from "../../../libs/indexed-db/openDB.js"
-import { Modal } from "bootstrap"
+} from "./style";
+import { SContainer, SSubtitle } from "./style";
+import * as Icons from "../../../libs/icons";
+import ListItem from "./components/list-item";
+import EditModal from "./components/edit-modal";
+import { watchlistKeyval } from "../../../libs/indexed-db/openDB.js";
+import { Modal } from "bootstrap";
 import {
   permissionEnum,
   typeEnum,
-} from "../../../background/analysis/classModels"
-import ReactTooltip from "react-tooltip"
-import { saveKeyword } from "../../../libs/indexed-db/updateWatchlist.js"
-import { apiIPToken } from "../../../libs/holdAPI"
+} from "../../../background/analysis/classModels";
+import ReactTooltip from "react-tooltip";
+import { saveKeyword } from "../../../libs/indexed-db/updateWatchlist.js";
+import { apiIPToken } from "../../../libs/holdAPI";
 
 /**
  * Watchlist page view allowing user to add/modify keywords
  */
 const WatchlistView = () => {
-  const [modalConfig, configModal] = useState({ show: false, edit: false })
-  const [items, setItems] = useState([])
+  const [modalConfig, configModal] = useState({ show: false, edit: false });
+  const [items, setItems] = useState([]);
 
   /**
    * Inflates view with keywords from watchlist keystore. Sends message to background script to update data.
    */
   const updateList = () => {
-    watchlistKeyval.values().then((values) => setItems(values))
+    watchlistKeyval.values().then((values) => setItems(values));
     browser.runtime.sendMessage({
       msg: "dataUpdated",
-    })
-  }
+    });
+  };
 
   /**
    * Async function to fetch the user's IP and add it to their watchlist
@@ -53,23 +53,23 @@ const WatchlistView = () => {
     await fetch("http://ipinfo.io/json?token" + apiIPToken)
       .then((data) => data.json())
       .then(async function (data) {
-        const myIP = data.ip
+        const myIP = data.ip;
         if (await saveKeyword(myIP, typeEnum.ipAddress, null)) {
-          await updateList()
+          await updateList();
         }
-      })
-  }
+      });
+  };
 
   useEffect(() => {
-    ReactTooltip.hide()
-    updateList()
+    ReactTooltip.hide();
+    updateList();
     // Add listener to modal so we can reset it by taking it off the dom so it doesn't hold references
     document
       .getElementById("edit-modal")
       .addEventListener("hidden.bs.modal", () => {
-        configModal({ show: false })
-      })
-  }, [])
+        configModal({ show: false });
+      });
+  }, []);
 
   return (
     <React.Fragment>
@@ -119,9 +119,11 @@ const WatchlistView = () => {
             >
               <SAddButton
                 onClick={() => {
-                  configModal({ show: true })
-                  const modal = new Modal(document.getElementById("edit-modal"))
-                  modal.show()
+                  configModal({ show: true });
+                  const modal = new Modal(
+                    document.getElementById("edit-modal")
+                  );
+                  modal.show();
                 }}
               >
                 <Icons.Plus size="24px" />
@@ -134,7 +136,7 @@ const WatchlistView = () => {
                     "We use an external API from ip-api.com that holds your ip address for one minute, and then deletes it from their database. Click 'OK' to add your public IP address to your watchlist. \n\nAlternatively, you can search 'What's my IP?', then copy and paste the result into our IP address keyword form."
                   )
                     ? getIP()
-                    : null
+                    : null;
                 }}
               >
                 <Icons.Plus size="24px" />
@@ -174,7 +176,7 @@ const WatchlistView = () => {
         </SContainer>
       </Scaffold>
     </React.Fragment>
-  )
-}
+  );
+};
 
-export default WatchlistView
+export default WatchlistView;

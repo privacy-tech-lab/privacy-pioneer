@@ -2,6 +2,7 @@
   <a href="https://github.com/privacy-tech-lab/privacy-pioneer/releases"><img alt="GitHub release (latest by date)" src="https://img.shields.io/github/v/release/privacy-tech-lab/privacy-pioneer"></a>
   <a href="https://github.com/privacy-tech-lab/privacy-pioneer/releases"><img alt="GitHub Release Date" src="https://img.shields.io/github/release-date/privacy-tech-lab/privacy-pioneer"></a>
   <a href="https://github.com/privacy-tech-lab/privacy-pioneer/commits/main"><img alt="GitHub last commit" src="https://img.shields.io/github/last-commit/privacy-tech-lab/privacy-pioneer"></a>
+  <a href="https://github.com/privacy-tech-lab/privacy-pioneer/actions/workflows/node.js.yml"><img alt="GitHub forks" src="https://github.com/privacy-tech-lab/privacy-pioneer/actions/workflows/node.js.yml/badge.svg?branch=main"></a>
   <a href="https://github.com/privacy-tech-lab/privacy-pioneer/issues"><img alt="GitHub issues" src="https://img.shields.io/github/issues-raw/privacy-tech-lab/privacy-pioneer"></a>
   <a href="https://github.com/privacy-tech-lab/privacy-pioneer/issues?q=is%3Aissue+is%3Aclosed"><img alt="GitHub closed issues" src="https://img.shields.io/github/issues-closed-raw/privacy-tech-lab/privacy-pioneer"></a>
   <a href="https://github.com/privacy-tech-lab/privacy-pioneer/watchers"><img alt="GitHub watchers" src="https://img.shields.io/github/watchers/privacy-tech-lab/privacy-pioneer?style=social"></a>
@@ -27,7 +28,7 @@ If such a string is sent via an HTTP POST request, it can be concluded that a si
 
 Currently, we only support Firefox.
 
-Privacy Pioneer is developed and maintained by **Daniel Goldelman (@danielgoldelman)**, **Logan Brown (@Lr-Brown)**, **Justin Casler (@JustinCasler)**, **Judeley Jean-Charles (@jjeancharles)**, and **Sebastian Zimmeck (@SebastianZimmeck)** of the [privacy-tech-lab](https://www.privacytechlab.org/). **Hamza Harkous (@harkous)** is also collaborating with the team on the research. **Owen Kaplan (@notowen333)**, **Rafael Goldstein (@rgoldstein01)**, and **David Baraka (@davebaraka)** contributed earlier.
+Privacy Pioneer is developed and maintained by **Daniel Goldelman (@danielgoldelman)**, **Logan Brown (@Lr-Brown)**, **Justin Casler (@JustinCasler)**, **Judeley Jean-Charles (@jjeancharles)**, and **Sebastian Zimmeck (@SebastianZimmeck)** of the [privacy-tech-lab](https://privacytechlab.org/). **Hamza Harkous (@harkous)** is also collaborating with the team on the research. **Owen Kaplan (@notowen333)**, **Rafael Goldstein (@rgoldstein01)**, and **David Baraka (@davebaraka)** contributed earlier.
 
 Contact us with any questions or comments at sebastian@privacytechlab.org.
 
@@ -163,5 +164,5 @@ We thank the developers.
 ##
 
 <p align="center">
-  <a href="https://www.privacytechlab.org/"><img src="./plt_logo.png" width="200px" height="200px" alt="privacy-tech-lab logo"></a>
+  <a href="https://privacytechlab.org/"><img src="./plt_logo.png" width="200px" height="200px" alt="privacy-tech-lab logo"></a>
 <p>

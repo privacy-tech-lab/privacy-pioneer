@@ -1,11 +1,11 @@
 /*
 Licensed per https://github.com/privacy-tech-lab/privacy-pioneer/blob/main/LICENSE
-privacy-tech-lab, https://www.privacytechlab.org/
+privacy-tech-lab, https://privacytechlab.org/
 */
 
 //styling for App View components
 
-import styled, { css } from "styled-components"
+import styled, { css } from "styled-components";
 
 export const SNavBar = styled.nav`
   display: flex;
@@ -24,7 +24,7 @@ export const SNavBar = styled.nav`
   background-color: var(--backgroundColor);
   z-index: 1;
   user-select: none;
-`
+`;
 
 export const SLeading = styled.div`
   display: flex;
@@ -32,7 +32,7 @@ export const SLeading = styled.div`
   flex-wrap: nowrap;
   width: 100%;
   align-items: center;
-`
+`;
 
 export const SLeadingContainer = styled.div`
   cursor: pointer;
@@ -40,13 +40,13 @@ export const SLeadingContainer = styled.div`
   flex-direction: row;
   flex-wrap: nowrap;
   align-items: center;
-`
+`;
 
 export const SBrandIcon = styled.img`
   margin-right: 16px;
   height: 64px;
   aspect-ratio: 1/1;
-`
+`;
 
 export const SBrandTitle = styled.div`
   font-size: var(--title1);
@@ -54,12 +54,12 @@ export const SBrandTitle = styled.div`
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-`
+`;
 
 export const STrailing = styled.div`
   display: flex;
   flex-direction: row;
-`
+`;
 
 export const SNavAction = styled.div`
   display: flex;
@@ -94,4 +94,4 @@ export const SNavAction = styled.div`
             fill: gray;
           }
         `}
-`
+`;

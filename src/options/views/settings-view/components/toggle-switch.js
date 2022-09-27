@@ -1,11 +1,11 @@
 /*
 Licensed per https://github.com/privacy-tech-lab/privacy-pioneer/blob/main/LICENSE
-privacy-tech-lab, https://www.privacytechlab.org/
+privacy-tech-lab, https://privacytechlab.org/
 */
 
-import React from "react"
-import styled from "styled-components"
-import { motion } from "framer-motion"
+import React from "react";
+import styled from "styled-components";
+import { motion } from "framer-motion";
 
 export const SSwitch = styled.div`
   display: flex;
@@ -15,7 +15,7 @@ export const SSwitch = styled.div`
   height: 30px;
   border-radius: 16px;
   background-color: ${(prop) => (prop.active ? "#6b219f" : "#949494")};
-`
+`;
 
 export const SKnob = styled(motion.div)`
   height: 80%;
@@ -24,14 +24,14 @@ export const SKnob = styled(motion.div)`
   border-radius: 50%;
   align-self: center;
   margin: 0px 4px;
-`
+`;
 
 export const SSwitchLabel = styled.div`
   font-size: var(--title2);
   font-weight: 400;
   align-self: center;
   margin-right: 24px;
-`
+`;
 /**
  * General Toggle Switch used in various settings sections
  */
@@ -57,4 +57,4 @@ export const ToggleSwitch = ({ isActive, label, onClick, spaceBetween }) => (
       />
     </SSwitch>
   </div>
-)
+);

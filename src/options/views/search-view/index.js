@@ -1,18 +1,18 @@
 /*
 Licensed per https://github.com/privacy-tech-lab/privacy-pioneer/blob/main/LICENSE
-privacy-tech-lab, https://www.privacytechlab.org/
+privacy-tech-lab, https://privacytechlab.org/
 */
 
-import { Modal } from "bootstrap"
-import React, { useEffect, useState } from "react"
-import { useHistory, useLocation } from "react-router"
-import * as Icons from "../../../libs/icons"
-import { searchInit } from "../../../libs/init"
-import { seeAllSteps, SeeAllTour } from "../../../libs/tour"
-import Scaffold from "../../components/scaffold"
-import WebsiteLabelList from "../../components/website-label-list"
-import LabelModal from "../home-view/components/detail-modal"
-import FilterSearch from "./components/filter-search"
+import { Modal } from "bootstrap";
+import React, { useEffect, useState } from "react";
+import { useHistory, useLocation } from "react-router";
+import * as Icons from "../../../libs/icons";
+import { searchInit } from "../../../libs/init";
+import { seeAllSteps, SeeAllTour } from "../../../libs/tour";
+import Scaffold from "../../components/scaffold";
+import WebsiteLabelList from "../../components/website-label-list";
+import LabelModal from "../home-view/components/detail-modal";
+import FilterSearch from "./components/filter-search";
 import {
   SBackButton,
   SContainer,
@@ -21,7 +21,7 @@ import {
   SSubtitle,
   STitle,
   STop,
-} from "./style"
+} from "./style";
 
 /**
  * location.region = undefined | [permission, websites]
@@ -30,22 +30,22 @@ import {
  * Search view allowing user to search from identified labels
  */
 const SearchView = () => {
-  const history = useHistory()
-  const location = useLocation()
+  const history = useHistory();
+  const location = useLocation();
 
-  const [websites, setWebsites] = useState({})
-  const [filteredWebsites, setFilteredWebsites] = useState({})
-  const [labels, setLabels] = useState({})
-  const [filteredLabels, setFilteredLabels] = useState({})
-  const [showEmpty, setShowEmpty] = useState(false)
-  const [touring, setTouring] = useState(false)
-  const [modal, setModal] = useState({ show: false })
+  const [websites, setWebsites] = useState({});
+  const [filteredWebsites, setFilteredWebsites] = useState({});
+  const [labels, setLabels] = useState({});
+  const [filteredLabels, setFilteredLabels] = useState({});
+  const [showEmpty, setShowEmpty] = useState(false);
+  const [touring, setTouring] = useState(false);
+  const [modal, setModal] = useState({ show: false });
 
   const handleTap = (items) => {
-    const modal = new Modal(document.getElementById("detail-modal"))
-    setModal(items)
-    modal.show()
-  }
+    const modal = new Modal(document.getElementById("detail-modal"));
+    setModal(items);
+    modal.show();
+  };
 
   useEffect(() => {
     searchInit({
@@ -55,8 +55,8 @@ const SearchView = () => {
       setFilteredWebsites,
       setLabels,
       setFilteredLabels,
-    })
-  }, [])
+    });
+  }, []);
 
   return (
     <React.Fragment>
@@ -103,7 +103,7 @@ const SearchView = () => {
       </Scaffold>
       {touring ? <SeeAllTour steps={seeAllSteps} /> : null}
     </React.Fragment>
-  )
-}
+  );
+};
 
-export default SearchView
+export default SearchView;

@@ -1,19 +1,19 @@
 /*
 Licensed per https://github.com/privacy-tech-lab/privacy-pioneer/blob/main/LICENSE
-privacy-tech-lab, https://www.privacytechlab.org/
+privacy-tech-lab, https://privacytechlab.org/
 */
 
-import React from "react"
+import React from "react";
 import {
   deleteEvidenceDB,
   deleteKeywordDB,
-} from "../../../../../libs/indexed-db/settings"
+} from "../../../../../libs/indexed-db/settings";
 import {
   SSubtitle,
   SSettingHeader,
   SDangerSection,
   SDangerButton,
-} from "./style"
+} from "./style";
 
 /**
  * Danger section of Settings involving deletion from the database
@@ -28,9 +28,9 @@ export const DangerZone = () => {
         "Are you sure you want to delete all of the evidence we've collected?"
       )
     ) {
-      deleteEvidenceDB()
+      deleteEvidenceDB();
     }
-  }
+  };
   /**
    * Deletes Keywords from watchlist from DB on press
    */
@@ -40,9 +40,9 @@ export const DangerZone = () => {
         "Are you sure you want to delete all of the keywords you've asked us to track?"
       )
     ) {
-      deleteKeywordDB()
+      deleteKeywordDB();
     }
-  }
+  };
   return (
     <SDangerSection>
       <SSettingHeader>Danger Zone</SSettingHeader>
@@ -62,5 +62,5 @@ export const DangerZone = () => {
         </SDangerButton>
       </div>
     </SDangerSection>
-  )
-}
+  );
+};

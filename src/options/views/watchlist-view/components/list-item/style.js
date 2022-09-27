@@ -1,9 +1,9 @@
 /*
 Licensed per https://github.com/privacy-tech-lab/privacy-pioneer/blob/main/LICENSE
-privacy-tech-lab, https://www.privacytechlab.org/
+privacy-tech-lab, https://privacytechlab.org/
 */
 
-import styled from "styled-components"
+import styled from "styled-components";
 
 export const SItem = styled.div`
   margin-top: 16px;
@@ -22,22 +22,22 @@ export const SItem = styled.div`
       flex-grow: 1;
     }
   }
-`
+`;
 
-export const SKeyword = styled.div``
+export const SKeyword = styled.div``;
 
-export const SType = styled.div``
+export const SType = styled.div``;
 
 export const SAction = styled.div`
   cursor: pointer;
   position: relative;
   display: inline-block;
-`
+`;
 
 export const SDropdownOptions = styled.div`
   right: 32px;
   top: -8;
-  display: ${props => props.show ? 'flex' : 'none'};
+  display: ${(props) => (props.show ? "flex" : "none")};
   position: absolute;
   flex-direction: row;
   background-color: var(--textFieldColor);
@@ -56,7 +56,7 @@ export const SDropdownOptions = styled.div`
       border-top-right-radius: 8px;
     }
   }
-`
+`;
 
 export const SDropdownItem = styled.div`
   border: 1px solid var(--seperatorColor);
@@ -77,4 +77,4 @@ export const SDropdownItem = styled.div`
       filter: brightness(1.15);
     }
   }
-`
+`;

@@ -1,15 +1,15 @@
 /*
 Licensed per https://github.com/privacy-tech-lab/privacy-pioneer/blob/main/LICENSE
-privacy-tech-lab, https://www.privacytechlab.org/
+privacy-tech-lab, https://privacytechlab.org/
 */
 
-import React from "react"
-import { SInput, SForm, SKeyword, SHeader } from "../style"
+import React from "react";
+import { SInput, SForm, SKeyword, SHeader } from "../style";
 import {
   typeEnum,
   permissionEnum,
-} from "../../../../../../background/analysis/classModels"
-import { keywordTypes } from "../../../../../../background/analysis/classModels"
+} from "../../../../../../background/analysis/classModels";
+import { keywordTypes } from "../../../../../../background/analysis/classModels";
 
 /**
  * Form for a user to input their address
@@ -77,8 +77,8 @@ const AddressForm = ({ onChange, city, region, zip, streetAddress }) => {
         </SKeyword>
       </div>
     </SForm>
-  )
-}
+  );
+};
 
 /**
  * Form for a user to add their own non-location keywords
@@ -97,7 +97,7 @@ const KeywordForm = ({ keywordType, onChange, value }) => {
         value={value}
       />
     </SKeyword>
-  )
-}
+  );
+};
 
-export { KeywordForm, AddressForm }
+export { KeywordForm, AddressForm };

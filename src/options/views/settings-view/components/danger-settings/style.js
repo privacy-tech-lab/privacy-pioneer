@@ -1,21 +1,21 @@
 /*
 Licensed per https://github.com/privacy-tech-lab/privacy-pioneer/blob/main/LICENSE
-privacy-tech-lab, https://www.privacytechlab.org/
+privacy-tech-lab, https://privacytechlab.org/
 */
 
-import styled from "styled-components"
+import styled from "styled-components";
 
 //styling for Danger section component
 
 export const SSubtitle = styled.div`
   color: var(--secondaryTextColor);
-`
+`;
 
 export const SSettingHeader = styled.div`
   font-size: var(--title2);
   font-weight: bold;
   margin-top: 8px;
-`
+`;
 
 export const SDangerSection = styled.div`
   display: flex;
@@ -26,7 +26,7 @@ export const SDangerSection = styled.div`
   padding: 8px;
   border-radius: 4px;
   align-self: flex-start;
-`
+`;
 
 export const SDangerButton = styled.div`
   display: flex;
@@ -41,4 +41,4 @@ export const SDangerButton = styled.div`
     background-color: crimson;
     color: white;
   }
-`
+`;

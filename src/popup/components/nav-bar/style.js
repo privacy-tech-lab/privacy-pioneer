@@ -1,9 +1,9 @@
 /*
 Licensed per https://github.com/privacy-tech-lab/privacy-pioneer/blob/main/LICENSE
-privacy-tech-lab, https://www.privacytechlab.org/
+privacy-tech-lab, https://privacytechlab.org/
 */
 
-import styled from "styled-components"
+import styled from "styled-components";
 
 export const SNav = styled.nav`
   display: flex;
@@ -20,24 +20,24 @@ export const SNav = styled.nav`
   ${(props) => !props.middle && "justify-content: space-between;"}
   max-width: 100%;
   z-index: 100;
-`
+`;
 
 export const SMiddle = styled.div`
   display: flex;
   justify-content: center;
   min-width: 0;
-`
+`;
 
 export const SLeading = styled.div`
   flex: 1;
   display: flex;
   justify-content: left;
   min-width: 0;
-`
+`;
 
 export const STrailing = styled.div`
   ${(props) => props.middle && "flex: 1;"}
   display: flex;
   justify-content: right;
   min-width: 0;
-`
+`;

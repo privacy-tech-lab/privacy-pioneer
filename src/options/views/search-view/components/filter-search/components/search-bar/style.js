@@ -1,4 +1,9 @@
-import styled from "styled-components"
+/*
+Licensed per https://github.com/privacy-tech-lab/privacy-pioneer/blob/main/LICENSE
+privacy-tech-lab, https://privacytechlab.org/
+*/
+
+import styled from "styled-components";
 
 //styling for search bar component
 
@@ -19,7 +24,7 @@ export const SInput = styled.input`
   ::placeholder {
     color: var(--secondaryTextColor);
   }
-`
+`;
 
 export const SInputContainer = styled.div`
   path,
@@ -32,9 +37,9 @@ export const SInputContainer = styled.div`
     vertical-align: baseline;
     position: absolute;
   }
-`
+`;
 export const SSearchContainer = styled.div`
   display: inline-flex;
   flex-direction: row;
   justify-content: left;
-`
+`;

@@ -1,10 +1,10 @@
 /*
 Licensed per https://github.com/privacy-tech-lab/privacy-pioneer/blob/main/LICENSE
-privacy-tech-lab, https://www.privacytechlab.org/
+privacy-tech-lab, https://privacytechlab.org/
 */
 
-import React from "react"
-import LabelDetail from "../../../../../libs/components/label-detail"
+import React from "react";
+import LabelDetail from "../../../../../libs/components/label-detail";
 import {
   IconWrapper,
   SLeading,
@@ -16,9 +16,9 @@ import {
   SContainer,
   SDialog,
   SContent,
-} from "./style"
-import * as Icons from "../../../../../libs/icons"
-import { privacyLabels } from "../../../../../background/analysis/classModels"
+} from "./style";
+import * as Icons from "../../../../../libs/icons";
+import { privacyLabels } from "../../../../../background/analysis/classModels";
 
 /**
  * Modal popup detailing information collected and shared.
@@ -61,7 +61,7 @@ const LabelModal = ({ label, requests, website, show }) => {
         </SDialog>
       </SContainer>
     </>
-  )
-}
+  );
+};
 
-export default LabelModal
+export default LabelModal;

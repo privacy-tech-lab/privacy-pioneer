@@ -1,27 +1,27 @@
 /*
 Licensed per https://github.com/privacy-tech-lab/privacy-pioneer/blob/main/LICENSE
-privacy-tech-lab, https://www.privacytechlab.org/
+privacy-tech-lab, https://privacytechlab.org/
 */
 
-import styled from "styled-components"
+import styled from "styled-components";
 
 //styling for Data Section component
 export const SLabelToggle = styled.div`
   margin-left: 8px;
   flex-direction: column;
-`
+`;
 
 export const SSnippetToggle = styled.div`
   margin-left: 8px;
   flex-direction: column;
-`
+`;
 
 export const SExportSection = styled.div`
   display: flex;
   flex-direction: row;
   margin-left: 8px;
   margin-top: 8px;
-`
+`;
 export const SExportButton = styled.div`
   display: flex;
   color: var(--primaryBrandColor);
@@ -40,7 +40,7 @@ export const SExportButton = styled.div`
   :active {
     filter: brightness(1.05);
   }
-`
+`;
 
 export const SDropdownOptions = styled.div`
   top: 56px;
@@ -66,7 +66,7 @@ export const SDropdownOptions = styled.div`
       border-bottom-right-radius: 8px;
     }
   }
-`
+`;
 
 export const SDropdownItem = styled.div`
   border: 1px solid var(--seperatorColor);
@@ -87,12 +87,12 @@ export const SDropdownItem = styled.div`
       filter: brightness(1.15);
     }
   }
-`
+`;
 
 export const SDropdown = styled.div`
   position: relative;
   display: flex;
-`
+`;
 
 export const SDropdownSelection = styled.div`
   cursor: pointer;
@@ -120,4 +120,4 @@ export const SDropdownSelection = styled.div`
       filter: brightness(1.15);
     }
   }
-`
+`;

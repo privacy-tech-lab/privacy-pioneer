@@ -1,9 +1,9 @@
 /*
 Licensed per https://github.com/privacy-tech-lab/privacy-pioneer/blob/main/LICENSE
-privacy-tech-lab, https://www.privacytechlab.org/
+privacy-tech-lab, https://privacytechlab.org/
 */
 
-import React, { useRef, useState, useEffect } from "react"
+import React, { useRef, useState, useEffect } from "react";
 import {
   IconWrapper,
   SHeader,
@@ -22,75 +22,75 @@ import {
   SDropdownItem,
   SContent,
   SErrorText,
-} from "./style"
-import * as Icons from "../../../../../libs/icons"
-import { saveKeyword } from "../../../../../libs/indexed-db/updateWatchlist.js"
+} from "./style";
+import * as Icons from "../../../../../libs/icons";
+import { saveKeyword } from "../../../../../libs/indexed-db/updateWatchlist.js";
 import {
   keywordTypes,
   permissionEnum,
   typeEnum,
-} from "../../../../../background/analysis/classModels"
-import { Modal } from "bootstrap"
-import { AddressForm, KeywordForm } from "./components/forms"
-import validate from "./components/input-validators"
-import ReactTooltip from "react-tooltip"
+} from "../../../../../background/analysis/classModels";
+import { Modal } from "bootstrap";
+import { AddressForm, KeywordForm } from "./components/forms";
+import validate from "./components/input-validators";
+import ReactTooltip from "react-tooltip";
 
 /**
  * Popup modal to create/edit keyword
  */
 const EditModal = ({ passKeywordType, passKeyword, edit, id, updateList }) => {
-  const dropdownRef = useRef()
-  const [showDropdown, setDropdown] = useState(false)
+  const dropdownRef = useRef();
+  const [showDropdown, setDropdown] = useState(false);
   const [keywordType, setKeywordType] = useState(
     edit ? passKeywordType : "Select Type"
-  )
-  const [keyword, setKeyword] = useState(edit ? passKeyword : "")
+  );
+  const [keyword, setKeyword] = useState(edit ? passKeyword : "");
   const [address, setAddress] = useState(
     edit ? keyword[typeEnum.streetAddress] ?? null : ""
-  )
-  const [city, setCity] = useState(edit ? keyword[typeEnum.city] ?? null : "")
+  );
+  const [city, setCity] = useState(edit ? keyword[typeEnum.city] ?? null : "");
   const [region, setRegionloc] = useState(
     edit ? keyword[typeEnum.region] ?? null : ""
-  )
-  const [zip, setZip] = useState(edit ? keyword[typeEnum.zipCode] ?? null : "")
-  const [inputValid, setInputValid] = useState(true)
-  const [keyType, setKeyType] = useState("")
+  );
+  const [zip, setZip] = useState(edit ? keyword[typeEnum.zipCode] ?? null : "");
+  const [inputValid, setInputValid] = useState(true);
+  const [keyType, setKeyType] = useState("");
 
   /**
    * Closes dropdown when clicked outside
    */
   const blur = (event) => {
     if (!dropdownRef.current.contains(event.target)) {
-      setDropdown(false)
+      setDropdown(false);
     }
-  }
+  };
 
   const handleAddressChange = (type, value) => {
     switch (type) {
       case typeEnum.city:
-        setCity(value)
-        break
+        setCity(value);
+        break;
       case typeEnum.region:
-        setRegionloc(value)
-        break
+        setRegionloc(value);
+        break;
       case typeEnum.zipCode:
-        setZip(value)
-        break
+        setZip(value);
+        break;
       case typeEnum.streetAddress:
-        setAddress(value)
-        break
+        setAddress(value);
+        break;
     }
-  }
+  };
 
   const handleKeywordChange = (value) => {
-    setKeyword(value)
-  }
+    setKeyword(value);
+  };
 
   useEffect(() => {
-    document.addEventListener("mousedown", blur)
-    ReactTooltip.rebuild()
-    return () => document.removeEventListener("mousedown", blur)
-  }, [])
+    document.addEventListener("mousedown", blur);
+    ReactTooltip.rebuild();
+    return () => document.removeEventListener("mousedown", blur);
+  }, []);
 
   return (
     <>
@@ -112,7 +112,7 @@ const EditModal = ({ passKeywordType, passKeyword, edit, id, updateList }) => {
             <SDropdown
               ref={dropdownRef}
               onClick={() => {
-                setDropdown((region) => !region)
+                setDropdown((region) => !region);
               }}
             >
               <SDropdownOptions show={showDropdown}>
@@ -121,9 +121,9 @@ const EditModal = ({ passKeywordType, passKeyword, edit, id, updateList }) => {
                     data-place="right"
                     data-tip={keywordTypes[key]["toolTip"]}
                     onClick={() => {
-                      setKeywordType(key)
-                      setInputValid(true)
-                      setKeyword("")
+                      setKeywordType(key);
+                      setInputValid(true);
+                      setKeyword("");
                     }}
                     key={index}
                   >
@@ -163,7 +163,7 @@ const EditModal = ({ passKeywordType, passKeyword, edit, id, updateList }) => {
             </SAction>
             <SAction
               onClick={async () => {
-                let key
+                let key;
                 if (keywordType == permissionEnum.location) {
                   key = {
                     [typeEnum.streetAddress]: address,
@@ -171,9 +171,9 @@ const EditModal = ({ passKeywordType, passKeyword, edit, id, updateList }) => {
                     [typeEnum.region]: region,
                     [typeEnum.city]: city,
                     display: `${address}, ${city}, ${region} ${zip}`,
-                  }
+                  };
                 } else {
-                  key = keyword
+                  key = keyword;
                 }
                 // check if user input is valid
                 if (
@@ -189,11 +189,11 @@ const EditModal = ({ passKeywordType, passKeyword, edit, id, updateList }) => {
                   })
                 ) {
                   if (await saveKeyword(key, keywordType, id)) {
-                    await updateList()
+                    await updateList();
                     const modal = Modal.getInstance(
                       document.getElementById("edit-modal")
-                    )
-                    modal.hide()
+                    );
+                    modal.hide();
                   }
                 }
               }}
@@ -205,7 +205,7 @@ const EditModal = ({ passKeywordType, passKeyword, edit, id, updateList }) => {
         </SModal>
       </SContent>
     </>
-  )
-}
+  );
+};
 
-export default EditModal
+export default EditModal;

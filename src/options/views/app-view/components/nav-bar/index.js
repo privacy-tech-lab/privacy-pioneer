@@ -1,12 +1,12 @@
 /*
 Licensed per https://github.com/privacy-tech-lab/privacy-pioneer/blob/main/LICENSE
-privacy-tech-lab, https://www.privacytechlab.org/
+privacy-tech-lab, https://privacytechlab.org/
 */
 
-import React, { useEffect, useState } from "react"
-import { useHistory, useLocation } from "react-router"
-import logo from "../../../../../assets/logos/Rocket.svg"
-import * as Icons from "../../../../../libs/icons"
+import React, { useEffect, useState } from "react";
+import { useHistory, useLocation } from "react-router";
+import logo from "../../../../../assets/logos/Rocket.svg";
+import * as Icons from "../../../../../libs/icons";
 import {
   SNavBar,
   SLeading,
@@ -15,16 +15,16 @@ import {
   STrailing,
   SNavAction,
   SLeadingContainer,
-} from "./style"
+} from "./style";
 
 /**
  * Navigation bar that allows navigating between home, watchlist, settings, and about
  * Displays logo and title
  */
 const NavBar = () => {
-  const history = useHistory()
-  const location = useLocation()
-  const [tab, setTab] = useState(0)
+  const history = useHistory();
+  const location = useLocation();
+  const [tab, setTab] = useState(0);
 
   /**
    * Navigates/pushes a new route based on `path`
@@ -32,21 +32,21 @@ const NavBar = () => {
    */
   const configureRoute = (path) => {
     if (history.location.pathname !== path) {
-      history.push({ pathname: path })
+      history.push({ pathname: path });
     }
-  }
+  };
 
   useEffect(() => {
     if (history.location.pathname.includes("/watchlist")) {
-      setTab(1)
+      setTab(1);
     } else if (history.location.pathname.includes("/settings")) {
-      setTab(2)
+      setTab(2);
     } else if (history.location.pathname.includes("/about")) {
-      setTab(3)
+      setTab(3);
     } else {
-      setTab(0)
+      setTab(0);
     }
-  }, [location])
+  }, [location]);
 
   return (
     <SNavBar>
@@ -95,7 +95,7 @@ const NavBar = () => {
         </SNavAction>
       </STrailing>
     </SNavBar>
-  )
-}
+  );
+};
 
-export default NavBar
+export default NavBar;

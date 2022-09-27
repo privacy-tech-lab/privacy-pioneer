@@ -1,16 +1,16 @@
 /*
 Licensed per https://github.com/privacy-tech-lab/privacy-pioneer/blob/main/LICENSE
-privacy-tech-lab, https://www.privacytechlab.org/
+privacy-tech-lab, https://privacytechlab.org/
 */
 
-import React, { useEffect, useState } from "react"
-import { useHistory } from "react-router"
-import Scaffold from "../../components/scaffold"
-import WebsiteLabelList from "../../components/website-label-list"
-import LabelSummaryCardList from "./components/label-summary-card"
-import LabelModal from "../home-view/components/detail-modal"
-import { Modal } from "bootstrap"
-import ReactTooltip from "react-tooltip"
+import React, { useEffect, useState } from "react";
+import { useHistory } from "react-router";
+import Scaffold from "../../components/scaffold";
+import WebsiteLabelList from "../../components/website-label-list";
+import LabelSummaryCardList from "./components/label-summary-card";
+import LabelModal from "../home-view/components/detail-modal";
+import { Modal } from "bootstrap";
+import ReactTooltip from "react-tooltip";
 import {
   SButtonText,
   SCardGroup,
@@ -18,38 +18,38 @@ import {
   SSectionContainer,
   SSubtitle,
   STitle,
-} from "./style"
-import { HomeTour, homeSteps } from "../../../libs/tour/index.js"
-import { homeInit } from "../../../libs/init.js"
+} from "./style";
+import { HomeTour, homeSteps } from "../../../libs/tour/index.js";
+import { homeInit } from "../../../libs/init.js";
 
 /**
  * Home page view containing overview and recently identified labels
  * grabs from the DB to populate the page
  */
 const HomeView = () => {
-  const history = useHistory()
-  const [websites, setWebsites] = useState({})
-  const [labels, setLabels] = useState({})
-  const [modal, setModal] = useState({ show: false })
-  const [touring, setTouring] = useState(false)
+  const history = useHistory();
+  const [websites, setWebsites] = useState({});
+  const [labels, setLabels] = useState({});
+  const [modal, setModal] = useState({ show: false });
+  const [touring, setTouring] = useState(false);
 
-  const entries = Object.entries(websites)
+  const entries = Object.entries(websites);
 
   useEffect(() => {
-    ReactTooltip.hide()
+    ReactTooltip.hide();
     homeInit({
       setTouring,
       setLabels,
       setModal,
       setWebsites,
-    })
-  }, [])
+    });
+  }, []);
 
   const handleTap = (items) => {
-    const modal = new Modal(document.getElementById("detail-modal"))
-    setModal(items)
-    modal.show()
-  }
+    const modal = new Modal(document.getElementById("detail-modal"));
+    setModal(items);
+    modal.show();
+  };
 
   return (
     <React.Fragment>
@@ -81,8 +81,8 @@ const HomeView = () => {
                 history.push({
                   pathname: "/search",
                   region: { websites: websites, labels: labels },
-                })
-                ReactTooltip.hide()
+                });
+                ReactTooltip.hide();
               }}
               data-place="left"
               data-tip="See all browsing history, including evidence originating from 3rd parties"
@@ -104,7 +104,7 @@ const HomeView = () => {
       </Scaffold>
       {touring ? <HomeTour steps={homeSteps} /> : null}
     </React.Fragment>
-  )
-}
+  );
+};
 
-export default HomeView
+export default HomeView;

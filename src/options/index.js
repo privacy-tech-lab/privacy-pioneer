@@ -1,14 +1,14 @@
 /*
 Licensed per https://github.com/privacy-tech-lab/privacy-pioneer/blob/main/LICENSE
-privacy-tech-lab, https://www.privacytechlab.org/
+privacy-tech-lab, https://privacytechlab.org/
 */
 
-import React from "react"
-import ReactDOM from "react-dom"
-import AppView from "./views/app-view"
-import "bootstrap/dist/css/bootstrap.min.css"
-import "bootstrap/dist/js/bootstrap.bundle.min"
-import { HashRouter as Router } from "react-router-dom"
+import React from "react";
+import ReactDOM from "react-dom";
+import AppView from "./views/app-view";
+import "bootstrap/dist/css/bootstrap.min.css";
+import "bootstrap/dist/js/bootstrap.bundle.min";
+import { HashRouter as Router } from "react-router-dom";
 
 /**
  * Entry point to react app
@@ -21,4 +21,4 @@ ReactDOM.render(
     </Router>
   </React.StrictMode>,
   document.getElementById("root")
-)
+);
