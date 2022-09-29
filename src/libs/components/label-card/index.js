@@ -109,7 +109,7 @@ const LabelCard = ({ requests, website, label, margin, onTap, popup }) => {
             {companiesWithIcons.map((company) => {
               if (company)
                 return (
-                  <div data-place="bottom" data-tip="hello world" key={company}>
+                  <div data-place="bottom" data-tip={company } key={company}>
                     <CompanyLogo parent={company} margin={"0px 6px 0px 6px"} />
                   </div>
                 );
