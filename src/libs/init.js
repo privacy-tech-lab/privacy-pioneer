@@ -10,7 +10,7 @@ import { getTourStatus } from "./indexed-db/settings";
 import {
   filterLabelObject,
   getPermMapping,
-} from "../options/views/search-view/components/filter-search/components/filterLabels.js";
+} from "../options/views/search-view/components/filter-search/components/utils/filter-util";
 
 /**
  *
