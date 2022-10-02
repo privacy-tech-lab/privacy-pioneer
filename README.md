@@ -113,8 +113,7 @@ Privacy Pioneer is analyzing the following privacy practices for each first and 
   - Analytics (from Disconnect)
   - Social Networking (Social from Disconnect)
 - Location
-  - Coarse Location
-  - Fine Location
+  - GPS Location
   - ZIP Code
   - Street Address
   - City
