@@ -5,8 +5,9 @@ privacy-tech-lab, https://privacytechlab.org/
 
 import { getHostname } from "../utility/util.js";
 import { evidenceKeyval } from "../interactDB/openDB.js";
-import { Evidence } from "../classModels.js";
+import { Evidence, typeEnum } from "../classModels.js";
 import { settingsKeyval } from "../../../libs/indexed-db/openDB.js";
+import { useModel } from "./ml/jsrun.js";
 
 /**
  * addToEvidenceList is the function that is called to populate the DB with a piece of evidence. Called by analyze.js when adding evidence.
@@ -65,7 +66,7 @@ async function addToEvidenceStore(
    * @param {Object} evidenceListObject The evidence object to add
    * @returns {Void} updates the evidence object defined outside the function
    */
-  function unpackAndUpdate(evidenceObject) {
+  async function unpackAndUpdate(evidenceObject) {
     // if this is a valid object
 
     if (evidenceObject.rootUrl){
@@ -120,16 +121,19 @@ async function addToEvidenceStore(
       lat: "<TARGET_LAT>",
       lng: "<TARGET_LNG>"
     }
-    function tokenize(str, dataTy, userData, loc) {
+    function formatString(str, dataTy, userData, loc) {
+      function addStart(type,string){
+        return type+' ___ '+string
+      }
 
       // if simple RE, then replace
       if (dataTy in dataTypes) {
           let MlString = str.replace(userData, dataTypes[dataTy])
-          return MlString
+          return addStart(dataTy,MlString)
       }
       // otherwise do more complicated coordinate replace (see below)
       else if (loc in corTypes){
-          return tokenizeCoors(str, loc, userData)
+          return replaceCoors(str, loc, userData)
       }
     }
       /**
@@ -137,7 +141,7 @@ async function addToEvidenceStore(
        * @param {string} latLng either "lat" or "lng"
        * @returns {string}
        */
-      function tokenizeCoors(str, latLng, userData) {
+      function replaceCoors(str, latLng, userData) {
   
           // loop to replace floating points that are within 1.0 of the users lat/lng
           var replaced = true
@@ -157,17 +161,17 @@ async function addToEvidenceStore(
                 if (latLng == "lat" && Math.abs(Math.abs(userData) - asFloat) < 1) {
                     var MlString = str.slice(0, startIndex).concat(corTypes["lat"]).concat(str.slice(endIndex))
                     replaced = true
-                    return MlString
+                    return addStart(latLng,MlString)
                     break
                 }                
                 if (latLng == "lng" && Math.abs(Math.abs(userData) - asFloat) < 1) {
                     var MLstring = str.slice(0, startIndex).concat(corTypes["lng"]).concat(str.slice(endIndex))
                     replaced = true
-                    return MLstring
+                    return addStart(latLng,MLstring)
                     break
                 }
             }
-            return MlString 
+            return addStart(latLng,MlString)
           }
       }
     function svgCheck(strReq, stIdx, endIdx){
@@ -189,12 +193,17 @@ async function addToEvidenceStore(
     else if(saveFullSnippet){
       userData = getUserData()
     }
+
     //what if they want full snippit
     if(evidenceObject.snippet != null){
-      if(svgCheck(evidenceObject.snippet, evidenceObject.index[0], evidenceObject.index[1]) && evidenceObject.permission == "location"){
-        var tokenizedStr = tokenize(evidenceObject.snippet, evidenceObject.typ, userData, evidenceObject.loc)
+      if ([typeEnum.city,typeEnum.fineLocation,typeEnum.coarseLocation,typeEnum.region,typeEnum.zipCode].includes(evidenceObject.typ)) {
+        if(svgCheck(evidenceObject.snippet, evidenceObject.index[0], evidenceObject.index[1]) && evidenceObject.permission == "location"){
+          var formattedString = formatString(evidenceObject.snippet, evidenceObject.typ, userData, evidenceObject.loc)
+          if (await useModel(formattedString) === false){
+            return
+          }
+        }
       }
-
     }
 
 
