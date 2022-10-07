@@ -3,7 +3,7 @@
   "version": "0.0.1",
   "jest": {
     "setupFiles": [
-        "fake-indexeddb/auto"
+      "fake-indexeddb/auto"
     ]
   },
   "scripts": {
@@ -25,6 +25,7 @@
     }
   },
   "dependencies": {
+    "@tensorflow/tfjs": "^3.20.0",
     "ansi-html": "^0.0.9",
     "ansi-regex": "^6.0.1",
     "async": "^3.2.4",
