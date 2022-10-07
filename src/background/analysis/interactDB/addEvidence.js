@@ -121,11 +121,12 @@ async function addToEvidenceStore(
       lat: "<TARGET_LAT>",
       lng: "<TARGET_LNG>"
     }
-    function formatString(str, dataTy, userData, loc) {
-      function addStart(type,string){
-        return type+' ___ '+string
-      }
 
+    function addStart(type,string){
+      return type+' ___ '+string
+    }
+
+    function formatString(str, dataTy, userData, loc) {
       // if simple RE, then replace
       if (dataTy in dataTypes) {
           let MlString = str.replace(userData, dataTypes[dataTy])
@@ -162,13 +163,11 @@ async function addToEvidenceStore(
                     var MlString = str.slice(0, startIndex).concat(corTypes["lat"]).concat(str.slice(endIndex))
                     replaced = true
                     return addStart(latLng,MlString)
-                    break
                 }                
                 if (latLng == "lng" && Math.abs(Math.abs(userData) - asFloat) < 1) {
                     var MLstring = str.slice(0, startIndex).concat(corTypes["lng"]).concat(str.slice(endIndex))
                     replaced = true
                     return addStart(latLng,MLstring)
-                    break
                 }
             }
             return addStart(latLng,MlString)
@@ -200,8 +199,10 @@ async function addToEvidenceStore(
         if(svgCheck(evidenceObject.snippet, evidenceObject.index[0], evidenceObject.index[1]) && evidenceObject.permission == "location"){
           var formattedString = formatString(evidenceObject.snippet, evidenceObject.typ, userData, evidenceObject.loc)
           if (await useModel(formattedString) === false){
+            console.log('model said no', formattedString)
             return
           }
+          console.log('model said yes', formattedString)
         }
       }
     }
