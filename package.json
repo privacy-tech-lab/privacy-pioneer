@@ -33,7 +33,7 @@
     "framer-motion": "^4.0.3",
     "glob-parent": "^6.0.2",
     "google-libphonenumber": "^3.2.19",
-    "got": "^12.3.1",
+    "got": "^12.5.1",
     "idb": "^6.0.0",
     "json-schema": "^0.4.0",
     "markdown-it": "^13.0.1",
