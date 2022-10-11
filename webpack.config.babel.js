@@ -1,10 +1,10 @@
-import HtmlWebpackPlugin from "html-webpack-plugin"
-import TerserPlugin from "terser-webpack-plugin"
-import CopyPlugin from "copy-webpack-plugin"
-import { resolve as _resolve } from "path"
+import HtmlWebpackPlugin from "html-webpack-plugin";
+import TerserPlugin from "terser-webpack-plugin";
+import CopyPlugin from "copy-webpack-plugin";
+import { resolve as _resolve } from "path";
 
 const bundleFrontendScripts = (env, argv) => {
-  const isDev = argv.mode === "development"
+  const isDev = argv.mode === "development";
   return {
     name: "frontend",
     stats: "errors-warnings",
@@ -58,12 +58,14 @@ const bundleFrontendScripts = (env, argv) => {
     },
     devServer: {
       hot: false,
-      inline: true,
-      overlay: true,
-      contentBase: false,
-      writeToDisk: true,
-      disableHostCheck: true,
-      stats: "minimal",
+      client: {
+        overlay: true,
+      },
+      allowedHosts: "all",
+      devMiddleware: {
+        stats: "minimal",
+        writeToDisk: true,
+      },
       port: 8000,
     },
     optimization: {
@@ -79,11 +81,11 @@ const bundleFrontendScripts = (env, argv) => {
         }),
       ],
     },
-  }
-}
+  };
+};
 
 const bundleBackgroundScripts = (env, argv) => {
-  const isDev = argv.mode === "development"
+  const isDev = argv.mode === "development";
   return {
     name: "background",
     cache: false,
@@ -101,10 +103,14 @@ const bundleBackgroundScripts = (env, argv) => {
     },
     plugins: [
       new CopyPlugin({
-        patterns: [{ context: _resolve(__dirname, "src"), from: "assets", to: "assets" }],
+        patterns: [
+          { context: _resolve(__dirname, "src"), from: "assets", to: "assets" },
+        ],
       }),
       new CopyPlugin({
-        patterns: [{ context: _resolve(__dirname, "src"), from: "manifest.json" }],
+        patterns: [
+          { context: _resolve(__dirname, "src"), from: "manifest.json" },
+        ],
       }),
     ],
     optimization: {
@@ -120,7 +126,7 @@ const bundleBackgroundScripts = (env, argv) => {
         }),
       ],
     },
-  }
-}
+  };
+};
 
-module.exports = [bundleFrontendScripts, bundleBackgroundScripts]
+module.exports = [bundleFrontendScripts, bundleBackgroundScripts];
