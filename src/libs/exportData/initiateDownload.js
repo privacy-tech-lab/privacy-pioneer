@@ -51,4 +51,22 @@ async function initiateDownload(
   });
 }
 
-export { initiateDownload };
+async function initiateAnalyticsDownload(
+  exportDataType = exportTypeEnum.JSON,
+  timeRange = timeRangeEnum.allTime
+) {
+  const timeStampLowerBound = Date.now() - timeRange
+
+  // create the blob to be converted to a URL
+  const dataBlob = await createAnalyticsBlob()
+
+  // this URL encodes the data in the blob to be downloaded
+  const downloadURL = blobToURL(dataBlob)
+
+  var downloading = browser.downloads.download({
+    url: downloadURL,
+    filename: `privacy_pioneer_analytics.${exportDataType}`,
+  })
+}
+
+export { initiateDownload, initiateAnalyticsDownload };

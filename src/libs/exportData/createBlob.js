@@ -5,6 +5,7 @@ privacy-tech-lab, https://privacytechlab.org/
 
 import { exportTypeEnum } from "../../background/analysis/classModels";
 import { evidenceKeyval } from "../../background/analysis/interactDB/openDB.js";
+import { analyticsKeyval } from "../indexed-db/openDB";
 import { buildTsvString } from "./createExportString.js";
 
 /**
@@ -91,4 +92,9 @@ async function createBlob(blobType = exportTypeEnum.TSV, timeStampLB) {
   }
 }
 
-export { createBlob };
+async function createAnalyticsBlob() {
+  const dataArr = await analyticsKeyval.values();
+  return createJsonBlob(dataArr);
+}
+
+export { createBlob, createAnalyticsBlob };
