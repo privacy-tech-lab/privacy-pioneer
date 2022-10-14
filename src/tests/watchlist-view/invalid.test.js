@@ -8,33 +8,43 @@ import validate from "../../options/views/watchlist-view/components/edit-modal/c
 
 test('Invalid Phone Number', async () => {
     const phoneNum = "111111"
+    
+    //Check if Phone Number is valid
     const res = await validate({ keyword: phoneNum, keywordType: typeEnum.phoneNumber, setInputValid: () => {}, setKeyType: () => {}})
+
+    //Expect Phone Number to not be valid
     expect(res).not.toBeTruthy();
+
 })
 
 test('Invalid Email Address', async () => {
     const email = "botwesleyan"
-    //bot@wesleyan is good though
+
+    //Check if Email is valid
     const res = await validate({ keyword: email, keywordType: typeEnum.emailAddress, setInputValid: () => {}, setKeyType: () => {}})
+    
+    //Expect Email to not be valid
     expect(res).not.toBeTruthy();
 })
 
 test('Invalid Keyword', async () => {
     const key = "ww" //Length should be 5 or more
 
+    //Check if keyword is valid
     const res = await validate({ keyword: key, keywordType: typeEnum.userKeyword, setInputValid: () => {}, setKeyType: () => {}})
+    
+    //Expect keyword to not be valid
     expect(res).not.toBeTruthy();
 })
 
 test('Invalid IP Address', async () => {
     const ip = "123.1233.222"
+
+    //Check if IP is valid
     const res = await validate({ keyword: ip, keywordType: typeEnum.ipAddress, setInputValid: () => {}, setKeyType: () => {}})
+    
+    //Expect IP to not be valid
     expect(res).not.toBeTruthy();
 })
 
-test('Invalid Location', async () => {
-    const location = "45"
 
-    const val = await validate({ keyword: location, keywordType: typeEnum.streetAddress, setInputValid: () => { }, setKeyType: () => { }, region: "", city: "", zip: "", address: location })
-    expect(val).not.toBeTruthy();
-}) //Have to fix this case

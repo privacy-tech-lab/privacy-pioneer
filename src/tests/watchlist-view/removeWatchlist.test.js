@@ -4,7 +4,7 @@ privacy-tech-lab, https://privacytechlab.org/
 */
 
 import { watchlistKeyval } from "../../libs/indexed-db/openDB";
-import { deleteKeyword, saveKeyword } from "../../libs/indexed-db/updateWatchlist"
+import { saveKeyword } from "../../libs/indexed-db/updateWatchlist"
 
 
 test("Remove General Keyword from the Watchlist", async () => {
