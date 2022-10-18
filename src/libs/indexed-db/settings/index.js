@@ -12,7 +12,6 @@ import { evidenceKeyval } from "../../../background/analysis/interactDB/openDB";
 import { loadModel } from "../../../background/analysis/interactDB/ml/jsrun.js";
 
 export const settingsEnum = Object.freeze({
-  sameAsSystem: "sameAsSystem",
   dark: "dark",
   light: "light",
   json: "json",
@@ -28,7 +27,8 @@ export const setDefaultSettings = async () => {
     await settingsKeyval.set(permissionEnum.monetization, true);
     await settingsKeyval.set(permissionEnum.tracking, true);
     await settingsKeyval.set(permissionEnum.watchlist, true);
-    await settingsKeyval.set("theme", settingsEnum.sameAsSystem);
+    const darkTheme= window.matchMedia("(prefers-color-scheme: dark)");
+    await settingsKeyval.set("theme", darkTheme.matches ?  settingsEnum.dark : settingsEnum.light);
     await settingsKeyval.set(settingsModelsEnum.fullSnippet, false);
     await settingsKeyval.set(settingsModelsEnum.tour, true);
     await settingsKeyval.set("alreadyNotified", {});
