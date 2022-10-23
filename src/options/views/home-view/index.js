@@ -21,6 +21,7 @@ import {
 } from "./style";
 import { HomeTour, homeSteps } from "../../../libs/tour/index.js";
 import { homeInit } from "../../../libs/init.js";
+import { handleClick } from "../../../libs/indexed-db/getAnalytics";
 
 /**
  * Home page view containing overview and recently identified labels
@@ -82,7 +83,8 @@ const HomeView = () => {
                   pathname: "/search",
                   region: { websites: websites, labels: labels },
                 });
-                ReactTooltip.hide();
+                handleClick("See All History", "Home", null, null, null),
+                  ReactTooltip.hide();
               }}
               data-place="left"
               data-tip="See all browsing history, including evidence originating from 3rd parties"

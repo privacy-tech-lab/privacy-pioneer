@@ -7,6 +7,7 @@ import React from "react";
 import WebsiteBadge from "../../../libs/components/website-badge";
 import LabelCard from "../../../libs/components/label-card";
 import { SContainer, SItem, SLabel, SLabelGroup, SSeperator } from "./style";
+import { handleClick } from "../../../libs/indexed-db/getAnalytics";
 
 /**
  * Makes label cards for a given website
@@ -35,6 +36,16 @@ const LabelCards = ({ website, handleTap, allLabels, webLabels }) => {
         key={index}
         onTap={() => {
           handleTap({ label, requests, website, show: true });
+          handleClick(
+            "History Label Card (including Recents): " +
+              label.toString() +
+              " Website: " +
+              website.toString(),
+            "History/Recent",
+            website.toString(),
+            null,
+            null
+          ); /* Label Card from History/Recent */
         }}
         margin="8px 16px 0px 0px"
         label={label}

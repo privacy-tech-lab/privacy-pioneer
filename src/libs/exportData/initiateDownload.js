@@ -3,7 +3,7 @@ Licensed per https://github.com/privacy-tech-lab/privacy-pioneer/blob/main/LICEN
 privacy-tech-lab, https://privacytechlab.org/
 */
 
-import { createBlob } from "./createBlob.js";
+import { createAnalyticsBlob, createBlob } from "./createBlob.js";
 import {
   exportTypeEnum,
   timeRangeEnum,

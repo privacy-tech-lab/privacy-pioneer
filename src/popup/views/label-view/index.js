@@ -20,6 +20,7 @@ import {
   IPINFO_IPKEY,
   IPINFO_ADDRESSKEY,
 } from "../../../background/analysis/buildUserData/importSearchData.js";
+import { handleClick } from "../../../libs/indexed-db/getAnalytics";
 
 function sortByTime(labels) {
   var newestTime = 0;
@@ -113,7 +114,18 @@ const LabelView = () => {
       navigationBar={
         <NavBar
           leading={
-            <SLeading onClick={() => history.replace({ pathname: `/` })}>
+            <SLeading
+              onClick={() => {
+                history.replace({ pathname: `/` });
+                handleClick(
+                  "Go Back from Label Card (Website)",
+                  "Website",
+                  null,
+                  null,
+                  null
+                );
+              }}
+            >
               <Icons.Back size="24px" />
             </SLeading>
           }

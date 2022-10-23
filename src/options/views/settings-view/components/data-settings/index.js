@@ -28,8 +28,9 @@ import {
   SDropdownSelection,
   SSnippetToggle,
 } from "./style";
-import { initiateDownload } from "../../../../../libs/exportData/initiateDownload";
+import { initiateAnalyticsDownload, initiateDownload } from "../../../../../libs/exportData/initiateDownload";
 import { exportTypeEnum } from "../../../../../background/analysis/classModels.js";
+import { handleClick } from "../../../../../libs/indexed-db/getAnalytics";
 
 /**
  * Toggles whether the user views the full snippet of evidence
@@ -52,7 +53,16 @@ export const FullSnippetToggle = () => {
     <SSnippetToggle>
       <ToggleSwitch
         isActive={snippetStatus}
-        onClick={() => toggle()}
+        onClick={() => {
+          toggle();
+          handleClick(
+            "Save Full HTTP Request Off: " + snippetStatus.toString(),
+            "Settings",
+            null,
+            null,
+            null
+          );
+        }}
         label={"Save Full HTTP Requests"}
         spaceBetween
       />
@@ -81,7 +91,16 @@ export const OptimizationToggle = () => {
     <SSnippetToggle>
       <ToggleSwitch
         isActive={optimizationStatus}
-        onClick={() => toggleOptimize()}
+        onClick={() => {
+          toggleOptimize();
+          handleClick(
+            "Optimize Performance Toggle Off: " + optimizationStatus.toString(),
+            "Settings",
+            null,
+            null,
+            null
+          );
+        }}
         label={"Optimize Performance"}
         spaceBetween
       />
@@ -98,6 +117,7 @@ export const LabelToggle = () => {
     [permissionEnum.monetization]: true,
     [permissionEnum.watchlist]: true,
     [permissionEnum.tracking]: true,
+
   });
 
   useEffect(() => {
@@ -124,12 +144,30 @@ export const LabelToggle = () => {
       {Object.values(permissionEnum).map((label) => (
         <ToggleSwitch
           isActive={labelStatus[label]}
-          onClick={() => toggle(label)}
+          onClick={() => {
+            toggle(label);
+            handleClick(
+              "[" +
+                label.toString() +
+                "] " +
+                "Labels Toggle On: " +
+                labelStatus[label].toString(),
+              "Settings",
+              null,
+              null,
+              null
+            );
+          }}
           label={label.charAt(0).toUpperCase() + label.slice(1)}
           key={label}
           spaceBetween
         />
       ))}
+      <ToggleSwitch
+        isActive={labelStatus}>
+
+      </ToggleSwitch>
+
     </SLabelToggle>
   );
 };
@@ -153,7 +191,16 @@ export const ExportData = () => {
   return (
     <SExportSection>
       <SDropdown
-        onClick={() => setDropdown((region) => !region)}
+        onClick={() => {
+          setDropdown((region) => !region);
+          handleClick(
+            "Export Data Time Dropdown",
+            "Settings",
+            null,
+            null,
+            null
+          );
+        }}
         ref={dropdownRef}
       >
         <SDropdownOptions show={showDropdown}>
@@ -162,6 +209,7 @@ export const ExportData = () => {
               onClick={() => {
                 setTimeRange(timestamp);
                 setTitle(title);
+                handleClick("Export Data Time: " + title.toString());
               }}
               key={title}
             >
@@ -177,15 +225,27 @@ export const ExportData = () => {
       <SExportButton
         onClick={() => {
           initiateDownload(exportTypeEnum.TSV, timeRange);
+          handleClick("TSV Download", "Settings", null, null, null);
         }}
       >
         TSV
       </SExportButton>
       <SExportButton
-        onClick={() => initiateDownload(exportTypeEnum.JSON, timeRange)}
+        onClick={() => {
+          initiateDownload(exportTypeEnum.JSON, timeRange);
+          handleClick("JSON Download", "Settings", null, null, null);
+        }}
       >
         JSON
       </SExportButton>
+      <SExportButton
+        onClick={() => {
+          initiateAnalyticsDownload(exportTypeEnum.JSON, timeRange)
+          handleClick('Analytics Export Button', "Settings", null, null, null)
+        }}>
+        Analytics
+      </SExportButton>
     </SExportSection>
+    
   );
 };

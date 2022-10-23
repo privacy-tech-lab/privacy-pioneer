@@ -37,6 +37,7 @@ import {
   IPINFO_IPKEY,
   IPINFO_ADDRESSKEY,
 } from "../../../background/analysis/buildUserData/importSearchData.js";
+import { handleClick } from "../../../libs/indexed-db/getAnalytics";
 
 /**
  * Page view containing current website and identified label cards
@@ -177,10 +178,20 @@ const WebsiteView = () => {
           }
           trailing={
             <STrailing>
-              <SIconWrapper onClick={() => navigate({ urlHash: "#" })}>
+              <SIconWrapper
+                onClick={() => {
+                  navigate({ urlHash: "#" });
+                  handleClick("Home Button", "Pop-Up", null, null, null);
+                }}
+              >
                 <Icons.Home size="32px" />
               </SIconWrapper>
-              <SIconWrapper onClick={() => navigate({ urlHash: "#watchlist" })}>
+              <SIconWrapper
+                onClick={() => {
+                  navigate({ urlHash: "#watchlist" });
+                  handleClick("Watchlist Button", "Pop-Up", null, null, null);
+                }}
+              >
                 <Icons.Radar size="24px" />
               </SIconWrapper>
             </STrailing>
@@ -217,11 +228,21 @@ const WebsiteView = () => {
                 <LabelCard
                   popup
                   key={label}
-                  onTap={() =>
+                  onTap={() => {
                     history.push({
                       pathname: `/website/${website}/label/${label}`,
-                    })
-                  }
+                    });
+                    handleClick(
+                      "Website View Label Card: " +
+                        label.toString() +
+                        " Website: " +
+                        website.toString(),
+                      "Website",
+                      website.toString(),
+                      null,
+                      null
+                    ); /* label card in website view add string */
+                  }}
                   margin="16px 16px 8px 16px"
                   label={label}
                   requests={requests}

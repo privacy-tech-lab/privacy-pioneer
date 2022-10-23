@@ -34,6 +34,7 @@ import { Modal } from "bootstrap";
 import { AddressForm, KeywordForm } from "./components/forms";
 import validate from "./components/input-validators";
 import ReactTooltip from "react-tooltip";
+import { handleClick } from "../../../../../libs/indexed-db/getAnalytics";
 
 /**
  * Popup modal to create/edit keyword
@@ -113,6 +114,13 @@ const EditModal = ({ passKeywordType, passKeyword, edit, id, updateList }) => {
               ref={dropdownRef}
               onClick={() => {
                 setDropdown((region) => !region);
+                handleClick(
+                  "Watchlist Type Dropdown",
+                  "Watchlist Modal",
+                  null,
+                  null,
+                  null
+                );
               }}
             >
               <SDropdownOptions show={showDropdown}>
@@ -124,6 +132,13 @@ const EditModal = ({ passKeywordType, passKeyword, edit, id, updateList }) => {
                       setKeywordType(key);
                       setInputValid(true);
                       setKeyword("");
+                      handleClick(
+                        "Watchlist Type Picked: " + key.toString(),
+                        "Watchlist Modal",
+                        null,
+                        null,
+                        null
+                      );
                     }}
                     key={index}
                   >
@@ -194,6 +209,19 @@ const EditModal = ({ passKeywordType, passKeyword, edit, id, updateList }) => {
                       document.getElementById("edit-modal")
                     );
                     modal.hide();
+                    await handleClick(
+                      "Watchlist " +
+                        (edit ? "Updated " : "Saved ") +
+                        "[" +
+                        keywordType.toString() +
+                        "]" +
+                        ": " +
+                        key.toString(),
+                      "Watchlist Modal",
+                      null,
+                      null,
+                      null
+                    );
                   }
                 }
               }}

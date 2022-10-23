@@ -4,6 +4,7 @@ privacy-tech-lab, https://privacytechlab.org/
 */
 
 import React from "react";
+import { handleClick } from "../../../../../libs/indexed-db/getAnalytics";
 import {
   deleteEvidenceDB,
   deleteKeywordDB,
@@ -29,6 +30,7 @@ export const DangerZone = () => {
       )
     ) {
       deleteEvidenceDB();
+      handleClick("Delete All Evidence Data", "Settings", null, null, null);
     }
   };
   /**
@@ -41,6 +43,7 @@ export const DangerZone = () => {
       )
     ) {
       deleteKeywordDB();
+      handleClick("Delete Watchlist", "Settings", null, null, null);
     }
   };
   return (

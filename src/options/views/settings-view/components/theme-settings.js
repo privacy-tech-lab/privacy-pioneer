@@ -13,6 +13,7 @@ import {
 
 import styled from "styled-components";
 import { motion } from "framer-motion";
+import { handleClick } from "../../../../libs/indexed-db/getAnalytics";
 
 const SThemeSection = styled.div`
   display: flex;
@@ -53,7 +54,10 @@ export const ThemeSelection = ({ changeTheme }) => {
         selTheme={selTheme}
         theme={settingsEnum.light}
         whileHover={{ scale: 1.1 }}
-        onTap={() => setETheme(settingsEnum.light)}
+        onTap={() => {
+          setETheme(settingsEnum.light);
+          handleClick("Light Theme", "Settings", null, null, null);
+        }}
       >
         <Icons.Sun size={48} />
       </SThemeIcon>
@@ -61,7 +65,10 @@ export const ThemeSelection = ({ changeTheme }) => {
         selTheme={selTheme}
         theme={settingsEnum.dark}
         whileHover={{ scale: 1.1 }}
-        onTap={() => setETheme(settingsEnum.dark)}
+        onTap={() => {
+          setETheme(settingsEnum.dark);
+          handleClick("Dark Theme Setting", "Settings", null, null, null);
+        }}
       >
         <Icons.Moon size={48} />
       </SThemeIcon>
@@ -69,7 +76,10 @@ export const ThemeSelection = ({ changeTheme }) => {
         theme={settingsEnum.sameAsSystem}
         selTheme={selTheme}
         whileHover={{ scale: 1.1 }}
-        onTap={() => setETheme(settingsEnum.sameAsSystem)}
+        onTap={() => {
+          setETheme(settingsEnum.sameAsSystem);
+          handleClick("Same As Theme Setting", "Settings", null, null, null);
+        }}
       >
         <Icons.Settings size={48} />
       </SThemeIcon>

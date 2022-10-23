@@ -19,6 +19,7 @@ import {
 } from "../../../../../libs/indexed-db/updateWatchlist.js";
 import { keywordTypes } from "../../../../../background/analysis/classModels";
 import { Modal } from "bootstrap";
+import { handleClick } from "../../../../../libs/indexed-db/getAnalytics";
 
 /**
  * List item displaying keyword and type
@@ -60,13 +61,26 @@ const ListItem = ({
         <div>
           <SAction
             ref={dropdownRef}
-            onClick={() => setDropdown((region) => !region)}
+            onClick={() => {
+              setDropdown((region) => !region);
+              handleClick("Watchlist Options", "Watchlist", null, null, null);
+            }}
           >
             <SDropdownOptions show={showDropdown}>
               <SDropdownItem
                 onClick={async () => {
                   await deleteKeyword(id, type);
                   await updateList();
+                  await handleClick(
+                    "[Watchlist Deleted] " +
+                      type.toString() +
+                      ": " +
+                      keyword.toString(),
+                    "Watchlist",
+                    null,
+                    null,
+                    null
+                  );
                 }}
               >
                 Delete
@@ -97,6 +111,16 @@ const ListItem = ({
             onClick={async () => {
               await toggleNotifications(id);
               await updateList();
+              await handleClick(
+                (notification ? "Unalerted " : "Alerted ") +
+                  type.toString() +
+                  ": " +
+                  keyword.toString(),
+                "Watchlist",
+                null,
+                null,
+                null
+              );
             }}
           >
             {notification ? (

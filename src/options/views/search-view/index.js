@@ -7,6 +7,7 @@ import { Modal } from "bootstrap";
 import React, { useEffect, useState } from "react";
 import { useHistory, useLocation } from "react-router";
 import * as Icons from "../../../libs/icons";
+import { handleClick } from "../../../libs/indexed-db/getAnalytics";
 import { searchInit } from "../../../libs/init";
 import { seeAllSteps, SeeAllTour } from "../../../libs/tour";
 import Scaffold from "../../components/scaffold";
@@ -70,7 +71,16 @@ const SearchView = () => {
         <SContainer>
           <STop>
             <SBackButton
-              onClick={() => history.goBack()}
+              onClick={() => {
+                history.goBack();
+                handleClick(
+                  "Go Back (from History)",
+                  "History",
+                  null,
+                  null,
+                  null
+                );
+              }}
               whileHover={{ scale: 1.2 }}
             >
               <Icons.Arrow size={18} />
