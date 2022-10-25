@@ -35,7 +35,7 @@ export const FAQ = {
   "Do I need an account to use Privacy Pioneer?": (
     <text>Nope, just go ahead. :).</text>
   ),
-  "Who are you?": (
+  "Who are we?": (
     <text>
       We are academic researchers at Wesleyan University’s{" "}
       <a href="https://privacytechlab.org/" target="_blank">
@@ -135,7 +135,7 @@ export const FAQ = {
         .
       </text>
     ),
-  "Where can I reach you?": (
+  "Where can we be reached?": (
     <text>
       Send us an email at sebastian@privacytechlab.org. We would love to hear
       from you! You can also learn more about our work at{" "}

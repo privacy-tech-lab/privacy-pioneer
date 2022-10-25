@@ -315,13 +315,13 @@ export const privacyLabels = Object.freeze({
       coarseLocation: {
         displayName: "Coarse Location",
         description:
-          "Your Coarse Location (imprecise coordinates) was found in your web traffic.",
+          "Your Coarse Location (imprecise latitude or longitude) was found in your web traffic.",
         link: "https://myshadow.org/location-tracking",
       },
       fineLocation: {
-        displayName: "Fine Location",
+        displayName: "Precise Location",
         description:
-          "Your Fine Location (precise coordinates) was found in your web traffic.",
+          "Your Precise Location (precise latitude or longitude) was found in your web traffic.",
         link: "https://myshadow.org/location-tracking",
       },
       zipCode: {

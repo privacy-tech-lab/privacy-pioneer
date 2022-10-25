@@ -184,12 +184,18 @@ const Evidence = ({ collapseId, request, label, type }) => {
           let trailingPeriods = keywordFlagged.charAt(24) == `.` ? `..` : `...`; // to avoid ....
           keywordFlagged = keywordFlagged.slice(0, 25).concat(trailingPeriods);
         }
-        specificDescription.leading = `‣ We found`;
+        specificDescription.leading = `‣ We found:`;
         specificDescription.highlight = ` ${keywordFlagged}`;
+
 
         // general case
         if (request.extraDetail == undefined) {
-          specificDescription.trailing = ` in this HTTP request, so we gave it the ${displayType} label.`;
+          if (request.permission == "location"){
+            specificDescription.trailing = ` (your ${displayType}) in this web request.`;
+          }
+          else {
+            specificDescription.trailing = ` (a ${displayType}) in this HTTP request.`;
+          }
         }
         // specific encoded email case
         else {
