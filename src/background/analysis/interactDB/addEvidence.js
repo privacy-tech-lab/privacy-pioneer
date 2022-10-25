@@ -200,7 +200,8 @@ async function addToEvidenceStore(
           var formattedString = formatString(evidenceObject.snippet, evidenceObject.typ, userData, evidenceObject.loc)
           if (await useModel(formattedString) === false){
             console.log('model said no', formattedString)
-            return
+            //COME BACK AND UNCOMMENT RETURN
+            //return
           }
           console.log('model said yes', formattedString)
         }
