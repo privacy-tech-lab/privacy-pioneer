@@ -1,5 +1,4 @@
 import WordPieceTokenizer from './bertTokenizer';
-// const DEFAUT_VOCAB_PATH = './vocab.json'
 
 function isPunctuation(cp) {
   // Checks a cp is a punctuation character or not.
@@ -13,7 +12,7 @@ function runStripAccents(text){
   return text;
 }
 
-function isWhiteSpace(cp){
+function isWhiteSpace(cp) {
   // \t, \n, and \r are technically control characters but we treat them
   // as whitespace since they are generally considered as such.
   if (cp === 32 || cp === 9 || cp === 10 || cp === 13) {
@@ -25,7 +24,7 @@ function isWhiteSpace(cp){
   return false;
 }
 
-function isControl(cp){
+function isControl(cp) {
   // "\t" "\n" "\r" are technically control characters but we count them as whitespace
   // characters.
   if (ctlchar.indexOf(cp) !== -1 && cp !== 9 && cp !== 10 && cp !== 13){
@@ -34,7 +33,7 @@ function isControl(cp){
   return false;
 }
 
-function runSplitOnPunctuation(text){
+function runSplitOnPunctuation(text) {
   // Splits punctuation with a space on a piece of text
   // e.g.:
   // "abc?" -> "abc ?"
@@ -62,7 +61,7 @@ function runSplitOnPunctuation(text){
   return String.fromCodePoint(...output);
 }
 
-function cleanText(text){
+function cleanText(text) {
   //Performs invalid character removal and whitespace cleanup on text.
   const output = [];
   for (let i = 0; i < text.length; i++){
@@ -81,23 +80,17 @@ function cleanText(text){
 }
 
 export class BertTokenizer{
-    constructor({
-        doLowerCase,
-        tokenizer,
-        clsId,
-        sepId,
-        maxSeqLength
-    }) {
-        this.doLowerCase = true;
-        this.maxSeqLength = 128;
-        this.tokenizer = new WordPieceTokenizer();
-        this.tokenizer.load();
-        this.doLowerCase = doLowerCase;
-        this.maxSeqLength = maxSeqLength;
-        this.clsId = this.convertTokensToId('[CLS]')[0];
-        this.sepId = this.convertTokensToId('[SEP]')[0];
+  //Runs basic tokenization (punctuation splitting, lower casing, etc.).
 
-    }
+  constructor(doLowerCase = true,
+              maxSeqLength = 128){
+    this.tokenizer = new WordPieceTokenizer();
+    this.tokenizer.load();
+    this.doLowerCase = doLowerCase;
+    this.maxSeqLength = maxSeqLength;
+    this.clsId = this.convertTokensToId('[CLS]')[0];
+    this.sepId = this.convertTokensToId('[SEP]')[0];
+  }
 
   tokenize(text){
     text = cleanText(text);
