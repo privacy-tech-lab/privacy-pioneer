@@ -51,7 +51,7 @@ export async function useModel(input){
       attArr.push(0)
     }
   } else if (tLen > 384) {
-    tokens = tokens.slice(0,385)
+    tokens = tokens.slice(0,384)
     for (var i = 0; i<384; i++) {
       attArr.push(1)
     }
