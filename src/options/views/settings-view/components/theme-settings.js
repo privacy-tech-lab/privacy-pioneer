@@ -65,14 +65,6 @@ export const ThemeSelection = ({ changeTheme }) => {
       >
         <Icons.Moon size={48} />
       </SThemeIcon>
-      <SThemeIcon
-        theme={settingsEnum.sameAsSystem}
-        selTheme={selTheme}
-        whileHover={{ scale: 1.1 }}
-        onTap={() => setETheme(settingsEnum.sameAsSystem)}
-      >
-        <Icons.Settings size={48} />
-      </SThemeIcon>
     </SThemeSection>
   );
 };

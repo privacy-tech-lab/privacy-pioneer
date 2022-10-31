@@ -70,6 +70,8 @@ const defaultTheme = css`
 const darkTheme = css`
   :root {
     --backgroundColor: #1c1c1e;
+    --primaryBrandTintColor: #f2e8f9;
+    --primaryBrandColor: #9b45d9;
     --primaryTextColor: #ffffff;
     --secondaryTextColor: #ebebf5;
     --cardColor: #2c2c2e;
@@ -82,17 +84,10 @@ const darkTheme = css`
   }
 `;
 
-const systemTheme = css`
-  ${defaultTheme}
-  @media (prefers-color-scheme: dark) {
-    ${darkTheme}
-  }
-`;
 const GlobalStyle = createGlobalStyle`
   ${(props) => {
     if (props.theme == settingsEnum.light) return defaultTheme;
     else if (props.theme == settingsEnum.dark) return darkTheme;
-    else return systemTheme;
   }}
   :root{
     // Font sizes
