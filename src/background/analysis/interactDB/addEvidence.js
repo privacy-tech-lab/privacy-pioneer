@@ -51,6 +51,13 @@ async function addToEvidenceStore(
     });
   }
 
+  // whitelist ipinfo
+  if (requestU == "https://ipinfo.io/json" || requestU == "http://ipinfo.io/json") {
+    return new Promise(function (resolve, reject) {
+      resolve("whitelist ipinfo");
+    });
+  }
+
 
   const ts = Date.now()
   const rootUrl = getHostname(rootU)
@@ -199,31 +206,19 @@ async function addToEvidenceStore(
         if(svgCheck(evidenceObject.snippet, evidenceObject.index[0], evidenceObject.index[1]) && evidenceObject.permission == "location"){
           var formattedString = formatString(evidenceObject.snippet, evidenceObject.typ, userData, evidenceObject.loc)
           if (await useModel(formattedString) === false){
-            console.log('model said no', formattedString)
-            //COME BACK AND UNCOMMENT RETURN
-            //return
+            return new Promise(function(res,rej){res('set')})
           }
-          console.log('model said yes', formattedString)
         }
       }
     }
 
-
-      // whitelist our IP API
-      if (requestU == "http://ip-api.com/json/") {
-        return new Promise(function (resolve, reject) {
-          resolve("whitelist IP API");
-        });
+    let keys = Object.keys(evidenceObject);
+    for (let key of keys) {
+      // looking for null, undefined, NaN, empty string (""), 0, false
+      if (!evidenceObject[key] && typeof evidenceObject[key] != "boolean") {
+        delete evidenceObject[key];
       }
-
-
-      let keys = Object.keys(evidenceObject);
-      for (let key of keys) {
-        // looking for null, undefined, NaN, empty string (""), 0, false
-        if (!evidenceObject[key] && typeof evidenceObject[key] != "boolean") {
-          delete evidenceObject[key];
-        }
-      }
+    }
       evidence = updateFetchedDict(evidence, evidenceObject);
     }
   }
