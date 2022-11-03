@@ -5,7 +5,7 @@ privacy-tech-lab, https://privacytechlab.org/
 
 import React, { useEffect, useState } from "react";
 import Scaffold from "../../components/scaffold";
-import WebsiteLogo from "../../../libs/components/website-logo";
+import WebsiteLogo, { PrivacyPioneerLogo } from "../../../libs/components/website-logo";
 import LabelCard from "../../../libs/components/label-card";
 import * as Icons from "../../../libs/icons";
 import {
@@ -47,8 +47,8 @@ const WebsiteView = () => {
   const [labels, setLabels] = useState({});
   const [loading, setLoading] = useState(true);
   const [empty, setEmpty] = useState(true);
-  const [ourOptions, setOurOptions] = useState(false);
-
+  const [isOurHomePage, setIsOurHomePage] = useState(false);
+	
   /**
    * Navigate to route in options page based on urlHash
    */
@@ -86,17 +86,6 @@ const WebsiteView = () => {
    * @param {String} hostName
    */
 
-  const checkOurOptions = (hostName) => {
-    if (
-      hostName.search(/moz-extension/) != -1 &&
-      hostName.search(/options.html#/) != -1
-    ) {
-      setOurOptions(true);
-    } else {
-      setOurOptions(false);
-    }
-  };
-
   useEffect(() => {
     /**
      * Send message to background page to get url of active tab
@@ -104,8 +93,8 @@ const WebsiteView = () => {
      */
     const message = (request, sender, sendResponse) => {
       if (request.msg === "popup.currentTab") {
-        const host = getHostname(request.data);
-        checkOurOptions(request.data);
+		const host = getHostname(request.data);
+		setIsOurHomePage(browser.runtime.getURL("").includes(host));
         getWebsiteLabels(host).then((labels) => {
           const currentTime = sortByTime(labels);
           var result = {};
@@ -195,19 +184,19 @@ const WebsiteView = () => {
         ) : (
           <SBody>
             <SHeader>
-              <WebsiteLogo
+              {isOurHomePage ? <PrivacyPioneerLogo/>: <WebsiteLogo
                 large
                 margin={"16px 0px 0px 0px"}
                 website={website}
-              />
-              <STitle>{website}</STitle>
-              <SSubtitle>{getCount()}</SSubtitle>
+              />}
+              <STitle>{isOurHomePage ? "Privacy Pioneer" : website}</STitle>
+              <SSubtitle>{!isOurHomePage && getCount()}</SSubtitle>
             </SHeader>
             {empty ? (
               <SEmpty>
                 <SEmptyText>
-                  {ourOptions
-                    ? "Nothing here...Check elsewhere or come back later!"
+                  {isOurHomePage
+                    ? "This is our homepage! You won't find anything here. Keep browsing and check back later."
                     : "Nothing yet...Keep browsing and check back later!"}
                 </SEmptyText>
                 <img src={floating} />

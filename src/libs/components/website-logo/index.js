@@ -6,6 +6,7 @@ privacy-tech-lab, https://privacytechlab.org/
 import React from "react";
 import styled from "styled-components";
 import { CompanyLogoSVG } from "../../icons/company-icons";
+import logo from "../../../assets/logos/Rocket.svg";
 
 /**
  * Generally this would be in a style.js file
@@ -40,6 +41,13 @@ const SLetterLogo = styled.div`
   font-size: ${(props) => (props.large ? "32px" : "18px")};
 `;
 
+const SBrandIcon = styled.img.attrs(() => ({ alt: "Logo", src: logo }))`
+  height: 48px;
+  width: 48px;
+  margin: 16px;
+ 
+`;
+
 /**
  * Displays website logo (which is the first letter of website)
  */
@@ -52,6 +60,14 @@ const WebsiteLogo = ({ website, large, margin, isLabel }) => {
     </SWebsiteLogo>
   );
 };
+
+export const PrivacyPioneerLogo = () => { 
+  return (
+	
+		<SBrandIcon/>
+	);
+
+}
 
 export const CompanyLogo = ({ parent, large, margin }) => {
   const Logo = CompanyLogoSVG[parent];
