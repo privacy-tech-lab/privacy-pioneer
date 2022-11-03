@@ -21,6 +21,7 @@ import {
   SLoader,
   SEmpty,
   SEmptyText,
+  SPowerIconWrapper,
 } from "./style";
 import floating from "../../../assets/logos/Floating.svg";
 import NavBar from "../../components/nav-bar";
@@ -29,7 +30,6 @@ import { getHostname } from "../../../background/analysis/utility/util.js";
 import { useHistory } from "react-router";
 import RiseLoader from "react-spinners/RiseLoader";
 import {
-  evidenceDescription,
   permissionEnum,
 } from "../../../background/analysis/classModels";
 import { sortByTime } from "../label-view";
@@ -37,6 +37,7 @@ import {
   IPINFO_IPKEY,
   IPINFO_ADDRESSKEY,
 } from "../../../background/analysis/buildUserData/importSearchData.js";
+import { getExtensionStatus, toggleExtension } from "../../../libs/indexed-db/settings";
 
 /**
  * Page view containing current website and identified label cards
@@ -48,7 +49,8 @@ const WebsiteView = () => {
   const [loading, setLoading] = useState(true);
   const [empty, setEmpty] = useState(true);
   const [isOurHomePage, setIsOurHomePage] = useState(false);
-	
+  const [extensionEnabled, setExtensionEnabled] = useState(false);
+
   /**
    * Navigate to route in options page based on urlHash
    */
@@ -91,10 +93,16 @@ const WebsiteView = () => {
      * Send message to background page to get url of active tab
      * Then set region of component with website url
      */
+
+    getExtensionStatus().then(res => { setExtensionEnabled(res)})
+
+
     const message = (request, sender, sendResponse) => {
       if (request.msg === "popup.currentTab") {
 		const host = getHostname(request.data);
-		setIsOurHomePage(browser.runtime.getURL("").includes(host));
+		
+        setIsOurHomePage(browser.runtime.getURL("").includes(host));
+        
         getWebsiteLabels(host).then((labels) => {
           const currentTime = sortByTime(labels);
           var result = {};
@@ -172,6 +180,11 @@ const WebsiteView = () => {
               <SIconWrapper onClick={() => navigate({ urlHash: "#watchlist" })}>
                 <Icons.Radar size="24px" />
               </SIconWrapper>
+              <SPowerIconWrapper active={extensionEnabled} onClick={async () => {
+                setExtensionEnabled(await toggleExtension())
+              }}>
+                <Icons.Power size="24px" />
+              </SPowerIconWrapper>
             </STrailing>
           }
         />
@@ -182,22 +195,27 @@ const WebsiteView = () => {
             <RiseLoader loading={loading} color={"#F2E8F9"} size={50} />
           </SLoader>
         ) : (
-          <SBody>
-            <SHeader>
-              {isOurHomePage ? <PrivacyPioneerLogo/>: <WebsiteLogo
-                large
-                margin={"16px 0px 0px 0px"}
-                website={website}
-              />}
+            <SBody>
+              {extensionEnabled &&
+                <SHeader>
+                  {isOurHomePage ? <PrivacyPioneerLogo/> : <WebsiteLogo
+                    large
+                    margin={"16px 0px 0px 0px"}
+                    website={website}
+                  />}
               <STitle>{isOurHomePage ? "Privacy Pioneer" : website}</STitle>
               <SSubtitle>{!isOurHomePage && getCount()}</SSubtitle>
-            </SHeader>
+            </SHeader>}
             {empty ? (
               <SEmpty>
                 <SEmptyText>
-                  {isOurHomePage
-                    ? "This is our homepage! You won't find anything here. Keep browsing and check back later."
-                    : "Nothing yet...Keep browsing and check back later!"}
+                    {
+                      extensionEnabled ? 
+                        (isOurHomePage
+                          ? "This is our homepage! You won't find anything here. Keep browsing and check back later."
+                          : "Nothing yet...Keep browsing and check back later!")
+                        : 'The extension is currently disabled! Press the power button to re-enable analysis!'
+                      }
                 </SEmptyText>
                 <img src={floating} />
               </SEmpty>

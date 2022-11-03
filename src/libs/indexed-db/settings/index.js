@@ -23,6 +23,7 @@ export const settingsEnum = Object.freeze({
  */
 export const setDefaultSettings = async () => {
   if ((await settingsKeyval.values()).length == 0) {
+
     await settingsKeyval.set(permissionEnum.location, true);
     await settingsKeyval.set(permissionEnum.monetization, true);
     await settingsKeyval.set(permissionEnum.tracking, true);
@@ -33,6 +34,7 @@ export const setDefaultSettings = async () => {
     await settingsKeyval.set(settingsModelsEnum.tour, true);
     await settingsKeyval.set("alreadyNotified", {});
     await settingsKeyval.set(settingsModelsEnum.optimizePerformance, true);
+    await settingsKeyval.set(settingsModelsEnum.extensionEnabled, true);
   }
 
   loadModel()
@@ -58,6 +60,16 @@ export const getLabelStatus = async () => {
     labelStatus[label] = await settingsKeyval.get(label);
   }
   return labelStatus;
+};
+
+export const getExtensionStatus = async () => {
+  return await settingsKeyval.get(settingsModelsEnum.extensionEnabled)
+};
+
+export const toggleExtension = async () => {
+  const extensionEnabled = await getExtensionStatus()
+  await settingsKeyval.set(settingsModelsEnum.extensionEnabled, !extensionEnabled)
+  return !extensionEnabled
 };
 
 /**
