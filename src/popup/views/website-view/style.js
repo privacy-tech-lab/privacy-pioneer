@@ -45,6 +45,24 @@ export const SIconWrapper = styled.div`
   }
 `;
 
+export const SPowerIconWrapper = styled.div`
+  align-self: center;
+  margin-left: 4;
+  cursor: pointer;
+
+  :hover {
+    filter: brightness(0.75);
+  }
+  :active {
+    filter: brightness(1.25);
+  }
+
+  path,
+  circle {
+    fill: ${(props) => props.active ? 'var(--primaryBrandColor)': 'var(--seperatorColor)' } ;
+  }
+`;
+
 export const SBrandIcon = styled.img.attrs(() => ({ alt: "Logo", src: logo }))`
   height: 36px;
   width: 36px;
