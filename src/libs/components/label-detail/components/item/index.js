@@ -8,6 +8,8 @@ import { SBadgeGroup, SBadge } from "./style";
 import Evidence from "../evidence";
 import { Collapse } from "bootstrap";
 import { privacyLabels } from "../../../../../background/analysis/classModels";
+import { getAnalyticsStatus } from "../../../../indexed-db/settings";
+import { handleClick } from "../../../../indexed-db/getAnalytics";
 
 /**
  * Display of badges with sub types and collapse containing description and evidence
@@ -64,7 +66,26 @@ const Item = ({ request, url, label }) => {
           <SBadge
             key={type}
             className="badge"
-            onClick={(event) => inflateCollapse(event, request, type)}
+            onClick={(event) => {
+              inflateCollapse(event, request, type);
+              const getAnalysis = async () => {
+                const status = await getAnalyticsStatus();
+                if (status == true) {
+                  handleClick(
+                    /* Gets Description Button (Tracking Pixel, Fine Location, IP, etc) and Third Party */
+                    "Description Button: " +
+                      type.toString() +
+                      " Third Party: " +
+                      url.toString(),
+                    "ANY",
+                    null,
+                    url.toString(),
+                    null
+                  );
+                }
+              };
+              getAnalysis();
+            }}
           >
             {privacyLabels[label]["types"][type]["displayName"]}
             {request.cookie ? ` 🍪` : null}

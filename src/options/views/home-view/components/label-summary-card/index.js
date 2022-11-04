@@ -9,6 +9,8 @@ import * as Icons from "../../../../../libs/icons";
 import { SContainer, SFooter, SHeader, SLabel, STotal } from "./style";
 import { useHistory } from "react-router";
 import ReactTooltip from "react-tooltip";
+import { getAnalyticsStatus } from "../../../../../libs/indexed-db/settings";
+import { handleClick } from "../../../../../libs/indexed-db/getAnalytics";
 
 /**
  * Summary card that highlights notable stats from identified label
@@ -35,6 +37,19 @@ const LabelSummaryCard = ({
             labels: passLabels,
           },
         });
+        const getAnalysis = async () => {
+          const status = await getAnalyticsStatus();
+          if (status == true) {
+            handleClick(
+              "Overview Label: " + labeltype.toString(),
+              "Home",
+              null,
+              null,
+              labeltype.toString() + " Only"
+            ); /*Overview Summary Label Added*/
+          }
+        };
+        getAnalysis();
         ReactTooltip.hide();
       }}
     >

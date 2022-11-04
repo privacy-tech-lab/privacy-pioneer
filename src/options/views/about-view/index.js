@@ -21,6 +21,8 @@ import { FAQ } from "./components/faq";
 import { ArrowDown } from "../../../libs/icons";
 import ReactTooltip from "react-tooltip";
 import penguin from "../../../assets/logos/Happy.svg";
+import { getAnalyticsStatus } from "../../../libs/indexed-db/settings";
+import { handleClick } from "../../../libs/indexed-db/getAnalytics";
 
 /**
  * About page view
@@ -38,7 +40,26 @@ const AboutView = () => {
     });
 
     return (
-      <SQuestionCard onClick={() => setOpen(!open)}>
+      <SQuestionCard
+        onClick={() => {
+          setOpen(!open);
+          const getAnalysis = async () => {
+            const status = await getAnalyticsStatus();
+            if (status == true) {
+              handleClick(
+                "FAQ Dropdown: " +
+                  question.toString() +
+                  (open ? "[Closed]" : "[Open]"),
+                "About",
+                null,
+                null,
+                null
+              ); /*FAQ dropdown clicked */
+            }
+          };
+          getAnalysis();
+        }}
+      >
         <SQuestion>
           {question}
           <SArrow>

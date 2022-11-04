@@ -8,6 +8,8 @@ import { CompanyLogoSVG } from "../../../../../../../libs/icons/company-icons";
 import { SFilterRow, SFilterRowItem, SCompaniesButton } from "./style";
 import { permissionEnum } from "../../../../../../../background/analysis/classModels";
 import * as Icons from "../../../../../../../libs/icons";
+import { getAnalyticsStatus } from "../../../../../../../libs/indexed-db/settings";
+import { handleClick } from "../../../../../../../libs/indexed-db/getAnalytics";
 
 /**
  * Filters for search view page. This includes Permissions and stored companies. Adjusts
@@ -44,6 +46,21 @@ const Filters = ({
               permFilter[permission] = !permFilter[permission];
               setPermFilter(permFilter);
               filterLabels();
+              const getAnalysis = async () => {
+                const status = await getAnalyticsStatus();
+                if (status == true) {
+                  handleClick(
+                    permission.toString() +
+                      " Filter Button Activated: " +
+                      permFilter[permission].toString(),
+                    "History",
+                    null,
+                    null,
+                    Object.values(permFilter)
+                  );
+                }
+              };
+              getAnalysis();
             }}
             key={permission}
             highlight={permFilter[permission]}
@@ -55,6 +72,19 @@ const Filters = ({
         <SFilterRowItem
           onClick={() => {
             setShowCompanies(!showCompanies);
+            const getAnalysis = async () => {
+              const status = await getAnalyticsStatus();
+              if (status == true) {
+                handleClick(
+                  "Companies Filter Button",
+                  "History",
+                  null,
+                  null,
+                  null
+                );
+              }
+            };
+            getAnalysis();
           }}
           key={"Companies"}
           highlight={showCompanies}
@@ -84,6 +114,19 @@ const Filters = ({
                 setPermFilter(permFilter);
                 setCompanyFilter(companyFilter);
                 filterLabels();
+                const getAnalysis = async () => {
+                  const status = await getAnalyticsStatus();
+                  if (status == true) {
+                    handleClick(
+                      "Reset Filter",
+                      "History",
+                      null,
+                      null,
+                      Object.values(permFilter)
+                    );
+                  }
+                };
+                getAnalysis();
               }}
             >
               Reset Filter
@@ -98,6 +141,20 @@ const Filters = ({
               companyFilter[parent] = !companyFilter[parent];
               setCompanyFilter(companyFilter);
               filterLabels();
+              const getAnalysis = async () => {
+                const status = await getAnalyticsStatus();
+                if (status == true) {
+                  handleClick(
+                    parent.toString() +
+                      " Company Filter Activated: " +
+                      companyFilter[parent].toString(),
+                    "History",
+                    null,
+                    Object.values(companyFilter)
+                  );
+                }
+              };
+              getAnalysis();
             }}
             key={parent}
             highlight={companyFilter[parent]}

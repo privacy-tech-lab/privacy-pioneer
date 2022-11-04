@@ -6,6 +6,7 @@ privacy-tech-lab, https://privacytechlab.org/
 import React, { useEffect, useState } from "react";
 import * as Icons from "../../../../libs/icons";
 import {
+  getAnalyticsStatus,
   getTheme,
   setTheme,
   settingsEnum,
@@ -13,6 +14,7 @@ import {
 
 import styled from "styled-components";
 import { motion } from "framer-motion";
+import { handleClick } from "../../../../libs/indexed-db/getAnalytics";
 
 const SThemeSection = styled.div`
   display: flex;
@@ -53,7 +55,16 @@ export const ThemeSelection = ({ changeTheme }) => {
         selTheme={selTheme}
         theme={settingsEnum.light}
         whileHover={{ scale: 1.1 }}
-        onTap={() => setETheme(settingsEnum.light)}
+        onTap={() => {
+          setETheme(settingsEnum.light);
+          const getAnalysis = async () => {
+            const status = await getAnalyticsStatus();
+            if (status == true) {
+              handleClick("Light Theme", "Settings", null, null, null);
+            }
+          };
+          getAnalysis();
+        }}
       >
         <Icons.Sun size={48} />
       </SThemeIcon>
@@ -61,7 +72,16 @@ export const ThemeSelection = ({ changeTheme }) => {
         selTheme={selTheme}
         theme={settingsEnum.dark}
         whileHover={{ scale: 1.1 }}
-        onTap={() => setETheme(settingsEnum.dark)}
+        onTap={() => {
+          setETheme(settingsEnum.dark);
+          const getAnalysis = async () => {
+            const status = await getAnalyticsStatus();
+            if (status == true) {
+              handleClick("Dark Theme Setting", "Settings", null, null, null);
+            }
+          };
+          getAnalysis();
+        }}
       >
         <Icons.Moon size={48} />
       </SThemeIcon>

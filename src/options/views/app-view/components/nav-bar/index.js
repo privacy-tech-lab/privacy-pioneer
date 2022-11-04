@@ -7,6 +7,8 @@ import React, { useEffect, useState } from "react";
 import { useHistory, useLocation } from "react-router";
 import logo from "../../../../../assets/logos/Rocket.svg";
 import * as Icons from "../../../../../libs/icons";
+import { handleClick } from "../../../../../libs/indexed-db/getAnalytics";
+import { getAnalyticsStatus } from "../../../../../libs/indexed-db/settings";
 import {
   SNavBar,
   SLeading,
@@ -51,7 +53,24 @@ const NavBar = () => {
   return (
     <SNavBar>
       <SLeading>
-        <SLeadingContainer onClick={() => configureRoute("/")}>
+        <SLeadingContainer
+          onClick={() => {
+            configureRoute("/");
+            const getAnalysis = async () => {
+              const status = await getAnalyticsStatus();
+              if (status == true) {
+                handleClick(
+                  "Privacy Pioneer Logo",
+                  "Nav-Bar",
+                  null,
+                  null,
+                  null
+                ); // Privacy Pioneer Logo (Brings back to Home page)
+              }
+            };
+            getAnalysis();
+          }}
+        >
           <SBrandIcon src={logo} alt="Logo" />
           <SBrandTitle>Privacy Pioneer</SBrandTitle>
         </SLeadingContainer>
@@ -59,7 +78,16 @@ const NavBar = () => {
       <STrailing id="navbarTour">
         <SNavAction
           active={tab === 0}
-          onClick={() => configureRoute("/")}
+          onClick={() => {
+            configureRoute("/");
+            const getAnalysis = async () => {
+              const status = await getAnalyticsStatus();
+              if (status == true) {
+                handleClick("Home Button", "Nav-Bar", null, null, null);
+              }
+            };
+            getAnalysis();
+          }}
           data-place="bottom"
           data-tip="See your recent browsing history and all generated labels"
         >
@@ -68,7 +96,16 @@ const NavBar = () => {
         </SNavAction>
         <SNavAction
           active={tab === 1}
-          onClick={() => configureRoute("/watchlist")}
+          onClick={() => {
+            configureRoute("/watchlist");
+            const getAnalysis = async () => {
+              const status = await getAnalyticsStatus();
+              if (status == true) {
+                handleClick("Watchlist", "Nav-Bar", null, null, null);
+              }
+            };
+            getAnalysis();
+          }}
           data-place="bottom"
           data-tip="Enter personal keywords that Privacy Pioneer will look out for while you browse"
         >
@@ -77,7 +114,16 @@ const NavBar = () => {
         </SNavAction>
         <SNavAction
           active={tab === 2}
-          onClick={() => configureRoute("/settings")}
+          onClick={() => {
+            const getAnalysis = async () => {
+              const status = await getAnalyticsStatus();
+              if (status == true) {
+                handleClick("Settings", "Nav-Bar", null, null, null);
+              }
+            };
+            getAnalysis();
+            configureRoute("/settings");
+          }}
           data-place="bottom"
           data-tip="Control Privacy Pioneer’s settings"
         >
@@ -86,7 +132,16 @@ const NavBar = () => {
         </SNavAction>
         <SNavAction
           active={tab === 3}
-          onClick={() => configureRoute("/about")}
+          onClick={() => {
+            const getAnalysis = async () => {
+              const status = await getAnalyticsStatus();
+              if (status == true) {
+                handleClick("About", "Nav-Bar", null, null, null);
+              }
+            };
+            getAnalysis();
+            configureRoute("/about");
+          }}
           data-place="bottom"
           data-tip="About Privacy Pioneer"
         >

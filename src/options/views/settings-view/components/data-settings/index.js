@@ -17,6 +17,8 @@ import {
   toggleLabel,
   toggleSnippet,
   toggleOptimization,
+  getAnalyticsStatus,
+  toggleAnalytics,
 } from "../../../../../libs/indexed-db/settings";
 import {
   SExportButton,
@@ -28,8 +30,12 @@ import {
   SDropdownSelection,
   SSnippetToggle,
 } from "./style";
-import { initiateDownload } from "../../../../../libs/exportData/initiateDownload";
+import {
+  initiateAnalyticsDownload,
+  initiateDownload,
+} from "../../../../../libs/exportData/initiateDownload";
 import { exportTypeEnum } from "../../../../../background/analysis/classModels.js";
+import { handleClick } from "../../../../../libs/indexed-db/getAnalytics";
 
 /**
  * Toggles whether the user views the full snippet of evidence
@@ -52,7 +58,22 @@ export const FullSnippetToggle = () => {
     <SSnippetToggle>
       <ToggleSwitch
         isActive={snippetStatus}
-        onClick={() => toggle()}
+        onClick={() => {
+          toggle();
+          const getAnalysis = async () => {
+            const status = await getAnalyticsStatus();
+            if (status == true) {
+              handleClick(
+                "Save Full HTTP Request Off: " + snippetStatus.toString(),
+                "Settings",
+                null,
+                null,
+                null
+              );
+            }
+          };
+          getAnalysis();
+        }}
         label={"Save Full HTTP Requests"}
         spaceBetween
       />
@@ -81,8 +102,68 @@ export const OptimizationToggle = () => {
     <SSnippetToggle>
       <ToggleSwitch
         isActive={optimizationStatus}
-        onClick={() => toggleOptimize()}
+        onClick={() => {
+          toggleOptimize();
+          const getAnalysis = async () => {
+            const status = await getAnalyticsStatus();
+            if (status == true) {
+              handleClick(
+                "Optimize Performance Toggle Off: " +
+                  optimizationStatus.toString(),
+                "Settings",
+                null,
+                null,
+                null
+              );
+            }
+          };
+          getAnalysis();
+        }}
         label={"Optimize Performance"}
+        spaceBetween
+      />
+    </SSnippetToggle>
+  );
+};
+
+/**
+ * Toggles Analytics
+ */
+export const AnalyticsToggle = () => {
+  const [analyticsStatus, setAnalyticsStatus] = useState(false);
+
+  useEffect(() => {
+    getAnalyticsStatus().then((res) => {
+      setAnalyticsStatus(res);
+    });
+  });
+
+  const toggleAnalytic = () => {
+    toggleAnalytics();
+    setAnalyticsStatus(!analyticsStatus);
+  };
+
+  return (
+    <SSnippetToggle>
+      <ToggleSwitch
+        isActive={analyticsStatus}
+        onClick={() => {
+          toggleAnalytic();
+          const getAnalysis = async () => {
+            const status = await getAnalyticsStatus();
+            if (status == true) {
+              handleClick(
+                "Analytics Toggle Off: " + analyticsStatus.toString(),
+                "Settings",
+                null,
+                null,
+                null
+              );
+            }
+          };
+          getAnalysis();
+        }}
+        label={"Analytics"}
         spaceBetween
       />
     </SSnippetToggle>
@@ -124,7 +205,26 @@ export const LabelToggle = () => {
       {Object.values(permissionEnum).map((label) => (
         <ToggleSwitch
           isActive={labelStatus[label]}
-          onClick={() => toggle(label)}
+          onClick={() => {
+            toggle(label);
+            const getAnalysis = async () => {
+              const status = await getAnalyticsStatus();
+              if (status == true) {
+                handleClick(
+                  "[" +
+                    label.toString() +
+                    "] " +
+                    "Labels Toggle On: " +
+                    labelStatus[label].toString(),
+                  "Settings",
+                  null,
+                  null,
+                  null
+                );
+              }
+            };
+            getAnalysis();
+          }}
           label={label.charAt(0).toUpperCase() + label.slice(1)}
           key={label}
           spaceBetween
@@ -153,7 +253,22 @@ export const ExportData = () => {
   return (
     <SExportSection>
       <SDropdown
-        onClick={() => setDropdown((region) => !region)}
+        onClick={() => {
+          setDropdown((region) => !region);
+          const getAnalysis = async () => {
+            const status = await getAnalyticsStatus();
+            if (status == true) {
+              handleClick(
+                "Export Data Time Dropdown",
+                "Settings",
+                null,
+                null,
+                null
+              );
+            }
+          };
+          getAnalysis();
+        }}
         ref={dropdownRef}
       >
         <SDropdownOptions show={showDropdown}>
@@ -162,6 +277,16 @@ export const ExportData = () => {
               onClick={() => {
                 setTimeRange(timestamp);
                 setTitle(title);
+                const getAnalysis = async () => {
+                  const status = await getAnalyticsStatus();
+                  if (status == true) {
+                    handleClick(
+                      "Export Data Time: " + title.toString(),
+                      "Settings"
+                    );
+                  }
+                };
+                getAnalysis();
               }}
               key={title}
             >
@@ -177,14 +302,50 @@ export const ExportData = () => {
       <SExportButton
         onClick={() => {
           initiateDownload(exportTypeEnum.TSV, timeRange);
+          const getAnalysis = async () => {
+            const status = await getAnalyticsStatus();
+            if (status == true) {
+              handleClick("TSV Download", "Settings", null, null, null);
+            }
+          };
+          getAnalysis();
         }}
       >
         TSV
       </SExportButton>
       <SExportButton
-        onClick={() => initiateDownload(exportTypeEnum.JSON, timeRange)}
+        onClick={() => {
+          initiateDownload(exportTypeEnum.JSON, timeRange);
+          const getAnalysis = async () => {
+            const status = await getAnalyticsStatus();
+            if (status == true) {
+              handleClick("JSON Download", "Settings", null, null, null);
+            }
+          };
+          getAnalysis();
+        }}
       >
         JSON
+      </SExportButton>
+      <SExportButton
+        onClick={() => {
+          initiateAnalyticsDownload(exportTypeEnum.JSON, timeRange);
+          const getAnalysis = async () => {
+            const status = await getAnalyticsStatus();
+            if (status == true) {
+              handleClick(
+                "Analytics Export Button",
+                "Settings",
+                null,
+                null,
+                null
+              );
+            }
+          };
+          getAnalysis();
+        }}
+      >
+        Analytics
       </SExportButton>
     </SExportSection>
   );
