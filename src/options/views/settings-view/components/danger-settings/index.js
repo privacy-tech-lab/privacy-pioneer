@@ -8,6 +8,7 @@ import { handleClick } from "../../../../../libs/indexed-db/getAnalytics";
 import {
   deleteEvidenceDB,
   deleteKeywordDB,
+  getAnalyticsStatus,
 } from "../../../../../libs/indexed-db/settings";
 import {
   SSubtitle,
@@ -30,7 +31,13 @@ export const DangerZone = () => {
       )
     ) {
       deleteEvidenceDB();
-      handleClick("Delete All Evidence Data", "Settings", null, null, null);
+      const getAnalysis = async () => {
+        const status = await getAnalyticsStatus();
+        if (status == true) {
+          handleClick("Delete All Evidence Data", "Settings", null, null, null);
+        }
+      };
+      getAnalysis();
     }
   };
   /**
@@ -43,7 +50,13 @@ export const DangerZone = () => {
       )
     ) {
       deleteKeywordDB();
-      handleClick("Delete Watchlist", "Settings", null, null, null);
+      const getAnalysis = async () => {
+        const status = await getAnalyticsStatus();
+        if (status == true) {
+          handleClick("Delete Watchlist", "Settings", null, null, null);
+        }
+      };
+      getAnalysis();
     }
   };
   return (

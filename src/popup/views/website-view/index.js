@@ -38,6 +38,7 @@ import {
   IPINFO_ADDRESSKEY,
 } from "../../../background/analysis/buildUserData/importSearchData.js";
 import { handleClick } from "../../../libs/indexed-db/getAnalytics";
+import { getAnalyticsStatus } from "../../../libs/indexed-db/settings";
 
 /**
  * Page view containing current website and identified label cards
@@ -181,7 +182,13 @@ const WebsiteView = () => {
               <SIconWrapper
                 onClick={() => {
                   navigate({ urlHash: "#" });
-                  handleClick("Home Button", "Pop-Up", null, null, null);
+                  const getAnalysis = async () => {
+                    const status = await getAnalyticsStatus();
+                    if (status == true) {
+                      handleClick("Home Button", "Pop-Up", null, null, null);
+                    }
+                  };
+                  getAnalysis();
                 }}
               >
                 <Icons.Home size="32px" />
@@ -189,7 +196,19 @@ const WebsiteView = () => {
               <SIconWrapper
                 onClick={() => {
                   navigate({ urlHash: "#watchlist" });
-                  handleClick("Watchlist Button", "Pop-Up", null, null, null);
+                  const getAnalysis = async () => {
+                    const status = await getAnalyticsStatus();
+                    if (status == true) {
+                      handleClick(
+                        "Watchlist Button",
+                        "Pop-Up",
+                        null,
+                        null,
+                        null
+                      );
+                    }
+                  };
+                  getAnalysis();
                 }}
               >
                 <Icons.Radar size="24px" />
@@ -232,16 +251,22 @@ const WebsiteView = () => {
                     history.push({
                       pathname: `/website/${website}/label/${label}`,
                     });
-                    handleClick(
-                      "Website View Label Card: " +
-                        label.toString() +
-                        " Website: " +
-                        website.toString(),
-                      "Website",
-                      website.toString(),
-                      null,
-                      null
-                    ); /* label card in website view add string */
+                    const getAnalysis = async () => {
+                      const status = await getAnalyticsStatus();
+                      if (status == true) {
+                        handleClick(
+                          "Website View Label Card: " +
+                            label.toString() +
+                            " Website: " +
+                            website.toString(),
+                          "Website",
+                          website.toString(),
+                          null,
+                          null
+                        ); /* label card in website view add string */
+                      }
+                    };
+                    getAnalysis();
                   }}
                   margin="16px 16px 8px 16px"
                   label={label}

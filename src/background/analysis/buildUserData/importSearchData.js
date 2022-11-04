@@ -36,7 +36,7 @@ import {
   createKeywordObj,
 } from "./structureUserData.js";
 import { watchlistHashGen } from "../utility/util.js";
-import { settingsKeyval } from "../../../libs/indexed-db/openDB.js";
+import { analyticsKeyval, settingsKeyval } from "../../../libs/indexed-db/openDB.js";
 import { apiIPToken } from "../../../libs/holdAPI.js";
 import { getIpInfo } from "./userIPInfo.js";
 import { saveKeyword } from "../../../libs/indexed-db/updateWatchlist.js";
@@ -275,6 +275,7 @@ async function importData() {
   const optimizePerformance = await settingsKeyval.get(
     settingsModelsEnum.optimizePerformance
   );
+  const analytic = await analyticsKeyval.get(settingsModelsEnum.analytics);
 
   // returns [location we obtained from google maps API, {phone #s, emails,
   // location elements entered by the user, fingerprinting keywords}, websites
@@ -290,6 +291,7 @@ async function importData() {
     fullSnippet,
     optimizePerformance,
     currIpInfo,
+    analytic,
   ];
 }
 

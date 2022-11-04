@@ -8,6 +8,7 @@ import React, { useEffect, useState } from "react";
 import { useHistory, useLocation } from "react-router";
 import * as Icons from "../../../libs/icons";
 import { handleClick } from "../../../libs/indexed-db/getAnalytics";
+import { getAnalyticsStatus } from "../../../libs/indexed-db/settings";
 import { searchInit } from "../../../libs/init";
 import { seeAllSteps, SeeAllTour } from "../../../libs/tour";
 import Scaffold from "../../components/scaffold";
@@ -73,13 +74,19 @@ const SearchView = () => {
             <SBackButton
               onClick={() => {
                 history.goBack();
-                handleClick(
-                  "Go Back (from History)",
-                  "History",
-                  null,
-                  null,
-                  null
-                );
+                const getAnalysis = async () => {
+                  const status = await getAnalyticsStatus();
+                  if (status == true) {
+                    handleClick(
+                      "Go Back (from History)",
+                      "History",
+                      null,
+                      null,
+                      null
+                    );
+                  }
+                };
+                getAnalysis();
               }}
               whileHover={{ scale: 1.2 }}
             >

@@ -27,6 +27,7 @@ import ReactTooltip from "react-tooltip";
 import { saveKeyword } from "../../../libs/indexed-db/updateWatchlist.js";
 import { apiIPToken } from "../../../libs/holdAPI";
 import { handleClick } from "../../../libs/indexed-db/getAnalytics";
+import { getAnalyticsStatus } from "../../../libs/indexed-db/settings";
 
 /**
  * Watchlist page view allowing user to add/modify keywords
@@ -125,7 +126,13 @@ const WatchlistView = () => {
                     document.getElementById("edit-modal")
                   );
                   modal.show();
-                  handleClick("Add Keyword", "Watchlist", null, null, null);
+                  const getAnalysis = async () => {
+                    const status = await getAnalyticsStatus();
+                    if (status == true) {
+                      handleClick("Add Keyword", "Watchlist", null, null, null);
+                    }
+                  };
+                  getAnalysis();
                 }}
               >
                 <Icons.Plus size="24px" />
@@ -134,12 +141,25 @@ const WatchlistView = () => {
 
               <SAddButton
                 onClick={() => {
-                  handleClick("Add IP Button", "Watchlist", null, null, null);
+                  const getAnalysis = async () => {
+                    const status = await getAnalyticsStatus();
+                    if (status == true) {
+                      handleClick(
+                        "Add IP Button",
+                        "Watchlist",
+                        null,
+                        null,
+                        null
+                      );
+                    }
+                  };
+                  getAnalysis();
+
                   confirm(
                     "We use an external API from ip-api.com that holds your ip address for one minute, and then deletes it from their database. Click 'OK' to add your public IP address to your watchlist. \n\nAlternatively, you can search 'What's my IP?', then copy and paste the result into our IP address keyword form."
                   )
                     ? (getIP(),
-                      handleClick(
+                    handleClick(
                         "IP Retrieved",
                         "Watchlist",
                         null,

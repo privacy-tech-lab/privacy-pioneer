@@ -3,7 +3,7 @@ Licensed per https://github.com/privacy-tech-lab/privacy-pioneer/blob/main/LICEN
 privacy-tech-lab, https://privacytechlab.org/
 */
 
-import { settingsKeyval, watchlistKeyval } from "../openDB.js";
+import { analyticsKeyval, settingsKeyval, watchlistKeyval } from "../openDB.js";
 import {
   settingsModelsEnum,
   permissionEnum,
@@ -33,6 +33,7 @@ export const setDefaultSettings = async () => {
     await settingsKeyval.set(settingsModelsEnum.tour, true);
     await settingsKeyval.set("alreadyNotified", {});
     await settingsKeyval.set(settingsModelsEnum.optimizePerformance, true);
+    await analyticsKeyval.set(settingsModelsEnum.analytics, false);
   }
 
   loadModel()
@@ -94,6 +95,25 @@ export const toggleOptimization = async () => {
  */
 export const getOptimizationStatus = async () => {
   return await settingsKeyval.get(settingsModelsEnum.optimizePerformance);
+};
+
+/**
+ * Toggles analytics on or off
+ * @param {string} label label we generated
+ */
+ export const toggleAnalytics = async () => {
+  let currentVal = await analyticsKeyval.get(
+    settingsModelsEnum.analytics
+  );
+  await analyticsKeyval.set(settingsModelsEnum.analytics, !currentVal);
+  browser.runtime.sendMessage({ msg: "dataUpdated" });
+};
+
+/**
+ * Tells whether analytics is on or off based on settings
+ */
+export const getAnalyticsStatus = async () => {
+  return await analyticsKeyval.get(settingsModelsEnum.analytics);
 };
 
 /**

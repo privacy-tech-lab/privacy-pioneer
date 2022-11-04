@@ -17,6 +17,8 @@ import {
   toggleLabel,
   toggleSnippet,
   toggleOptimization,
+  getAnalyticsStatus,
+  toggleAnalytics,
 } from "../../../../../libs/indexed-db/settings";
 import {
   SExportButton,
@@ -28,7 +30,10 @@ import {
   SDropdownSelection,
   SSnippetToggle,
 } from "./style";
-import { initiateAnalyticsDownload, initiateDownload } from "../../../../../libs/exportData/initiateDownload";
+import {
+  initiateAnalyticsDownload,
+  initiateDownload,
+} from "../../../../../libs/exportData/initiateDownload";
 import { exportTypeEnum } from "../../../../../background/analysis/classModels.js";
 import { handleClick } from "../../../../../libs/indexed-db/getAnalytics";
 
@@ -55,13 +60,19 @@ export const FullSnippetToggle = () => {
         isActive={snippetStatus}
         onClick={() => {
           toggle();
-          handleClick(
-            "Save Full HTTP Request Off: " + snippetStatus.toString(),
-            "Settings",
-            null,
-            null,
-            null
-          );
+          const getAnalysis = async () => {
+            const status = await getAnalyticsStatus();
+            if (status == true) {
+              handleClick(
+                "Save Full HTTP Request Off: " + snippetStatus.toString(),
+                "Settings",
+                null,
+                null,
+                null
+              );
+            }
+          };
+          getAnalysis();
         }}
         label={"Save Full HTTP Requests"}
         spaceBetween
@@ -93,15 +104,66 @@ export const OptimizationToggle = () => {
         isActive={optimizationStatus}
         onClick={() => {
           toggleOptimize();
-          handleClick(
-            "Optimize Performance Toggle Off: " + optimizationStatus.toString(),
-            "Settings",
-            null,
-            null,
-            null
-          );
+          const getAnalysis = async () => {
+            const status = await getAnalyticsStatus();
+            if (status == true) {
+              handleClick(
+                "Optimize Performance Toggle Off: " +
+                  optimizationStatus.toString(),
+                "Settings",
+                null,
+                null,
+                null
+              );
+            }
+          };
+          getAnalysis();
         }}
         label={"Optimize Performance"}
+        spaceBetween
+      />
+    </SSnippetToggle>
+  );
+};
+
+/**
+ * Toggles Analytics
+ */
+export const AnalyticsToggle = () => {
+  const [analyticsStatus, setAnalyticsStatus] = useState(false);
+
+  useEffect(() => {
+    getAnalyticsStatus().then((res) => {
+      setAnalyticsStatus(res);
+    });
+  });
+
+  const toggleAnalytic = () => {
+    toggleAnalytics();
+    setAnalyticsStatus(!analyticsStatus);
+  };
+
+  return (
+    <SSnippetToggle>
+      <ToggleSwitch
+        isActive={analyticsStatus}
+        onClick={() => {
+          toggleAnalytic();
+          const getAnalysis = async () => {
+            const status = await getAnalyticsStatus();
+            if (status == true) {
+              handleClick(
+                "Analytics Toggle Off: " + analyticsStatus.toString(),
+                "Settings",
+                null,
+                null,
+                null
+              );
+            }
+          };
+          getAnalysis();
+        }}
+        label={"Analytics"}
         spaceBetween
       />
     </SSnippetToggle>
@@ -117,7 +179,6 @@ export const LabelToggle = () => {
     [permissionEnum.monetization]: true,
     [permissionEnum.watchlist]: true,
     [permissionEnum.tracking]: true,
-
   });
 
   useEffect(() => {
@@ -146,31 +207,33 @@ export const LabelToggle = () => {
           isActive={labelStatus[label]}
           onClick={() => {
             toggle(label);
-            handleClick(
-              "[" +
-                label.toString() +
-                "] " +
-                "Labels Toggle On: " +
-                labelStatus[label].toString(),
-              "Settings",
-              null,
-              null,
-              null
-            );
+            const getAnalysis = async () => {
+              const status = await getAnalyticsStatus();
+              if (status == true) {
+                handleClick(
+                  "[" +
+                    label.toString() +
+                    "] " +
+                    "Labels Toggle On: " +
+                    labelStatus[label].toString(),
+                  "Settings",
+                  null,
+                  null,
+                  null
+                );
+              }
+            };
+            getAnalysis();
           }}
           label={label.charAt(0).toUpperCase() + label.slice(1)}
           key={label}
           spaceBetween
         />
       ))}
-      <ToggleSwitch
-        isActive={labelStatus}>
-
-      </ToggleSwitch>
-
     </SLabelToggle>
   );
 };
+
 /**
  * Button for exporting data in specific format and date range
  */
@@ -193,13 +256,19 @@ export const ExportData = () => {
       <SDropdown
         onClick={() => {
           setDropdown((region) => !region);
-          handleClick(
-            "Export Data Time Dropdown",
-            "Settings",
-            null,
-            null,
-            null
-          );
+          const getAnalysis = async () => {
+            const status = await getAnalyticsStatus();
+            if (status == true) {
+              handleClick(
+                "Export Data Time Dropdown",
+                "Settings",
+                null,
+                null,
+                null
+              );
+            }
+          };
+          getAnalysis();
         }}
         ref={dropdownRef}
       >
@@ -209,7 +278,16 @@ export const ExportData = () => {
               onClick={() => {
                 setTimeRange(timestamp);
                 setTitle(title);
-                handleClick("Export Data Time: " + title.toString());
+                const getAnalysis = async () => {
+                  const status = await getAnalyticsStatus();
+                  if (status == true) {
+                    handleClick(
+                      "Export Data Time: " + title.toString(),
+                      "Settings"
+                    );
+                  }
+                };
+                getAnalysis();
               }}
               key={title}
             >
@@ -225,7 +303,13 @@ export const ExportData = () => {
       <SExportButton
         onClick={() => {
           initiateDownload(exportTypeEnum.TSV, timeRange);
-          handleClick("TSV Download", "Settings", null, null, null);
+          const getAnalysis = async () => {
+            const status = await getAnalyticsStatus();
+            if (status == true) {
+              handleClick("TSV Download", "Settings", null, null, null);
+            }
+          };
+          getAnalysis();
         }}
       >
         TSV
@@ -233,19 +317,37 @@ export const ExportData = () => {
       <SExportButton
         onClick={() => {
           initiateDownload(exportTypeEnum.JSON, timeRange);
-          handleClick("JSON Download", "Settings", null, null, null);
+          const getAnalysis = async () => {
+            const status = await getAnalyticsStatus();
+            if (status == true) {
+              handleClick("JSON Download", "Settings", null, null, null);
+            }
+          };
+          getAnalysis();
         }}
       >
         JSON
       </SExportButton>
       <SExportButton
         onClick={() => {
-          initiateAnalyticsDownload(exportTypeEnum.JSON, timeRange)
-          handleClick('Analytics Export Button', "Settings", null, null, null)
-        }}>
+          initiateAnalyticsDownload(exportTypeEnum.JSON, timeRange);
+          const getAnalysis = async () => {
+            const status = await getAnalyticsStatus();
+            if (status == true) {
+              handleClick(
+                "Analytics Export Button",
+                "Settings",
+                null,
+                null,
+                null
+              );
+            }
+          };
+          getAnalysis();
+        }}
+      >
         Analytics
       </SExportButton>
     </SExportSection>
-    
   );
 };

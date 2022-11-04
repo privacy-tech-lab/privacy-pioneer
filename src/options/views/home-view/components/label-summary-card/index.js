@@ -10,6 +10,7 @@ import { SContainer, SFooter, SHeader, SLabel, STotal } from "./style";
 import { useHistory } from "react-router";
 import ReactTooltip from "react-tooltip";
 import { handleClick } from "../../../../../libs/indexed-db/getAnalytics";
+import { getAnalyticsStatus } from "../../../../../libs/indexed-db/settings";
 
 /**
  * Summary card that highlights notable stats from identified label
@@ -36,13 +37,19 @@ const LabelSummaryCard = ({
             labels: passLabels,
           },
         });
-        handleClick(
-          "Overview Label: " + labeltype.toString(),
-          "Home",
-          null,
-          null,
-          labeltype.toString() + " Only"
-        ); /*Overview Summary Label Added*/
+        const getAnalysis = async () => {
+          const status = await getAnalyticsStatus();
+          if (status == true) {
+            handleClick(
+              "Overview Label: " + labeltype.toString(),
+              "Home",
+              null,
+              null,
+              labeltype.toString() + " Only"
+            ); /*Overview Summary Label Added*/
+          }
+        };
+        getAnalysis();
         ReactTooltip.hide();
       }}
     >

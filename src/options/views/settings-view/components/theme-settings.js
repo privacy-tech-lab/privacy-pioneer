@@ -6,6 +6,7 @@ privacy-tech-lab, https://privacytechlab.org/
 import React, { useEffect, useState } from "react";
 import * as Icons from "../../../../libs/icons";
 import {
+  getAnalyticsStatus,
   getTheme,
   setTheme,
   settingsEnum,
@@ -56,7 +57,13 @@ export const ThemeSelection = ({ changeTheme }) => {
         whileHover={{ scale: 1.1 }}
         onTap={() => {
           setETheme(settingsEnum.light);
-          handleClick("Light Theme", "Settings", null, null, null);
+          const getAnalysis = async () => {
+            const status = await getAnalyticsStatus();
+            if (status == true) {
+              handleClick("Light Theme", "Settings", null, null, null);
+            }
+          };
+          getAnalysis();
         }}
       >
         <Icons.Sun size={48} />
@@ -67,7 +74,13 @@ export const ThemeSelection = ({ changeTheme }) => {
         whileHover={{ scale: 1.1 }}
         onTap={() => {
           setETheme(settingsEnum.dark);
-          handleClick("Dark Theme Setting", "Settings", null, null, null);
+          const getAnalysis = async () => {
+            const status = await getAnalyticsStatus();
+            if (status == true) {
+              handleClick("Dark Theme Setting", "Settings", null, null, null);
+            }
+          };
+          getAnalysis();
         }}
       >
         <Icons.Moon size={48} />
@@ -78,7 +91,19 @@ export const ThemeSelection = ({ changeTheme }) => {
         whileHover={{ scale: 1.1 }}
         onTap={() => {
           setETheme(settingsEnum.sameAsSystem);
-          handleClick("Same As Theme Setting", "Settings", null, null, null);
+          const getAnalysis = async () => {
+            const status = await getAnalyticsStatus();
+            if (status == true) {
+              handleClick(
+                "Same As Theme Setting",
+                "Settings",
+                null,
+                null,
+                null
+              );
+            }
+          };
+          getAnalysis();
         }}
       >
         <Icons.Settings size={48} />

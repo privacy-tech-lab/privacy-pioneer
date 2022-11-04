@@ -22,6 +22,7 @@ import {
 import { HomeTour, homeSteps } from "../../../libs/tour/index.js";
 import { homeInit } from "../../../libs/init.js";
 import { handleClick } from "../../../libs/indexed-db/getAnalytics";
+import { getAnalyticsStatus } from "../../../libs/indexed-db/settings";
 
 /**
  * Home page view containing overview and recently identified labels
@@ -83,8 +84,14 @@ const HomeView = () => {
                   pathname: "/search",
                   region: { websites: websites, labels: labels },
                 });
-                handleClick("See All History", "Home", null, null, null),
-                  ReactTooltip.hide();
+                const getAnalysis = async () => {
+                  const status = await getAnalyticsStatus();
+                  if (status == true) {
+                    handleClick("See All History", "Home", null, null, null);
+                  }
+                };
+                getAnalysis();
+                ReactTooltip.hide();
               }}
               data-place="left"
               data-tip="See all browsing history, including evidence originating from 3rd parties"

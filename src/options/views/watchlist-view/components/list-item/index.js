@@ -20,6 +20,7 @@ import {
 import { keywordTypes } from "../../../../../background/analysis/classModels";
 import { Modal } from "bootstrap";
 import { handleClick } from "../../../../../libs/indexed-db/getAnalytics";
+import { getAnalyticsStatus } from "../../../../../libs/indexed-db/settings";
 
 /**
  * List item displaying keyword and type
@@ -63,7 +64,19 @@ const ListItem = ({
             ref={dropdownRef}
             onClick={() => {
               setDropdown((region) => !region);
-              handleClick("Watchlist Options", "Watchlist", null, null, null);
+              const getAnalysis = async () => {
+                const status = await getAnalyticsStatus();
+                if (status == true) {
+                  handleClick(
+                    "Watchlist Options",
+                    "Watchlist",
+                    null,
+                    null,
+                    null
+                  );
+                }
+              };
+              getAnalysis();
             }}
           >
             <SDropdownOptions show={showDropdown}>
@@ -71,16 +84,22 @@ const ListItem = ({
                 onClick={async () => {
                   await deleteKeyword(id, type);
                   await updateList();
-                  await handleClick(
-                    "[Watchlist Deleted] " +
-                      type.toString() +
-                      ": " +
-                      keyword.toString(),
-                    "Watchlist",
-                    null,
-                    null,
-                    null
-                  );
+                  const getAnalysis = async () => {
+                    const status = await getAnalyticsStatus();
+                    if (status == true) {
+                      await handleClick(
+                        "[Watchlist Deleted] " +
+                          type.toString() +
+                          ": " +
+                          keyword.toString(),
+                        "Watchlist",
+                        null,
+                        null,
+                        null
+                      );
+                    }
+                  };
+                  getAnalysis();
                 }}
               >
                 Delete
@@ -111,16 +130,22 @@ const ListItem = ({
             onClick={async () => {
               await toggleNotifications(id);
               await updateList();
-              await handleClick(
-                (notification ? "Unalerted " : "Alerted ") +
-                  type.toString() +
-                  ": " +
-                  keyword.toString(),
-                "Watchlist",
-                null,
-                null,
-                null
-              );
+              const getAnalysis = async () => {
+                const status = await getAnalyticsStatus();
+                if (status == true) {
+                  await handleClick(
+                    (notification ? "Unalerted " : "Alerted ") +
+                      type.toString() +
+                      ": " +
+                      keyword.toString(),
+                    "Watchlist",
+                    null,
+                    null,
+                    null
+                  );
+                }
+              };
+              getAnalysis();
             }}
           >
             {notification ? (

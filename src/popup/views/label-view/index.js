@@ -21,6 +21,7 @@ import {
   IPINFO_ADDRESSKEY,
 } from "../../../background/analysis/buildUserData/importSearchData.js";
 import { handleClick } from "../../../libs/indexed-db/getAnalytics";
+import { getAnalyticsStatus } from "../../../libs/indexed-db/settings";
 
 function sortByTime(labels) {
   var newestTime = 0;
@@ -117,13 +118,19 @@ const LabelView = () => {
             <SLeading
               onClick={() => {
                 history.replace({ pathname: `/` });
-                handleClick(
-                  "Go Back from Label Card (Website)",
-                  "Website",
-                  null,
-                  null,
-                  null
-                );
+                const getAnalysis = async () => {
+                  const status = await getAnalyticsStatus();
+                  if (status == true) {
+                    handleClick(
+                      "Go Back from Label Card (Website)",
+                      "Website",
+                      null,
+                      null,
+                      null
+                    );
+                  }
+                };
+                getAnalysis();
               }}
             >
               <Icons.Back size="24px" />

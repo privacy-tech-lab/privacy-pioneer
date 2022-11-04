@@ -20,6 +20,7 @@ import {
   OptimizationToggle,
   ExportData,
   LabelToggle,
+  AnalyticsToggle,
 } from "./components/data-settings";
 import { ThemeSelection } from "./components/theme-settings";
 import { DangerZone } from "./components/danger-settings";
@@ -61,6 +62,7 @@ const SettingsView = ({ changeTheme }) => {
             <DangerZone />
             <FullSnippetToggle />
             <OptimizationToggle />
+            <AnalyticsToggle />
             <Tour />
           </SSection>
         </SBody>
