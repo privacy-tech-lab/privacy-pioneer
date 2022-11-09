@@ -11,6 +11,7 @@ import {
   SType,
   SDropdownOptions,
   SDropdownItem,
+  SButtonText,
 } from "./style";
 import * as Icons from "../../../../../libs/icons";
 import {
@@ -18,7 +19,8 @@ import {
   toggleNotifications,
 } from "../../../../../libs/indexed-db/updateWatchlist.js";
 import { keywordTypes } from "../../../../../background/analysis/classModels";
-import { Modal } from "bootstrap";
+import { Modal, Tooltip } from "bootstrap";
+import ReactTooltip from "react-tooltip";
 
 /**
  * List item displaying keyword and type
@@ -35,7 +37,6 @@ const ListItem = ({
 }) => {
   const dropdownRef = useRef();
   const [showDropdown, setDropdown] = useState(false);
-
   /**
    * Closes dropdown when clicked outside
    */
@@ -44,7 +45,11 @@ const ListItem = ({
       setDropdown(false);
     }
   };
-
+  const checker = () => {
+      if(location){
+        return true
+      }
+  }
   useEffect(() => {
     document.addEventListener("mousedown", blur);
     return () => document.removeEventListener("mousedown", blur);
@@ -52,7 +57,24 @@ const ListItem = ({
 
   return (
     <SItem>
-      <SKeyword>{keyword}</SKeyword>
+        {id == "1111111111" &&
+          <SButtonText data-tip data-for="sButton">
+            {keyword} 
+          </SButtonText>
+        }
+        {id == "2222222222" &&
+          <SButtonText data-tip data-for="sButton">
+            {keyword} 
+          </SButtonText>
+        }
+        {id !=  "1111111111" && id != "2222222222" &&
+          <SButtonText>{keyword}</SButtonText>
+        }
+          <ReactTooltip id="sButton" tipPointerPosition = "start" place= "bottom" offset = "{'left': 120}" 
+          backgroundColor = "var(--primaryBrandColor)" textColor = "var(--primaryBrandTintColor)" effect="solid"
+          delayShow = "350">
+            This keyword was automatically generated via ipinfo.io
+          </ReactTooltip>
       <div>
         <SType>
           {type in keywordTypes ? keywordTypes[type]["displayName"] : "Error"}
