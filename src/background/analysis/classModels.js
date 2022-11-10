@@ -418,5 +418,6 @@ export const settingsModelsEnum = Object.freeze({
   fullSnippet: "fullSnippet",
   tour: "tour",
   optimizePerformance: "optimizePerformance",
-  extensionEnabled: 'extensionEnabled'
+  extensionEnabled: "extensionEnabled",
+  analytics: "analytics",
 });

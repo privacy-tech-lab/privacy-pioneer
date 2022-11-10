@@ -4,9 +4,11 @@ privacy-tech-lab, https://privacytechlab.org/
 */
 
 import React from "react";
+import { handleClick } from "../../../../../libs/indexed-db/getAnalytics";
 import {
   deleteEvidenceDB,
   deleteKeywordDB,
+  getAnalyticsStatus,
 } from "../../../../../libs/indexed-db/settings";
 import {
   SSubtitle,
@@ -29,6 +31,13 @@ export const DangerZone = () => {
       )
     ) {
       deleteEvidenceDB();
+      const getAnalysis = async () => {
+        const status = await getAnalyticsStatus();
+        if (status == true) {
+          handleClick("Delete All Evidence Data", "Settings", null, null, null);
+        }
+      };
+      getAnalysis();
     }
   };
   /**
@@ -41,6 +50,13 @@ export const DangerZone = () => {
       )
     ) {
       deleteKeywordDB();
+      const getAnalysis = async () => {
+        const status = await getAnalyticsStatus();
+        if (status == true) {
+          handleClick("Delete Watchlist", "Settings", null, null, null);
+        }
+      };
+      getAnalysis();
     }
   };
   return (

@@ -3,7 +3,7 @@ Licensed per https://github.com/privacy-tech-lab/privacy-pioneer/blob/main/LICEN
 privacy-tech-lab, https://privacytechlab.org/
 */
 
-import { settingsKeyval, watchlistKeyval } from "../openDB.js";
+import { analyticsKeyval, settingsKeyval, watchlistKeyval } from "../openDB.js";
 import {
   settingsModelsEnum,
   permissionEnum,
@@ -23,21 +23,24 @@ export const settingsEnum = Object.freeze({
  */
 export const setDefaultSettings = async () => {
   if ((await settingsKeyval.values()).length == 0) {
-
     await settingsKeyval.set(permissionEnum.location, true);
     await settingsKeyval.set(permissionEnum.monetization, true);
     await settingsKeyval.set(permissionEnum.tracking, true);
     await settingsKeyval.set(permissionEnum.watchlist, true);
-    const darkTheme= window.matchMedia("(prefers-color-scheme: dark)");
-    await settingsKeyval.set("theme", darkTheme.matches ?  settingsEnum.dark : settingsEnum.light);
+    const darkTheme = window.matchMedia("(prefers-color-scheme: dark)");
+    await settingsKeyval.set(
+      "theme",
+      darkTheme.matches ? settingsEnum.dark : settingsEnum.light
+    );
     await settingsKeyval.set(settingsModelsEnum.fullSnippet, false);
     await settingsKeyval.set(settingsModelsEnum.tour, true);
     await settingsKeyval.set("alreadyNotified", {});
     await settingsKeyval.set(settingsModelsEnum.optimizePerformance, true);
     await settingsKeyval.set(settingsModelsEnum.extensionEnabled, true);
+    await analyticsKeyval.set(settingsModelsEnum.analytics, false);
   }
 
-  loadModel()
+  loadModel();
 };
 
 /**
@@ -63,13 +66,16 @@ export const getLabelStatus = async () => {
 };
 
 export const getExtensionStatus = async () => {
-  return await settingsKeyval.get(settingsModelsEnum.extensionEnabled)
+  return await settingsKeyval.get(settingsModelsEnum.extensionEnabled);
 };
 
 export const toggleExtension = async () => {
-  const extensionEnabled = await getExtensionStatus()
-  await settingsKeyval.set(settingsModelsEnum.extensionEnabled, !extensionEnabled)
-  return !extensionEnabled
+  const extensionEnabled = await getExtensionStatus();
+  await settingsKeyval.set(
+    settingsModelsEnum.extensionEnabled,
+    !extensionEnabled
+  );
+  return !extensionEnabled;
 };
 
 /**
@@ -106,6 +112,23 @@ export const toggleOptimization = async () => {
  */
 export const getOptimizationStatus = async () => {
   return await settingsKeyval.get(settingsModelsEnum.optimizePerformance);
+};
+
+/**
+ * Toggles analytics on or off
+ * @param {string} label label we generated
+ */
+export const toggleAnalytics = async () => {
+  let currentVal = await analyticsKeyval.get(settingsModelsEnum.analytics);
+  await analyticsKeyval.set(settingsModelsEnum.analytics, !currentVal);
+  browser.runtime.sendMessage({ msg: "dataUpdated" });
+};
+
+/**
+ * Tells whether analytics is on or off based on settings
+ */
+export const getAnalyticsStatus = async () => {
+  return await analyticsKeyval.get(settingsModelsEnum.analytics);
 };
 
 /**

@@ -7,7 +7,6 @@ import React, { useState, useRef, useEffect } from "react";
 import {
   SAction,
   SItem,
-  SKeyword,
   SType,
   SDropdownOptions,
   SDropdownItem,
@@ -19,7 +18,9 @@ import {
   toggleNotifications,
 } from "../../../../../libs/indexed-db/updateWatchlist.js";
 import { keywordTypes } from "../../../../../background/analysis/classModels";
-import { Modal, Tooltip } from "bootstrap";
+import { Modal } from "bootstrap";
+import { getAnalyticsStatus } from "../../../../../libs/indexed-db/settings";
+import { handleClick } from "../../../../../libs/indexed-db/getAnalytics";
 import ReactTooltip from "react-tooltip";
 import {IPINFO_IPKEY, IPINFO_ADDRESSKEY} from "../../../../../background/analysis/buildUserData/importSearchData";
 
@@ -78,13 +79,44 @@ const ListItem = ({
         <div>
           <SAction
             ref={dropdownRef}
-            onClick={() => setDropdown((region) => !region)}
+            onClick={() => {
+              setDropdown((region) => !region);
+              const getAnalysis = async () => {
+                const status = await getAnalyticsStatus();
+                if (status == true) {
+                  handleClick(
+                    "Watchlist Options",
+                    "Watchlist",
+                    null,
+                    null,
+                    null
+                  );
+                }
+              };
+              getAnalysis();
+            }}
           >
             <SDropdownOptions show={showDropdown}>
               <SDropdownItem
                 onClick={async () => {
                   await deleteKeyword(id, type);
                   await updateList();
+                  const getAnalysis = async () => {
+                    const status = await getAnalyticsStatus();
+                    if (status == true) {
+                      await handleClick(
+                        "[Watchlist Deleted] " +
+                          type.toString() +
+                          ": " +
+                          keyword.toString(),
+                        "Watchlist",
+                        null,
+                        null,
+                        null
+                      );
+                    }
+                  };
+                  getAnalysis();
                 }}
               >
                 Delete
@@ -104,6 +136,22 @@ const ListItem = ({
                     document.getElementById("edit-modal")
                   );
                   modal.show();
+                  const getAnalysis = async () => {
+                    const status = await getAnalyticsStatus();
+                    if (status == true) {
+                      await handleClick(
+                        "Watchlist Edit [" +
+                          type.toString() +
+                          "] : " +
+                          keyword.toString(),
+                        "Watchlist",
+                        null,
+                        null,
+                        null
+                      );
+                    }
+                  };
+                  getAnalysis();
                 }}
               >
                 Edit
@@ -115,6 +163,22 @@ const ListItem = ({
             onClick={async () => {
               await toggleNotifications(id);
               await updateList();
+              const getAnalysis = async () => {
+                const status = await getAnalyticsStatus();
+                if (status == true) {
+                  await handleClick(
+                    (notification ? "Unalerted " : "Alerted ") +
+                      type.toString() +
+                      ": " +
+                      keyword.toString(),
+                    "Watchlist",
+                    null,
+                    null,
+                    null
+                  );
+                }
+              };
+              getAnalysis();
             }}
           >
             {notification ? (

@@ -34,6 +34,8 @@ import { Modal } from "bootstrap";
 import { AddressForm, KeywordForm } from "./components/forms";
 import validate from "./components/input-validators";
 import ReactTooltip from "react-tooltip";
+import { getAnalyticsStatus } from "../../../../../libs/indexed-db/settings";
+import { handleClick } from "../../../../../libs/indexed-db/getAnalytics";
 
 /**
  * Popup modal to create/edit keyword
@@ -113,6 +115,19 @@ const EditModal = ({ passKeywordType, passKeyword, edit, id, updateList }) => {
               ref={dropdownRef}
               onClick={() => {
                 setDropdown((region) => !region);
+                const getAnalysis = async () => {
+                  const status = await getAnalyticsStatus();
+                  if (status == true) {
+                    handleClick(
+                      "Watchlist Type Dropdown",
+                      "Watchlist Modal",
+                      null,
+                      null,
+                      null
+                    );
+                  }
+                };
+                getAnalysis();
               }}
             >
               <SDropdownOptions show={showDropdown}>
@@ -124,6 +139,19 @@ const EditModal = ({ passKeywordType, passKeyword, edit, id, updateList }) => {
                       setKeywordType(key);
                       setInputValid(true);
                       setKeyword("");
+                      const getAnalysis = async () => {
+                        const status = await getAnalyticsStatus();
+                        if (status == true) {
+                          handleClick(
+                            "Watchlist Type Picked: " + key.toString(),
+                            "Watchlist Modal",
+                            null,
+                            null,
+                            null
+                          );
+                        }
+                      };
+                      getAnalysis();
                     }}
                     key={index}
                   >
@@ -194,6 +222,25 @@ const EditModal = ({ passKeywordType, passKeyword, edit, id, updateList }) => {
                       document.getElementById("edit-modal")
                     );
                     modal.hide();
+                    const getAnalysis = async () => {
+                      const status = await getAnalyticsStatus();
+                      if (status == true) {
+                        await handleClick(
+                          "Watchlist " +
+                            (edit ? "Updated " : "Saved ") +
+                            "[" +
+                            keywordType.toString() +
+                            "]" +
+                            ": " +
+                            key.toString(),
+                          "Watchlist Modal",
+                          null,
+                          null,
+                          null
+                        );
+                      }
+                    };
+                    getAnalysis();
                   }
                 }
               }}

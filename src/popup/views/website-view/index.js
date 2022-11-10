@@ -5,7 +5,9 @@ privacy-tech-lab, https://privacytechlab.org/
 
 import React, { useEffect, useState } from "react";
 import Scaffold from "../../components/scaffold";
-import WebsiteLogo, { PrivacyPioneerLogo } from "../../../libs/components/website-logo";
+import WebsiteLogo, {
+  PrivacyPioneerLogo,
+} from "../../../libs/components/website-logo";
 import LabelCard from "../../../libs/components/label-card";
 import * as Icons from "../../../libs/icons";
 import {
@@ -29,15 +31,18 @@ import { getWebsiteLabels } from "../../../libs/indexed-db/getIdbData.js";
 import { getHostname } from "../../../background/analysis/utility/util.js";
 import { useHistory } from "react-router";
 import RiseLoader from "react-spinners/RiseLoader";
-import {
-  permissionEnum,
-} from "../../../background/analysis/classModels";
+import { permissionEnum } from "../../../background/analysis/classModels";
 import { sortByTime } from "../label-view";
 import {
   IPINFO_IPKEY,
   IPINFO_ADDRESSKEY,
 } from "../../../background/analysis/buildUserData/importSearchData.js";
-import { getExtensionStatus, toggleExtension } from "../../../libs/indexed-db/settings";
+import {
+  getAnalyticsStatus,
+  getExtensionStatus,
+  toggleExtension,
+} from "../../../libs/indexed-db/settings";
+import { handleClick } from "../../../libs/indexed-db/getAnalytics";
 
 /**
  * Page view containing current website and identified label cards
@@ -94,15 +99,16 @@ const WebsiteView = () => {
      * Then set region of component with website url
      */
 
-    getExtensionStatus().then(res => { setExtensionEnabled(res)})
-
+    getExtensionStatus().then((res) => {
+      setExtensionEnabled(res);
+    });
 
     const message = (request, sender, sendResponse) => {
       if (request.msg === "popup.currentTab") {
-		const host = getHostname(request.data);
-		
+        const host = getHostname(request.data);
+
         setIsOurHomePage(browser.runtime.getURL("").includes(host));
-        
+
         getWebsiteLabels(host).then((labels) => {
           const currentTime = sortByTime(labels);
           var result = {};
@@ -174,15 +180,59 @@ const WebsiteView = () => {
           }
           trailing={
             <STrailing>
-              <SIconWrapper onClick={() => navigate({ urlHash: "#" })}>
+              <SIconWrapper
+                onClick={() => {
+                  navigate({ urlHash: "#" }); //Go to Extension Home Page
+                  const getAnalysis = async () => {
+                    const status = await getAnalyticsStatus();
+                    if (status == true) {
+                      handleClick("Home Button", "Pop-Up", null, null, null);
+                    }
+                  };
+                  getAnalysis();
+                }}
+              >
                 <Icons.Home size="32px" />
               </SIconWrapper>
-              <SIconWrapper onClick={() => navigate({ urlHash: "#watchlist" })}>
+              <SIconWrapper
+                onClick={() => {
+                  navigate({ urlHash: "#watchlist" }); //Go to Extension Watchlist
+                  const getAnalysis = async () => {
+                    const status = await getAnalyticsStatus();
+                    if (status == true) {
+                      handleClick(
+                        "Watchlist Button",
+                        "Pop-Up",
+                        null,
+                        null,
+                        null
+                      );
+                    }
+                  };
+                  getAnalysis();
+                }}
+              >
                 <Icons.Radar size="24px" />
               </SIconWrapper>
-              <SPowerIconWrapper active={extensionEnabled} onClick={async () => {
-                setExtensionEnabled(await toggleExtension())
-              }}>
+              <SPowerIconWrapper
+                active={extensionEnabled}
+                onClick={async () => {
+                  setExtensionEnabled(await toggleExtension());
+                  const getAnalysis = async () => {
+                    const status = await getAnalyticsStatus();
+                    if (status == true) {
+                      handleClick(
+                        "Enable Extension Off: " + extensionEnabled.toString(),
+                        "Pop-Up",
+                        null,
+                        null,
+                        null
+                      );
+                    }
+                  };
+                  getAnalysis();
+                }}
+              >
                 <Icons.Power size="24px" />
               </SPowerIconWrapper>
             </STrailing>
@@ -195,27 +245,30 @@ const WebsiteView = () => {
             <RiseLoader loading={loading} color={"#F2E8F9"} size={50} />
           </SLoader>
         ) : (
-            <SBody>
-              {extensionEnabled &&
-                <SHeader>
-                  {isOurHomePage ? <PrivacyPioneerLogo/> : <WebsiteLogo
+          <SBody>
+            {extensionEnabled && (
+              <SHeader>
+                {isOurHomePage ? (
+                  <PrivacyPioneerLogo />
+                ) : (
+                  <WebsiteLogo
                     large
                     margin={"16px 0px 0px 0px"}
                     website={website}
-                  />}
-              <STitle>{isOurHomePage ? "Privacy Pioneer" : website}</STitle>
-              <SSubtitle>{!isOurHomePage && getCount()}</SSubtitle>
-            </SHeader>}
+                  />
+                )}
+                <STitle>{isOurHomePage ? "Privacy Pioneer" : website}</STitle>
+                <SSubtitle>{!isOurHomePage && getCount()}</SSubtitle>
+              </SHeader>
+            )}
             {empty ? (
               <SEmpty>
                 <SEmptyText>
-                    {
-                      extensionEnabled ? 
-                        (isOurHomePage
-                          ? "This is our homepage! You won't find anything here. Keep browsing and check back later."
-                          : "Nothing yet...Keep browsing and check back later!")
-                        : 'The extension is currently disabled! Press the power button to re-enable analysis!'
-                      }
+                  {extensionEnabled
+                    ? isOurHomePage
+                      ? "This is our homepage! You won't find anything here. Keep browsing and check back later."
+                      : "Nothing yet...Keep browsing and check back later!"
+                    : "The extension is currently disabled! Press the power button to re-enable analysis!"}
                 </SEmptyText>
                 <img src={floating} />
               </SEmpty>
@@ -224,11 +277,27 @@ const WebsiteView = () => {
                 <LabelCard
                   popup
                   key={label}
-                  onTap={() =>
+                  onTap={() => {
                     history.push({
                       pathname: `/website/${website}/label/${label}`,
-                    })
-                  }
+                    });
+                    const getAnalysis = async () => {
+                      const status = await getAnalyticsStatus();
+                      if (status == true) {
+                        handleClick(
+                          "Website View Label Card: " +
+                            label.toString() +
+                            " Website: " +
+                            website.toString(),
+                          "Website",
+                          website.toString(),
+                          null,
+                          null
+                        ); /* label card in website view add string */
+                      }
+                    };
+                    getAnalysis();
+                  }}
                   margin="16px 16px 8px 16px"
                   label={label}
                   requests={requests}
