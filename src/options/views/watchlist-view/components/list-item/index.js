@@ -21,6 +21,7 @@ import {
 import { keywordTypes } from "../../../../../background/analysis/classModels";
 import { Modal, Tooltip } from "bootstrap";
 import ReactTooltip from "react-tooltip";
+import {IPINFO_IPKEY, IPINFO_ADDRESSKEY} from "../../../../../background/analysis/buildUserData/importSearchData";
 
 /**
  * List item displaying keyword and type
@@ -45,11 +46,6 @@ const ListItem = ({
       setDropdown(false);
     }
   };
-  const checker = () => {
-      if(location){
-        return true
-      }
-  }
   useEffect(() => {
     document.addEventListener("mousedown", blur);
     return () => document.removeEventListener("mousedown", blur);
@@ -57,17 +53,17 @@ const ListItem = ({
 
   return (
     <SItem>
-        {id == "1111111111" &&
+        {id == IPINFO_IPKEY &&
           <SButtonText data-tip data-for="sButton">
             {keyword} 
           </SButtonText>
         }
-        {id == "2222222222" &&
+        {id == IPINFO_ADDRESSKEY &&
           <SButtonText data-tip data-for="sButton">
             {keyword} 
           </SButtonText>
         }
-        {id !=  "1111111111" && id != "2222222222" &&
+        {id != IPINFO_IPKEY && id != IPINFO_ADDRESSKEY &&
           <SButtonText>{keyword}</SButtonText>
         }
           <ReactTooltip id="sButton" tipPointerPosition = "start" place= "bottom" offset = "{'left': 120}" 
