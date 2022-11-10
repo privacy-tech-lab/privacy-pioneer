@@ -72,6 +72,21 @@ A `dev` folder will be generated in the root directory, housing the generated ex
 
 **NOTE:** If you experience errors regarding missing dependencies (usually due to a newly incorporated node package), delete the `node_modules` folder and then re-run the installation steps above. You may also want to delete `package-lock.json` along with the `node_modules` folder as a second attempt to solve this issue.
 
+
+### Testing 
+
+Privacy Pioneer uses Jest to run unit test in order to maintain the integraty of the extension. All test files live in ./src/tests. In order to create new test, either add tests to an existing file or create a new file that ends with `.test.js`
+
+All tests will be run on the creation of a pull request. 
+
+Learn more about [jest here](https://jestjs.io/)!
+
+To run all existing tests locally, run: 
+
+```bash
+npm run tests
+```
+
 ## 3. Production
 
 Build Privacy Pioneer for production to the `dist` folder by running:
