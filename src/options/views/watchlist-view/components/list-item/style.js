@@ -23,6 +23,23 @@ export const SItem = styled.div`
     }
   }
 `;
+export const SButtonText = styled.div`
+  margin-bottom: 16px;
+  display: flex;
+  flex-direction: row;
+  > * {
+    :first-child {
+      width: 50%;
+    }
+  }
+  > * {
+    :last-child {
+      display: flex;
+      justify-content: space-between;
+      flex-grow: 1;
+    }
+  }
+`;
 
 export const SKeyword = styled.div``;
 

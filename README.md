@@ -16,11 +16,11 @@
 
 # Privacy Pioneer
 
-The idea of Privacy Pioneer is to help users understand the privacy implications of their visits to websites. For example, the following URL-encoded string contains the latitude and longitude of a device:
+The idea of Privacy Pioneer is to help people understand the privacy implications of their visits to websites. For example, the following URL-encoded string contains the latitude and longitude where a person is located:
 
 > https%3A%2F%2Fwww.example.com%2Flocation%3Flat%3D32.715736%26lon%3D%20-117.161087
 
-If such a string is sent via an HTTP POST request, it can be concluded that a site is collecting location data. Observing such behaviors, a privacy label of a site is created to help users get a better understanding of their privacy.
+If such a string is sent via an HTTP POST request, it can be concluded that a site is collecting location data. Observing such behaviors, a privacy label of a site is created to help people get a better understanding of their privacy.
 
 <!-- <p align="center">
   <a href="https://addons.mozilla.org/en-US/firefox/user/12247904/"><img src="https://github.com/privacy-tech-lab/privacy-pioneer/blob/main/firefox-add-ons-badge.png" alt="Firefox Add Ons badge" width = "125" height = "45"></a>
