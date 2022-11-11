@@ -74,7 +74,7 @@ A `dev` folder will be generated in the root directory, housing the generated ex
 
 ## 3. Testing
 
-Privacy Pioneer uses [Jest](https://jestjs.io/) to run unit test in order to maintain the integraty of the extension. All test files live in ./src/tests. In order to create new test, either add tests to an existing test file or create a new file that ends with `.test.js`
+Privacy Pioneer uses [Jest](https://jestjs.io/) to run unit tests in order to maintain the integrity of the extension. All test files live in ./src/tests. In order to create a new test either add it to an existing test file or add it to a new file that ends with `.test.js`
 
 All tests will be run on GitHub upon creating a pull request.
 
