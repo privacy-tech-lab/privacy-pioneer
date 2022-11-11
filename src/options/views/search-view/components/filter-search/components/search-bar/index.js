@@ -11,15 +11,9 @@ import * as Icons from "../../../../../../../libs/icons";
  * Filters Viewed Websites based on typed input on Search bar
  */
 const SearchBar = ({
-  setQuery,
+  onChange,
   placeholder,
-  setPlaceholder,
-  getPlaceholder,
-  filter,
 }) => {
-  useEffect(() => {
-    setPlaceholder(getPlaceholder());
-  }, []);
 
   return (
     <SSearchContainer>
@@ -28,8 +22,7 @@ const SearchBar = ({
         <SInput
           placeholder={placeholder}
           onChange={(e) => {
-            filter(e.target.value);
-            setQuery(e.target.value);
+            onChange(e.target.value)
           }}
         />
       </SInputContainer>

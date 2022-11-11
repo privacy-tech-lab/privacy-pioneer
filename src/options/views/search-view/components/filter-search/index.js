@@ -5,10 +5,8 @@ privacy-tech-lab, https://privacytechlab.org/
 
 import Filters from "./components/filters";
 import SearchBar from "./components/search-bar";
-import React, { useState } from "react";
-import { CompanyLogoSVG } from "../../../../../libs/icons/company-icons";
-import { removeLeadingWhiteSpace } from "../../../../../background/analysis/utility/util";
-import { filterLabelObject, getPermMapping } from "./components/filterLabels";
+import React, { useCallback, useEffect, useState } from "react";
+import { getPermMapping, filter, filterLabels, getPlaceholder, getEmptyCompanyFilter } from "./components/utils/filter-util";
 
 /**
  * Combination of filter section and search section
@@ -17,22 +15,12 @@ import { filterLabelObject, getPermMapping } from "./components/filterLabels";
  */
 const FilterSearch = ({
   labels,
-  setFilteredLabels,
   websites,
+  setFilteredLabels,
   setFilteredWebsites,
   setShowEmpty,
   location,
 }) => {
-  /**
-   * maps all stored companies to false to initialize filters
-   */
-  const getEmptyCompanyFilter = () => {
-    var mapping = {};
-    Object.keys(CompanyLogoSVG).map((company) => {
-      mapping[company] = false;
-    });
-    return mapping;
-  };
 
   const [placeholder, setPlaceholder] = useState("");
   const [query, setQuery] = useState("");
@@ -48,124 +36,40 @@ const FilterSearch = ({
         }
   );
 
-  /**
-   * Filter websites based on user input string from text field
-   * @param {string} keyString string the user entered
-   */
-  const filter = (keyString) => {
-    keyString = removeLeadingWhiteSpace(keyString).toLowerCase();
+  useEffect(() => {
+    setPlaceholder(getPlaceholder(false, companyFilter, permFilter));
+  }, []);
 
-    const filteredKeys = Object.keys(websites).filter((k) =>
-      k.includes(keyString)
-    );
-    var filteredWebsites = {};
-    for (const [perm, websiteLevel] of Object.entries(labels)) {
-      if (
-        Object.keys(websiteLevel).length > 0 &&
-        permFilter[perm] //checks that the permission is currently toggled on in the filter
-      ) {
-        for (const website of Object.keys(websiteLevel)) {
-          if (filteredKeys.includes(website))
-            filteredWebsites[website] = websites[website];
-        }
-      }
-    }
+  const onChange = useCallback((inputString, permFilterLabels = permFilter) => { 
+    const filteredWebsites = filter(inputString, websites, permFilterLabels);
+    setQuery(inputString);
+    
     Object.keys(filteredWebsites) == 0
       ? setShowEmpty(true)
       : setShowEmpty(false);
     setFilteredWebsites(filteredWebsites);
-  };
 
-  /**
-   * Looks for filters and applies them as appropriate.
-   *
-   * @param {string} keyString
-   */
-  const filterLabels = () => {
-    // filter gets passed as an array in DB call
-    var runFilter = false;
-    var runCompanyFilter = false;
+  }, [permFilter, websites])
 
-    for (const bool of Object.values(permFilter)) {
-      if (!bool) {
-        runFilter = true;
-        break;
-      }
+  const onLabelClicked = useCallback(() => { 
+    const filteredLabels = filterLabels(permFilter, companyFilter, labels, setPlaceholder);
+    setFilteredLabels(filteredLabels);
+    onChange(query);
+
+    if (Object.entries(filteredLabels).length == 0) {
+      setFilteredWebsites({});
+      setShowEmpty(true);
     }
-
-    for (const bool of Object.values(companyFilter)) {
-      if (bool) {
-        runCompanyFilter = true;
-        break;
-      }
-    }
-
-    setPlaceholder(getPlaceholder(runCompanyFilter));
-
-    if (runFilter || runCompanyFilter) {
-      const filtered = filterLabelObject(
-        labels,
-        permFilter,
-        companyFilter,
-        runCompanyFilter
-      );
-      setFilteredLabels(filtered);
-      filter(query, filtered);
-
-      if (Object.entries(filtered).length == 0) {
-        setFilteredWebsites({});
-        setShowEmpty(true);
-      }
-    } else {
-      setFilteredLabels(labels);
-      filter(query, labels);
-    }
-  };
-
-  /**
-   * Looks at the filter to create a placeholder string
-   * @returns {string}
-   */
-
-  const getPlaceholder = (hasCompanyFilter = false) => {
-    const defaultPlaceholder = "in: All ";
-    var updatedPlaceholder = "in: ";
-    var ct = 0;
-    for (const [perm, bool] of Object.entries(permFilter)) {
-      if (bool) {
-        ct += 1;
-        updatedPlaceholder = updatedPlaceholder.concat(perm).concat(" ");
-      }
-    }
-
-    if (ct == 4) {
-      updatedPlaceholder = defaultPlaceholder;
-    }
-    if (ct == 0) {
-      return "in: None ";
-    }
-    if (hasCompanyFilter) {
-      updatedPlaceholder = updatedPlaceholder.concat("companies: ");
-      for (const [company, setting] of Object.entries(companyFilter)) {
-        if (setting) {
-          updatedPlaceholder = updatedPlaceholder.concat(`${company} `);
-        }
-      }
-    }
-    return updatedPlaceholder;
-  };
-
+  }, [labels, permFilter,companyFilter, query, setFilteredWebsites, setShowEmpty ])
+  
   return (
     <>
       <SearchBar
-        setQuery={setQuery}
+        onChange={onChange}
         placeholder={placeholder}
-        setPlaceholder={setPlaceholder}
-        getPlaceholder={getPlaceholder}
-        filter={filter}
       />
       <Filters
-        filterLabels={filterLabels}
+        filterLabels={onLabelClicked}
         permFilter={permFilter}
         setPermFilter={setPermFilter}
         companyFilter={companyFilter}
