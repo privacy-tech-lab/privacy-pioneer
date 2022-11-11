@@ -86,13 +86,15 @@ export const getPermMapping = (typ) => {
    * @param {Dict} websites Dictionary of websites 
    * @param {Dict} permFilter 
    */
-  export const filter = (keyString, websites, permFilter, companyFilterLabels) => {
+export const filter = (keyString, websites, permFilter) => {
+    
+    const perms = Object.keys(permFilter).filter(perm => permFilter[perm])
     
     keyString = removeLeadingWhiteSpace(keyString).toLowerCase();
     const filteredWebsites = {};
     
     Object.keys(websites).filter((k) =>
-      k.includes(keyString) && Object.keys(permFilter).some(r => websites[k].labels.includes(r))
+      k.includes(keyString) && perms.some(r => websites[k].labels.includes(r))
     ).forEach(site => filteredWebsites[site] = websites[site]);
 
     
@@ -117,7 +119,6 @@ export const getPermMapping = (typ) => {
    * @param {string} keyString
    */
   export const filterLabels = (permFilterLabels, companyFilterLabels, defaultLabels, setPlaceholder) => {
-
     const runFilter = Object.values(permFilterLabels, companyFilterLabels, permFilterLabels).some(
       (isToggled) => !isToggled
     )

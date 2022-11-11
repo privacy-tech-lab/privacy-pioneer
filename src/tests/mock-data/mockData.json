@@ -43,19 +43,20 @@
         },
         "site7.com": {
             "labels": [
-                "tracking"
+                "tracking",
+                "watchlist"
             ],
             "party": "firstPartyEvidence"
         }
     },
     "dataJson": {
         "monetization": {
-            "invasive_site.com": {
+            "site1.com": {
                 "googlesyndication.com": {
                     "advertising": {
                         "timestamp": 1627654159307,
                         "permission": "monetization",
-                        "rootUrl": "https://www.invasive_site.com",
+                        "rootUrl": "https://www.site1.com",
                         "snippet": null,
                         "requestUrl": "https://pagead2.googlesyndication.com/pagead/sodar",
                         "typ": "advertising",
@@ -64,11 +65,11 @@
                         "parentCompany": "Google"
                     }
                 },
-                "other_site.com": {
+                "site2.com": {
                     "analytics": {
                         "timestamp": 1627654159307,
                         "permission": "monetization",
-                        "rootUrl": "https://www.invasive_site.com",
+                        "rootUrl": "https://www.site2.com",
                         "snippet": null,
                         "requestUrl": "https://other_site.com",
                         "typ": "analytics",
@@ -81,7 +82,7 @@
                     "social": {
                         "timestamp": 1627654159307,
                         "permission": "monetization",
-                        "rootUrl": "https://www.invasive_site.com",
+                        "rootUrl": "https://www.site2.com",
                         "snippet": null,
                         "requestUrl": "https://x.dlx.addthis.com/e/live_intent_sync?na_exid=&us_privacy=1---&rd=Y",
                         "typ": "social",

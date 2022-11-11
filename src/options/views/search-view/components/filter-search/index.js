@@ -22,8 +22,6 @@ const FilterSearch = ({
   location,
 }) => {
 
- 
-
   const [placeholder, setPlaceholder] = useState("");
   const [query, setQuery] = useState("");
   const [companyFilter, setCompanyFilter] = useState(getEmptyCompanyFilter());
@@ -43,7 +41,7 @@ const FilterSearch = ({
   }, []);
 
   const onChange = useCallback((inputString, permFilterLabels = permFilter) => { 
-    const filteredWebsites = filter(inputString, websites, permFilterLabels, companyFilter);
+    const filteredWebsites = filter(inputString, websites, permFilterLabels);
     setQuery(inputString);
     
     Object.keys(filteredWebsites) == 0
@@ -54,9 +52,9 @@ const FilterSearch = ({
   }, [permFilter, websites])
 
   const onLabelClicked = useCallback(() => { 
-    const filteredLabels = filterLabels(permFilter, companyFilter,labels, setFilteredLabels);
+    const filteredLabels = filterLabels(permFilter, companyFilter, labels, setPlaceholder);
     setFilteredLabels(filteredLabels);
-    onChange(query, filteredLabels);
+    onChange(query);
 
     if (Object.entries(filteredLabels).length == 0) {
       setFilteredWebsites({});
