@@ -56,7 +56,7 @@ const WatchlistView = () => {
       .then((data) => data.json())
       .then(async function (data) {
         const myIP = data.ip;
-        if (await saveKeyword(myIP, typeEnum.ipAddress, null)) {
+        if (await saveKeyword(myIP, typeEnum.ipAddress, null, true)) {
           await updateList();
         }
       });

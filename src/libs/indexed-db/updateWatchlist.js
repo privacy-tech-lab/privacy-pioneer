@@ -23,7 +23,7 @@ import {
  * @param {id}
  * @returns {Boolean} True if successful, false otherwise
  */
-const saveKeyword = async (keyword, type, id) => {
+const saveKeyword = async (keyword, type, id, notificationEnabled = false) => {
   // Validate
   if (type in keywordTypes && keyword) {
     let key;
@@ -60,14 +60,14 @@ const saveKeyword = async (keyword, type, id) => {
           keyword: keyword,
           type: type,
           id: key,
-          notification: false,
+          notification: notificationEnabled,
         })
       : await watchlistKeyval.set(key, {
           location: keyword,
           type: type,
           id: key,
           locNum: maxNum,
-          notification: false,
+          notification: notificationEnabled,
         });
     return true;
   }
@@ -81,13 +81,9 @@ const toggleNotifications = async (id) => {
   } else {
     data.notification = true;
     if (
-      Notification.permission == "default" ||
-      Notification.permission == "denied"
+      Notification.permission != 'granted'
     ) {
-      Notification.requestPermission();
-      window.alert(
-        "In order for notifications to work, you will need to enable notifications for FireFox by going to\n\nSettings > System > Notifications and actions on Windows or\n\nSystem Preferences > Notifications > FireFox on Mac."
-      );
+      await Notification.requestPermission();
     }
   }
   watchlistKeyval.set(id, data);
