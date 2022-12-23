@@ -130,7 +130,7 @@ export const OptimizationToggle = () => {
  * Toggles Analytics
  */
 export const AnalyticsToggle = () => {
-  const [analyticsStatus, setAnalyticsStatus] = useState(false);
+  const [analyticsStatus, setAnalyticsStatus] = useState(true);
 
   useEffect(() => {
     getAnalyticsStatus().then((res) => {
