@@ -37,6 +37,7 @@
     "got": "^12.5.1",
     "idb": "^6.0.0",
     "json-schema": "^0.4.0",
+    "jsonwebtoken": "^9.0.0",
     "loader-utils": "^3.2.1",
     "markdown-it": "^13.0.1",
     "marked": "^4.0.18",
