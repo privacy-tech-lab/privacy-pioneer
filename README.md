@@ -16,17 +16,19 @@
 
 # Privacy Pioneer
 
-The idea of Privacy Pioneer is to help people understand the privacy implications of their visits to websites. For example, the following URL-encoded string contains the latitude and longitude where a person is located:
+The idea of Privacy Pioneer is to help people understand the data collection and sharing practices of the websites they visit. For example, the following URL-encoded string contains the latitude and longitude where a person is located:
 
 > https%3A%2F%2Fwww.example.com%2Flocation%3Flat%3D32.715736%26lon%3D%20-117.161087
 
-If such a string is sent via an HTTP POST request, it can be concluded that a site is collecting location data. Observing such behaviors, a privacy label of a site is created to help people get a better understanding of their privacy.
+If such a string is sent to a site via an HTTP POST request, it can be concluded that it is collecting or sharing location data. Privacy Pioneer automatically detects such behaviors and displays them in privacy labels.
+
+Privacy Pioneer's privacy practice analysis leverages rule-based and machine learning technologies. The machine learning technologies are [available separately](https://github.com/privacy-tech-lab/privacy-pioneer-machine-learning).
+
+Privacy Pioneer is implemented as a browser extension for Firefox (currently the only browser we support).
 
 <!-- <p align="center">
   <a href="https://addons.mozilla.org/en-US/firefox/user/12247904/"><img src="https://github.com/privacy-tech-lab/privacy-pioneer/blob/main/firefox-add-ons-badge.png" alt="Firefox Add Ons badge" width = "125" height = "45"></a>
 <p/> -->
-
-Currently, we only support Firefox.
 
 Privacy Pioneer is developed and maintained by **Daniel Goldelman (@danielgoldelman)**, **Logan Brown (@Lr-Brown)**, **Justin Casler (@JustinCasler)**, **Judeley Jean-Charles (@jjeancharles)**, and **Sebastian Zimmeck (@SebastianZimmeck)** of the [privacy-tech-lab](https://privacytechlab.org/). **Hamza Harkous (@harkous)** is also collaborating with the team on the research. **Owen Kaplan (@notowen333)**, **Rafael Goldstein (@rgoldstein01)**, and **David Baraka (@davebaraka)** contributed earlier.
 
