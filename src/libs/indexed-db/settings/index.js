@@ -37,7 +37,7 @@ export const setDefaultSettings = async () => {
     await settingsKeyval.set("alreadyNotified", {});
     await settingsKeyval.set(settingsModelsEnum.optimizePerformance, true);
     await settingsKeyval.set(settingsModelsEnum.extensionEnabled, true);
-    await analyticsKeyval.set(settingsModelsEnum.analytics, false);
+    await analyticsKeyval.set(settingsModelsEnum.analytics, true);
   }
 
   loadModel();
