@@ -27,7 +27,7 @@ Privacy Pioneer's privacy practice analysis leverages rule-based and machine lea
 Privacy Pioneer is implemented as a browser extension for Firefox (currently the only browser we support).
 
 <p align="center">
-  <a href="https://addons.mozilla.org/en-US/firefox/addon/privacy-pioneer/"><img src="https://github.com/privacy-tech-lab/privacy-pioneer/blob/main/firefox-add-ons-badge.png" alt="Firefox Add Ons badge" width = "125" height = "45"></a>
+  <a href="https://addons.mozilla.org/en-US/firefox/addon/privacy-pioneer/"><img src="https://github.com/privacy-tech-lab/privacy-pioneer/blob/main/firefox-add-ons-badge.png" alt="Firefox Add Ons badge" width = "250" height = "90"></a>
 <p/>
 
 Privacy Pioneer is developed and maintained by **Daniel Goldelman (@danielgoldelman)**, **Logan Brown (@Lr-Brown)**, **Justin Casler (@JustinCasler)**, **Judeley Jean-Charles (@jjeancharles)**, and **Sebastian Zimmeck (@SebastianZimmeck)** of the [privacy-tech-lab](https://privacytechlab.org/). **Hamza Harkous (@harkous)** is also collaborating with the team on the research. **Owen Kaplan (@notowen333)**, **Rafael Goldstein (@rgoldstein01)**, and **David Baraka (@davebaraka)** contributed earlier.
