@@ -108,8 +108,8 @@ const WatchlistView = () => {
             <div>
               <STitle>Watchlist</STitle>
               <SSubtitle>
-                Edit your watchlist so we can monitor personal information
-                collected and shared with companies.
+                Edit your watchlist so you can keep track of how
+                companies collect and share your personal information
               </SSubtitle>
             </div>
             <div

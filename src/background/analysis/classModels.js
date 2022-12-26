@@ -310,7 +310,7 @@ export const privacyLabels = Object.freeze({
   },
   location: {
     displayName: "Location",
-    description: "Your location was found in your web traffic.",
+    description: "Location data that was found in your web traffic.",
     types: {
       coarseLocation: {
         displayName: "Coarse Location",
@@ -348,7 +348,7 @@ export const privacyLabels = Object.freeze({
   },
   watchlist: {
     displayName: "Watchlist",
-    description: "Data based on your custom watchlist inputs.",
+    description: "Web traffic data that contains keywords from your custom watchlist.",
     types: {
       phoneNumber: {
         displayName: "Phone Number",
@@ -379,7 +379,7 @@ export const privacyLabels = Object.freeze({
   },
   tracking: {
     displayName: "Tracking",
-    description: "A tracking practice was found in your web traffic.",
+    description: "A Data collection practice that attempts to create a unique identity of you and track your browsing activity",
     types: {
       trackingPixel: {
         displayName: "Tracking Pixel",
