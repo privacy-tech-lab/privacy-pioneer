@@ -66,5 +66,6 @@ export async function useModel(input){
   const pred = await model.predict([att, tensor])
   const retSoft = await tf.softmax(pred).array()
   const tfresults = retSoft[0]
+  console.log(tfresults, input)
   return tfresults[0]<tfresults[1]
 }

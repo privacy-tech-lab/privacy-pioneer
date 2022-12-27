@@ -212,6 +212,7 @@ async function addToEvidenceStore(
       }
     }
 
+
     let keys = Object.keys(evidenceObject);
     for (let key of keys) {
       // looking for null, undefined, NaN, empty string (""), 0, false
@@ -231,6 +232,7 @@ async function addToEvidenceStore(
   //final return statement
   return new Promise(function (resolve, reject) {
     evidenceKeyval.set(rootUrl, evidence);
+    console.log(evidenceKeyval.get(rootUrl))
     resolve("set");
   });
 }
