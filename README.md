@@ -16,7 +16,7 @@
 
 # Privacy Pioneer
 
-The idea of Privacy Pioneer is to help people understand the data collection and sharing practices of the websites they visit. For example, the following URL-encoded string contains the latitude and longitude where a person is located:
+The idea of Privacy Pioneer is to help people understand the data collection and sharing practices of the websites they visit. For instance, the following URL-encoded string contains the latitude and longitude where a person is located:
 
 > https%3A%2F%2Fwww.example.com%2Flocation%3Flat%3D32.715736%26lon%3D%20-117.161087
 
