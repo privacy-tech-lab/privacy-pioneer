@@ -52,7 +52,7 @@ async function addToEvidenceStore(
   }
 
   // whitelist ipinfo
-  if (requestU == "https://ipinfo.io/json" || requestU == "http://ipinfo.io/json") {
+  if (requestU.includes("https://ipinfo.io/json") || requestU.includes("http://ipinfo.io/json") || browser.runtime.getURL("").includes(rootU)){
     return new Promise(function (resolve, reject) {
       resolve("whitelist ipinfo");
     });
@@ -227,7 +227,12 @@ async function addToEvidenceStore(
   for (const evidenceObj of evidenceToAdd) {
     unpackAndUpdate(evidenceObj);
   }
-
+  
+  if (browser.runtime.getURL("").includes(rootUrl)) {
+    return new Promise(function (resolve, reject) {
+      resolve("whitelist ipinfo");
+    });
+  }
   //final return statement
   return new Promise(function (resolve, reject) {
     evidenceKeyval.set(rootUrl, evidence);
