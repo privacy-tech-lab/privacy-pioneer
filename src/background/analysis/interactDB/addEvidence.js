@@ -207,13 +207,11 @@ async function addToEvidenceStore(
             // not an svg, continue with check
             var formattedString = formatString(evidenceObject.snippet, evidenceObject.typ, userData, evidenceObject.loc)
             if (await useModel(formattedString) === false){
-              // return new Promise(function(res,rej){res('set')})
-              return new Promise(function (r,j) {r(evidence)})
+              return new Promise(function (res,rej) {res(evidence)})
             }
           } else {
             // svg, terminate processes
-            // return new Promise(function(res,rej){res('set')})
-            return new Promise(function (r,j) {r(evidence)})
+            return new Promise(function (res,rej) {res(evidence)})
           }
         }
       }
@@ -225,10 +223,9 @@ async function addToEvidenceStore(
           delete evidenceObject[key];
         }
       }
-      // evidence = await updateFetchedDict(evidence, evidenceObject);
-      return new Promise(function (r,j) {r(updateFetchedDict(evidence,evidenceObject))})
+      return new Promise(function (res,rej) {res(updateFetchedDict(evidence,evidenceObject))})
     }
-    return new Promise(function (r,j) {r(evidence)})
+    return new Promise(function (res,rej) {res(evidence)})
   }
 
   // update the fetched evidence dict with each piece of evidence we have for this request
