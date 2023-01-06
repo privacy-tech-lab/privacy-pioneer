@@ -155,7 +155,7 @@ const WatchlistView = () => {
                   };
                   getAnalysis();
                   confirm(
-                    "We use an external API from ipinfo.com that identifies your ip address. Click 'OK' to add your public IP address to your watchlist. \n\nAlternatively, you can search 'What's my IP?', then copy and paste the result into our IP address keyword form."
+                    "We use an external API from ipinfo.io that identifies your ip address. Click 'OK' to add your public IP address to your watchlist. \n\nAlternatively, you can search 'What's my IP?', then copy and paste the result into our IP address keyword form."
                   )
                     ? (getIP(),
                       handleClick(
