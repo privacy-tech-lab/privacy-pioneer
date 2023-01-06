@@ -5,7 +5,7 @@ privacy-tech-lab, https://privacytechlab.org/
 
 import { getHostname } from "../utility/util.js";
 import { evidenceKeyval } from "../interactDB/openDB.js";
-import { Evidence, typeEnum } from "../classModels.js";
+import { Evidence, permissionEnum, typeEnum } from "../classModels.js";
 import { settingsKeyval } from "../../../libs/indexed-db/openDB.js";
 import { useModel } from "./ml/jsrun.js";
 
@@ -144,42 +144,42 @@ async function addToEvidenceStore(
             return replaceCoors(str, loc, userData)
         }
       }
-        /**
-         * @param {string} str str we're operating on 
-         * @param {string} latLng either "lat" or "lng"
-         * @returns {string}
-         */
-        function replaceCoors(str, latLng, userData) {
-    
-            // loop to replace floating points that are within 1.0 of the users lat/lng
-            var replaced = true
-            while (replaced) {
-    
-              replaced = false
-              const matches = str.matchAll(/\D\d{1,3}\.\d{1,10}/g)
-              const matchArr = Array.from(matches)
-              
-              for (const match of matchArr) {
-                  
-                  const startIndex = match.index + 1
-                  const endIndex = startIndex + match[0].length - 1
-                  const asFloat = parseFloat(str.slice(startIndex, endIndex))
-                  
-                  // replace either lat or lng with generic. If we replace, start loop over
-                  if (latLng == "lat" && Math.abs(Math.abs(userData) - asFloat) < 1) {
-                      var MlString = str.slice(0, startIndex).concat(corTypes["lat"]).concat(str.slice(endIndex))
-                      replaced = true
-                      return addStart(latLng,MlString)
-                  }                
-                  if (latLng == "lng" && Math.abs(Math.abs(userData) - asFloat) < 1) {
-                      var MLstring = str.slice(0, startIndex).concat(corTypes["lng"]).concat(str.slice(endIndex))
-                      replaced = true
-                      return addStart(latLng,MLstring)
-                  }
-              }
-              return addStart(latLng,MlString)
+      /**
+       * @param {string} str str we're operating on 
+       * @param {string} latLng either "lat" or "lng"
+       * @returns {string}
+       */
+      function replaceCoors(str, latLng, userData) {
+  
+          // loop to replace floating points that are within 1.0 of the users lat/lng
+          var replaced = true
+          while (replaced) {
+  
+            replaced = false
+            const matches = str.matchAll(/\D\d{1,3}\.\d{1,10}/g)
+            const matchArr = Array.from(matches)
+            
+            for (const match of matchArr) {
+                
+                const startIndex = match.index + 1
+                const endIndex = startIndex + match[0].length - 1
+                const asFloat = parseFloat(str.slice(startIndex, endIndex))
+                
+                // replace either lat or lng with generic. If we replace, start loop over
+                if (latLng == "lat" && Math.abs(Math.abs(userData) - asFloat) < 1) {
+                    var MlString = str.slice(0, startIndex).concat(corTypes["lat"]).concat(str.slice(endIndex))
+                    replaced = true
+                    return addStart(latLng,MlString)
+                }                
+                if (latLng == "lng" && Math.abs(Math.abs(userData) - asFloat) < 1) {
+                    var MLstring = str.slice(0, startIndex).concat(corTypes["lng"]).concat(str.slice(endIndex))
+                    replaced = true
+                    return addStart(latLng,MLstring)
+                }
             }
-        }
+            return addStart(latLng,MlString)
+          }
+      }
       function svgCheck(strReq, stIdx, endIdx){
         var begin = stIdx < 400 ? strReq.slice(0, endIdx) : strReq.slice(stIdx - 400, endIdx)
         var end = endIdx + 400 < strReq.length ? strReq.slice(endIdx, endIdx + 400) : strReq.slice(endIdx, strReq.length)
@@ -192,7 +192,7 @@ async function addToEvidenceStore(
             return true
         }
         return false
-    }
+      }
       if (!saveFullSnippet && !evidenceObject.cookie){
         cutDownSnippet(evidenceObject)
       }
@@ -207,11 +207,13 @@ async function addToEvidenceStore(
             // not an svg, continue with check
             var formattedString = formatString(evidenceObject.snippet, evidenceObject.typ, userData, evidenceObject.loc)
             if (await useModel(formattedString) === false){
-              return new Promise(function(res,rej){res('set')})
+              // return new Promise(function(res,rej){res('set')})
+              return new Promise(function (r,j) {r(evidence)})
             }
           } else {
             // svg, terminate processes
-            return new Promise(function(res,rej){res('set')})
+            // return new Promise(function(res,rej){res('set')})
+            return new Promise(function (r,j) {r(evidence)})
           }
         }
       }
@@ -223,13 +225,15 @@ async function addToEvidenceStore(
           delete evidenceObject[key];
         }
       }
-      evidence = updateFetchedDict(evidence, evidenceObject);
+      // evidence = await updateFetchedDict(evidence, evidenceObject);
+      return new Promise(function (r,j) {r(updateFetchedDict(evidence,evidenceObject))})
     }
+    return new Promise(function (r,j) {r(evidence)})
   }
 
   // update the fetched evidence dict with each piece of evidence we have for this request
-  for (const evidenceObj of evidenceToAdd) {
-    unpackAndUpdate(evidenceObj)
+  for (let evidenceObj of evidenceToAdd) {
+    evidence = await unpackAndUpdate(evidenceObj)
   }
 
   //final return statement
