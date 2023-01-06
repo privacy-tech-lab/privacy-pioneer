@@ -5,8 +5,7 @@ privacy-tech-lab, https://privacytechlab.org/
 
 import { getHostname } from "../utility/util.js";
 import { evidenceKeyval } from "../interactDB/openDB.js";
-import { Evidence, permissionEnum, typeEnum } from "../classModels.js";
-import { settingsKeyval } from "../../../libs/indexed-db/openDB.js";
+import { Evidence, typeEnum } from "../classModels.js";
 import { useModel } from "./ml/jsrun.js";
 
 /**
