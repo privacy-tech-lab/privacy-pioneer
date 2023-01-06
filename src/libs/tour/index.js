@@ -84,13 +84,12 @@ export const homeSteps = [
   },
 ];
 
-const requestNotificationPermission = () => { 
+const requestNotificationPermission = async () => { 
   if (
-      Notification.permission == "default" ||
-      Notification.permission == "denied"
-    ) {
-      
-    }
+        Notification.permission !== "granted"
+      ) {
+        await Notification.requestPermission();
+      }
 }
 
 export const HomeTour = ({ steps }) => {
@@ -101,21 +100,13 @@ export const HomeTour = ({ steps }) => {
     if (STATUS.FINISHED == status) {
       history.push("/search");
     } else if (STATUS.SKIPPED == status) {
-      if (
-        Notification.permission !== "granted"
-      ) {
-        await Notification.requestPermission();
-      }
       startStopTour();
       location.reload();
+      await requestNotificationPermission()
     } else if (ACTIONS.CLOSE == action) {
-       if (
-        Notification.permission !== "granted"
-       ) {
-         await Notification.requestPermission();
-       }
-      startStopTour();
+      await startStopTour();
       location.reload();
+      await requestNotificationPermission()
     }
   };
 
@@ -224,17 +215,20 @@ export const seeAllSteps = [
 export const SeeAllTour = ({ steps }) => {
   const history = useHistory();
 
-  const checkEnd = (data) => {
+  const checkEnd = async (data) => {
     const { action, index, status, type } = data;
     if (STATUS.FINISHED == status) {
       startStopTour();
       history.push("/");
+      await requestNotificationPermission()
     } else if (STATUS.SKIPPED == status) {
       startStopTour();
       location.reload();
+      await requestNotificationPermission()
     } else if (ACTIONS.CLOSE == action) {
       startStopTour();
       location.reload();
+      await requestNotificationPermission()
     }
   };
 

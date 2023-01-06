@@ -23,9 +23,10 @@ import {
  * @param {id}
  * @returns {Boolean} True if successful, false otherwise
  */
-const saveKeyword = async (keyword, type, id, notificationEnabled = false) => {
+const saveKeyword = async (keyword, type, id) => {
   // Validate
   if (type in keywordTypes && keyword) {
+    const notificationEnabled = Notification.permission == "granted"
     let key;
     //id == ip || loc when this is the ipinfo generated ip keyword
     if (id == "ip") {
