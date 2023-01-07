@@ -123,10 +123,10 @@ const LabelView = () => {
                   if (status == true) {
                     handleClick(
                       "Go Back from Label Card (Website)",
-                      "Website",
-                      null,
-                      null,
-                      null
+                      "Website/Pop-up",
+                      website.toString(),
+                      "Not Applicable",
+                      "Not Applicable"
                     );
                   }
                 };

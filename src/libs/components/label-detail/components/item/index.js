@@ -78,9 +78,9 @@ const Item = ({ request, url, label }) => {
                       " Third Party: " +
                       url.toString(),
                     "ANY",
-                    null,
+                    "Not Applicable", 
                     url.toString(),
-                    null
+                    "Not Applicable"
                   );
                 }
               };

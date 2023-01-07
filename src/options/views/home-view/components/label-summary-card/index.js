@@ -43,8 +43,8 @@ const LabelSummaryCard = ({
             handleClick(
               "Overview Label: " + labeltype.toString(),
               "Home",
-              null,
-              null,
+              "Not Applicable",
+              "Not Applicable",
               labeltype.toString() + " Only"
             ); /*Overview Summary Label Added*/
           }

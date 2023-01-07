@@ -80,9 +80,9 @@ const SearchView = () => {
                     handleClick(
                       "Go Back (from History)",
                       "History",
-                      null,
-                      null,
-                      null
+                      "Not Applicable",
+                      "Not Applicable",
+                      "Not Applicable"
                     );
                   }
                 };

@@ -87,7 +87,13 @@ const HomeView = () => {
                 const getAnalysis = async () => {
                   const status = await getAnalyticsStatus();
                   if (status == true) {
-                    handleClick("See All History", "Home", null, null, null);
+                    handleClick(
+                      "See All History",
+                      "Home",
+                      "Not Applicable",
+                      "Not Applicable",
+                      "Not Applicable"
+                    );
                   }
                 };
                 getAnalysis();

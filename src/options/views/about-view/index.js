@@ -51,9 +51,9 @@ const AboutView = () => {
                   question.toString() +
                   (open ? "[Closed]" : "[Open]"),
                 "About",
-                null,
-                null,
-                null
+                "Not Applicable",
+                "Not Applicable",
+                "Not Applicable"
               ); /*FAQ dropdown clicked */
             }
           };

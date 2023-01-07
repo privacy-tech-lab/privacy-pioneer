@@ -47,8 +47,8 @@ const LabelCards = ({ website, handleTap, allLabels, webLabels }) => {
                   website.toString(),
                 "History/Recent",
                 website.toString(),
-                null,
-                null
+                "Not Applicable",
+                "Not Applicable"
               ); /* Label Card from History/Recent */
             }
           };

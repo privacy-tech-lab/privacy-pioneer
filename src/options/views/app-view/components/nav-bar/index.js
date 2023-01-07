@@ -62,9 +62,9 @@ const NavBar = () => {
                 handleClick(
                   "Privacy Pioneer Logo",
                   "Nav-Bar",
-                  null,
-                  null,
-                  null
+                  "Not Applicable",
+                  "Not Applicable",
+                  "Not Applicable"
                 ); // Privacy Pioneer Logo (Brings back to Home page)
               }
             };
@@ -83,7 +83,7 @@ const NavBar = () => {
             const getAnalysis = async () => {
               const status = await getAnalyticsStatus();
               if (status == true) {
-                handleClick("Home Button", "Nav-Bar", null, null, null);
+                handleClick("Home Button", "Nav-Bar", "Not Applicable", "Not Applicable", "Not Applicable");
               }
             };
             getAnalysis();
@@ -101,7 +101,7 @@ const NavBar = () => {
             const getAnalysis = async () => {
               const status = await getAnalyticsStatus();
               if (status == true) {
-                handleClick("Watchlist", "Nav-Bar", null, null, null);
+                handleClick("Watchlist", "Nav-Bar", "Not Applicable", "Not Applicable", "Not Applicable");
               }
             };
             getAnalysis();
@@ -118,7 +118,7 @@ const NavBar = () => {
             const getAnalysis = async () => {
               const status = await getAnalyticsStatus();
               if (status == true) {
-                handleClick("Settings", "Nav-Bar", null, null, null);
+                handleClick("Settings", "Nav-Bar", "Not Applicable", "Not Applicable", "Not Applicable");
               }
             };
             getAnalysis();
@@ -136,7 +136,7 @@ const NavBar = () => {
             const getAnalysis = async () => {
               const status = await getAnalyticsStatus();
               if (status == true) {
-                handleClick("About", "Nav-Bar", null, null, null);
+                handleClick("About", "Nav-Bar", "Not Applicable", "Not Applicable", "Not Applicable");
               }
             };
             getAnalysis();

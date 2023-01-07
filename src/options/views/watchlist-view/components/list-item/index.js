@@ -87,9 +87,9 @@ const ListItem = ({
                   handleClick(
                     "Watchlist Options",
                     "Watchlist",
-                    null,
-                    null,
-                    null
+                    "Not Applicable",
+                    "Not Applicable",
+                    "Not Applicable"
                   );
                 }
               };
@@ -110,9 +110,9 @@ const ListItem = ({
                           ": " +
                           keyword.toString(),
                         "Watchlist",
-                        null,
-                        null,
-                        null
+                        "Not Applicable",
+                        "Not Applicable",
+                        "Not Applicable"
                       );
                     }
                   };
@@ -145,9 +145,9 @@ const ListItem = ({
                           "] : " +
                           keyword.toString(),
                         "Watchlist",
-                        null,
-                        null,
-                        null
+                        "Not Applicable",
+                        "Not Applicable",
+                        "Not Applicable"
                       );
                     }
                   };
@@ -172,9 +172,9 @@ const ListItem = ({
                       ": " +
                       keyword.toString(),
                     "Watchlist",
-                    null,
-                    null,
-                    null
+                    "Not Applicable",
+                    "Not Applicable",
+                    "Not Applicable"
                   );
                 }
               };

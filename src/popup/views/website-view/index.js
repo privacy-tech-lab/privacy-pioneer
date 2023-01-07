@@ -186,7 +186,13 @@ const WebsiteView = () => {
                   const getAnalysis = async () => {
                     const status = await getAnalyticsStatus();
                     if (status == true) {
-                      handleClick("Home Button", "Pop-Up", null, null, null);
+                      handleClick(
+                        "Home Button",
+                        "Pop-Up",
+                        website.toString(),
+                        "Not Applicable",
+                        "Not Applicable"
+                      );
                     }
                   };
                   getAnalysis();
@@ -203,9 +209,9 @@ const WebsiteView = () => {
                       handleClick(
                         "Watchlist Button",
                         "Pop-Up",
-                        null,
-                        null,
-                        null
+                        website.toString(),
+                        "Not Applicable",
+                        "Not Applicable"
                       );
                     }
                   };
@@ -224,9 +230,9 @@ const WebsiteView = () => {
                       handleClick(
                         "Enable Extension Off: " + extensionEnabled.toString(),
                         "Pop-Up",
-                        null,
-                        null,
-                        null
+                        website.toString(),
+                        "Not Applicable",
+                        "Not Applicable"
                       );
                     }
                   };
@@ -289,10 +295,10 @@ const WebsiteView = () => {
                             label.toString() +
                             " Website: " +
                             website.toString(),
-                          "Website",
+                          "Website/Pop-Up",
                           website.toString(),
-                          null,
-                          null
+                          "Not Applicable",
+                          "Not Applicable"
                         ); /* label card in website view add string */
                       }
                     };

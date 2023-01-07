@@ -121,9 +121,9 @@ const EditModal = ({ passKeywordType, passKeyword, edit, id, updateList }) => {
                     handleClick(
                       "Watchlist Type Dropdown",
                       "Watchlist Modal",
-                      null,
-                      null,
-                      null
+                      "Not Applicable",
+                      "Not Applicable",
+                      "Not Applicable"
                     );
                   }
                 };
@@ -145,9 +145,9 @@ const EditModal = ({ passKeywordType, passKeyword, edit, id, updateList }) => {
                           handleClick(
                             "Watchlist Type Picked: " + key.toString(),
                             "Watchlist Modal",
-                            null,
-                            null,
-                            null
+                            "Not Applicable",
+                            "Not Applicable",
+                            "Not Applicable"
                           );
                         }
                       };
@@ -234,9 +234,9 @@ const EditModal = ({ passKeywordType, passKeyword, edit, id, updateList }) => {
                             ": " +
                             key.toString(),
                           "Watchlist Modal",
-                          null,
-                          null,
-                          null
+                          "Not Applicable",
+                          "Not Applicable",
+                          "Not Applicable"
                         );
                       }
                     };

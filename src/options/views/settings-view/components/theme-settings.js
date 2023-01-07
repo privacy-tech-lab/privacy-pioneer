@@ -60,7 +60,13 @@ export const ThemeSelection = ({ changeTheme }) => {
           const getAnalysis = async () => {
             const status = await getAnalyticsStatus();
             if (status == true) {
-              handleClick("Light Theme", "Settings", null, null, null);
+              handleClick(
+                "Light Theme",
+                "Settings",
+                "Not Applicable",
+                "Not Applicable",
+                "Not Applicable"
+              );
             }
           };
           getAnalysis();
@@ -77,7 +83,13 @@ export const ThemeSelection = ({ changeTheme }) => {
           const getAnalysis = async () => {
             const status = await getAnalyticsStatus();
             if (status == true) {
-              handleClick("Dark Theme Setting", "Settings", null, null, null);
+              handleClick(
+                "Dark Theme Setting",
+                "Settings",
+                "Not Applicable",
+                "Not Applicable",
+                "Not Applicable"
+              );
             }
           };
           getAnalysis();

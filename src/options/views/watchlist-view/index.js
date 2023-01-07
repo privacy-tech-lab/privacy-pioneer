@@ -129,7 +129,7 @@ const WatchlistView = () => {
                   const getAnalysis = async () => {
                     const status = await getAnalyticsStatus();
                     if (status == true) {
-                      handleClick("Add Keyword", "Watchlist", null, null, null);
+                      handleClick("Add Keyword", "Watchlist", "Not Applicable", "Not Applicable", "Not Applicable");
                     }
                   };
                   getAnalysis();
@@ -147,9 +147,9 @@ const WatchlistView = () => {
                       handleClick(
                         "Add IP Button",
                         "Watchlist",
-                        null,
-                        null,
-                        null
+                        "Not Applicable",
+                        "Not Applicable",
+                        "Not Applicable"
                       );
                     }
                   };
@@ -161,17 +161,17 @@ const WatchlistView = () => {
                       handleClick(
                         "IP Retrieved",
                         "Watchlist",
-                        null,
-                        null,
-                        null
+                        "Not Applicable",
+                        "Not Applicable",
+                        "Not Applicable"
                       ))
                     : (null,
                       handleClick(
                         "Add IP canceled",
                         "Watchlist",
-                        null,
-                        null,
-                        null
+                        "Not Applicable",
+                        "Not Applicable",
+                        "Not Applicable"
                       ));
                 }}
               >

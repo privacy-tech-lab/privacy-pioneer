@@ -34,7 +34,7 @@ export const DangerZone = () => {
       const getAnalysis = async () => {
         const status = await getAnalyticsStatus();
         if (status == true) {
-          handleClick("Delete All Evidence Data", "Settings", null, null, null);
+          handleClick("Delete All Evidence Data", "Settings", "Not Applicable", "Not Applicable", "Not Applicable");
         }
       };
       getAnalysis();
@@ -53,7 +53,7 @@ export const DangerZone = () => {
       const getAnalysis = async () => {
         const status = await getAnalyticsStatus();
         if (status == true) {
-          handleClick("Delete Watchlist", "Settings", null, null, null);
+          handleClick("Delete Watchlist", "Settings", "Not Applicable", "Not Applicable", "Not Applicable");
         }
       };
       getAnalysis();

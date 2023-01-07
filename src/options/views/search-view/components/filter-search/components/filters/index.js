@@ -54,8 +54,8 @@ const Filters = ({
                       " Filter Button Activated: " +
                       permFilter[permission].toString(),
                     "History",
-                    null,
-                    null,
+                    "Not Applicable",
+                    "Not Applicable",
                     Object.values(permFilter)
                   );
                 }
@@ -78,9 +78,9 @@ const Filters = ({
                 handleClick(
                   "Companies Filter Button",
                   "History",
-                  null,
-                  null,
-                  null
+                  "Not Applicable",
+                  "Not Applicable",
+                  "Not Applicable"
                 );
               }
             };
@@ -120,8 +120,8 @@ const Filters = ({
                     handleClick(
                       "Reset Filter",
                       "History",
-                      null,
-                      null,
+                      "Not Applicable",
+                      "Not Applicable",
                       Object.values(permFilter)
                     );
                   }
@@ -149,7 +149,7 @@ const Filters = ({
                       " Company Filter Activated: " +
                       companyFilter[parent].toString(),
                     "History",
-                    null,
+                    "Not Applicable",
                     Object.values(companyFilter)
                   );
                 }
