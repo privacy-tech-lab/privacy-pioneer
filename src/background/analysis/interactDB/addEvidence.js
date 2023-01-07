@@ -6,7 +6,6 @@ privacy-tech-lab, https://privacytechlab.org/
 import { getHostname } from "../utility/util.js";
 import { evidenceKeyval } from "../interactDB/openDB.js";
 import { Evidence, typeEnum } from "../classModels.js";
-import { settingsKeyval } from "../../../libs/indexed-db/openDB.js";
 import { useModel } from "./ml/jsrun.js";
 
 /**
@@ -82,68 +81,68 @@ async function addToEvidenceStore(
       evidenceObject.parentCompany = parent
 
 
-    function getUserData(evidenceObject){
-      if ( evidenceObject.index === -1 ) {
-        userData = undefined
+      function getUserData(evidenceObject){
+        if ( evidenceObject.index === -1 ) {
+          userData = undefined
+        }
+        else {
+          let start, end
+          [start, end] = evidenceObject.index
+          userData = evidenceObject.snippet.substring(start,end)
+        }
+        return userData
       }
-      else {
-        let start, end
-        [start, end] = evidenceObject.index
-        userData = evidenceObject.snippet.substring(start,end)
-      }
-      return userData
-    }
-    /**
-     * Cuts down a snippet to only include the context of where we found
-     * The evidence
-     * 
-     * @param {Evidence} evidenceObject 
-     * @returns {void} updates evidenceObject
-     */
-    function cutDownSnippet(evidenceObject) {
-      if ( evidenceObject.index === -1 ) {
-        evidenceObject.snippet = null
-        getUserData(evidenceObject)
-      }
-      else {
-        getUserData(evidenceObject)
-        let start, end
-        [start, end] = evidenceObject.index
-        const snipLength = evidenceObject.snippet.length
+      /**
+       * Cuts down a snippet to only include the context of where we found
+       * The evidence
+       * 
+       * @param {Evidence} evidenceObject 
+       * @returns {void} updates evidenceObject
+       */
+      function cutDownSnippet(evidenceObject) {
+        if ( evidenceObject.index === -1 ) {
+          evidenceObject.snippet = null
+          getUserData(evidenceObject)
+        }
+        else {
+          getUserData(evidenceObject)
+          let start, end
+          [start, end] = evidenceObject.index
+          const snipLength = evidenceObject.snippet.length
 
-        const frontBuffer = start < 250 ? start : 250
-        const endBuffer = end + 250 < snipLength ? 250 : snipLength - end - 1
+          const frontBuffer = start < 250 ? start : 250
+          const endBuffer = end + 250 < snipLength ? 250 : snipLength - end - 1
 
-        evidenceObject.snippet = evidenceObject.snippet.substring(start - frontBuffer, end + endBuffer)
-        evidenceObject.index = [frontBuffer, frontBuffer + end - start]
+          evidenceObject.snippet = evidenceObject.snippet.substring(start - frontBuffer, end + endBuffer)
+          evidenceObject.index = [frontBuffer, frontBuffer + end - start]
 
+        }
       }
-    }
-    var dataTypes = {
-      zipCode: "<TARGET_ZIP>",
-      city: "<TARGET_CITY>",
-      region: "<TARGET_REGION>"
-    }
-    var corTypes = {
-      lat: "<TARGET_LAT>",
-      lng: "<TARGET_LNG>"
-    }
-
-    function addStart(type,string){
-      return type+' ___ '+string
-    }
-
-    function formatString(str, dataTy, userData, loc) {
-      // if simple RE, then replace
-      if (dataTy in dataTypes) {
-          let MlString = str.replace(userData, dataTypes[dataTy])
-          return addStart(dataTy,MlString)
+      var dataTypes = {
+        zipCode: "<TARGET_ZIP>",
+        city: "<TARGET_CITY>",
+        region: "<TARGET_REGION>"
       }
-      // otherwise do more complicated coordinate replace (see below)
-      else if (loc in corTypes){
-          return replaceCoors(str, loc, userData)
+      var corTypes = {
+        lat: "<TARGET_LAT>",
+        lng: "<TARGET_LNG>"
       }
-    }
+
+      function addStart(type,string){
+        return type+' ___ '+string
+      }
+
+      function formatString(str, dataTy, userData, loc) {
+        // if simple RE, then replace
+        if (dataTy in dataTypes) {
+            let MlString = str.replace(userData, dataTypes[dataTy])
+            return addStart(dataTy,MlString)
+        }
+        // otherwise do more complicated coordinate replace (see below)
+        else if (loc in corTypes){
+            return replaceCoors(str, loc, userData)
+        }
+      }
       /**
        * @param {string} str str we're operating on 
        * @param {string} latLng either "lat" or "lng"
@@ -180,52 +179,57 @@ async function addToEvidenceStore(
             return addStart(latLng,MlString)
           }
       }
-    function svgCheck(strReq, stIdx, endIdx){
-      var begin = stIdx < 400 ? strReq.slice(0, endIdx) : strReq.slice(stIdx - 400, endIdx)
-      var end = endIdx + 400 < strReq.length ? strReq.slice(endIdx, endIdx + 400) : strReq.slice(endIdx, strReq.length)
-      var full = begin.concat(end)  
-      var SVG = [...full.matchAll(/svg/gi)]
-      var path = [...full.matchAll(/path/gi)]
-      var nums = [...full.matchAll(/\d{2,5}/gm)]
-      var dash = [...full.matchAll(/[-|.]{1,5}/gm)]
-      if(SVG.length + path.length == 0 && nums.length < 100 && dash.length < 100){
-          return true
+      function svgCheck(strReq, stIdx, endIdx){
+        var begin = stIdx < 400 ? strReq.slice(0, endIdx) : strReq.slice(stIdx - 400, endIdx)
+        var end = endIdx + 400 < strReq.length ? strReq.slice(endIdx, endIdx + 400) : strReq.slice(endIdx, strReq.length)
+        var full = begin.concat(end)  
+        var SVG = [...full.matchAll(/svg/gi)]
+        var path = [...full.matchAll(/path/gi)]
+        var nums = [...full.matchAll(/\d{2,5}/gm)]
+        var dash = [...full.matchAll(/[-|.]{1,5}/gm)]
+        if(SVG.length + path.length == 0 && nums.length < 100 && dash.length < 100){
+            return true
+        }
+        return false
       }
-      return false
-   }
-    if (!saveFullSnippet && !evidenceObject.cookie){
-      cutDownSnippet(evidenceObject)
-    }
-    else if(saveFullSnippet){
-      userData = getUserData()
-    }
+      if (!saveFullSnippet && !evidenceObject.cookie){
+        cutDownSnippet(evidenceObject)
+      }
+      else if(saveFullSnippet){
+        userData = getUserData()
+      }
 
-    //what if they want full snippit
-    if(evidenceObject.snippet != null){
-      if ([typeEnum.city,typeEnum.fineLocation,typeEnum.coarseLocation,typeEnum.region,typeEnum.zipCode].includes(evidenceObject.typ)) {
-        if(svgCheck(evidenceObject.snippet, evidenceObject.index[0], evidenceObject.index[1]) && evidenceObject.permission == "location"){
-          var formattedString = formatString(evidenceObject.snippet, evidenceObject.typ, userData, evidenceObject.loc)
-          if (await useModel(formattedString) === false){
-            return new Promise(function(res,rej){res('set')})
+      //what if they want full snippit
+      if(evidenceObject.snippet != null){
+        if ([typeEnum.city,typeEnum.fineLocation,typeEnum.coarseLocation,typeEnum.region,typeEnum.zipCode].includes(evidenceObject.typ)) {
+          if(svgCheck(evidenceObject.snippet, evidenceObject.index[0], evidenceObject.index[1]) && evidenceObject.permission == "location"){
+            // not an svg, continue with check
+            var formattedString = formatString(evidenceObject.snippet, evidenceObject.typ, userData, evidenceObject.loc)
+            if (await useModel(formattedString) === false){
+              return new Promise(function (res,rej) {res(evidence)})
+            }
+          } else {
+            // svg, terminate processes
+            return new Promise(function (res,rej) {res(evidence)})
           }
         }
       }
-    }
 
-    let keys = Object.keys(evidenceObject);
-    for (let key of keys) {
-      // looking for null, undefined, NaN, empty string (""), 0, false
-      if (!evidenceObject[key] && typeof evidenceObject[key] != "boolean") {
-        delete evidenceObject[key];
+      let keys = Object.keys(evidenceObject);
+      for (let key of keys) {
+        // looking for null, undefined, NaN, empty string (""), 0, false
+        if (!evidenceObject[key] && typeof evidenceObject[key] != "boolean") {
+          delete evidenceObject[key];
+        }
       }
+      return new Promise(function (res,rej) {res(updateFetchedDict(evidence,evidenceObject))})
     }
-      evidence = updateFetchedDict(evidence, evidenceObject);
-    }
+    return new Promise(function (res,rej) {res(evidence)})
   }
 
   // update the fetched evidence dict with each piece of evidence we have for this request
-  for (const evidenceObj of evidenceToAdd) {
-    unpackAndUpdate(evidenceObj);
+  for (let evidenceObj of evidenceToAdd) {
+    evidence = await unpackAndUpdate(evidenceObj)
   }
   
   if (browser.runtime.getURL("").includes(rootUrl)) {
@@ -234,8 +238,8 @@ async function addToEvidenceStore(
     });
   }
   //final return statement
-  return new Promise(function (resolve, reject) {
-    evidenceKeyval.set(rootUrl, evidence);
+  return new Promise(async function (resolve, reject) {
+    await evidenceKeyval.set(rootUrl, evidence);
     resolve("set");
   });
 }
