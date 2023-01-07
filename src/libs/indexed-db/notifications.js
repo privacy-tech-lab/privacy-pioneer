@@ -7,6 +7,27 @@ import { FIVE_SEC_IN_MILLIS } from "../../background/analysis/constants";
 import { evidenceKeyval } from "../../background/analysis/interactDB/openDB";
 import { getHostname } from "../../background/analysis/utility/util";
 import { settingsKeyval, watchlistKeyval } from "./openDB";
+import { toggleNotifications } from './updateWatchlist'
+
+
+
+export const requestNotificationPermission = async () => { 
+  if (
+        Notification.permission == "default"
+      ) {
+    const res = await Notification.requestPermission();
+
+    if (res === 'granted') { 
+      const watchlistKeys = await watchlistKeyval.keys()
+      watchlistKeys.forEach(
+        async (key) => { 
+          await toggleNotifications(key) 
+        }
+      )
+    }
+    
+      }
+}
 
 /**
  *
@@ -96,6 +117,7 @@ const notify = async (host) => {
 
 const runNotifications = () => {
   browser.webNavigation.onDOMContentLoaded.addListener((activeInfo) => {
+    console.log('content loaded')
     browser.tabs.query({ currentWindow: true, active: true }).then((tabs) => {
       const currentTab = tabs[0];
       const host = getHostname(currentTab.url);

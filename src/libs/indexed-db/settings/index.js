@@ -10,6 +10,7 @@ import {
 } from "../../../background/analysis/classModels";
 import { evidenceKeyval } from "../../../background/analysis/interactDB/openDB";
 import { loadModel } from "../../../background/analysis/interactDB/ml/jsrun.js";
+import { requestNotificationPermission } from "../notifications.js";
 
 export const settingsEnum = Object.freeze({
   dark: "dark",
@@ -183,4 +184,6 @@ export const getTourStatus = async () => {
 export const startStopTour = async () => {
   const touring = await settingsKeyval.get(settingsModelsEnum.tour);
   await settingsKeyval.set(settingsModelsEnum.tour, !touring);
+  await requestNotificationPermission()
+
 };

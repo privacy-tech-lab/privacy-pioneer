@@ -84,14 +84,6 @@ export const homeSteps = [
   },
 ];
 
-const requestNotificationPermission = async () => { 
-  if (
-        Notification.permission !== "granted"
-      ) {
-        await Notification.requestPermission();
-      }
-}
-
 export const HomeTour = ({ steps }) => {
   const history = useHistory();
 
@@ -100,13 +92,11 @@ export const HomeTour = ({ steps }) => {
     if (STATUS.FINISHED == status) {
       history.push("/search");
     } else if (STATUS.SKIPPED == status) {
-      startStopTour();
+      await startStopTour();
       location.reload();
-      await requestNotificationPermission()
     } else if (ACTIONS.CLOSE == action) {
       await startStopTour();
       location.reload();
-      await requestNotificationPermission()
     }
   };
 
@@ -218,17 +208,14 @@ export const SeeAllTour = ({ steps }) => {
   const checkEnd = async (data) => {
     const { action, index, status, type } = data;
     if (STATUS.FINISHED == status) {
-      startStopTour();
+      await startStopTour();
       history.push("/");
-      await requestNotificationPermission()
     } else if (STATUS.SKIPPED == status) {
-      startStopTour();
+      await startStopTour();
       location.reload();
-      await requestNotificationPermission()
     } else if (ACTIONS.CLOSE == action) {
-      startStopTour();
+      await startStopTour();
       location.reload();
-      await requestNotificationPermission()
     }
   };
 
