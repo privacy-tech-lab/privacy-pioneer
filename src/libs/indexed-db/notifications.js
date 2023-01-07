@@ -22,40 +22,45 @@ const getPermittedNotifications = async () => {
 };
 /**
  *
- * @param {object} watchlistEvidence evidemce of a given url
+ * @param {object} evidence evidence of a given url
  * @returns Array of watchlist evidence that hasn't been notified to user
  */
 
-const getUnnotifiedEvidence = async (watchlistEvidence) => {
+const getUnnotifiedEvidence = async (allEvidence) => {
   const alreadyNotified = await settingsKeyval.get("alreadyNotified");
   const permittedKeywords = await getPermittedNotifications();
   const unnotifiedEvidence = [];
 
-  Object.keys(watchlistEvidence).forEach((type) =>
-    Object.keys(watchlistEvidence[type]).forEach((evidence) => {
-      if (
-        permittedKeywords.includes(
-          watchlistEvidence[type][evidence]["watchlistHash"]
+  Object.keys(allEvidence)
+    .forEach((perm) =>
+      Object.keys(allEvidence[perm]).forEach((type) =>
+        Object.keys(allEvidence[perm][type])
+          .forEach((evidence) => {
+            if (
+              allEvidence[perm][type][evidence]["watchlistHash"] && 
+              permittedKeywords.includes(
+              allEvidence[perm][type][evidence]["watchlistHash"]
         )
-      ) {
+            ) {
+              allEvidence[perm][type][evidence]["watchlistHash"]
         if (
           !(
-            watchlistEvidence[type][evidence]["timestamp"] in alreadyNotified
+            allEvidence[perm][type][evidence]["timestamp"] in alreadyNotified
           ) &&
           !unnotifiedEvidence.includes(
-            watchlistEvidence[type][evidence]["watchlistHash"]
+            allEvidence[perm][type][evidence]["watchlistHash"]
           )
         ) {
           unnotifiedEvidence.push(
-            watchlistEvidence[type][evidence]["watchlistHash"]
+            allEvidence[perm][type][evidence]["watchlistHash"]
           );
           alreadyNotified[
-            watchlistEvidence[type][evidence]["timestamp"]
+            allEvidence[perm][type][evidence]["timestamp"]
           ] = true;
         }
       }
     })
-  );
+  ));
   await settingsKeyval.set("alreadyNotified", alreadyNotified);
   return unnotifiedEvidence;
 };
@@ -69,8 +74,8 @@ const getUnnotifiedEvidence = async (watchlistEvidence) => {
 const notify = async (host) => {
   if (Notification.permission == "granted") {
     evidenceKeyval.get(host).then(async (res) => {
-      if (res && res.watchlist) {
-        const evidenceToNotify = await getUnnotifiedEvidence(res.watchlist);
+      if (res) {
+        const evidenceToNotify = await getUnnotifiedEvidence(res);
         if (evidenceToNotify.length > 0) {
           const text = `${evidenceToNotify.length} keyword${
             evidenceToNotify.length > 1 ? "s" : ""
