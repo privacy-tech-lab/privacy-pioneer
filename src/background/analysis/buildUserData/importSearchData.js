@@ -254,7 +254,13 @@ async function importData() {
   if (typeEnum.ipAddress in user_store_dict) {
     var ipArr = [];
     for (const ip of user_store_dict[typeEnum.ipAddress]) {
-      const origHash = watchlistHashGen(typeEnum.ipAddress, ip);
+      let origHash;
+      if (retJson.ip === ip) {
+        origHash = IPINFO_IPKEY
+      }
+      else {
+        origHash = watchlistHashGen(typeEnum.ipAddress, ip);
+      }
       const ipRegex = buildIpRegex(ip);
       const ipObj = createKeywordObj(ipRegex, typeEnum.ipAddress, origHash);
       ipArr.push(ipObj);
