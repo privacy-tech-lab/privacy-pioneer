@@ -47,41 +47,39 @@ const getPermittedNotifications = async () => {
  * @returns Array of watchlist evidence that hasn't been notified to user
  */
 
-const getUnnotifiedEvidence = async (allEvidence) => {
+const getUnnotifiedEvidence = async (allEvidence, host) => {
   const alreadyNotified = await settingsKeyval.get("alreadyNotified");
+  const hostAlreadyNotified = alreadyNotified[host] ?? [];
   const permittedKeywords = await getPermittedNotifications();
   const unnotifiedEvidence = [];
-
   Object.keys(allEvidence)
     .forEach((perm) =>
       Object.keys(allEvidence[perm]).forEach((type) =>
         Object.keys(allEvidence[perm][type])
           .forEach((evidence) => {
             if (
-              allEvidence[perm][type][evidence]["watchlistHash"] && 
+              allEvidence[perm][type][evidence]["watchlistHash"] &&
               permittedKeywords.includes(
-              allEvidence[perm][type][evidence]["watchlistHash"]
-        )
+                allEvidence[perm][type][evidence]["watchlistHash"]
+              )
             ) {
               allEvidence[perm][type][evidence]["watchlistHash"]
-        if (
-          !(
-            allEvidence[perm][type][evidence]["timestamp"] in alreadyNotified
-          ) &&
-          !unnotifiedEvidence.includes(
-            allEvidence[perm][type][evidence]["watchlistHash"]
-          )
-        ) {
-          unnotifiedEvidence.push(
-            allEvidence[perm][type][evidence]["watchlistHash"]
-          );
-          alreadyNotified[
-            allEvidence[perm][type][evidence]["timestamp"]
-          ] = true;
-        }
-      }
-    })
-  ));
+              if (
+                !(hostAlreadyNotified.includes(evidence))
+              ) {
+                if (!unnotifiedEvidence.includes(
+                  allEvidence[perm][type][evidence]["watchlistHash"]
+                )) { 
+                  unnotifiedEvidence.push(
+                  allEvidence[perm][type][evidence]["watchlistHash"]
+                );
+                }
+                hostAlreadyNotified.push(evidence);
+              };
+            };
+          })));
+  
+  alreadyNotified[host] = hostAlreadyNotified;
   await settingsKeyval.set("alreadyNotified", alreadyNotified);
   return unnotifiedEvidence;
 };
@@ -96,15 +94,14 @@ const notify = async (host) => {
   if (Notification.permission == "granted") {
     evidenceKeyval.get(host).then(async (res) => {
       if (res) {
-        const evidenceToNotify = await getUnnotifiedEvidence(res);
+        const evidenceToNotify = await getUnnotifiedEvidence(res,host);
         if (evidenceToNotify.length > 0) {
-          const text = `${evidenceToNotify.length} keyword${
-            evidenceToNotify.length > 1 ? "s" : ""
-          } from your watchlist was found in your web traffic. Click the pop up for details!`;
-          const notif = new Notification("Privacy Pioneer", {
+          const text = `We found ${evidenceToNotify.length} keyword${evidenceToNotify.length > 1 ? 's' : ''} in your web request on the website at ${host}. 
+          \n Click the popup to learn more!`;
+          new Notification("Privacy Pioneer", {
             body: text,
+            requireInteraction:true
           });
-          setTimeout(() => notif.close(), 4000);
         }
       }
     });
@@ -115,22 +112,37 @@ const notify = async (host) => {
  * not present it will run the notify function.
  */
 
-const runNotifications = () => {
-  browser.webNavigation.onDOMContentLoaded.addListener((activeInfo) => {
-    console.log('content loaded')
-    browser.tabs.query({ currentWindow: true, active: true }).then((tabs) => {
-      const currentTab = tabs[0];
-      const host = getHostname(currentTab.url);
-      if (
-        sessionStorage.getItem(host) + FIVE_SEC_IN_MILLIS > Date.now() ||
-        sessionStorage.getItem(host) === null
-      ) {
-        setTimeout(() => {
+const runNotifications = async () => {
+  browser.webNavigation.onCompleted.addListener(
+    async (details) => {
+      const activeTab = (await browser.tabs.query({ currentWindow: true, active: true }))[0];
+      const host = getHostname(activeTab.url)
+      if (details.frameId === 0 && details.tabId === activeTab.id) { 
+        
+        const timeoutId = setTimeout(() => {
+          browser.tabs.onUpdated.removeListener(handleTabUpdated);
+          browser.tabs.onRemoved.removeListener(handleTabClosed);
           notify(host);
-          sessionStorage.setItem(host, Date.now());
-        }, 3000);
+        }, 15000);
+
+        const handleTabUpdated = (tabId, changeInfo, tabInfo) => {
+          const updatedHost = getHostname(tabInfo.url);
+          if (updatedHost != host) {
+            clearTimeout(timeoutId);
+            notify(host);
+          }
+        };
+
+        const handleTabClosed = (closedTabId) => {
+          if (activeTab.id === closedTabId) {
+            clearTimeout(timeoutId)
+            notify(host)
+          }
+        };
+
+        browser.tabs.onUpdated.addListener(handleTabUpdated, { tabId, properties: ['url'] });
+        browser.tabs.onRemoved.addListener(handleTabClosed);
       }
-    });
   });
 };
 
