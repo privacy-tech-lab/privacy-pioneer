@@ -28,6 +28,7 @@ import { saveKeyword } from "../../../libs/indexed-db/updateWatchlist.js";
 import { apiIPToken } from "../../../libs/holdAPI";
 import { getAnalyticsStatus } from "../../../libs/indexed-db/settings";
 import { handleClick } from "../../../libs/indexed-db/getAnalytics";
+import { requestNotificationPermission } from "../../../libs/indexed-db/notifications";
 
 /**
  * Watchlist page view allowing user to add/modify keywords
@@ -63,6 +64,7 @@ const WatchlistView = () => {
   };
 
   useEffect(() => {
+   (async() => await requestNotificationPermission())()
     ReactTooltip.hide();
     updateList();
     // Add listener to modal so we can reset it by taking it off the dom so it doesn't hold references

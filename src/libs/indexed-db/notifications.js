@@ -7,6 +7,27 @@ import { FIVE_SEC_IN_MILLIS } from "../../background/analysis/constants";
 import { evidenceKeyval } from "../../background/analysis/interactDB/openDB";
 import { getHostname } from "../../background/analysis/utility/util";
 import { settingsKeyval, watchlistKeyval } from "./openDB";
+import { toggleNotifications } from './updateWatchlist'
+
+
+
+export const requestNotificationPermission = async () => { 
+  if (
+        Notification.permission == "default"
+      ) {
+    const res = await Notification.requestPermission();
+
+    if (res === 'granted') { 
+      const watchlistKeys = await watchlistKeyval.keys()
+      watchlistKeys.forEach(
+        async (key) => { 
+          await toggleNotifications(key) 
+        }
+      )
+    }
+    
+      }
+}
 
 /**
  *
@@ -22,40 +43,43 @@ const getPermittedNotifications = async () => {
 };
 /**
  *
- * @param {object} watchlistEvidence evidemce of a given url
+ * @param {object} evidence evidence of a given url
  * @returns Array of watchlist evidence that hasn't been notified to user
  */
 
-const getUnnotifiedEvidence = async (watchlistEvidence) => {
+const getUnnotifiedEvidence = async (allEvidence, host) => {
   const alreadyNotified = await settingsKeyval.get("alreadyNotified");
+  const hostAlreadyNotified = alreadyNotified[host] ?? [];
   const permittedKeywords = await getPermittedNotifications();
   const unnotifiedEvidence = [];
-
-  Object.keys(watchlistEvidence).forEach((type) =>
-    Object.keys(watchlistEvidence[type]).forEach((evidence) => {
-      if (
-        permittedKeywords.includes(
-          watchlistEvidence[type][evidence]["watchlistHash"]
-        )
-      ) {
-        if (
-          !(
-            watchlistEvidence[type][evidence]["timestamp"] in alreadyNotified
-          ) &&
-          !unnotifiedEvidence.includes(
-            watchlistEvidence[type][evidence]["watchlistHash"]
-          )
-        ) {
-          unnotifiedEvidence.push(
-            watchlistEvidence[type][evidence]["watchlistHash"]
-          );
-          alreadyNotified[
-            watchlistEvidence[type][evidence]["timestamp"]
-          ] = true;
-        }
-      }
-    })
-  );
+  Object.keys(allEvidence)
+    .forEach((perm) =>
+      Object.keys(allEvidence[perm]).forEach((type) =>
+        Object.keys(allEvidence[perm][type])
+          .forEach((evidence) => {
+            if (
+              allEvidence[perm][type][evidence]["watchlistHash"] &&
+              permittedKeywords.includes(
+                allEvidence[perm][type][evidence]["watchlistHash"]
+              )
+            ) {
+              allEvidence[perm][type][evidence]["watchlistHash"]
+              if (
+                !(hostAlreadyNotified.includes(evidence))
+              ) {
+                if (!unnotifiedEvidence.includes(
+                  allEvidence[perm][type][evidence]["watchlistHash"]
+                )) { 
+                  unnotifiedEvidence.push(
+                  allEvidence[perm][type][evidence]["watchlistHash"]
+                );
+                }
+                hostAlreadyNotified.push(evidence);
+              };
+            };
+          })));
+  
+  alreadyNotified[host] = hostAlreadyNotified;
   await settingsKeyval.set("alreadyNotified", alreadyNotified);
   return unnotifiedEvidence;
 };
@@ -69,16 +93,15 @@ const getUnnotifiedEvidence = async (watchlistEvidence) => {
 const notify = async (host) => {
   if (Notification.permission == "granted") {
     evidenceKeyval.get(host).then(async (res) => {
-      if (res && res.watchlist) {
-        const evidenceToNotify = await getUnnotifiedEvidence(res.watchlist);
+      if (res) {
+        const evidenceToNotify = await getUnnotifiedEvidence(res,host);
         if (evidenceToNotify.length > 0) {
-          const text = `${evidenceToNotify.length} keyword${
-            evidenceToNotify.length > 1 ? "s" : ""
-          } from your watchlist was found in your web traffic. Click the pop up for details!`;
-          const notif = new Notification("Privacy Pioneer", {
+          const text = `We found ${evidenceToNotify.length} keyword${evidenceToNotify.length > 1 ? 's' : ''} in your web request on the website at ${host}. 
+          \n Click the popup to learn more!`;
+          new Notification("Privacy Pioneer", {
             body: text,
+            requireInteraction:true
           });
-          setTimeout(() => notif.close(), 4000);
         }
       }
     });
@@ -89,21 +112,37 @@ const notify = async (host) => {
  * not present it will run the notify function.
  */
 
-const runNotifications = () => {
-  browser.webNavigation.onDOMContentLoaded.addListener((activeInfo) => {
-    browser.tabs.query({ currentWindow: true, active: true }).then((tabs) => {
-      const currentTab = tabs[0];
-      const host = getHostname(currentTab.url);
-      if (
-        sessionStorage.getItem(host) + FIVE_SEC_IN_MILLIS > Date.now() ||
-        sessionStorage.getItem(host) === null
-      ) {
-        setTimeout(() => {
+const runNotifications = async () => {
+  browser.webNavigation.onCompleted.addListener(
+    async (details) => {
+      const activeTab = (await browser.tabs.query({ currentWindow: true, active: true }))[0];
+      const host = getHostname(activeTab.url)
+      if (details.frameId === 0 && details.tabId === activeTab.id) { 
+        
+        const timeoutId = setTimeout(() => {
+          browser.tabs.onUpdated.removeListener(handleTabUpdated);
+          browser.tabs.onRemoved.removeListener(handleTabClosed);
           notify(host);
-          sessionStorage.setItem(host, Date.now());
-        }, 3000);
+        }, 15000);
+
+        const handleTabUpdated = (tabId, changeInfo, tabInfo) => {
+          const updatedHost = getHostname(tabInfo.url);
+          if (updatedHost != host) {
+            clearTimeout(timeoutId);
+            notify(host);
+          }
+        };
+
+        const handleTabClosed = (closedTabId) => {
+          if (activeTab.id === closedTabId) {
+            clearTimeout(timeoutId)
+            notify(host)
+          }
+        };
+
+        browser.tabs.onUpdated.addListener(handleTabUpdated, { tabId, properties: ['url'] });
+        browser.tabs.onRemoved.addListener(handleTabClosed);
       }
-    });
   });
 };
 
