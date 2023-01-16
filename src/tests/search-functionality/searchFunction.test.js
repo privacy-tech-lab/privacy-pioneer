@@ -64,7 +64,6 @@ import {
     const pixel_Search = mockSearchData.pixelSearch
     const output = pixelSearch(pixel_Search.strReq, pixel_Search.networkKeywords, pixel_Search.rootUrl, pixel_Search.reqUrl)
     const pixel = output[0]
-    console.log(output)
     expect(pixel.permission).toBe("tracking")
     expect(pixel.snippet).toBe("https://www.google-analytics.com/collect123abc123abc")
     expect(pixel.typ).toBe("trackingPixel")
@@ -75,7 +74,6 @@ import {
     const dynamicPixel_Search = mockSearchData.dynamicPixelSearch
     const output = dynamicPixelSearch(dynamicPixel_Search.strReq, dynamicPixel_Search.reqUrl, dynamicPixel_Search.rootUrl)
     const pixel = output[0]
-    console.log(output)
     expect(pixel.permission).toBe("tracking")
     expect(pixel.typ).toBe("possiblePixel")
     expect(pixel.index).toStrictEqual([ 11, 132 ])

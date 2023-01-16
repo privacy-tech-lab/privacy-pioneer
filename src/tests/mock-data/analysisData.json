@@ -1,0 +1,74 @@
+{
+    "networkKeywords" : {
+        "location":{
+            "zipCode": [{"keyword" : "12345", "keywordHash" : "222222222"}],
+            "region": [{"keyword" : "testRegion", "keywordHash" : "222222222"}],
+            "city": [{"keyword" : "testCity", "keywordHash" : "222222222"}],
+            "streetAddress": [{"keyword": "1 Test Road", "keywordHash" : "222222222"}]
+        },
+        "tracking" : {
+            "trackingPixel" : [
+                "facebook.com/tr/",
+                "ct.pinterest.com",
+                "af.monetate.net",
+                "csm.va.us.criteo.net",
+                "google-analytics.com",
+                "dpm.demdex.net",
+                "google.ca",
+                "a.tribalfusion.com",
+                "data.photorank.me",
+                "stats.g.doubleclick.net",
+                "vfcorp.dl.sc.omtrdc.net",
+                "ib.adnxs.com",
+                "idsync.rlcdn.com",
+                "p.brsrvr.com",
+                "adservice.google.com",
+                "googletagmanager.com/gtag/js",
+                "api.thetradedesk.com/v3/",
+                "api2.amplitude.com/2/httpapi",
+                "api2.eu.amplitude.com/2/httpapi",
+                "cdn.heapanalytics.com",
+                "cdn.mxpnl.com/libs/mixpanel-2-latest.min.js",
+                "tags.tiqcdn.com/utag/",
+                "app.pendo.io/api/",
+                "web-sdk.smartlook.com/",
+                "js-tag.zemanta.com/zcpt.js",
+                "connect.facebook.net/en_US/fbevents.js",
+                "static.ads-twitter.com/uwt.js",
+                "bat.bing.com/bat.js",
+                "trackingjs.com",
+                "analytics.tiktok.com/i18n/pixel/events.js",
+                "api.trackingmore.com"
+              ],
+            "fingerprinting": [
+                "Fingerprint2",
+                "https://github.com/Valve/fingerprintjs2",
+                "http://valve.github.io",
+                "getFPParams",
+                "getCanvasFp",
+                "swfContainerId",
+                "swfPath",
+                "flash/compiled/FontList.swf",
+                "Fingerprint2.x64hash128",
+                "hasFingerprint",
+                "c$jscomp$0.config.F.Fonts",
+                "c$jscomp$0.config.F.Flash",
+                "imprint.min.js",
+                "imprint.test",
+                "clientjs",
+                "client.getFingerprint",
+                "https://api.castle.io/v1/devices/",
+                "https://api3.siftscience.com/v3/accounts/",
+                "visitorFingerprint",
+                "device_fingerprint",
+                "mweb_fingerprint_v2",
+                "run_page_fingerprinting",
+                "fingerprintID"
+              ]
+        },
+        "watchlist" : {
+            "ipAddress" : {"keyword" : "/12345678910/", "keywordHash" : "123456789"}
+        }
+
+    }
+}
