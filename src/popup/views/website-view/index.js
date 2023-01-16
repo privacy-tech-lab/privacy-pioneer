@@ -31,7 +31,10 @@ import { getWebsiteLabels } from "../../../libs/indexed-db/getIdbData.js";
 import { getHostname } from "../../../background/analysis/utility/util.js";
 import { useHistory } from "react-router";
 import RiseLoader from "react-spinners/RiseLoader";
-import { permissionEnum } from "../../../background/analysis/classModels";
+import {
+  permissionEnum,
+  settingsModelsEnum,
+} from "../../../background/analysis/classModels";
 import { sortByTime } from "../label-view";
 import {
   IPINFO_IPKEY,
@@ -190,8 +193,8 @@ const WebsiteView = () => {
                         "Home Button",
                         "Pop-Up",
                         website.toString(),
-                        "Not Applicable",
-                        "Not Applicable"
+                        settingsModelsEnum.notApplicable,
+                        settingsModelsEnum.notApplicable
                       );
                     }
                   };
@@ -210,8 +213,8 @@ const WebsiteView = () => {
                         "Watchlist Button",
                         "Pop-Up",
                         website.toString(),
-                        "Not Applicable",
-                        "Not Applicable"
+                        settingsModelsEnum.notApplicable,
+                        settingsModelsEnum.notApplicable
                       );
                     }
                   };
@@ -231,8 +234,8 @@ const WebsiteView = () => {
                         "Enable Extension Off: " + extensionEnabled.toString(),
                         "Pop-Up",
                         website.toString(),
-                        "Not Applicable",
-                        "Not Applicable"
+                        settingsModelsEnum.notApplicable,
+                        settingsModelsEnum.notApplicable
                       );
                     }
                   };
@@ -297,8 +300,8 @@ const WebsiteView = () => {
                             website.toString(),
                           "Website/Pop-Up",
                           website.toString(),
-                          "Not Applicable",
-                          "Not Applicable"
+                          settingsModelsEnum.notApplicable,
+                          settingsModelsEnum.notApplicable
                         ); /* label card in website view add string */
                       }
                     };

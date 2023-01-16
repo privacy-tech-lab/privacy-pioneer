@@ -21,6 +21,7 @@ import { watchlistKeyval } from "../../../libs/indexed-db/openDB.js";
 import { Modal } from "bootstrap";
 import {
   permissionEnum,
+  settingsModelsEnum,
   typeEnum,
 } from "../../../background/analysis/classModels";
 import ReactTooltip from "react-tooltip";
@@ -108,8 +109,8 @@ const WatchlistView = () => {
             <div>
               <STitle>Watchlist</STitle>
               <SSubtitle>
-                Edit your watchlist so you can keep track of how
-                companies collect and share your personal information
+                Edit your watchlist so you can keep track of how companies
+                collect and share your personal information
               </SSubtitle>
             </div>
             <div
@@ -129,7 +130,13 @@ const WatchlistView = () => {
                   const getAnalysis = async () => {
                     const status = await getAnalyticsStatus();
                     if (status == true) {
-                      handleClick("Add Keyword", "Watchlist", "Not Applicable", "Not Applicable", "Not Applicable");
+                      handleClick(
+                        "Add Keyword",
+                        "Watchlist",
+                        settingsModelsEnum.notApplicable,
+                        settingsModelsEnum.notApplicable,
+                        settingsModelsEnum.notApplicable
+                      );
                     }
                   };
                   getAnalysis();
@@ -147,9 +154,9 @@ const WatchlistView = () => {
                       handleClick(
                         "Add IP Button",
                         "Watchlist",
-                        "Not Applicable",
-                        "Not Applicable",
-                        "Not Applicable"
+                        settingsModelsEnum.notApplicable,
+                        settingsModelsEnum.notApplicable,
+                        settingsModelsEnum.notApplicable
                       );
                     }
                   };
@@ -161,17 +168,17 @@ const WatchlistView = () => {
                       handleClick(
                         "IP Retrieved",
                         "Watchlist",
-                        "Not Applicable",
-                        "Not Applicable",
-                        "Not Applicable"
+                        settingsModelsEnum.notApplicable,
+                        settingsModelsEnum.notApplicable,
+                        settingsModelsEnum.notApplicable
                       ))
                     : (null,
                       handleClick(
                         "Add IP canceled",
                         "Watchlist",
-                        "Not Applicable",
-                        "Not Applicable",
-                        "Not Applicable"
+                        settingsModelsEnum.notApplicable,
+                        settingsModelsEnum.notApplicable,
+                        settingsModelsEnum.notApplicable
                       ));
                 }}
               >

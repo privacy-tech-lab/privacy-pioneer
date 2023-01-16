@@ -4,7 +4,7 @@ privacy-tech-lab, https://privacytechlab.org/
 */
 
 import React from "react";
-import { privacyLabels } from "../../../../../background/analysis/classModels";
+import { privacyLabels, settingsModelsEnum } from "../../../../../background/analysis/classModels";
 import * as Icons from "../../../../../libs/icons";
 import { SContainer, SFooter, SHeader, SLabel, STotal } from "./style";
 import { useHistory } from "react-router";
@@ -43,8 +43,8 @@ const LabelSummaryCard = ({
             handleClick(
               "Overview Label: " + labeltype.toString(),
               "Home",
-              "Not Applicable",
-              "Not Applicable",
+              settingsModelsEnum.notApplicable,
+              settingsModelsEnum.notApplicable,
               labeltype.toString() + " Only"
             ); /*Overview Summary Label Added*/
           }

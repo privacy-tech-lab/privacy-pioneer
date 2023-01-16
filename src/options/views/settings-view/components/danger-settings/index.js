@@ -4,6 +4,7 @@ privacy-tech-lab, https://privacytechlab.org/
 */
 
 import React from "react";
+import { settingsModelsEnum } from "../../../../../background/analysis/classModels";
 import { handleClick } from "../../../../../libs/indexed-db/getAnalytics";
 import {
   deleteEvidenceDB,
@@ -34,7 +35,13 @@ export const DangerZone = () => {
       const getAnalysis = async () => {
         const status = await getAnalyticsStatus();
         if (status == true) {
-          handleClick("Delete All Evidence Data", "Settings", "Not Applicable", "Not Applicable", "Not Applicable");
+          handleClick(
+            "Delete All Evidence Data",
+            "Settings",
+            settingsModelsEnum.notApplicable,
+            settingsModelsEnum.notApplicable,
+            settingsModelsEnum.notApplicable
+          );
         }
       };
       getAnalysis();
@@ -53,7 +60,13 @@ export const DangerZone = () => {
       const getAnalysis = async () => {
         const status = await getAnalyticsStatus();
         if (status == true) {
-          handleClick("Delete Watchlist", "Settings", "Not Applicable", "Not Applicable", "Not Applicable");
+          handleClick(
+            "Delete Watchlist",
+            "Settings",
+            settingsModelsEnum.notApplicable,
+            settingsModelsEnum.notApplicable,
+            settingsModelsEnum.notApplicable
+          );
         }
       };
       getAnalysis();

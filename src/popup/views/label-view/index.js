@@ -13,6 +13,7 @@ import NavBar from "../../components/nav-bar";
 import {
   permissionEnum,
   privacyLabels,
+  settingsModelsEnum,
 } from "../../../background/analysis/classModels";
 import { getWebsiteLabels } from "../../../libs/indexed-db/getIdbData.js";
 import { evidenceKeyval as evidenceIDB } from "../../../background/analysis/interactDB/openDB.js";
@@ -125,8 +126,8 @@ const LabelView = () => {
                       "Go Back from Label Card (Website)",
                       "Website/Pop-up",
                       website.toString(),
-                      "Not Applicable",
-                      "Not Applicable"
+                      settingsModelsEnum.notApplicable,
+                      settingsModelsEnum.notApplicable
                     );
                   }
                 };

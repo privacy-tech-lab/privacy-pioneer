@@ -15,6 +15,7 @@ import {
 import styled from "styled-components";
 import { motion } from "framer-motion";
 import { handleClick } from "../../../../libs/indexed-db/getAnalytics";
+import { settingsModelsEnum } from "../../../../background/analysis/classModels";
 
 const SThemeSection = styled.div`
   display: flex;
@@ -63,9 +64,9 @@ export const ThemeSelection = ({ changeTheme }) => {
               handleClick(
                 "Light Theme",
                 "Settings",
-                "Not Applicable",
-                "Not Applicable",
-                "Not Applicable"
+                settingsModelsEnum.notApplicable,
+                settingsModelsEnum.notApplicable,
+                settingsModelsEnum.notApplicable
               );
             }
           };
@@ -86,9 +87,9 @@ export const ThemeSelection = ({ changeTheme }) => {
               handleClick(
                 "Dark Theme Setting",
                 "Settings",
-                "Not Applicable",
-                "Not Applicable",
-                "Not Applicable"
+                settingsModelsEnum.notApplicable,
+                settingsModelsEnum.notApplicable,
+                settingsModelsEnum.notApplicable
               );
             }
           };

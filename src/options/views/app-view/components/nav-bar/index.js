@@ -6,6 +6,7 @@ privacy-tech-lab, https://privacytechlab.org/
 import React, { useEffect, useState } from "react";
 import { useHistory, useLocation } from "react-router";
 import logo from "../../../../../assets/logos/Rocket.svg";
+import { settingsModelsEnum } from "../../../../../background/analysis/classModels";
 import * as Icons from "../../../../../libs/icons";
 import { handleClick } from "../../../../../libs/indexed-db/getAnalytics";
 import { getAnalyticsStatus } from "../../../../../libs/indexed-db/settings";
@@ -62,9 +63,9 @@ const NavBar = () => {
                 handleClick(
                   "Privacy Pioneer Logo",
                   "Nav-Bar",
-                  "Not Applicable",
-                  "Not Applicable",
-                  "Not Applicable"
+                  settingsModelsEnum.notApplicable,
+                  settingsModelsEnum.notApplicable,
+                  settingsModelsEnum.notApplicable
                 ); // Privacy Pioneer Logo (Brings back to Home page)
               }
             };
@@ -83,7 +84,13 @@ const NavBar = () => {
             const getAnalysis = async () => {
               const status = await getAnalyticsStatus();
               if (status == true) {
-                handleClick("Home Button", "Nav-Bar", "Not Applicable", "Not Applicable", "Not Applicable");
+                handleClick(
+                  "Home Button",
+                  "Nav-Bar",
+                  settingsModelsEnum.notApplicable,
+                  settingsModelsEnum.notApplicable,
+                  settingsModelsEnum.notApplicable
+                );
               }
             };
             getAnalysis();
@@ -101,7 +108,13 @@ const NavBar = () => {
             const getAnalysis = async () => {
               const status = await getAnalyticsStatus();
               if (status == true) {
-                handleClick("Watchlist", "Nav-Bar", "Not Applicable", "Not Applicable", "Not Applicable");
+                handleClick(
+                  "Watchlist",
+                  "Nav-Bar",
+                  settingsModelsEnum.notApplicable,
+                  settingsModelsEnum.notApplicable,
+                  settingsModelsEnum.notApplicable
+                );
               }
             };
             getAnalysis();
@@ -118,7 +131,13 @@ const NavBar = () => {
             const getAnalysis = async () => {
               const status = await getAnalyticsStatus();
               if (status == true) {
-                handleClick("Settings", "Nav-Bar", "Not Applicable", "Not Applicable", "Not Applicable");
+                handleClick(
+                  "Settings",
+                  "Nav-Bar",
+                  settingsModelsEnum.notApplicable,
+                  settingsModelsEnum.notApplicable,
+                  settingsModelsEnum.notApplicable
+                );
               }
             };
             getAnalysis();
@@ -136,7 +155,13 @@ const NavBar = () => {
             const getAnalysis = async () => {
               const status = await getAnalyticsStatus();
               if (status == true) {
-                handleClick("About", "Nav-Bar", "Not Applicable", "Not Applicable", "Not Applicable");
+                handleClick(
+                  "About",
+                  "Nav-Bar",
+                  settingsModelsEnum.notApplicable,
+                  settingsModelsEnum.notApplicable,
+                  settingsModelsEnum.notApplicable
+                );
               }
             };
             getAnalysis();
