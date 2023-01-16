@@ -23,6 +23,7 @@ import { HomeTour, homeSteps } from "../../../libs/tour/index.js";
 import { homeInit } from "../../../libs/init.js";
 import { getAnalyticsStatus } from "../../../libs/indexed-db/settings";
 import { handleClick } from "../../../libs/indexed-db/getAnalytics";
+import { settingsModelsEnum } from "../../../background/analysis/classModels";
 
 /**
  * Home page view containing overview and recently identified labels
@@ -87,7 +88,13 @@ const HomeView = () => {
                 const getAnalysis = async () => {
                   const status = await getAnalyticsStatus();
                   if (status == true) {
-                    handleClick("See All History", "Home", null, null, null);
+                    handleClick(
+                      "See All History",
+                      "Home",
+                      settingsModelsEnum.notApplicable,
+                      settingsModelsEnum.notApplicable,
+                      settingsModelsEnum.notApplicable
+                    );
                   }
                 };
                 getAnalysis();

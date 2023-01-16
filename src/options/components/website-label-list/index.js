@@ -9,6 +9,7 @@ import LabelCard from "../../../libs/components/label-card";
 import { SContainer, SItem, SLabel, SLabelGroup, SSeperator } from "./style";
 import { getAnalyticsStatus } from "../../../libs/indexed-db/settings";
 import { handleClick } from "../../../libs/indexed-db/getAnalytics";
+import { settingsModelsEnum } from "../../../background/analysis/classModels";
 
 /**
  * Makes label cards for a given website
@@ -47,8 +48,8 @@ const LabelCards = ({ website, handleTap, allLabels, webLabels }) => {
                   website.toString(),
                 "History/Recent",
                 website.toString(),
-                null,
-                null
+                settingsModelsEnum.notApplicable,
+                settingsModelsEnum.notApplicable
               ); /* Label Card from History/Recent */
             }
           };

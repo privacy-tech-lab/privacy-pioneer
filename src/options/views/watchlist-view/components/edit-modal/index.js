@@ -28,6 +28,7 @@ import { saveKeyword } from "../../../../../libs/indexed-db/updateWatchlist.js";
 import {
   keywordTypes,
   permissionEnum,
+  settingsModelsEnum,
   typeEnum,
 } from "../../../../../background/analysis/classModels";
 import { Modal } from "bootstrap";
@@ -121,9 +122,9 @@ const EditModal = ({ passKeywordType, passKeyword, edit, id, updateList }) => {
                     handleClick(
                       "Watchlist Type Dropdown",
                       "Watchlist Modal",
-                      null,
-                      null,
-                      null
+                      settingsModelsEnum.notApplicable,
+                      settingsModelsEnum.notApplicable,
+                      settingsModelsEnum.notApplicable
                     );
                   }
                 };
@@ -145,9 +146,9 @@ const EditModal = ({ passKeywordType, passKeyword, edit, id, updateList }) => {
                           handleClick(
                             "Watchlist Type Picked: " + key.toString(),
                             "Watchlist Modal",
-                            null,
-                            null,
-                            null
+                            settingsModelsEnum.notApplicable,
+                            settingsModelsEnum.notApplicable,
+                            settingsModelsEnum.notApplicable
                           );
                         }
                       };
@@ -234,9 +235,9 @@ const EditModal = ({ passKeywordType, passKeyword, edit, id, updateList }) => {
                             ": " +
                             key.toString(),
                           "Watchlist Modal",
-                          null,
-                          null,
-                          null
+                          settingsModelsEnum.notApplicable,
+                          settingsModelsEnum.notApplicable,
+                          settingsModelsEnum.notApplicable
                         );
                       }
                     };

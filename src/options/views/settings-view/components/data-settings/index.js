@@ -6,6 +6,7 @@ privacy-tech-lab, https://privacytechlab.org/
 import React, { useEffect, useRef, useState } from "react";
 import {
   permissionEnum,
+  settingsModelsEnum,
   timeRangeEnum,
 } from "../../../../../background/analysis/classModels";
 import * as Icons from "../../../../../libs/icons";
@@ -66,9 +67,9 @@ export const FullSnippetToggle = () => {
               handleClick(
                 "Save Full HTTP Request Off: " + snippetStatus.toString(),
                 "Settings",
-                null,
-                null,
-                null
+                settingsModelsEnum.notApplicable,
+                settingsModelsEnum.notApplicable,
+                settingsModelsEnum.notApplicable
               );
             }
           };
@@ -111,9 +112,9 @@ export const OptimizationToggle = () => {
                 "Optimize Performance Toggle Off: " +
                   optimizationStatus.toString(),
                 "Settings",
-                null,
-                null,
-                null
+                settingsModelsEnum.notApplicable,
+                settingsModelsEnum.notApplicable,
+                settingsModelsEnum.notApplicable
               );
             }
           };
@@ -155,9 +156,9 @@ export const AnalyticsToggle = () => {
               handleClick(
                 "Analytics Toggle Off: " + analyticsStatus.toString(),
                 "Settings",
-                null,
-                null,
-                null
+                settingsModelsEnum.notApplicable,
+                settingsModelsEnum.notApplicable,
+                settingsModelsEnum.notApplicable
               );
             }
           };
@@ -217,9 +218,9 @@ export const LabelToggle = () => {
                     "Labels Toggle On: " +
                     labelStatus[label].toString(),
                   "Settings",
-                  null,
-                  null,
-                  null
+                  settingsModelsEnum.notApplicable,
+                  settingsModelsEnum.notApplicable,
+                  settingsModelsEnum.notApplicable
                 );
               }
             };
@@ -261,9 +262,9 @@ export const ExportData = () => {
               handleClick(
                 "Export Data Time Dropdown",
                 "Settings",
-                null,
-                null,
-                null
+                settingsModelsEnum.notApplicable,
+                settingsModelsEnum.notApplicable,
+                settingsModelsEnum.notApplicable
               );
             }
           };
@@ -282,7 +283,10 @@ export const ExportData = () => {
                   if (status == true) {
                     handleClick(
                       "Export Data Time: " + title.toString(),
-                      "Settings"
+                      "Settings",
+                      settingsModelsEnum.notApplicable,
+                      settingsModelsEnum.notApplicable,
+                      settingsModelsEnum.notApplicable
                     );
                   }
                 };
@@ -305,7 +309,13 @@ export const ExportData = () => {
           const getAnalysis = async () => {
             const status = await getAnalyticsStatus();
             if (status == true) {
-              handleClick("TSV Download", "Settings", null, null, null);
+              handleClick(
+                "TSV Download",
+                "Settings",
+                settingsModelsEnum.notApplicable,
+                settingsModelsEnum.notApplicable,
+                settingsModelsEnum.notApplicable
+              );
             }
           };
           getAnalysis();
@@ -319,7 +329,13 @@ export const ExportData = () => {
           const getAnalysis = async () => {
             const status = await getAnalyticsStatus();
             if (status == true) {
-              handleClick("JSON Download", "Settings", null, null, null);
+              handleClick(
+                "JSON Download",
+                "Settings",
+                settingsModelsEnum.notApplicable,
+                settingsModelsEnum.notApplicable,
+                settingsModelsEnum.notApplicable
+              );
             }
           };
           getAnalysis();
@@ -336,9 +352,9 @@ export const ExportData = () => {
               handleClick(
                 "Analytics Export Button",
                 "Settings",
-                null,
-                null,
-                null
+                settingsModelsEnum.notApplicable,
+                settingsModelsEnum.notApplicable,
+                settingsModelsEnum.notApplicable
               );
             }
           };

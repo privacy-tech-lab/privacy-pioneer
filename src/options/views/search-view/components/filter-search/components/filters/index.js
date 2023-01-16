@@ -6,7 +6,7 @@ privacy-tech-lab, https://privacytechlab.org/
 import React, { useState } from "react";
 import { CompanyLogoSVG } from "../../../../../../../libs/icons/company-icons";
 import { SFilterRow, SFilterRowItem, SCompaniesButton } from "./style";
-import { permissionEnum } from "../../../../../../../background/analysis/classModels";
+import { permissionEnum, settingsModelsEnum } from "../../../../../../../background/analysis/classModels";
 import * as Icons from "../../../../../../../libs/icons";
 import { getAnalyticsStatus } from "../../../../../../../libs/indexed-db/settings";
 import { handleClick } from "../../../../../../../libs/indexed-db/getAnalytics";
@@ -54,8 +54,8 @@ const Filters = ({
                       " Filter Button Activated: " +
                       permFilter[permission].toString(),
                     "History",
-                    null,
-                    null,
+                    settingsModelsEnum.notApplicable,
+                    settingsModelsEnum.notApplicable,
                     Object.values(permFilter)
                   );
                 }
@@ -78,9 +78,9 @@ const Filters = ({
                 handleClick(
                   "Companies Filter Button",
                   "History",
-                  null,
-                  null,
-                  null
+                  settingsModelsEnum.notApplicable,
+                  settingsModelsEnum.notApplicable,
+                  settingsModelsEnum.notApplicable
                 );
               }
             };
@@ -120,8 +120,8 @@ const Filters = ({
                     handleClick(
                       "Reset Filter",
                       "History",
-                      null,
-                      null,
+                      settingsModelsEnum.notApplicable,
+                      settingsModelsEnum.notApplicable,
                       Object.values(permFilter)
                     );
                   }
@@ -149,7 +149,7 @@ const Filters = ({
                       " Company Filter Activated: " +
                       companyFilter[parent].toString(),
                     "History",
-                    null,
+                    settingsModelsEnum.notApplicable,
                     Object.values(companyFilter)
                   );
                 }

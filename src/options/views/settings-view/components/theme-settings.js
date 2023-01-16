@@ -15,6 +15,7 @@ import {
 import styled from "styled-components";
 import { motion } from "framer-motion";
 import { handleClick } from "../../../../libs/indexed-db/getAnalytics";
+import { settingsModelsEnum } from "../../../../background/analysis/classModels";
 
 const SThemeSection = styled.div`
   display: flex;
@@ -60,7 +61,13 @@ export const ThemeSelection = ({ changeTheme }) => {
           const getAnalysis = async () => {
             const status = await getAnalyticsStatus();
             if (status == true) {
-              handleClick("Light Theme", "Settings", null, null, null);
+              handleClick(
+                "Light Theme",
+                "Settings",
+                settingsModelsEnum.notApplicable,
+                settingsModelsEnum.notApplicable,
+                settingsModelsEnum.notApplicable
+              );
             }
           };
           getAnalysis();
@@ -77,7 +84,13 @@ export const ThemeSelection = ({ changeTheme }) => {
           const getAnalysis = async () => {
             const status = await getAnalyticsStatus();
             if (status == true) {
-              handleClick("Dark Theme Setting", "Settings", null, null, null);
+              handleClick(
+                "Dark Theme Setting",
+                "Settings",
+                settingsModelsEnum.notApplicable,
+                settingsModelsEnum.notApplicable,
+                settingsModelsEnum.notApplicable
+              );
             }
           };
           getAnalysis();

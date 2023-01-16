@@ -420,4 +420,5 @@ export const settingsModelsEnum = Object.freeze({
   optimizePerformance: "optimizePerformance",
   extensionEnabled: "extensionEnabled",
   analytics: "analytics",
+  notApplicable: "Not Applicable",
 });

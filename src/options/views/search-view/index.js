@@ -6,9 +6,10 @@ privacy-tech-lab, https://privacytechlab.org/
 import { Modal } from "bootstrap";
 import React, { useEffect, useState } from "react";
 import { useHistory, useLocation } from "react-router";
+import { settingsModelsEnum } from "../../../background/analysis/classModels";
 import * as Icons from "../../../libs/icons";
 import { handleClick } from "../../../libs/indexed-db/getAnalytics";
-import { getAnalyticsStatus } from "../../../libs/indexed-db/settings";
+import { getAnalyticsStatus, settingsEnum } from "../../../libs/indexed-db/settings";
 import { searchInit } from "../../../libs/init";
 import { seeAllSteps, SeeAllTour } from "../../../libs/tour";
 import Scaffold from "../../components/scaffold";
@@ -80,9 +81,9 @@ const SearchView = () => {
                     handleClick(
                       "Go Back (from History)",
                       "History",
-                      null,
-                      null,
-                      null
+                      settingsModelsEnum.notApplicable,
+                      settingsModelsEnum.notApplicable,
+                      settingsModelsEnum.notApplicable
                     );
                   }
                 };

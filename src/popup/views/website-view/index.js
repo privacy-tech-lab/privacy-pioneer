@@ -31,7 +31,10 @@ import { getWebsiteLabels } from "../../../libs/indexed-db/getIdbData.js";
 import { getHostname } from "../../../background/analysis/utility/util.js";
 import { useHistory } from "react-router";
 import RiseLoader from "react-spinners/RiseLoader";
-import { permissionEnum } from "../../../background/analysis/classModels";
+import {
+  permissionEnum,
+  settingsModelsEnum,
+} from "../../../background/analysis/classModels";
 import { sortByTime } from "../label-view";
 import {
   IPINFO_IPKEY,
@@ -186,7 +189,13 @@ const WebsiteView = () => {
                   const getAnalysis = async () => {
                     const status = await getAnalyticsStatus();
                     if (status == true) {
-                      handleClick("Home Button", "Pop-Up", null, null, null);
+                      handleClick(
+                        "Home Button",
+                        "Pop-Up",
+                        website.toString(),
+                        settingsModelsEnum.notApplicable,
+                        settingsModelsEnum.notApplicable
+                      );
                     }
                   };
                   getAnalysis();
@@ -203,9 +212,9 @@ const WebsiteView = () => {
                       handleClick(
                         "Watchlist Button",
                         "Pop-Up",
-                        null,
-                        null,
-                        null
+                        website.toString(),
+                        settingsModelsEnum.notApplicable,
+                        settingsModelsEnum.notApplicable
                       );
                     }
                   };
@@ -224,9 +233,9 @@ const WebsiteView = () => {
                       handleClick(
                         "Enable Extension Off: " + extensionEnabled.toString(),
                         "Pop-Up",
-                        null,
-                        null,
-                        null
+                        website.toString(),
+                        settingsModelsEnum.notApplicable,
+                        settingsModelsEnum.notApplicable
                       );
                     }
                   };
@@ -289,10 +298,10 @@ const WebsiteView = () => {
                             label.toString() +
                             " Website: " +
                             website.toString(),
-                          "Website",
+                          "Website/Pop-Up",
                           website.toString(),
-                          null,
-                          null
+                          settingsModelsEnum.notApplicable,
+                          settingsModelsEnum.notApplicable
                         ); /* label card in website view add string */
                       }
                     };

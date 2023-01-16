@@ -17,12 +17,18 @@ import {
   deleteKeyword,
   toggleNotifications,
 } from "../../../../../libs/indexed-db/updateWatchlist.js";
-import { keywordTypes } from "../../../../../background/analysis/classModels";
+import {
+  keywordTypes,
+  settingsModelsEnum,
+} from "../../../../../background/analysis/classModels";
 import { Modal } from "bootstrap";
 import { getAnalyticsStatus } from "../../../../../libs/indexed-db/settings";
 import { handleClick } from "../../../../../libs/indexed-db/getAnalytics";
 import ReactTooltip from "react-tooltip";
-import {IPINFO_IPKEY, IPINFO_ADDRESSKEY} from "../../../../../background/analysis/buildUserData/importSearchData";
+import {
+  IPINFO_IPKEY,
+  IPINFO_ADDRESSKEY,
+} from "../../../../../background/analysis/buildUserData/importSearchData";
 
 /**
  * List item displaying keyword and type
@@ -54,24 +60,31 @@ const ListItem = ({
 
   return (
     <SItem>
-        {id == IPINFO_IPKEY &&
-          <SButtonText data-tip data-for="sButton">
-            {keyword} 
-          </SButtonText>
-        }
-        {id == IPINFO_ADDRESSKEY &&
-          <SButtonText data-tip data-for="sButton">
-            {keyword} 
-          </SButtonText>
-        }
-        {id != IPINFO_IPKEY && id != IPINFO_ADDRESSKEY &&
-          <SButtonText>{keyword}</SButtonText>
-        }
-          <ReactTooltip id="sButton" tipPointerPosition = "start" place= "bottom" offset = "{'left': 120}" 
-          backgroundColor = "var(--primaryBrandColor)" textColor = "var(--primaryBrandTintColor)" effect="solid"
-          delayShow = "350">
-            This keyword was automatically generated via ipinfo.io
-          </ReactTooltip>
+      {id == IPINFO_IPKEY && (
+        <SButtonText data-tip data-for="sButton">
+          {keyword}
+        </SButtonText>
+      )}
+      {id == IPINFO_ADDRESSKEY && (
+        <SButtonText data-tip data-for="sButton">
+          {keyword}
+        </SButtonText>
+      )}
+      {id != IPINFO_IPKEY && id != IPINFO_ADDRESSKEY && (
+        <SButtonText>{keyword}</SButtonText>
+      )}
+      <ReactTooltip
+        id="sButton"
+        tipPointerPosition="start"
+        place="bottom"
+        offset="{'left': 120}"
+        backgroundColor="var(--primaryBrandColor)"
+        textColor="var(--primaryBrandTintColor)"
+        effect="solid"
+        delayShow="350"
+      >
+        This keyword was automatically generated via ipinfo.io
+      </ReactTooltip>
       <div>
         <SType>
           {type in keywordTypes ? keywordTypes[type]["displayName"] : "Error"}
@@ -87,9 +100,9 @@ const ListItem = ({
                   handleClick(
                     "Watchlist Options",
                     "Watchlist",
-                    null,
-                    null,
-                    null
+                    settingsModelsEnum.notApplicable,
+                    settingsModelsEnum.notApplicable,
+                    settingsModelsEnum.notApplicable
                   );
                 }
               };
@@ -110,9 +123,9 @@ const ListItem = ({
                           ": " +
                           keyword.toString(),
                         "Watchlist",
-                        null,
-                        null,
-                        null
+                        settingsModelsEnum.notApplicable,
+                        settingsModelsEnum.notApplicable,
+                        settingsModelsEnum.notApplicable
                       );
                     }
                   };
@@ -145,9 +158,9 @@ const ListItem = ({
                           "] : " +
                           keyword.toString(),
                         "Watchlist",
-                        null,
-                        null,
-                        null
+                        settingsModelsEnum.notApplicable,
+                        settingsModelsEnum.notApplicable,
+                        settingsModelsEnum.notApplicable
                       );
                     }
                   };
@@ -172,9 +185,9 @@ const ListItem = ({
                       ": " +
                       keyword.toString(),
                     "Watchlist",
-                    null,
-                    null,
-                    null
+                    settingsModelsEnum.notApplicable,
+                    settingsModelsEnum.notApplicable,
+                    settingsModelsEnum.notApplicable
                   );
                 }
               };

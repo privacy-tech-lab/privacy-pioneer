@@ -23,6 +23,7 @@ import ReactTooltip from "react-tooltip";
 import penguin from "../../../assets/logos/Happy.svg";
 import { getAnalyticsStatus } from "../../../libs/indexed-db/settings";
 import { handleClick } from "../../../libs/indexed-db/getAnalytics";
+import { settingsModelsEnum } from "../../../background/analysis/classModels";
 
 /**
  * About page view
@@ -51,9 +52,9 @@ const AboutView = () => {
                   question.toString() +
                   (open ? "[Closed]" : "[Open]"),
                 "About",
-                null,
-                null,
-                null
+                settingsModelsEnum.notApplicable,
+                settingsModelsEnum.notApplicable,
+                settingsModelsEnum.notApplicable
               ); /*FAQ dropdown clicked */
             }
           };
