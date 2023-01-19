@@ -147,46 +147,6 @@ const WatchlistView = () => {
                 <Icons.Plus size="24px" />
                 Add Keyword
               </SAddButton>
-
-              <SAddButton
-                onClick={() => {
-                  const getAnalysis = async () => {
-                    const status = await getAnalyticsStatus();
-                    if (status == true) {
-                      handleClick(
-                        "Add IP Button",
-                        "Watchlist",
-                        settingsModelsEnum.notApplicable,
-                        settingsModelsEnum.notApplicable,
-                        settingsModelsEnum.notApplicable
-                      );
-                    }
-                  };
-                  getAnalysis();
-                  confirm(
-                    "We use an external API from ipinfo.io that identifies your ip address. Click 'OK' to add your public IP address to your watchlist. \n\nAlternatively, you can search 'What's my IP?', then copy and paste the result into our IP address keyword form."
-                  )
-                    ? (getIP(),
-                      handleClick(
-                        "IP Retrieved",
-                        "Watchlist",
-                        settingsModelsEnum.notApplicable,
-                        settingsModelsEnum.notApplicable,
-                        settingsModelsEnum.notApplicable
-                      ))
-                    : (null,
-                      handleClick(
-                        "Add IP canceled",
-                        "Watchlist",
-                        settingsModelsEnum.notApplicable,
-                        settingsModelsEnum.notApplicable,
-                        settingsModelsEnum.notApplicable
-                      ));
-                }}
-              >
-                <Icons.Plus size="24px" />
-                Add IP
-              </SAddButton>
             </div>
           </SHeader>
           <SListHeader>
