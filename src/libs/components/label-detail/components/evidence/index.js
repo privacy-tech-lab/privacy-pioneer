@@ -193,6 +193,9 @@ const Evidence = ({ collapseId, request, label, type }) => {
           if (request.permission == "location"){
             specificDescription.trailing = ` (your ${displayType}) in this web request.`;
           }
+          else if(displayType == "IP Address"){
+            specificDescription.trailing = ` (an ${displayType}) in this HTTP request.`;
+          }
           else {
             specificDescription.trailing = ` (a ${displayType}) in this HTTP request.`;
           }
