@@ -78,12 +78,14 @@ export const DangerZone = () => {
       <SSubtitle>Permenantly clear your stored data</SSubtitle>
       <div style={{ display: "flex", flexDirection: "row", marginTop: "12px" }}>
         <SDangerButton
+          data-place="bottom"
           data-tip="Delete all of the data that we have collected from your local storage"
           onClick={handleEvidence}
         >
           Delete Data
         </SDangerButton>
         <SDangerButton
+          data-place="bottom"
           data-tip="Delete all of the keywords you've added from the watchlist"
           onClick={handleWatchlist}
         >

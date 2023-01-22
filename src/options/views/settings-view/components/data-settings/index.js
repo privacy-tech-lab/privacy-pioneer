@@ -59,6 +59,7 @@ export const FullSnippetToggle = () => {
     <SSnippetToggle>
       <ToggleSwitch
         isActive={snippetStatus}
+        tooltipMessage={"This setting will determine whether the full web request is saved when we detect your data in a requests"}
         onClick={() => {
           toggle();
           const getAnalysis = async () => {
@@ -103,6 +104,7 @@ export const OptimizationToggle = () => {
     <SSnippetToggle>
       <ToggleSwitch
         isActive={optimizationStatus}
+        tooltipMessage={"To improve performance, this setting will limit the amount of data we analyze."}
         onClick={() => {
           toggleOptimize();
           const getAnalysis = async () => {
@@ -147,6 +149,7 @@ export const AnalyticsToggle = () => {
   return (
     <SSnippetToggle>
       <ToggleSwitch
+        tooltipMessage={"This setting enables the tracking of your actions when using the extension (intended only for research purposes)."}
         isActive={analyticsStatus}
         onClick={() => {
           toggleAnalytic();
