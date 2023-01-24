@@ -247,7 +247,7 @@ export const keywordTypes = Object.freeze({
     displayName: "General",
     placeholder: "Keyword",
     toolTip:
-      "We will flag instances where the entered keyword is shared with a 3rd party.",
+      "We will flag instances where the entered keyword is shared with a third-party.",
   },
   location: {
     displayName: "Street Address",
@@ -258,25 +258,25 @@ export const keywordTypes = Object.freeze({
       zipCode: "06459",
     },
     toolTip:
-      "We will flag instances where the entered location data is shared with a 3rd party.",
+      "We will flag instances where the entered location data is shared with a third-party.",
   },
   phoneNumber: {
     displayName: "Phone Number",
     placeholder: "+1 (860) 685-2000",
     toolTip:
-      "We will flag instances where the entered phone number is shared with a 3rd party.",
+      "We will flag instances where the entered phone number is shared with a third-party.",
   },
   emailAddress: {
     displayName: "Email Address",
     placeholder: "jdoe@wesleyan.edu",
     toolTip:
-      "We will flag instances where the entered email is shared with a 3rd party,  both in the form you write it  and in an alternate representation (The Trade Desk's UID)",
+      "We will flag instances where the entered email is shared with a third-party, both in the form you write it and in an alternate representation (The Trade Desk's UID)",
   },
   ipAddress: {
     displayName: "IP Address",
     placeholder: "999.99.999.999",
     toolTip:
-      "Google: What's my IP?. We will only flag instances where your IP is shared with a 3rd party. All websites you connect to have access to your IP address.",
+      "We will only flag instances where your IP is shared with a third-party.",
   },
 });
 
@@ -379,24 +379,24 @@ export const privacyLabels = Object.freeze({
   },
   tracking: {
     displayName: "Tracking",
-    description: "A Data collection practice that attempts to create a unique identity of you and track your browsing activity",
+    description: "A data collection practice used to create a unique identity of you and track your browsing activity",
     types: {
       trackingPixel: {
         displayName: "Tracking Pixel",
         description:
-          "A Tracking Pixel (or web beacon) is code that silently pings a third-party to track your web activity.",
+          "A Tracking Pixel (or web beacon) is code that silently communicates to a third-party to track your web activity.",
         link: "https://en.wikipedia.org/wiki/Web_beacon",
       },
       possiblePixel: {
         displayName: "Possible Tracking Pixel",
         description:
-          "A Tracking Pixel (or web beacon) is code that silently pings a third-party to track your web activity.",
+          "A Tracking Pixel (or web beacon) is code that silently communicates to a third-party to track your web activity.",
         link: "https://en.wikipedia.org/wiki/Web_beacon",
       },
       ipAddress: {
         displayName: "IP Address",
         description:
-          "Your IP Address identifies your modem and can be used to identify your location.",
+          "Your IP Address identifies your unique internet connection and can be used to identify your location.",
         link: "https://iapp.org/news/a/are-ip-addresses-generated-when-users-visit-websites-personal-information/",
       },
       fingerprinting: {

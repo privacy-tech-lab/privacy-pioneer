@@ -41,8 +41,8 @@ export const FAQ = {
       <a href="https://privacytechlab.org/" target="_blank">
         privacy-tech-lab
       </a>
-      . We believe in privacy as a fundamental right. Our motivation is to
-      provide new directions in privacy technologies, and we do not have any
+      . We believe in privacy as a fundamental right and our motivation is to
+      provide new directions in privacy technologies. We do not have any
       commercial interests.
     </text>
   ),
@@ -137,8 +137,7 @@ export const FAQ = {
     ),
   "Where can we be reached?": (
     <text>
-      Send us an email at sebastian@privacytechlab.org. We would love to hear
-      from you! You can also learn more about our work at{" "}
+      Send us an email at sebastian@privacytechlab.org. You can also learn more about our work at{" "}
       <a href="https://privacytechlab.org/" target="_blank">
         {" "}
         privacy-tech-lab
