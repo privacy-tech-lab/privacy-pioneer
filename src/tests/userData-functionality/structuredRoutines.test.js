@@ -27,3 +27,9 @@ import {  buildPhone,
     expect(buildGeneralRegex("(123)-456-7890")).toStrictEqual(/.?123.?.?456.?7890/)
     expect(buildGeneralRegex("123abc")).toStrictEqual( /123abc/)
   });
+
+  test("test buildPhoneRegex", async () => {
+    expect(buildGeneralRegex("myEmail@gmail.com")).toStrictEqual(/myEmail.?gmail.?com/)
+    expect(buildGeneralRegex("(123)-456-7890")).toStrictEqual(/.?123.?.?456.?7890/)
+    expect(buildGeneralRegex("123abc")).toStrictEqual( /123abc/)
+  });

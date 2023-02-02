@@ -1,0 +1,65 @@
+{
+    "ML_Region" : {
+        "evidenceToAdd" : [{
+            "timestamp" : "undefined",
+            "cookie" : false,
+            "extraDetail": "undefined",
+            "index" : [250, 261], 
+            "parentCompany" : "invasive_company",
+            "permission" : "location",
+            "requestUrl" : "https://requestingWebsite.com/",
+            "rootUrl" : "https://invasiveWebsite.com/",
+            "snippit": "\",\\\"germany\\\",\\\"france\\\",\\\"spain\\\",\\\"south-africa\\\",\\\"mexico\\\",\\\"mexico-es\\\",\\\"australia\\\",\\\"japan\\\"]);function Ot(r){return At.has(r)}const Pt=new Set([\\\"alabama\\\",\\\"alaska\\\",\\\"american-samoa\\\",\\\"arizona\\\",\\\"arkansas\\\",\\\"california\\\",\\\"colorado\\\",\\\"connecticut\\\",\\\"delaware\\\",\\\"florida\\\",\\\"georgia\\\",\\\"guam\\\",\\\"hawaii\\\",\\\"idaho\\\",\\\"illinois\\\",\\\"indiana\\\",\\\"iowa\\\",\\\"kansas\\\",\\\"kentucky\\\",\\\"louisiana\\\",\\\"maine\\\",\\\"maryland\\\",\\\"massachusetts\\\",\\\"michigan\\\",\\\"minnesota\\\",\\\"mississippi\\\",\\\"missouri\\\",\\\"montana\\\"",
+            "typ": "region"
+        }],
+        "parent" : "invasive_company",
+        "rootU" : "https://invasiveWebsite.com/",
+        "requestU" : "https://requestingWebsite.com/",
+        "saveFullSnippet" : false
+    },
+    "cookie" : {
+        "cookies" : [{ 
+            "domain" : "invasive_company",
+            "firstPartyDomain" : "",
+            "hostOnly" : false,
+            "httpOnly" : false,
+            "name" : "cookietest",
+            "partitionkey" : null,
+            "path" : "/",
+            "sameSite" : "no_restriction",
+            "secure" : true,
+            "session" : true,
+            "storeId" : "firefox-default",
+            "value" : "testCity|testRegion|12345|US|NA|-500|broadband|12.3|-45.6|"
+
+        }],  
+        "rootUrl" : "https://invasiveWebsite.com/",
+        "reqUrl" : "https://requestingWebsite.com/", 
+        "userData" : [
+            [12.3, -45.6],
+            {
+                "location" : {
+                    "zipCode": [{"keyword" : "12345", "keywordHash" : "222222222"}],
+                    "region": [{"keyword" : "testRegion", "keywordHash" : "222222222"}],
+                    "city": [{"keyword" : "testCity", "keywordHash" : "222222222"}],
+                    "streetAddress": [{"keyword": "1 Test Road", "keywordHash" : "222222222"}]
+                },
+                "watchlist" : {"keyword": "/1234567890/", "keywordHash": "1111111111"}
+            },
+            {},
+            false,
+            true,
+            {"locationData" : {
+                "zipCode": [{"keyword" : "12345", "keywordHash" : "222222222"}],
+                "region": [{"keyword" : "testRegion", "keywordHash" : "222222222"}],
+                "city": [{"keyword" : "testCity", "keywordHash" : "222222222"}],
+                "streetAddress": [{"keyword": "1 Test Road", "keywordHash" : "222222222"}]
+            }, "ip" : {"keyword": "/1234567890/", "keywordHash": "1111111111"}
+            },
+            true
+        ]
+
+    },
+    "heurisitc_short" : "abcd1234shortabcd1234"
+
+}

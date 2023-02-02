@@ -6,8 +6,14 @@ import {
     ipSearch,
     pixelSearch,
     dynamicPixelSearch,
+    encodedEmailSearch
   } from "../../background/analysis/requestAnalysis/searchFunctions.js";
   import mockSearchData from "../mock-data/mockSearchData.json";
+  import {
+    setEmail,
+    digestMessage,
+    hexToBase64,
+  } from "../../background/analysis/requestAnalysis/encodedEmail.js";
   test("test coordinateSearch", async () => {
     const coordSeaarch = mockSearchData.coordinateSearch
     const output = coordinateSearch(coordSeaarch.strReq, coordSeaarch.locData, coordSeaarch.rootUrl, coordSeaarch.reqUrl);
@@ -37,7 +43,7 @@ import {
     const zip = output[0]
     expect(zip.permission).toBe("location")
     expect(zip.rootUrl).toBe("https://invasiveWebsite.com/")
-    expect(zip.snippet).toBe("6789 test test test 12345 test test test testRegion test test test test testCity test test test 6789 ")
+    expect(zip.snippet).toBe("6789 test test test 12345 test test test testRegion test test test test testCity test test test 6789 1 Test Road abcde 123")
     expect(zip.requestUrl).toBe("https://requestingWebsite.com/")
     expect(zip.typ).toBe("zipCode")
     expect(zip.watchlistHash).toBe("222222222")
@@ -48,6 +54,19 @@ import {
     const city = output[2]
     expect(city.typ).toBe("city")
     expect(city.index).toStrictEqual([ 72, 80 ])
+  });
+
+  test("test streetAddressSearch", async () => {
+    const locationSearch = mockSearchData.locationKeywordSearch
+    const output = locationKeywordSearch(locationSearch.strReq, locationSearch.locElems , locationSearch.rootUrl, locationSearch.reqUrl)
+    const address = output[3]
+    expect(address.permission).toBe("location")
+    expect(address.rootUrl).toBe("https://invasiveWebsite.com/")
+    expect(address.snippet).toBe("6789 test test test 12345 test test test testRegion test test test test testCity test test test 6789 1 Test Road abcde 123")
+    expect(address.requestUrl).toBe("https://requestingWebsite.com/")
+    expect(address.typ).toBe("streetAddress")
+    expect(address.watchlistHash).toBe("222222222")
+    expect(address.index).toStrictEqual([ 101, 112 ])
   });
 
   test("test ipSearch", async () => {
@@ -79,5 +98,14 @@ import {
     expect(pixel.index).toStrictEqual([ 11, 132 ])
   });
 
+  test("test fingerprintSearch", async () => {
+    const fingerprint_Search = mockSearchData.fingerPrintSearch
+    const output = fingerprintSearch(fingerprint_Search.strReq, fingerprint_Search.networkKeywords, fingerprint_Search.reqUrl, fingerprint_Search.rootUrl)
+    expect(output[0].permission).toBe("tracking")
+    expect(output[0].rootUrl).toBe("https://www.google-analytics.com/collect//requestingWebsite.com/")
+    expect(output[0].snippet).toBe("123456789abcdefgFingerprint2123456789abcdefg")
+    expect(output[0].typ).toBe("fingerprinting")
+    expect(output[0].index).toStrictEqual([ 16, 28 ])
+  });
 
   
