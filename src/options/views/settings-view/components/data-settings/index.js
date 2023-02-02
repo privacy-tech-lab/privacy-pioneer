@@ -104,7 +104,7 @@ export const OptimizationToggle = () => {
     <SSnippetToggle>
       <ToggleSwitch
         isActive={optimizationStatus}
-        tooltipMessage={"To improve performance, this setting will limit the amount of data we analyze."}
+        tooltipMessage={"To improve performance, this setting will limit the amount of data we analyze per site."}
         onClick={() => {
           toggleOptimize();
           const getAnalysis = async () => {
