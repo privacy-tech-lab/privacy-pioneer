@@ -79,8 +79,10 @@ const AboutView = () => {
     <Scaffold>
       <SContainer>
         <SAbout>
-          <img height={"150px"} src={penguin} />
-          <div style={{ width: "300px" }}>
+          
+
+          <div style={{flex: 1}}>
+            <div style={{ width: "300px" }}>
             <STitle>About</STitle>
             <SSubtitle>Learn more about our extension</SSubtitle>
             <SBody>
@@ -88,6 +90,10 @@ const AboutView = () => {
               and what data they collect.
             </SBody>
           </div>
+
+          </div>
+          <img height={"150px"} src={penguin} />
+          <div style={{flex: 1}}/>
         </SAbout>
         <STitle>FAQ</STitle>
         <SBody>

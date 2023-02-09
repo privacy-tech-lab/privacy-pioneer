@@ -17,7 +17,6 @@ export const SAbout = styled.div`
   margin-bottom: 24px;
   justify-content: center;
   align-items: center;
-  text-align: center;
 `;
 
 export const STitle = styled.div`
