@@ -14,11 +14,9 @@ export const SContainer = styled.section`
 export const SAbout = styled.div`
   display: flex;
   flex-direction: row;
-  height: 25vh;
   margin-bottom: 24px;
-  width: 50%;
-  justify-content: space-between;
-  justify-self: center;
+  justify-content: center;
+  align-items: center;
 `;
 
 export const STitle = styled.div`
@@ -27,12 +25,13 @@ export const STitle = styled.div`
 `;
 
 export const SSubtitle = styled.div`
+font-size: var(--headline);
   color: var(--secondaryTextColor);
 `;
 export const SBody = styled.div`
   margin-top: 8px;
   margin-bottom: 12px;
-  font-size: var(--headline);
+  font-size: var(--body1);
   a {
     color: #3e92cc;
   }
