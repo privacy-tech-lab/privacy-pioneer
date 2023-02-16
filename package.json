@@ -28,6 +28,7 @@
   "dependencies": {
     "@popperjs/core": "^2.11.6",
     "@tensorflow/tfjs": "^3.20.0",
+    "@tensorflow/tfjs-node": "^4.2.0",
     "ansi-html": "^0.0.9",
     "ansi-regex": "^6.0.1",
     "async": "^3.2.4",

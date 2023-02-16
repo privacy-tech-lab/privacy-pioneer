@@ -29,9 +29,10 @@ export async function loadModel() {
  * useModel is the function that takes in a string as input and will console log the prediction from that model
  * @param {String} input The input string
  */
-export async function useModel(input){
-
-  
+export async function useModel(input, test_model){
+  if(test_model != undefined){
+    model = test_model
+  }
   if (model == undefined){
     model = await tf.loadGraphModel('indexeddb://my-model')
     console.log('model loaded')
