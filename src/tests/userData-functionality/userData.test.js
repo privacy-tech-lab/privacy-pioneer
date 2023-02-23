@@ -1,10 +1,11 @@
-import { apiIPToken } from "../../libs/holdAPI.js";
 import { getLocationData } from "../../background/analysis/buildUserData/getLocationData.js";
 import { getWatchlistDict, hashUserDictValues, createKeywordObj} from "../../background/analysis/buildUserData/structureUserData.js";
 import analysisData from "../mock-data/analysisData.json";
 
   test("test getLocationData", async () => {
     await expect(await getLocationData()).toBeTruthy()
+    await expect((await getLocationData())[0]).toBeDefined()
+    await expect((await getLocationData())[1]).toBeDefined()
   });
 
   test("test getWatchlistDict", async () => {
@@ -14,6 +15,11 @@ import analysisData from "../mock-data/analysisData.json";
   test("test hashUserDictValues", async () => {
     const keywords = analysisData.networkKeywords
     expect(hashUserDictValues(keywords)).toBe(keywords)
+    expect(hashUserDictValues(keywords).watchlist.ipAddress).toBeDefined()
+    expect(hashUserDictValues(keywords).tracking).toBeDefined()
+    expect(hashUserDictValues(keywords).tracking.fingerprinting).toBeDefined()
+    expect(hashUserDictValues(keywords).tracking.trackingPixel).toBeDefined()
+    expect(hashUserDictValues(keywords).location).toBeDefined()
     
   });
 
