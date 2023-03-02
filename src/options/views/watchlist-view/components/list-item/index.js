@@ -11,6 +11,7 @@ import {
   SDropdownOptions,
   SDropdownItem,
   SButtonText,
+  SSection,
 } from "./style";
 import * as Icons from "../../../../../libs/icons";
 import {
@@ -60,24 +61,18 @@ const ListItem = ({
 
   return (
     <SItem>
-      {id == IPINFO_IPKEY && (
-        <SButtonText data-tip data-for="sButton">
-          {keyword}
-        </SButtonText>
-      )}
-      {id == IPINFO_ADDRESSKEY && (
-        <SButtonText data-tip data-for="sButton">
-          {keyword}
-        </SButtonText>
-      )}
-      {id != IPINFO_IPKEY && id != IPINFO_ADDRESSKEY && (
-        <SButtonText>{keyword}</SButtonText>
-      )}
+      {id == IPINFO_IPKEY || id == IPINFO_ADDRESSKEY  ?  (
+        <SSection >
+          <SButtonText data-tip data-for="sButton">
+            {keyword}
+          </SButtonText>
+        </SSection>
+      ): <SSection>{keyword}</SSection>}
       <ReactTooltip
         id="sButton"
         tipPointerPosition="start"
-        place="bottom"
-        offset="{'left': 120}"
+        place="right"
+        offset="{'left':0}"
         backgroundColor="var(--primaryBrandColor)"
         textColor="var(--primaryBrandTintColor)"
         effect="solid"

@@ -16,8 +16,8 @@ const SWebsiteLogo = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  height: ${(props) => (props.large ? "64px" : "28px")};
-  width: ${(props) => (props.large ? "64px" : "28px")};
+  height: ${(props) => (props.large ? "64px" : "27px")};
+  width: ${(props) => (props.large ? "64px" : "27px")};
   margin: ${(props) => (props.margin ? props.margin : "0px")};
   border-radius: 50%;
   background-color: ${(props) =>
@@ -39,6 +39,7 @@ const SLetterLogo = styled.div`
     props.isLabel ? "var(--primaryTextColor)" : "var(--tintTextColor)"};
   font-weight: 700;
   font-size: ${(props) => (props.large ? "32px" : "18px")};
+  
 `;
 
 const SBrandIcon = styled.img.attrs(() => ({ alt: "Logo", src: logo }))`
@@ -74,7 +75,6 @@ export const CompanyLogo = ({ parent, large, margin }) => {
   if (Logo) {
     return (
       <SCompanyLogo margin={margin} large={large}>
-        {" "}
         <Logo />
       </SCompanyLogo>
     );
