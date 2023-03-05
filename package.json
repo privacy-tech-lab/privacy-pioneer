@@ -1,6 +1,6 @@
 {
   "name": "privacy-pioneer",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "jest": {
     "setupFiles": [
       "fake-indexeddb/auto",
