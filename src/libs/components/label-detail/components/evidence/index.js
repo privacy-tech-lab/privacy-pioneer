@@ -67,49 +67,6 @@ const Evidence = ({ collapseId, request, label, type }) => {
     }
   };
 
-  /**
-   * Get sub label general description
-   * @param {object} request our evidence object for this request
-   * @returns {object} sliced general description of our reasonings for our labels | ""
-   */
-  const getGeneralDescription = (request) => {
-    if (request != null) {
-      let generalDescriptionParsed = {
-        leading: "",
-        highlight: "",
-        trailing: "",
-      };
-      const displayType = privacyLabels[label]["types"][type]["displayName"];
-      const generalDescription =
-        privacyLabels[label]["types"][type]["description"];
-
-      // we want to highlight the label type in the description
-      let highlight = generalDescription.indexOf(displayType);
-      if (displayType == "Encoded Email") {
-        generalDescriptionParsed.leading = "‣ ".concat(
-          generalDescription.slice(0, 3)
-        );
-        generalDescriptionParsed.highlight = "Email Address";
-        generalDescriptionParsed.trailing = generalDescription.slice(
-          16,
-          generalDescription.length
-        );
-      } else if (highlight == -1) {
-        generalDescriptionParsed.leading = "‣ ".concat(generalDescription);
-      } else {
-        generalDescriptionParsed.leading = "‣ ".concat(
-          generalDescription.slice(0, highlight)
-        );
-        generalDescriptionParsed.highlight = displayType;
-        generalDescriptionParsed.trailing = generalDescription.slice(
-          highlight + displayType.length,
-          generalDescription.length
-        );
-      }
-      return generalDescriptionParsed;
-    }
-    return "";
-  };
 
   const [handEmoji, setHandEmoji] = useState("");
 
@@ -167,7 +124,7 @@ const Evidence = ({ collapseId, request, label, type }) => {
 
       // description for when evidence came from a list of URL's (disconnect or urlClassification header)
       if (request.index == -1) {
-        specificDescription.leading = `‣ The URL that initiated this HTTP request is known to practice `;
+        specificDescription.leading = `‣ The URL that initiated this web request is known to practice `;
         specificDescription.highlight = `${displayType}`;
         specificDescription.trailing = `.`;
       }
@@ -193,16 +150,16 @@ const Evidence = ({ collapseId, request, label, type }) => {
           if (request.permission == "location"){
             specificDescription.trailing = ` (your ${displayType}) in this web request.`;
           }
-          else if(displayType == "IP Address"){
-            specificDescription.trailing = ` (an ${displayType}) in this HTTP request.`;
+          else if (displayType == "IP Address"){
+            specificDescription.trailing = ` (an ${displayType}) in this web request.`;
           }
           else {
-            specificDescription.trailing = ` (a ${displayType}) in this HTTP request.`;
+            specificDescription.trailing = ` (a ${displayType}) in this web request.`;
           }
         }
         // specific encoded email case
         else {
-          specificDescription.trailing = ` in this HTTP request, which is the encoded form of `;
+          specificDescription.trailing = ` in this web request, which is the encoded form of `;
           specificDescription.email = `${request.extraDetail}`;
           specificDescription.trail1 = ` from your watchlist, so we gave it the `;
           specificDescription.encodedEmail = `${displayType}`;
@@ -215,7 +172,6 @@ const Evidence = ({ collapseId, request, label, type }) => {
   };
 
   const specificDescription = getSpecificDescription(request);
-  const generalDescription = getGeneralDescription(request);
   const data = getSnippet(request);
 
   return (
@@ -224,10 +180,6 @@ const Evidence = ({ collapseId, request, label, type }) => {
         <SHeader marginTop="16px">◉ Description</SHeader>
         <SEvidenceDescription>
           <pre>
-            {generalDescription.leading}
-            <span>{generalDescription.highlight}</span>
-            {generalDescription.trailing}
-            <br></br>
             {specificDescription.leading}
             <span>{specificDescription.highlight}</span>
             {specificDescription.trailing}

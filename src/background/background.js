@@ -114,14 +114,6 @@ importData().then((data) => {
 
   runNotifications();
 
-  browser.runtime.onInstalled.addListener((details) => { 
-    console.log("HI")
-    if (details.reason === "install") {
-      console.log('Addon Installed')
-      browser.tabs.create({ url: browser.runtime.getURL("options.html") });
-    }
-  })
-
   // Listener to get response data, request body, and details about request
   browser.webRequest.onBeforeRequest.addListener(
     async function (details) {
