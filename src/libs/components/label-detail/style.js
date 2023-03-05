@@ -15,7 +15,6 @@ export const SHeaderBadge = styled.div`
   display: flex;
   flex-direction: row;
   align-items: center;
-  margin-top: 16px;
 `;
 
 export const SHeader = styled.div`
@@ -40,7 +39,7 @@ export const STitle = styled.div`
 export const SDescription = styled.div`
   margin-top: 8px;
   color: var(--secondaryTextColor);
-  font-size: var(--body2);
+  font-size: var(--body1);
 `;
 
 export const SThirdParty = styled.div`
