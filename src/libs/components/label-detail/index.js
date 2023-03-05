@@ -33,23 +33,20 @@ const LabelDetail = ({ label, website, requests }) => {
    * Get first party description based on whether 'website' collected data
    */
   const firstPartyDescription = () => {
-    if (collected) {
-      return `Collected the following ${label} data:`;
-    } else {
-      return `Did not collect ${label} data.`;
+    if (collected && urls.length === 1) {
+      return `${website} collected the following ${label} data:`;
+    }
+    else if (collected && urls.length > 1) {
+      return `${website} collected and shared the following ${label} data:`;
+    }
+    else if (!collected && urls.length > 1) { 
+      return `${website} shared the following ${label} data:`;
+    }
+    else {
+      return `Did not collect or share ${label} data.`;
     }
   };
 
-  /**
-   * Get third party description based on whether 'website' shared data
-   */
-  const thirdPartyDescription = () => {
-    if (collected && urls.length === 1) {
-      return `${website} did not share ${label} data.`;
-    } else {
-      return `${website} shared ${label} data with the following third parties:`;
-    }
-  };
 
   return (
     <SBody>
@@ -65,10 +62,8 @@ const LabelDetail = ({ label, website, requests }) => {
           ) : null}
         </SContent>
       </SHeader>
-      <SSeperator marginLeft="16px" marginRight="16px" />
       <SThirdParty>
         <STitle>Third Parties</STitle>
-        <SDescription>{thirdPartyDescription()} </SDescription>
         {Object.entries(requests).map(([url, request]) => {
           if (url !== website)
             return (

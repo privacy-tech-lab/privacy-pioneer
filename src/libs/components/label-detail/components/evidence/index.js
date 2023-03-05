@@ -124,7 +124,7 @@ const Evidence = ({ collapseId, request, label, type }) => {
 
       // description for when evidence came from a list of URL's (disconnect or urlClassification header)
       if (request.index == -1) {
-        specificDescription.leading = `‣ The URL that initiated this HTTP request is known to practice `;
+        specificDescription.leading = `‣ The URL that initiated this web request is known to practice `;
         specificDescription.highlight = `${displayType}`;
         specificDescription.trailing = `.`;
       }
@@ -150,16 +150,16 @@ const Evidence = ({ collapseId, request, label, type }) => {
           if (request.permission == "location"){
             specificDescription.trailing = ` (your ${displayType}) in this web request.`;
           }
-          else if(displayType == "IP Address"){
-            specificDescription.trailing = ` (an ${displayType}) in this HTTP request.`;
+          else if (displayType == "IP Address"){
+            specificDescription.trailing = ` (an ${displayType}) in this web request.`;
           }
           else {
-            specificDescription.trailing = ` (a ${displayType}) in this HTTP request.`;
+            specificDescription.trailing = ` (a ${displayType}) in this web request.`;
           }
         }
         // specific encoded email case
         else {
-          specificDescription.trailing = ` in this HTTP request, which is the encoded form of `;
+          specificDescription.trailing = ` in this web request, which is the encoded form of `;
           specificDescription.email = `${request.extraDetail}`;
           specificDescription.trail1 = ` from your watchlist, so we gave it the `;
           specificDescription.encodedEmail = `${displayType}`;
