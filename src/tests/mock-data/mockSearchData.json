@@ -11,7 +11,7 @@
         "classifications": {"firstParty": [], "thirdParty": ["tracking_ad", "any_basic_tracking", "any_strict_tracking"]}
     },
     "locationKeywordSearch": {
-        "strReq": "6789 test test test 12345 test test test testRegion test test test test testCity test test test 6789 ",
+        "strReq": "6789 test test test 12345 test test test testRegion test test test test testCity test test test 6789 1 Test Road abcde 123",
         "locElems": {
             "zipCode": [{"keyword" : "12345", "keywordHash" : "222222222"}],
             "region": [{"keyword" : "testRegion", "keywordHash" : "222222222"}],
@@ -71,6 +71,39 @@
         "strReq": "{\"reqUrl\":\"https://ssum-sec.casalemedia.com/usermatch?us_privacy=1---&d…cb=https%3A%2F%2Fcdn.indexww.com%2Fht%2Fhtw-pixel.gif%3F&C=1\",\"requestBody\":null,\"responseData\":\"<html><head><title></title></head><body><img src=\\\"https://cdn.indexww.com/ht/htw-pixel.gif?0=&amp;us_privacy=1---\\\" style=\\\"display:none\\\" width=\\\"0\\\" height=\\\"0\\\" alt=\\\"\\\" border=\\\"0\\\" /></body></html>\"", 
         "rootUrl": "https://www.cnn.com/",  
         "reqUrl": "https://ssum-sec.casalemedia.com/usermatch?us_privacy=1---&d…cb=https%3A%2F%2Fcdn.indexww.com%2Fht%2Fhtw-pixel.gif%3F&C=1" 
+    },
+    "fingerPrintSearch" : {
+        "strReq": "123456789abcdefgFingerprint2123456789abcdefg",
+        "networkKeywords": {
+            "tracking": { "fingerprinting": [
+            "Fingerprint2",
+            "https://github.com/Valve/fingerprintjs2",
+            "http://valve.github.io",
+            "getFPParams",
+            "getCanvasFp",
+            "swfContainerId",
+            "swfPath",
+            "flash/compiled/FontList.swf",
+            "Fingerprint2.x64hash128",
+            "hasFingerprint",
+            "c$jscomp$0.config.F.Fonts",
+            "c$jscomp$0.config.F.Flash",
+            "imprint.min.js",
+            "imprint.test",
+            "clientjs",
+            "client.getFingerprint",
+            "https://api.castle.io/v1/devices/",
+            "https://api3.siftscience.com/v3/accounts/",
+            "visitorFingerprint",
+            "device_fingerprint",
+            "mweb_fingerprint_v2",
+            "run_page_fingerprinting",
+            "fingerprintID"
+          ]}
+        },
+        "rootUrl": "https://invasiveWebsite.com/",
+        "reqUrl": "https://www.google-analytics.com/collect//requestingWebsite.com/"
+
     }
 
 }
