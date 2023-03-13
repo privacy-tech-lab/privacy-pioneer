@@ -38,7 +38,7 @@ export const homeSteps = [
       <div style={textStyles}>
         Learn how sites use and share your data in the Overview.
         <br />
-        1/6
+        1/5
       </div>
     ),
     styles: {
@@ -55,7 +55,7 @@ export const homeSteps = [
         See data from your most recent website visits. Click a card or label to
         learn more.
         <br />
-        2/6
+        2/5
       </div>
     ),
     spotlightClicks: true,
@@ -72,7 +72,7 @@ export const homeSteps = [
       <div style={textStyles}>
         Click here to see all of your browsing history.
         <br />
-        3/6
+        3/5
       </div>
     ),
     spotlightClicks: true,
@@ -145,7 +145,7 @@ export const seeAllSteps = [
         Search for any website you visited. Use the filters to narrow down your
         results.
         <br />
-        4/6
+        4/5
       </div>
     ),
     disableScrolling: true,
@@ -165,42 +165,13 @@ export const seeAllSteps = [
       <div style={textStyles}>
         Use the Watchlist to keep track of custom keywords in your web traffic.
         <br />
-        5/6
-      </div>
-    ),
-    disableScrolling: true,
-    disableScrollParentFix: true,
-    placement: "bottom-start",
-    placementBeacon: "top",
-    disableBeacon: true,
-  },
-  {
-    target: "#navbarTour",
-    content: (
-      <div style={textStyles}>
-        Please be aware that Privacy Pioneer uses an external service,
-        ipinfo.io, to automate the identification of a user's Location in web
-        traffic of visited websites. For this purpose Privacy Pioneer sends a
-        user's IP address to ipinfo.io when the user restarts the browser or
-        makes changes to the Watchlist. According to ipinfo.io's terms, it will
-        keep a user's IP address in its logs for 1 year but will not use it
-        beyond log maintenance or share it with anyone. If you do not consent to
-        using this service, please remove Privacy Pioneer from your browser.
-        <br />
-        <br />
         Enjoy Privacy Pioneer!
         <br />
-        6/6
+        5/5
       </div>
     ),
-    placement: "center",
-    styles: {
-      options: {
-        width: 800,
-      },
-    },
   },
-];
+]
 
 export const SeeAllTour = ({ steps }) => {
   const history = useHistory();
