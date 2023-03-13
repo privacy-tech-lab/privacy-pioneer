@@ -41,6 +41,7 @@ export const homeSteps = [
         1/5
       </div>
     ),
+    spotlightClicks: false,
     styles: {
       buttonBack: {
         display: "none",
