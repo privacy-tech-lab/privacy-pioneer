@@ -65,7 +65,7 @@
                         "typ": "trackingPixel",
                         "index": [
                             300,
-                            600
+                            601
                         ],
                         "firstPartyRoot": true,
                         "parentCompany": "Facebook"
@@ -102,8 +102,8 @@
                         "requestUrl": "https://geolocation.onetrust.com/cookieconsentpub/v1/geo/location/dnsfeed",
                         "typ": "fineLocation",
                         "index": [
-                            272,
-                            280
+                            274,
+                            282
                         ],
                         "firstPartyRoot": true,
                         "parentCompany": null
@@ -116,8 +116,8 @@
                         "requestUrl": "https://geolocation.onetrust.com/cookieconsentpub/v1/geo/location/dnsfeed",
                         "typ": "zipCode",
                         "index": [
-                            215,
-                            220
+                            217,
+                            222
                         ],
                         "firstPartyRoot": true,
                         "parentCompany": null
@@ -130,8 +130,8 @@
                         "requestUrl": "https://geolocation.onetrust.com/cookieconsentpub/v1/geo/location/dnsfeed",
                         "typ": "region",
                         "index": [
-                            190,
-                            198
+                            192,
+                            200
                         ],
                         "firstPartyRoot": true,
                         "parentCompany": null
@@ -146,8 +146,8 @@
                         "requestUrl": "https://invasive_site.com/achelcuehf/v1/acsfeed",
                         "typ": "region",
                         "index": [
-                            254,
-                            262
+                            256,
+                            264
                         ],
                         "firstPartyRoot": true,
                         "parentCompany": null
