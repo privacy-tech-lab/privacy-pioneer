@@ -46,6 +46,9 @@ export const homeSteps = [
       buttonBack: {
         display: "none",
       },
+      buttonSkip: {
+        display: "none"
+      },
     },
   },
   {
@@ -61,6 +64,12 @@ export const homeSteps = [
     ),
     spotlightClicks: true,
     styles: {
+      buttonBack: {
+        display: "none",
+      },
+      buttonSkip: {
+        display: "none"
+      },
       options: {
         width: 440,
       },
@@ -78,6 +87,12 @@ export const homeSteps = [
     ),
     spotlightClicks: true,
     styles: {
+      buttonBack: {
+        display: "none",
+      },
+      buttonSkip: {
+        display: "none"
+      },
       options: {
         width: 440,
       },
@@ -124,7 +139,7 @@ export const HomeTour = ({ steps }) => {
             color: `var(--primaryBrandColor)`,
           },
           buttonBack: {
-            color: `var(--primaryTextColor)`,
+            display: "none"
           },
           buttonClose: {
             display: "none",
@@ -155,6 +170,12 @@ export const seeAllSteps = [
     placementBeacon: "top",
     disableBeacon: true,
     styles: {
+      buttonBack: {
+        display: "none",
+      },
+      buttonSkip: {
+        display: "none"
+      },
       options: {
         width: 400,
       },
@@ -171,6 +192,14 @@ export const seeAllSteps = [
         5/5
       </div>
     ),
+    styles: {
+      buttonBack: {
+        display: "none",
+      },
+      buttonSkip: {
+        display: "none"
+      },
+    },
   },
 ]
 
