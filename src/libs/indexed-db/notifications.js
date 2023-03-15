@@ -97,9 +97,11 @@ const notify = async (host) => {
         const evidenceToNotify = await getUnnotifiedEvidence(res,host);
         if (evidenceToNotify.length > 0) {
           const text = `We found ${evidenceToNotify.length} keyword${evidenceToNotify.length > 1 ? 's' : ''} in your web requests on the website at ${host}. Click the popup to learn more!`;
-          new Notification("Privacy Pioneer", {
-            body: text,
-            requireInteraction:true
+          
+          browser.notifications.create("Privacy Pioneer", {
+            type:'basic',
+            message: text,
+            title: "Privacy Pioneer",
           });
         }
       }
