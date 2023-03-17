@@ -37,6 +37,7 @@ import validate from "./components/input-validators";
 import ReactTooltip from "react-tooltip";
 import { getAnalyticsStatus } from "../../../../../libs/indexed-db/settings";
 import { handleClick } from "../../../../../libs/indexed-db/getAnalytics";
+import { requestNotificationPermission } from "../../../../../libs/indexed-db/notifications";
 
 /**
  * Popup modal to create/edit keyword
@@ -217,6 +218,7 @@ const EditModal = ({ passKeywordType, passKeyword, edit, id, updateList }) => {
                     address,
                   })
                 ) {
+                  await requestNotificationPermission()
                   if (await saveKeyword(key, keywordType, id)) {
                     await updateList();
                     const modal = Modal.getInstance(
