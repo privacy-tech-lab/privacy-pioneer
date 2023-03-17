@@ -80,6 +80,18 @@ const ListItem = ({
       >
         This keyword was automatically generated via ipinfo.io
       </ReactTooltip>
+
+      <ReactTooltip
+        id="sNotification"
+        tipPointerPosition="start"
+        place="left"
+        backgroundColor="var(--primaryBrandColor)"
+        textColor="var(--primaryBrandTintColor)"
+        effect="solid"
+        delayShow="350"
+      >
+        Click this to toggle alerts for this keyword!
+      </ReactTooltip>
       <div>
         <SType>
           {type in keywordTypes ? keywordTypes[type]["displayName"] : "Error"}
@@ -168,6 +180,7 @@ const ListItem = ({
             <Icons.MoreVertical size="24px" />
           </SAction>
           <SAction
+            data-tip data-for="sNotification"
             onClick={async () => {
               await toggleNotifications(id);
               await updateList();
@@ -190,9 +203,12 @@ const ListItem = ({
             }}
           >
             {notification ? (
-              <Icons.notificationOn size="24px" />
+              <Icons.notificationOn
+                size="24px"
+              />
             ) : (
-              <Icons.notificationOff size="24px" />
+                <Icons.notificationOff
+                  size="24px" />
             )}
           </SAction>
         </div>
