@@ -94,7 +94,7 @@ const notify = async (host) => {
             const keyword = (await watchlistKeyval.get(evidence.watchlistHash)).keyword
             const displayName = privacyLabels[evidence.permission]["types"][evidence.typ].displayName 
             if (evidence.typ === "userKeyword") {
-              evidenceList = evidenceList + `\n${displayName} (${keyword.slice(0, 3)}...)`
+              evidenceList = evidenceList + `\n${displayName} (${keyword.slice(0, 3)}**)`
             } else { 
               evidenceList = evidenceList + `\n${displayName}`
             }
