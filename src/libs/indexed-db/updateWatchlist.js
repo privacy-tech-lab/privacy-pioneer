@@ -82,10 +82,10 @@ const toggleNotifications = async (id) => {
   if (data.notification) {
     data.notification = false;
   } else {
-    await requestNotificationPermission()
+    const permission = await requestNotificationPermission()
     if (Notification.permission === 'denied') {
       alert("Please turn on notifications in order to receives alerts about your watchlist keywords!")
-    } else if (Notification.permission === 'granted') { 
+    } else if (permission || Notification.permission === 'granted') { 
       data.notification = true;
     }
   }

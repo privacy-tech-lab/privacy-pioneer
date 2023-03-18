@@ -14,9 +14,8 @@ export const requestNotificationPermission = async () => {
         Notification.permission == "default"
   ) {
     if (confirm("Privacy Pioneer will notify you of any selected Watchlist Keywords appearing in your web requests.")) {
-      res = await Notification.requestPermission();
+      const res = await Notification.requestPermission();
       return res ==="granted"
- 
     }
       }
 }
