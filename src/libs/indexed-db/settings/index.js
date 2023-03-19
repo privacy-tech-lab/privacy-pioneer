@@ -38,6 +38,7 @@ export const setDefaultSettings = async () => {
     await settingsKeyval.set("alreadyNotified", {});
     await settingsKeyval.set(settingsModelsEnum.optimizePerformance, true);
     await settingsKeyval.set(settingsModelsEnum.extensionEnabled, true);
+    await settingsKeyval.set("firstHomeVisit", true);
     await analyticsKeyval.set(settingsModelsEnum.analytics, true);
     browser.tabs.create({ url: browser.runtime.getURL("options.html") });
   }

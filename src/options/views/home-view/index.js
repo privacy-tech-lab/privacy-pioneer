@@ -24,6 +24,7 @@ import { homeInit } from "../../../libs/init.js";
 import { getAnalyticsStatus } from "../../../libs/indexed-db/settings";
 import { handleClick } from "../../../libs/indexed-db/getAnalytics";
 import { settingsModelsEnum } from "../../../background/analysis/classModels";
+import { settingsKeyval } from "../../../libs/indexed-db/openDB";
 
 /**
  * Home page view containing overview and recently identified labels
@@ -46,6 +47,14 @@ const HomeView = () => {
       setModal,
       setWebsites,
     });
+    settingsKeyval.get("firstHomeVisit").then(
+      firstHomeVisit => {
+        if (firstHomeVisit) { 
+          alert("Privacy Pioneer does not collect any data from you. However, your IP address is shared with ipinfo.io to identify geographical locations in web requests. You can find ipinfo.io's privacy policy here https://ipinfo.io/privacy-policy.")
+          settingsKeyval.set("firstHomeVisit", false)
+        }
+      }
+      )
   }, []);
 
   const handleTap = (items) => {
