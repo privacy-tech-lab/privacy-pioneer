@@ -30,7 +30,7 @@ Privacy Pioneer is implemented as a browser extension for Firefox (currently the
   <a href="https://addons.mozilla.org/en-US/firefox/addon/privacy-pioneer/"><img src="https://github.com/privacy-tech-lab/privacy-pioneer/blob/main/firefox-add-ons-badge.png" alt="Firefox Add Ons badge" width = "187" height = "67"></a>
 <p/>
 
-Privacy Pioneer is developed and maintained by **Daniel Goldelman (@danielgoldelman)**, **Logan Brown (@Lr-Brown)**, **Justin Casler (@JustinCasler)**, **Judeley Jean-Charles (@jjeancharles)**, **Wesley Tan (@wesley-tan)**, and **Sebastian Zimmeck (@SebastianZimmeck)** of the [privacy-tech-lab](https://privacytechlab.org/). **Hamza Harkous (@harkous)** is also collaborating with the team on the research. **Owen Kaplan (@notowen333)**, **Rafael Goldstein (@rgoldstein01)**, and **David Baraka (@davebaraka)** contributed earlier.
+Privacy Pioneer is developed and maintained by **Daniel Goldelman (@danielgoldelman)**, **Logan Brown (@Lr-Brown)**, **Justin Casler (@JustinCasler)**, **Judeley Jean-Charles (@jjeancharles)**, and **Sebastian Zimmeck (@SebastianZimmeck)** of the [privacy-tech-lab](https://privacytechlab.org/). **Hamza Harkous (@harkous)** is also collaborating with the team on the research. **Wesley Tan (@wesley-tan)**, **Owen Kaplan (@notowen333)**, **Rafael Goldstein (@rgoldstein01)**, and **David Baraka (@davebaraka)** contributed earlier.
 
 Contact us with any questions or comments at sebastian@privacytechlab.org.
 
@@ -88,7 +88,7 @@ npm run tests
 
 ## 4. Notifications
 
-Upon completing the tour of the extensions homepage (which will open automatically on extension download), you will be given the opportunity to turn extension notifications on. 
+Upon completing the tour of the extensions homepage (which will open automatically on extension download), you will be given the opportunity to turn extension notifications on.
 
 The extension will wait 15 seconds after a page has loaded to display any notifications relating to keywords for that page. If the tab is closed or a new website is visited in the same tab, any keywords found before closing the tab will be displayed immediately.
 
