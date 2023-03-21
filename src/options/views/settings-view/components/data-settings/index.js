@@ -181,7 +181,7 @@ export const LabelToggle = () => {
   const [labelStatus, SetLabelStatus] = useState({
     [permissionEnum.location]: true,
     [permissionEnum.monetization]: true,
-    [permissionEnum.watchlist]: true,
+    [permissionEnum.personal]: true,
     [permissionEnum.tracking]: true,
   });
 

@@ -201,7 +201,7 @@ export const timeRangeEnum = Object.freeze({
 export const permissionEnum = Object.freeze({
   monetization: "monetization",
   location: "location",
-  watchlist: "watchlist",
+  personal: "personal",
   tracking: "tracking",
 });
 
@@ -223,7 +223,7 @@ export const typeEnum = Object.freeze({
   city: "city",
   region: "region",
 
-  // watchlist types
+  // personal types
   phoneNumber: "phoneNumber",
   emailAddress: "emailAddress",
   encodedEmail: "encodedEmail",
@@ -346,9 +346,9 @@ export const privacyLabels = Object.freeze({
       },
     },
   },
-  watchlist: {
-    displayName: "Watchlist",
-    description: "Web traffic data that contains keywords from your custom watchlist.",
+  personal: {
+    displayName: "Personal",
+    description: "Personal data from your custom watchlist that was found in your web traffic.",
     types: {
       phoneNumber: {
         displayName: "Phone Number",

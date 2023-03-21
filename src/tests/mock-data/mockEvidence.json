@@ -52,7 +52,7 @@
                     "city": [{"keyword" : "testCity", "keywordHash" : "222222222"}],
                     "streetAddress": [{"keyword": "1 Test Road", "keywordHash" : "222222222"}]
                 },
-                "watchlist" : {"keyword": "/1234567890/", "keywordHash": "1111111111"}
+                "personal" : {"keyword": "/1234567890/", "keywordHash": "1111111111"}
             },
             {},
             false,

@@ -66,13 +66,13 @@
                 "fingerprintID"
               ]
         },
-        "watchlist" : {
+        "personal" : {
             "ipAddress" : [{"keyword" : "/12345678910/", "keywordHash" : "123456789"}]
         }
 
     },
     "general" : {
-        "watchlist" :{
+        "personal" :{
             "general" : [{"keyword" : "/myname/"}]
         }
     }

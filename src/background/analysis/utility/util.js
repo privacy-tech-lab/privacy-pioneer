@@ -142,7 +142,7 @@ const getAllPerms = () => {
     permissionEnum.location,
     permissionEnum.monetization,
     permissionEnum.tracking,
-    permissionEnum.watchlist,
+    permissionEnum.personal,
   ];
 };
 

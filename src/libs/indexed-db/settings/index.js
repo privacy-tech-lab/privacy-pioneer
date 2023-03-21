@@ -27,7 +27,7 @@ export const setDefaultSettings = async () => {
     await settingsKeyval.set(permissionEnum.location, true);
     await settingsKeyval.set(permissionEnum.monetization, true);
     await settingsKeyval.set(permissionEnum.tracking, true);
-    await settingsKeyval.set(permissionEnum.watchlist, true);
+    await settingsKeyval.set(permissionEnum.personal, true);
     const darkTheme = window.matchMedia("(prefers-color-scheme: dark)");
     await settingsKeyval.set(
       "theme",

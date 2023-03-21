@@ -15,7 +15,7 @@ import analysisData from "../mock-data/analysisData.json";
   test("test hashUserDictValues", async () => {
     const keywords = analysisData.networkKeywords
     expect(hashUserDictValues(keywords)).toBe(keywords)
-    expect(hashUserDictValues(keywords).watchlist.ipAddress).toBeDefined()
+    expect(hashUserDictValues(keywords).personal.ipAddress).toBeDefined()
     expect(hashUserDictValues(keywords).tracking).toBeDefined()
     expect(hashUserDictValues(keywords).tracking.fingerprinting).toBeDefined()
     expect(hashUserDictValues(keywords).tracking.trackingPixel).toBeDefined()
@@ -25,7 +25,7 @@ import analysisData from "../mock-data/analysisData.json";
 
   test("test general hashUserDictValues", async () => {
     const general = analysisData.general
-    expect(hashUserDictValues(general).watchlist.general[0].keywordHash).toBeTruthy()
+    expect(hashUserDictValues(general).personal.general[0].keywordHash).toBeTruthy()
   });
 
   test("test createKeywordObj", async () => {
