@@ -14,6 +14,8 @@ import {
   IPINFO_IPKEY,
   IPINFO_ADDRESSKEY,
 } from "../../background/analysis/buildUserData/importSearchData.js";
+import { requestNotificationPermission } from "./notifications.js";
+
 /**
  * Saves/updates keyword from watchlist store
  * Updates keyword when 'id' is not undefined
@@ -21,7 +23,7 @@ import {
  * @param {keyword}
  * @param {type}
  * @param {id}
- * @returns {Boolean} True if successful, false otherwise
+ * @returns {Promise<Boolean>} True if successful, false otherwise
  */
 const saveKeyword = async (keyword, type, id) => {
   // Validate
@@ -80,11 +82,11 @@ const toggleNotifications = async (id) => {
   if (data.notification) {
     data.notification = false;
   } else {
-    data.notification = true;
-    if (
-      Notification.permission != 'granted'
-    ) {
-      await Notification.requestPermission();
+    const permission = await requestNotificationPermission()
+    if (Notification.permission === 'denied') {
+      alert("Please turn on notifications in order to receives alerts about your watchlist keywords!")
+    } else if (permission || Notification.permission === 'granted') { 
+      data.notification = true;
     }
   }
   watchlistKeyval.set(id, data);

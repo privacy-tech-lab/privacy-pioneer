@@ -3,29 +3,20 @@ Licensed per https://github.com/privacy-tech-lab/privacy-pioneer/blob/main/LICEN
 privacy-tech-lab, https://privacytechlab.org/
 */
 
-import { FIVE_SEC_IN_MILLIS } from "../../background/analysis/constants";
 import { evidenceKeyval } from "../../background/analysis/interactDB/openDB";
 import { getHostname } from "../../background/analysis/utility/util";
 import { settingsKeyval, watchlistKeyval } from "./openDB";
-import { toggleNotifications } from './updateWatchlist'
-
+import { privacyLabels } from "../../background/analysis/classModels";
 
 
 export const requestNotificationPermission = async () => { 
   if (
         Notification.permission == "default"
-      ) {
-    const res = await Notification.requestPermission();
-
-    if (res === 'granted') { 
-      const watchlistKeys = await watchlistKeyval.keys()
-      watchlistKeys.forEach(
-        async (key) => { 
-          await toggleNotifications(key) 
-        }
-      )
+  ) {
+    if (confirm("Privacy Pioneer will notify you of any selected Watchlist Keywords appearing in your web requests.")) {
+      const res = await Notification.requestPermission();
+      return res ==="granted"
     }
-    
       }
 }
 
@@ -71,7 +62,7 @@ const getUnnotifiedEvidence = async (allEvidence, host) => {
                   allEvidence[perm][type][evidence]["watchlistHash"]
                 )) { 
                   unnotifiedEvidence.push(
-                  allEvidence[perm][type][evidence]["watchlistHash"]
+                  allEvidence[perm][type][evidence]
                 );
                 }
                 hostAlreadyNotified.push(evidence);
@@ -96,10 +87,27 @@ const notify = async (host) => {
       if (res) {
         const evidenceToNotify = await getUnnotifiedEvidence(res,host);
         if (evidenceToNotify.length > 0) {
-          const text = `We found ${evidenceToNotify.length} keyword${evidenceToNotify.length > 1 ? 's' : ''} in your web requests on the website at ${host}. Click the popup to learn more!`;
-          new Notification("Privacy Pioneer", {
-            body: text,
-            requireInteraction:true
+          let evidenceList = ""
+          
+          for (const evidence of evidenceToNotify) {
+            console.log(evidence)
+            const keyword = (await watchlistKeyval.get(evidence.watchlistHash)).keyword
+            const displayName = privacyLabels[evidence.permission]["types"][evidence.typ].displayName 
+            if (evidence.typ === "userKeyword") {
+              evidenceList = evidenceList + `\n${displayName} (${keyword.slice(0, 3)}**)`
+            } else { 
+              evidenceList = evidenceList + `\n${displayName}`
+            }
+            
+          }
+          
+         
+          const text = `We found the following watchlist keywords in your web request: \n${evidenceList}` ;
+          
+          browser.notifications.create("privacy_pioneer" + host, {
+            type:'basic',
+            message: text,
+            title: "Privacy Pioneer",
           });
         }
       }
