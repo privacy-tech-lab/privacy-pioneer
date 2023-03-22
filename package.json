@@ -26,7 +26,6 @@
     }
   },
   "dependencies": {
-    "@popperjs/core": "^2.11.6",
     "@tensorflow/tfjs": "^3.20.0",
     "@tensorflow/tfjs-node": "^4.2.0",
     "ansi-html": "^0.0.9",
@@ -47,7 +46,6 @@
     "queue": "^6.0.2",
     "react": "^17.0.1",
     "react-dom": "^17.0.1",
-    "react-hint": "^3.2.1",
     "react-joyride": "^2.3.1",
     "react-loading-skeleton": "^2.2.0",
     "react-router-dom": "^5.2.0",
