@@ -125,7 +125,7 @@ const WebsiteView = () => {
               for (const [url, typeVal] of Object.entries(value)) {
                 for (const [type, e] of Object.entries(typeVal)) {
                   //Check if the evidence has been added recently
-                  var timestamp = currentTime - e["timestamp"] < 1000000;
+                  var timestamp = e["timestamp"] >= value["lastSeen"];
                   if (
                     (e["watchlistHash"] == IPINFO_IPKEY || IPINFO_ADDRESSKEY) &&
                     timestamp

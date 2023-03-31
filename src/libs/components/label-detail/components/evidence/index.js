@@ -4,7 +4,7 @@ privacy-tech-lab, https://privacytechlab.org/
 */
 
 import React, { useEffect, useState } from "react";
-import { privacyLabels } from "../../../../../background/analysis/classModels";
+import { privacyLabels, timeRangeEnum } from "../../../../../background/analysis/classModels";
 import {
   SContainer,
   SHeader,
@@ -102,6 +102,7 @@ const Evidence = ({ collapseId, request, label, type }) => {
         signOff: "",
         link: "",
         linkDesc: "",
+        timeStamp: "",
       };
 
       // populate description aspects that are the same regardless of other properties
@@ -127,6 +128,8 @@ const Evidence = ({ collapseId, request, label, type }) => {
         specificDescription.leading = `‣ The URL that initiated this web request is known to practice `;
         specificDescription.highlight = `${displayType}`;
         specificDescription.trailing = `.`;
+        specificDescription.leadingTime = `‣ This request was received at: `;
+        specificDescription.timeStamp = new Date (request.timestamp).toTimeString()
       }
 
       // description for when the evidence came with an index in the strReq
@@ -143,6 +146,7 @@ const Evidence = ({ collapseId, request, label, type }) => {
         }
         specificDescription.leading = `‣ We found:`;
         specificDescription.highlight = ` ${keywordFlagged}`;
+        
 
 
         // general case
@@ -183,6 +187,10 @@ const Evidence = ({ collapseId, request, label, type }) => {
             {specificDescription.leading}
             <span>{specificDescription.highlight}</span>
             {specificDescription.trailing}
+            <br></br>
+            <br></br>
+            {specificDescription.leadingTime}
+            <span>{specificDescription.timeStamp}</span>
             <span>{specificDescription.email}</span>
             {specificDescription.trail1}
             <span>{specificDescription.encodedEmail}</span>

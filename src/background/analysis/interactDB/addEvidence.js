@@ -239,6 +239,7 @@ async function addToEvidenceStore(
   }
   //final return statement
   return new Promise(async function (resolve, reject) {
+    evidence.lastSeen = ts
     await evidenceKeyval.set(rootUrl, evidence);
     resolve("set");
   });
