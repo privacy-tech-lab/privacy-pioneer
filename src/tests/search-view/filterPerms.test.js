@@ -26,8 +26,8 @@ test("Filter By Tracking Only",  () => {
 });
 
 test("Filter By Watchlist Only", () => {
-    const permFilterLabels = getPermMapping('watchlist')
+    const permFilterLabels = getPermMapping('personal')
     const filteredWebsites = filter('', mockEvidence.labelArrayPerSite, permFilterLabels)
-    expect(getPlaceholder(false, {}, permFilterLabels)).toBe('in: watchlist ')
+    expect(getPlaceholder(false, {}, permFilterLabels)).toBe('in: personal ')
     expect(Object.entries(filteredWebsites).length=== 1).toBeTruthy();
 });

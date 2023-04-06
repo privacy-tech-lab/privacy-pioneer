@@ -78,11 +78,11 @@ function getAllEvidenceForCookies(cookies, rootUrl, reqUrl, userData) {
    * @returns {Void} Nothing. Updates evidenceArr as necessary
    */
   function runWatchlistAnalysis(cookieString) {
-    if (!permissionEnum.watchlist in networkKeywords) {
+    if (!permissionEnum.personal in networkKeywords) {
       return;
     }
 
-    const watchlistDict = networkKeywords[permissionEnum.watchlist];
+    const watchlistDict = networkKeywords[permissionEnum.personal];
 
     if (typeEnum.phoneNumber in watchlistDict) {
       watchlistDict[typeEnum.phoneNumber].forEach((number) => {

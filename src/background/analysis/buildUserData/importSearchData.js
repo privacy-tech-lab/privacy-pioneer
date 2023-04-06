@@ -71,7 +71,7 @@ async function importData() {
   var networkKeywords = {};
   // watchlist == data entered by the user in our extension
   // ex phone numbers, emails, etc
-  networkKeywords[permissionEnum.watchlist] = {};
+  networkKeywords[permissionEnum.personal] = {};
 
   // first let's build up the location info
   var locCoords = await getLocationData();
@@ -142,7 +142,7 @@ async function importData() {
 
   // if we have a phone we put it in the network keywords dict
   if (typeof userPhone !== "undefined") {
-    networkKeywords[permissionEnum.watchlist][typeEnum.phoneNumber] = userPhone;
+    networkKeywords[permissionEnum.personal][typeEnum.phoneNumber] = userPhone;
   }
 
   // build location Elements
@@ -228,9 +228,9 @@ async function importData() {
       encodedEmails[email] = [base64EncodedObj, urlBase64EncodedObj];
     });
 
-    networkKeywords[permissionEnum.watchlist][typeEnum.emailAddress] =
+    networkKeywords[permissionEnum.personal][typeEnum.emailAddress] =
       normalEmails;
-    networkKeywords[permissionEnum.watchlist][typeEnum.encodedEmail] =
+    networkKeywords[permissionEnum.personal][typeEnum.encodedEmail] =
       encodedEmails;
   }
 
@@ -247,7 +247,7 @@ async function importData() {
       );
       regexKeywords.push(wordObj);
     });
-    networkKeywords[permissionEnum.watchlist][typeEnum.userKeyword] =
+    networkKeywords[permissionEnum.personal][typeEnum.userKeyword] =
       regexKeywords;
   }
 
@@ -265,7 +265,7 @@ async function importData() {
       const ipObj = createKeywordObj(ipRegex, typeEnum.ipAddress, origHash);
       ipArr.push(ipObj);
     }
-    networkKeywords[permissionEnum.watchlist][typeEnum.ipAddress] = ipArr;
+    networkKeywords[permissionEnum.personal][typeEnum.ipAddress] = ipArr;
   }
 
   // build tracking info

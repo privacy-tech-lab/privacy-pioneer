@@ -451,7 +451,7 @@ export const getLabelIcon = (label, size = "24px") => {
       return <Location size={size} />;
     case "tracking":
       return <Tracking size={size} />;
-    case "watchlist":
+    case "personal":
       return <Personal size={size} />;
     case "monetization":
       return <Money size={size} />;

@@ -107,14 +107,14 @@ function hashUserDictValues(networkKeywords) {
   ]); // these get hashed in importData
 
   for (const [t, valArr] of Object.entries(
-    networkKeywords[permissionEnum.watchlist]
+    networkKeywords[permissionEnum.personal]
   )) {
     if (!excludedSet.has(t)) {
       var replacedArr = [];
       for (const keywordItem of valArr) {
         replacedArr.push(createKeywordObj(keywordItem, t));
       }
-      networkKeywords[permissionEnum.watchlist][t] = replacedArr;
+      networkKeywords[permissionEnum.personal][t] = replacedArr;
     }
   }
 
