@@ -12,14 +12,13 @@ export const SItem = styled.div`
   flex-direction: row;
   > * {
     :first-child {
-      width: 50%;
+      flex:2
     }
   }
   > * {
     :last-child {
       display: flex;
       justify-content: space-between;
-      flex-grow: 1;
     }
   }
 `;
@@ -33,9 +32,16 @@ export const SButtonText = styled.text`
   display: flex;
 `;
 
-export const SKeyword = styled.div``;
+export const SKeyword = styled.div`
 
-export const SType = styled.div``;
+`;
+
+export const SType = styled.div`
+flex:1`;
+
+export const SCategory = styled.div`
+flex:1
+`;
 
 export const SAction = styled.div`
   cursor: pointer;

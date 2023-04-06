@@ -69,15 +69,7 @@ export const SListHeader = styled.div`
   color: var(--secondaryTextColor);
   font-size: var(--body2);
   border-bottom: 1px solid var(--seperatorColor);
-  > * {
-    :first-child {
-      width: 50%;
-    }
-  }
-  > * {
-    :last-child {
-    }
-  }
+  padding-right: 48px
 `;
 
 export const SListContent = styled.div`

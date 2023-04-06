@@ -201,7 +201,7 @@ export const timeRangeEnum = Object.freeze({
 export const permissionEnum = Object.freeze({
   monetization: "monetization",
   location: "location",
-  watchlist: "watchlist",
+  personal: "personal",
   tracking: "tracking",
 });
 
@@ -223,7 +223,7 @@ export const typeEnum = Object.freeze({
   city: "city",
   region: "region",
 
-  // watchlist types
+  // personal types
   phoneNumber: "phoneNumber",
   emailAddress: "emailAddress",
   encodedEmail: "encodedEmail",
@@ -249,17 +249,6 @@ export const keywordTypes = Object.freeze({
     toolTip:
       "We will flag instances where the entered keyword is shared with a third-party.",
   },
-  location: {
-    displayName: "Street Address",
-    placeholder: {
-      streetAddress: "45 Wyllys Ave",
-      city: "Middletown",
-      region: "Conneticut",
-      zipCode: "06459",
-    },
-    toolTip:
-      "We will flag instances where the entered location data is shared with a third-party.",
-  },
   phoneNumber: {
     displayName: "Phone Number",
     placeholder: "+1 (860) 685-2000",
@@ -271,6 +260,17 @@ export const keywordTypes = Object.freeze({
     placeholder: "jdoe@wesleyan.edu",
     toolTip:
       "We will flag instances where the entered email is shared with a third-party, both in the form you write it and in an alternate representation (The Trade Desk's UID)",
+  },
+  location: {
+    displayName: "Street Address",
+    placeholder: {
+      streetAddress: "45 Wyllys Ave",
+      city: "Middletown",
+      region: "Conneticut",
+      zipCode: "06459",
+    },
+    toolTip:
+      "We will flag instances where the entered location data is shared with a third-party.",
   },
   ipAddress: {
     displayName: "IP Address",
@@ -346,9 +346,9 @@ export const privacyLabels = Object.freeze({
       },
     },
   },
-  watchlist: {
-    displayName: "Watchlist",
-    description: "Web traffic data that contains keywords from your custom watchlist.",
+  personal: {
+    displayName: "Personal",
+    description: "Personal data from your custom watchlist that was found in your web traffic.",
     types: {
       phoneNumber: {
         displayName: "Phone Number",

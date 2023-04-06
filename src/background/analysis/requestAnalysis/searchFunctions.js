@@ -254,7 +254,7 @@ function regexSearch(
   rootUrl,
   reqUrl,
   type,
-  perm = permissionEnum.watchlist
+  perm = permissionEnum.personal
 ) {
   const keywordIDWatch = keywordObj.keywordHash;
   const keyword = keywordObj.keyword;
@@ -473,7 +473,7 @@ function ipSearch(strReq, ipObj, rootUrl, reqUrl) {
 function encodedEmailSearch(strReq, networkKeywords, rootUrl, reqUrl) {
   var output = [];
   const encodedObj =
-    networkKeywords[permissionEnum.watchlist][typeEnum.encodedEmail];
+    networkKeywords[permissionEnum.personal][typeEnum.encodedEmail];
   const emails = Object.keys(encodedObj);
   emails.forEach((email) => {
     let encodeLst = encodedObj[email];
@@ -486,7 +486,7 @@ function encodedEmailSearch(strReq, networkKeywords, rootUrl, reqUrl) {
       if (output != -1) {
         output.push(
           createEvidenceObj(
-            permissionEnum.watchlist,
+            permissionEnum.personal,
             rootUrl,
             strReq,
             reqUrl,
