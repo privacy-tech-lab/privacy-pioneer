@@ -12,6 +12,7 @@ import {
   SDropdownItem,
   SButtonText,
   SSection,
+  SCategory
 } from "./style";
 import * as Icons from "../../../../../libs/icons";
 import {
@@ -32,7 +33,7 @@ import {
 } from "../../../../../background/analysis/buildUserData/importSearchData";
 
 /**
- * List item displaying keyword and type
+ * List item displaying keyword, type, and category
  * User can edit/delete keyword from vertical options button
  */
 const ListItem = ({
@@ -58,7 +59,17 @@ const ListItem = ({
     document.addEventListener("mousedown", blur);
     return () => document.removeEventListener("mousedown", blur);
   }, []);
-
+  function categorySwitch(type) {
+    console.log(typeof(type))
+    switch(type){
+      case "userKeyword": return 'Personal'
+      case "phoneNumber": return 'Personal'
+      case "emailAddress": return 'Personal'
+      case "location": return 'Location'
+      case "ipAddress": return 'Tracking'
+      default: return '1'
+    }
+  }
   return (
     <SItem>
       {id == IPINFO_IPKEY || id == IPINFO_ADDRESSKEY  ?  (
@@ -67,7 +78,9 @@ const ListItem = ({
             {keyword}
           </SButtonText>
         </SSection>
-      ): <SSection>{keyword}</SSection>}
+      ) : <SSection>{keyword}</SSection>}
+      
+      
       <ReactTooltip
         id="sButton"
         tipPointerPosition="start"
@@ -80,22 +93,15 @@ const ListItem = ({
       >
         This keyword was automatically generated via ipinfo.io
       </ReactTooltip>
-
-      <ReactTooltip
-        id="sNotification"
-        tipPointerPosition="start"
-        place="left"
-        backgroundColor="var(--primaryBrandColor)"
-        textColor="var(--primaryBrandTintColor)"
-        effect="solid"
-        delayShow="350"
-      >
-        Click this to toggle alerts for this keyword!
-      </ReactTooltip>
-      <div>
         <SType>
           {type in keywordTypes ? keywordTypes[type]["displayName"] : "Error"}
-        </SType>
+      </SType>
+      <SCategory>
+          {categorySwitch(type)}
+        </SCategory>
+      <div>
+        
+        
         <div>
           <SAction
             ref={dropdownRef}
