@@ -85,6 +85,16 @@ const Evidence = ({ collapseId, request, label, type }) => {
   };
 
   /**
+   * helps format date string
+   */
+  const dateOptions = {
+    weekday: "short",
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+  };
+
+  /**
    * Get sub label specific description
    * @param {object} request our evidence object for this request
    * @returns {object} sliced specific description of our reasonings for our labels | ""
@@ -129,7 +139,9 @@ const Evidence = ({ collapseId, request, label, type }) => {
         specificDescription.highlight = `${displayType}`;
         specificDescription.trailing = `.`;
         specificDescription.leadingTime = `‣ This request was received at: `;
-        specificDescription.timeStamp = new Date (request.timestamp).toTimeString()
+        specificDescription.timeStamp = new Date (request.timestamp).toLocaleTimeString()
+        specificDescription.trailingTime = ' on ';
+        specificDescription.trailTimeStamp = new Date (request.timestamp).toLocaleDateString("en-US", dateOptions)
       }
 
       // description for when the evidence came with an index in the strReq
@@ -191,6 +203,8 @@ const Evidence = ({ collapseId, request, label, type }) => {
             <br></br>
             {specificDescription.leadingTime}
             <span>{specificDescription.timeStamp}</span>
+            <span>{specificDescription.trailingTime}</span>
+            <span>{specificDescription.trailTimeStamp}</span>
             <span>{specificDescription.email}</span>
             {specificDescription.trail1}
             <span>{specificDescription.encodedEmail}</span>
