@@ -85,6 +85,16 @@ const Evidence = ({ collapseId, request, label, type }) => {
   };
 
   /**
+   * helps format date string
+   */
+  const dateOptions = {
+    weekday: "short",
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+  };
+
+  /**
    * Get sub label specific description
    * @param {object} request our evidence object for this request
    * @returns {object} sliced specific description of our reasonings for our labels | ""
@@ -102,6 +112,10 @@ const Evidence = ({ collapseId, request, label, type }) => {
         signOff: "",
         link: "",
         linkDesc: "",
+        timeStamp: "",
+        leadingTime: "",
+        trailingTime: "",
+        trailTimeStamp: ""
       };
 
       // populate description aspects that are the same regardless of other properties
@@ -111,6 +125,11 @@ const Evidence = ({ collapseId, request, label, type }) => {
       if (!displayLink) {
         displayLink = "";
       }
+      specificDescription.leadingTime = `‣ This request was found at: `;
+      specificDescription.timeStamp = new Date (request.timestamp).toLocaleTimeString()
+      specificDescription.trailingTime = ' on ';
+      specificDescription.trailTimeStamp = new Date(request.timestamp).toLocaleDateString("en-US", dateOptions)
+      
       specificDescription.link = displayLink;
       // 26 is the length where the text will fit in one line
       const cutOff =
@@ -143,8 +162,6 @@ const Evidence = ({ collapseId, request, label, type }) => {
         }
         specificDescription.leading = `‣ We found:`;
         specificDescription.highlight = ` ${keywordFlagged}`;
-
-
         // general case
         if (request.extraDetail == undefined) {
           if (request.permission == "location"){
@@ -183,6 +200,7 @@ const Evidence = ({ collapseId, request, label, type }) => {
             {specificDescription.leading}
             <span>{specificDescription.highlight}</span>
             {specificDescription.trailing}
+            <br/>
             <span>{specificDescription.email}</span>
             {specificDescription.trail1}
             <span>{specificDescription.encodedEmail}</span>
@@ -192,7 +210,12 @@ const Evidence = ({ collapseId, request, label, type }) => {
             ) : (
               <br></br>
             )}
-            <br></br>
+            {specificDescription.leadingTime}
+            <span>{specificDescription.timeStamp}</span>
+            <span>{specificDescription.trailingTime}</span>
+            <span>{specificDescription.trailTimeStamp}</span>      
+            <br />
+            <br/>
             <span>
               {specificDescription.signOff}{" "}
               <a target="_blank" href={String(specificDescription.link)}>
