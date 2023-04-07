@@ -4,7 +4,7 @@ privacy-tech-lab, https://privacytechlab.org/
 */
 
 import React, { useEffect, useState } from "react";
-import { privacyLabels, timeRangeEnum } from "../../../../../background/analysis/classModels";
+import { privacyLabels } from "../../../../../background/analysis/classModels";
 import {
   SContainer,
   SHeader,
@@ -113,6 +113,9 @@ const Evidence = ({ collapseId, request, label, type }) => {
         link: "",
         linkDesc: "",
         timeStamp: "",
+        leadingTime: "",
+        trailingTime: "",
+        trailTimeStamp: ""
       };
 
       // populate description aspects that are the same regardless of other properties
@@ -122,6 +125,11 @@ const Evidence = ({ collapseId, request, label, type }) => {
       if (!displayLink) {
         displayLink = "";
       }
+      specificDescription.leadingTime = `‣ This request was found at: `;
+      specificDescription.timeStamp = new Date (request.timestamp).toLocaleTimeString()
+      specificDescription.trailingTime = ' on ';
+      specificDescription.trailTimeStamp = new Date(request.timestamp).toLocaleDateString("en-US", dateOptions)
+      
       specificDescription.link = displayLink;
       // 26 is the length where the text will fit in one line
       const cutOff =
@@ -138,10 +146,6 @@ const Evidence = ({ collapseId, request, label, type }) => {
         specificDescription.leading = `‣ The URL that initiated this web request is known to practice `;
         specificDescription.highlight = `${displayType}`;
         specificDescription.trailing = `.`;
-        specificDescription.leadingTime = `‣ This request was received at: `;
-        specificDescription.timeStamp = new Date (request.timestamp).toLocaleTimeString()
-        specificDescription.trailingTime = ' on ';
-        specificDescription.trailTimeStamp = new Date (request.timestamp).toLocaleDateString("en-US", dateOptions)
       }
 
       // description for when the evidence came with an index in the strReq
@@ -158,9 +162,6 @@ const Evidence = ({ collapseId, request, label, type }) => {
         }
         specificDescription.leading = `‣ We found:`;
         specificDescription.highlight = ` ${keywordFlagged}`;
-        
-
-
         // general case
         if (request.extraDetail == undefined) {
           if (request.permission == "location"){
@@ -199,12 +200,7 @@ const Evidence = ({ collapseId, request, label, type }) => {
             {specificDescription.leading}
             <span>{specificDescription.highlight}</span>
             {specificDescription.trailing}
-            <br></br>
-            <br></br>
-            {specificDescription.leadingTime}
-            <span>{specificDescription.timeStamp}</span>
-            <span>{specificDescription.trailingTime}</span>
-            <span>{specificDescription.trailTimeStamp}</span>
+            <br/>
             <span>{specificDescription.email}</span>
             {specificDescription.trail1}
             <span>{specificDescription.encodedEmail}</span>
@@ -214,7 +210,12 @@ const Evidence = ({ collapseId, request, label, type }) => {
             ) : (
               <br></br>
             )}
-            <br></br>
+            {specificDescription.leadingTime}
+            <span>{specificDescription.timeStamp}</span>
+            <span>{specificDescription.trailingTime}</span>
+            <span>{specificDescription.trailTimeStamp}</span>      
+            <br />
+            <br/>
             <span>
               {specificDescription.signOff}{" "}
               <a target="_blank" href={String(specificDescription.link)}>
