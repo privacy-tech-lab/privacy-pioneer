@@ -216,12 +216,6 @@ const Evidence = ({ collapseId, request, label, type }) => {
             <span>{specificDescription.trailTimeStamp}</span>      
             <br />
             <br/>
-            <span>
-              {specificDescription.signOff}{" "}
-              <a target="_blank" href={String(specificDescription.link)}>
-                {specificDescription.linkDesc}
-              </a>
-            </span>
           </pre>
         </SEvidenceDescription>
         <SHeader marginTop="16px">◉ Request URL </SHeader>
