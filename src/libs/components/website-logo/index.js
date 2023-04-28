@@ -39,14 +39,12 @@ const SLetterLogo = styled.div`
     props.isLabel ? "var(--primaryTextColor)" : "var(--tintTextColor)"};
   font-weight: 700;
   font-size: ${(props) => (props.large ? "32px" : "18px")};
-  
 `;
 
 const SBrandIcon = styled.img.attrs(() => ({ alt: "Logo", src: logo }))`
   height: 48px;
   width: 48px;
   margin: 16px;
- 
 `;
 
 /**
@@ -62,13 +60,9 @@ const WebsiteLogo = ({ website, large, margin, isLabel }) => {
   );
 };
 
-export const PrivacyPioneerLogo = () => { 
-  return (
-	
-		<SBrandIcon/>
-	);
-
-}
+export const PrivacyPioneerLogo = () => {
+  return <SBrandIcon />;
+};
 
 export const CompanyLogo = ({ parent, large, margin }) => {
   const Logo = CompanyLogoSVG[parent];

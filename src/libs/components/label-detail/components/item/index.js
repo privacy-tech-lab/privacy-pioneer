@@ -7,8 +7,14 @@ import React, { useRef, useState } from "react";
 import { SBadgeGroup, SBadge } from "./style";
 import Evidence from "../evidence";
 import { Collapse } from "bootstrap";
-import { privacyLabels, settingsModelsEnum } from "../../../../../background/analysis/classModels";
-import { getAnalyticsStatus, settingsEnum } from "../../../../indexed-db/settings";
+import {
+  privacyLabels,
+  settingsModelsEnum,
+} from "../../../../../background/analysis/classModels";
+import {
+  getAnalyticsStatus,
+  settingsEnum,
+} from "../../../../indexed-db/settings";
 import { handleClick } from "../../../../indexed-db/getAnalytics";
 
 /**
@@ -78,7 +84,7 @@ const Item = ({ request, url, label }) => {
                       " Third Party: " +
                       url.toString(),
                     "ANY",
-                   settingsModelsEnum.notApplicable, 
+                    settingsModelsEnum.notApplicable,
                     url.toString(),
                     settingsModelsEnum.notApplicable
                   );

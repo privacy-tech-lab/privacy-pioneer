@@ -167,7 +167,15 @@ function coordinateSearch(strReq, locData, rootUrl, reqUrl) {
    * @param {number} matchIndex The index in the original request string of the first coordinate.
    * @returns {number} The next index to be searched. Or the length of the array if a pair is found (This will terminate the outer while loop).
    */
-  function findPair(matchArr, goal, arrIndex, matchIndex, deltaBound, typ, loc) {
+  function findPair(
+    matchArr,
+    goal,
+    arrIndex,
+    matchIndex,
+    deltaBound,
+    typ,
+    loc
+  ) {
     // we want lat and lng to be in close proximity
 
     let bound = matchIndex + COORDINATE_PAIR_DIST; // see constants.js for exp
@@ -178,7 +186,6 @@ function coordinateSearch(strReq, locData, rootUrl, reqUrl) {
       let endIndex = startIndex + match[0].length - 1;
       const asFloat = cleanMatch(match[0]);
 
-
       // potential is too far away, move on
       if (startIndex > bound) {
         return arrIndex + 1;
@@ -186,10 +193,16 @@ function coordinateSearch(strReq, locData, rootUrl, reqUrl) {
 
       let delta = Math.abs(asFloat - goal);
       if (delta < deltaBound) {
-
-        let evi = createEvidenceObj(permissionEnum.location, rootUrl, strReq, reqUrl, typ, [startIndex, endIndex])
-        evi.loc = loc
-        output.push(evi)
+        let evi = createEvidenceObj(
+          permissionEnum.location,
+          rootUrl,
+          strReq,
+          reqUrl,
+          typ,
+          [startIndex, endIndex]
+        );
+        evi.loc = loc;
+        output.push(evi);
 
         // if we find evidence for this request we return an index that will terminate the loop
         return matchArr.length;
@@ -211,18 +224,20 @@ function coordinateSearch(strReq, locData, rootUrl, reqUrl) {
     var i = 0;
     // matchArr is sorted by index, so we only need to look at elements to the right of a potential match
     while (i < matchArr.length) {
+      let match = matchArr[i];
+      let startIndex = match.index + 1;
+      const asFloat = cleanMatch(match[0]);
 
-      let match = matchArr[i]
-      let startIndex = match.index + 1
-      const asFloat = cleanMatch(match[0])
+      let deltaLat = Math.abs(asFloat - absLat);
+      let deltaLng = Math.abs(asFloat - absLng);
 
-      let deltaLat = Math.abs(asFloat - absLat)
-      let deltaLng = Math.abs(asFloat - absLng)
-
-      if (deltaLat < deltaBound) { i = findPair(matchArr, absLng, i, startIndex, deltaBound, typ, "lng") }
-      else if (deltaLng < deltaBound ) { i = findPair(matchArr, absLat, i, startIndex, deltaBound, typ, "lat") }
-      else { i += 1}
-
+      if (deltaLat < deltaBound) {
+        i = findPair(matchArr, absLng, i, startIndex, deltaBound, typ, "lng");
+      } else if (deltaLng < deltaBound) {
+        i = findPair(matchArr, absLat, i, startIndex, deltaBound, typ, "lat");
+      } else {
+        i += 1;
+      }
     }
   }
 

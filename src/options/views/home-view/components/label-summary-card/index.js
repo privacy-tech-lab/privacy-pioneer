@@ -4,7 +4,10 @@ privacy-tech-lab, https://privacytechlab.org/
 */
 
 import React from "react";
-import { privacyLabels, settingsModelsEnum } from "../../../../../background/analysis/classModels";
+import {
+  privacyLabels,
+  settingsModelsEnum,
+} from "../../../../../background/analysis/classModels";
 import * as Icons from "../../../../../libs/icons";
 import { SContainer, SFooter, SHeader, SLabel, STotal } from "./style";
 import { useHistory } from "react-router";

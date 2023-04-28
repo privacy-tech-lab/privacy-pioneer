@@ -9,7 +9,10 @@ import { useHistory, useLocation } from "react-router";
 import { settingsModelsEnum } from "../../../background/analysis/classModels";
 import * as Icons from "../../../libs/icons";
 import { handleClick } from "../../../libs/indexed-db/getAnalytics";
-import { getAnalyticsStatus, settingsEnum } from "../../../libs/indexed-db/settings";
+import {
+  getAnalyticsStatus,
+  settingsEnum,
+} from "../../../libs/indexed-db/settings";
 import { searchInit } from "../../../libs/init";
 import { seeAllSteps, SeeAllTour } from "../../../libs/tour";
 import Scaffold from "../../components/scaffold";

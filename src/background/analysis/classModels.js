@@ -348,7 +348,8 @@ export const privacyLabels = Object.freeze({
   },
   personal: {
     displayName: "Personal",
-    description: "Personal data from your custom watchlist that was found in your web traffic.",
+    description:
+      "Personal data from your custom watchlist that was found in your web traffic.",
     types: {
       phoneNumber: {
         displayName: "Phone Number",
@@ -379,7 +380,8 @@ export const privacyLabels = Object.freeze({
   },
   tracking: {
     displayName: "Tracking",
-    description: "A data collection practice used to create a unique identity of you and track your browsing activity",
+    description:
+      "A data collection practice used to create a unique identity of you and track your browsing activity",
     types: {
       trackingPixel: {
         displayName: "Tracking Pixel",

@@ -218,7 +218,7 @@ const EditModal = ({ passKeywordType, passKeyword, edit, id, updateList }) => {
                     address,
                   })
                 ) {
-                  await requestNotificationPermission()
+                  await requestNotificationPermission();
                   if (await saveKeyword(key, keywordType, id)) {
                     await updateList();
                     const modal = Modal.getInstance(

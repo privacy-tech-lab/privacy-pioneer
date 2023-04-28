@@ -25,7 +25,7 @@ export const STitle = styled.div`
 `;
 
 export const SSubtitle = styled.div`
-font-size: var(--headline);
+  font-size: var(--headline);
   color: var(--secondaryTextColor);
 `;
 export const SBody = styled.div`
@@ -66,4 +66,8 @@ export const SQuestionCard = styled.div`
 
 export const SArrow = styled.div`
   margin-right: 8px;
+`;
+
+export const SText = styled.p`
+margin-bottom: 0;
 `;

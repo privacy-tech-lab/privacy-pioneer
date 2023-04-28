@@ -67,7 +67,6 @@ const Evidence = ({ collapseId, request, label, type }) => {
     }
   };
 
-
   const [handEmoji, setHandEmoji] = useState("");
 
   useEffect(() => {
@@ -115,7 +114,7 @@ const Evidence = ({ collapseId, request, label, type }) => {
         timeStamp: "",
         leadingTime: "",
         trailingTime: "",
-        trailTimeStamp: ""
+        trailTimeStamp: "",
       };
 
       // populate description aspects that are the same regardless of other properties
@@ -126,10 +125,14 @@ const Evidence = ({ collapseId, request, label, type }) => {
         displayLink = "";
       }
       specificDescription.leadingTime = `‣ This request was found at: `;
-      specificDescription.timeStamp = new Date (request.timestamp).toLocaleTimeString()
-      specificDescription.trailingTime = ' on ';
-      specificDescription.trailTimeStamp = new Date(request.timestamp).toLocaleDateString("en-US", dateOptions)
-      
+      specificDescription.timeStamp = new Date(
+        request.timestamp
+      ).toLocaleTimeString();
+      specificDescription.trailingTime = " on ";
+      specificDescription.trailTimeStamp = new Date(
+        request.timestamp
+      ).toLocaleDateString("en-US", dateOptions);
+
       specificDescription.link = displayLink;
       // 26 is the length where the text will fit in one line
       const cutOff =
@@ -164,13 +167,11 @@ const Evidence = ({ collapseId, request, label, type }) => {
         specificDescription.highlight = ` ${keywordFlagged}`;
         // general case
         if (request.extraDetail == undefined) {
-          if (request.permission == "location"){
+          if (request.permission == "location") {
             specificDescription.trailing = ` (your ${displayType}) in this web request.`;
-          }
-          else if (displayType == "IP Address"){
+          } else if (displayType == "IP Address") {
             specificDescription.trailing = ` (an ${displayType}) in this web request.`;
-          }
-          else {
+          } else {
             specificDescription.trailing = ` (a ${displayType}) in this web request.`;
           }
         }
@@ -200,7 +201,7 @@ const Evidence = ({ collapseId, request, label, type }) => {
             {specificDescription.leading}
             <span>{specificDescription.highlight}</span>
             {specificDescription.trailing}
-            <br/>
+            <br />
             <span>{specificDescription.email}</span>
             {specificDescription.trail1}
             <span>{specificDescription.encodedEmail}</span>
@@ -213,9 +214,9 @@ const Evidence = ({ collapseId, request, label, type }) => {
             {specificDescription.leadingTime}
             <span>{specificDescription.timeStamp}</span>
             <span>{specificDescription.trailingTime}</span>
-            <span>{specificDescription.trailTimeStamp}</span>      
+            <span>{specificDescription.trailTimeStamp}</span>
             <br />
-            <br/>
+            <br />
           </pre>
         </SEvidenceDescription>
         <SHeader marginTop="16px">◉ Request URL </SHeader>

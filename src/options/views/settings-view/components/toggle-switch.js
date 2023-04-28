@@ -35,7 +35,13 @@ export const SSwitchLabel = styled.div`
 /**
  * General Toggle Switch used in various settings sections
  */
-export const ToggleSwitch = ({ isActive, label, onClick, spaceBetween , tooltipMessage}) => (
+export const ToggleSwitch = ({
+  isActive,
+  label,
+  onClick,
+  spaceBetween,
+  tooltipMessage,
+}) => (
   <div
     style={{
       display: "flex",
@@ -44,10 +50,9 @@ export const ToggleSwitch = ({ isActive, label, onClick, spaceBetween , tooltipM
       justifyContent: spaceBetween ? "space-between" : null,
     }}
   >
-    <SSwitchLabel
-    data-place="bottom"
-      data-tip={ tooltipMessage}
-    >{label}</SSwitchLabel>
+    <SSwitchLabel data-place="bottom" data-tip={tooltipMessage}>
+      {label}
+    </SSwitchLabel>
     <SSwitch active={isActive} onClick={onClick}>
       <SKnob
         variants={{

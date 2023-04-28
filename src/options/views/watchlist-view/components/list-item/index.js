@@ -12,7 +12,7 @@ import {
   SDropdownItem,
   SButtonText,
   SSection,
-  SCategory
+  SCategory,
 } from "./style";
 import * as Icons from "../../../../../libs/icons";
 import {
@@ -60,48 +60,50 @@ const ListItem = ({
     return () => document.removeEventListener("mousedown", blur);
   }, []);
   function categorySwitch(type) {
-    console.log(typeof(type))
-    switch(type){
-      case "userKeyword": return 'Personal'
-      case "phoneNumber": return 'Personal'
-      case "emailAddress": return 'Personal'
-      case "location": return 'Location'
-      case "ipAddress": return 'Tracking'
-      default: return '1'
+    switch (type) {
+      case "userKeyword":
+        return "Personal";
+      case "phoneNumber":
+        return "Personal";
+      case "emailAddress":
+        return "Personal";
+      case "location":
+        return "Location";
+      case "ipAddress":
+        return "Tracking";
+      default:
+        return "1";
     }
   }
   return (
     <SItem>
-      {id == IPINFO_IPKEY || id == IPINFO_ADDRESSKEY  ?  (
+      {id == IPINFO_IPKEY || id == IPINFO_ADDRESSKEY ? (
         <SSection >
-          <SButtonText data-tip data-for="sButton">
+          <div data-tip data-for="sButton">
             {keyword}
-          </SButtonText>
+          </div>
         </SSection>
-      ) : <SSection>{keyword}</SSection>}
-      
-      
+      ) : (
+        <SSection>{keyword}</SSection>
+      )}
+
       <ReactTooltip
         id="sButton"
         tipPointerPosition="start"
         place="right"
-        offset="{'left':0}"
+        offset={{'left':0}}
         backgroundColor="var(--primaryBrandColor)"
         textColor="var(--primaryBrandTintColor)"
         effect="solid"
-        delayShow="350"
+        delayShow={350}
       >
         This keyword was automatically generated via ipinfo.io
       </ReactTooltip>
-        <SType>
-          {type in keywordTypes ? keywordTypes[type]["displayName"] : "Error"}
+      <SType>
+        {type in keywordTypes ? keywordTypes[type]["displayName"] : "Error"}
       </SType>
-      <SCategory>
-          {categorySwitch(type)}
-        </SCategory>
+      <SCategory>{categorySwitch(type)}</SCategory>
       <div>
-        
-        
         <div>
           <SAction
             ref={dropdownRef}
@@ -186,7 +188,8 @@ const ListItem = ({
             <Icons.MoreVertical size="24px" />
           </SAction>
           <SAction
-            data-tip data-for="sNotification"
+            data-tip
+            data-for="sNotification"
             onClick={async () => {
               await toggleNotifications(id);
               await updateList();
@@ -209,12 +212,9 @@ const ListItem = ({
             }}
           >
             {notification ? (
-              <Icons.notificationOn
-                size="24px"
-              />
+              <Icons.notificationOn size="24px" />
             ) : (
-                <Icons.notificationOff
-                  size="24px" />
+              <Icons.notificationOff size="24px" />
             )}
           </SAction>
         </div>

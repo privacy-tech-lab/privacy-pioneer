@@ -8,17 +8,18 @@ import { getHostname } from "../../background/analysis/utility/util";
 import { settingsKeyval, watchlistKeyval } from "./openDB";
 import { privacyLabels } from "../../background/analysis/classModels";
 
-
-export const requestNotificationPermission = async () => { 
-  if (
-        Notification.permission == "default"
-  ) {
-    if (confirm("Privacy Pioneer will notify you of any selected Watchlist Keywords appearing in your web requests.")) {
+export const requestNotificationPermission = async () => {
+  if (Notification.permission == "default") {
+    if (
+      confirm(
+        "Privacy Pioneer will notify you of any selected Watchlist Keywords appearing in your web requests."
+      )
+    ) {
       const res = await Notification.requestPermission();
-      return res ==="granted"
+      return res === "granted";
     }
-      }
-}
+  }
+};
 
 /**
  *
@@ -43,33 +44,31 @@ const getUnnotifiedEvidence = async (allEvidence, host) => {
   const hostAlreadyNotified = alreadyNotified[host] ?? [];
   const permittedKeywords = await getPermittedNotifications();
   const unnotifiedEvidence = [];
-  Object.keys(allEvidence)
-    .forEach((perm) =>
-      Object.keys(allEvidence[perm]).forEach((type) =>
-        Object.keys(allEvidence[perm][type])
-          .forEach((evidence) => {
+  Object.keys(allEvidence).forEach((perm) =>
+    Object.keys(allEvidence[perm]).forEach((type) =>
+      Object.keys(allEvidence[perm][type]).forEach((evidence) => {
+        if (
+          allEvidence[perm][type][evidence]["watchlistHash"] &&
+          permittedKeywords.includes(
+            allEvidence[perm][type][evidence]["watchlistHash"]
+          )
+        ) {
+          allEvidence[perm][type][evidence]["watchlistHash"];
+          if (!hostAlreadyNotified.includes(evidence)) {
             if (
-              allEvidence[perm][type][evidence]["watchlistHash"] &&
-              permittedKeywords.includes(
+              !unnotifiedEvidence.includes(
                 allEvidence[perm][type][evidence]["watchlistHash"]
               )
             ) {
-              allEvidence[perm][type][evidence]["watchlistHash"]
-              if (
-                !(hostAlreadyNotified.includes(evidence))
-              ) {
-                if (!unnotifiedEvidence.includes(
-                  allEvidence[perm][type][evidence]["watchlistHash"]
-                )) { 
-                  unnotifiedEvidence.push(
-                  allEvidence[perm][type][evidence]
-                );
-                }
-                hostAlreadyNotified.push(evidence);
-              };
-            };
-          })));
-  
+              unnotifiedEvidence.push(allEvidence[perm][type][evidence]);
+            }
+            hostAlreadyNotified.push(evidence);
+          }
+        }
+      })
+    )
+  );
+
   alreadyNotified[host] = hostAlreadyNotified;
   await settingsKeyval.set("alreadyNotified", alreadyNotified);
   return unnotifiedEvidence;
@@ -85,27 +84,29 @@ const notify = async (host) => {
   if (Notification.permission == "granted") {
     evidenceKeyval.get(host).then(async (res) => {
       if (res) {
-        const evidenceToNotify = await getUnnotifiedEvidence(res,host);
+        const evidenceToNotify = await getUnnotifiedEvidence(res, host);
         if (evidenceToNotify.length > 0) {
-          let evidenceList = ""
-          
+          let evidenceList = "";
+
           for (const evidence of evidenceToNotify) {
-            console.log(evidence)
-            const keyword = (await watchlistKeyval.get(evidence.watchlistHash)).keyword
-            const displayName = privacyLabels[evidence.permission]["types"][evidence.typ].displayName 
+            console.log(evidence);
+            const keyword = (await watchlistKeyval.get(evidence.watchlistHash))
+              .keyword;
+            const displayName =
+              privacyLabels[evidence.permission]["types"][evidence.typ]
+                .displayName;
             if (evidence.typ === "userKeyword") {
-              evidenceList = evidenceList + `\n${displayName} (${keyword.slice(0, 3)}**)`
-            } else { 
-              evidenceList = evidenceList + `\n${displayName}`
+              evidenceList =
+                evidenceList + `\n${displayName} (${keyword.slice(0, 3)}**)`;
+            } else {
+              evidenceList = evidenceList + `\n${displayName}`;
             }
-            
           }
-          
-         
-          const text = `We found the following watchlist keywords in your web request: \n${evidenceList}` ;
-          
+
+          const text = `We found the following watchlist keywords in your web request: \n${evidenceList}`;
+
           browser.notifications.create("privacy_pioneer" + host, {
-            type:'basic',
+            type: "basic",
             message: text,
             title: "Privacy Pioneer",
           });
@@ -120,36 +121,39 @@ const notify = async (host) => {
  */
 
 const runNotifications = async () => {
-  browser.webNavigation.onCompleted.addListener(
-    async (details) => {
-      const activeTab = (await browser.tabs.query({ currentWindow: true, active: true }))[0];
-      const host = getHostname(activeTab.url)
-      if (details.frameId === 0 && details.tabId === activeTab.id) { 
-        
-        const timeoutId = setTimeout(() => {
-          browser.tabs.onUpdated.removeListener(handleTabUpdated);
-          browser.tabs.onRemoved.removeListener(handleTabClosed);
+  browser.webNavigation.onCompleted.addListener(async (details) => {
+    const activeTab = (
+      await browser.tabs.query({ currentWindow: true, active: true })
+    )[0];
+    const host = getHostname(activeTab.url);
+    if (details.frameId === 0 && details.tabId === activeTab.id) {
+      const timeoutId = setTimeout(() => {
+        browser.tabs.onUpdated.removeListener(handleTabUpdated);
+        browser.tabs.onRemoved.removeListener(handleTabClosed);
+        notify(host);
+      }, 15000);
+
+      const handleTabUpdated = (tabId, changeInfo, tabInfo) => {
+        const updatedHost = getHostname(tabInfo.url);
+        if (updatedHost != host) {
+          clearTimeout(timeoutId);
           notify(host);
-        }, 15000);
+        }
+      };
 
-        const handleTabUpdated = (tabId, changeInfo, tabInfo) => {
-          const updatedHost = getHostname(tabInfo.url);
-          if (updatedHost != host) {
-            clearTimeout(timeoutId);
-            notify(host);
-          }
-        };
+      const handleTabClosed = (closedTabId) => {
+        if (activeTab.id === closedTabId) {
+          clearTimeout(timeoutId);
+          notify(host);
+        }
+      };
 
-        const handleTabClosed = (closedTabId) => {
-          if (activeTab.id === closedTabId) {
-            clearTimeout(timeoutId)
-            notify(host)
-          }
-        };
-
-        browser.tabs.onUpdated.addListener(handleTabUpdated, { tabId, properties: ['url'] });
-        browser.tabs.onRemoved.addListener(handleTabClosed);
-      }
+      browser.tabs.onUpdated.addListener(handleTabUpdated, {
+        tabId,
+        properties: ["url"],
+      });
+      browser.tabs.onRemoved.addListener(handleTabClosed);
+    }
   });
 };
 

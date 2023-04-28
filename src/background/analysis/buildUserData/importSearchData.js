@@ -256,9 +256,8 @@ async function importData() {
     for (const ip of user_store_dict[typeEnum.ipAddress]) {
       let origHash;
       if (retJson.ip === ip) {
-        origHash = IPINFO_IPKEY
-      }
-      else {
+        origHash = IPINFO_IPKEY;
+      } else {
         origHash = watchlistHashGen(typeEnum.ipAddress, ip);
       }
       const ipRegex = buildIpRegex(ip);

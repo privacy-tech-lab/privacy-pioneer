@@ -12,7 +12,7 @@ export const SItem = styled.div`
   flex-direction: row;
   > * {
     :first-child {
-      flex:2
+      flex: 2;
     }
   }
   > * {
@@ -28,19 +28,18 @@ export const SSection = styled.div`
   display: flex;
   flex-direction: row;
 `;
-export const SButtonText = styled.text`
+export const SButtonText = styled.p`
   display: flex;
 `;
 
-export const SKeyword = styled.div`
-
-`;
+export const SKeyword = styled.div``;
 
 export const SType = styled.div`
-flex:1`;
+  flex: 1;
+`;
 
 export const SCategory = styled.div`
-flex:1
+  flex: 1;
 `;
 
 export const SAction = styled.div`

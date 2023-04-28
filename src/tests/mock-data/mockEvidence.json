@@ -1,73 +1,80 @@
 {
-    "Example" : {
-        "evidenceToAdd" : [{
-            "timestamp" : "undefined",
-            "cookie" : false,
-            "extraDetail": "undefined",
-            "index" : [250, 261], 
-            "parentCompany" : "invasive_company",
-            "permission" : "location",
-            "requestUrl" : "https://requestingWebsite.com/",
-            "rootUrl" : "https://invasiveWebsite.com/",
-            "snippit": "\",\\\"germany\\\",\\\"france\\\",\\\"spain\\\",\\\"south-africa\\\",\\\"mexico\\\",\\\"mexico-es\\\",\\\"australia\\\",\\\"japan\\\"]);function Ot(r){return At.has(r)}const Pt=new Set([\\\"alabama\\\",\\\"alaska\\\",\\\"american-samoa\\\",\\\"arizona\\\",\\\"arkansas\\\",\\\"california\\\",\\\"colorado\\\",\\\"connecticut\\\",\\\"delaware\\\",\\\"florida\\\",\\\"georgia\\\",\\\"guam\\\",\\\"hawaii\\\",\\\"idaho\\\",\\\"illinois\\\",\\\"indiana\\\",\\\"iowa\\\",\\\"kansas\\\",\\\"kentucky\\\",\\\"louisiana\\\",\\\"maine\\\",\\\"maryland\\\",\\\"massachusetts\\\",\\\"michigan\\\",\\\"minnesota\\\",\\\"mississippi\\\",\\\"missouri\\\",\\\"montana\\\"",
-            "typ": "region"
-        }],
-        "parent" : "invasive_company",
-        "rootU" : "https://invasiveWebsite.com/",
-        "requestU" : "https://requestingWebsite.com/",
-        "saveFullSnippet" : false
-    },
-    "ml_region_true" : "region ___ ive.com/v2.0/geoip?include=geo&include=isp&include=ip_hash&k=9fc95048-71ef-4f85-a2f7-d7e9ca5b8d45{\"geo_info\":{\"continent\":\"North America\",\"country\":\"United States\",\"city\":\"Middletown\",\"province\":\"<TARGET_REGION>\",\"postal_code\":\"06459\"},\"isp_info\":{\"isp\":\"Wesleyan University\",\"organization\":\"Wesleyan University\",\"autonomous_system_number\":167,\"autonomous_system_organization\":\"WESLEYAN-AS\"}}",
-    "ml_region_false" : "region ___ ,\"germany\",\"france\",\"spain\",\"south-africa\",\"mexico\",\"mexico-es\",\"australia\",\"japan\"]);function Ot(r){return At.has(r)}const Pt=new Set([\"alabama\",\"alaska\",\"american-samoa\",\"arizona\",\"arkansas\",\"california\",\"colorado\",\"<TARGET_REGION>\",\"delaware\",\"florida\",\"georgia\",\"guam\",\"hawaii\",\"idaho\",\"illinois\",\"indiana\",\"iowa\",\"kansas\",\"kentucky\",\"louisiana\",\"maine\",\"maryland\",\"massachusetts\",\"michigan\",\"minnesota\",\"mississippi\",\"missouri\",\"montana\"",
-    "ml_city_true" : "city ___ '\"Europe\",\"continent_code\":\"EU\",\"country\":\"Portugal\",\"country_code\":\"PT\",\"state\":\"city\":,\"postal\":,\"time_zone\":\"Europe/<TARGET_CITY>\",\"region\":\"EMEA\",\"ipAddress\":\"94.46.24.35\",\"latitude\":38.7057,\"longitude\":-9.1359}" ,
-    "ml_city_false" : "city ___ -carda-list-itema-link-normal/-Architecture-<TARGET_CITY>-Model-Skyline-Collection-Collectible-Building-Set/dp/?",
-    "ml_zip_true" : "zipCode ___ 5.145\",\"latitude\":41.5557,\"longitude\":-72.6632,\"time_zone\":\"America/New_York\",\"metro_code\":533,\"dma_code\":533,\"continent_code\":\"NA\",\"country_code\":\"US\",\"country_name\":\"United States\",\"city\":\"Middletown\",\"postal_code\":\"<TARGET_ZIP>\",\"region\":\"CT\",\"zone_abbr\":\"ET\",\"fips_state\":\"09\",\"fips_county\":\"007\",\"fips_geoid\":\"09007\"},\"status\":\"ok\"}",
-    "ml_zip_false" : "zipCode ___ 7pid\\x27: \\x27339924801\\x27, \\x27rv\\x27: \\x272\\x27, \\x27adv\\x27: \\x279605293\\x27, \\x27exit_suffix\\x27: \\x27dclid\\\\x3d%edclid!\\x27, \\x27geo\\x27: \\x27ct\\\\x3dUS\\\\x26st\\\\x3dCT\\\\x26city\\\\x3d0\\\\x26dma\\\\x3d0\\\\x26zp\\\\x3d<TARGET_ZIP>\\\\x26bw\\\\x3d4\\x27, \\x27p\\x27: \\x27APEucNUJpd1Pj3D6YkgWr-sigDjRnE8NsuoozteD2ZAPVAOjZfpKDqE\\x27, \\x27displayHTML5\\x27: \\x27true\\x27, \\x27CREATIVE_PARAMETER_EXPERIMENTS\\x27: \\x27{ \\\\\\\\\\\\x22add_sodar_interaction_signals\\\\\\\\\\\\x",
-    "ml_lng_true" : " lng ___ {\"reqUrl\":\"https://www.nytimes.com/svc/int/functions/geoip\",\"requestBody{\"response\":true,\"data\":{\"ip\":\"129.133.5.145\",\"latitude\":41.5557,\"longitude\":-<TARGET_LNG>,\"time_zone\":\"America/New_York\",\"metro_code\":533,\"dma_code\":533,\"continent_code\":\"NA\",\"country_code\":\"US\",\"country_name\":\"United States\",\"city\":\"Middletown\",\"postal_code\":\"06457\",\"region\":\"CT\",\"zone_abbr\":\"ET\") ",
-    "ml_lng_false" : "lng ___ stBodyKrux.ns._default.kxjsonp_userdata({\"status\":\"200\",\"body\":{\"code\":\"no_segments\",\"kuid\":\"kppidff_PXk1Qp7V\",\"kuid_long\":\"kppidff_PXk1Qp7V\",\"geo\":{\"region\":\"ct\",\"latitude\":\"41.55\",\"longitude\":\"-<TARGET_LNG>\",\"domain\":\"wesleyan.edu\",\"country\":\"us\",\"dma\":\"533\",\"zip\":\"06459\"},\"technographics\":{\"browser\":\"Firefox 10\",\"manufacturer\":\"Apple Inc.\",\"device\":\"Computer\",\"os\":\"Mac OS X\"}}});",
-    "cookie" : {
-        "cookies" : [{ 
-            "domain" : "invasive_company",
-            "firstPartyDomain" : "",
-            "hostOnly" : false,
-            "httpOnly" : false,
-            "name" : "cookietest",
-            "partitionkey" : null,
-            "path" : "/",
-            "sameSite" : "no_restriction",
-            "secure" : true,
-            "session" : true,
-            "storeId" : "firefox-default",
-            "value" : "testCity|testRegion|12345|US|NA|-500|broadband|12.3|-45.6|"
-
-        }],  
-        "rootUrl" : "https://invasiveWebsite.com/",
-        "reqUrl" : "https://requestingWebsite.com/", 
-        "userData" : [
-            [12.3, -45.6],
-            {
-                "location" : {
-                    "zipCode": [{"keyword" : "12345", "keywordHash" : "222222222"}],
-                    "region": [{"keyword" : "testRegion", "keywordHash" : "222222222"}],
-                    "city": [{"keyword" : "testCity", "keywordHash" : "222222222"}],
-                    "streetAddress": [{"keyword": "1 Test Road", "keywordHash" : "222222222"}]
-                },
-                "personal" : {"keyword": "/1234567890/", "keywordHash": "1111111111"}
-            },
-            {},
-            false,
-            true,
-            {"locationData" : {
-                "zipCode": [{"keyword" : "12345", "keywordHash" : "222222222"}],
-                "region": [{"keyword" : "testRegion", "keywordHash" : "222222222"}],
-                "city": [{"keyword" : "testCity", "keywordHash" : "222222222"}],
-                "streetAddress": [{"keyword": "1 Test Road", "keywordHash" : "222222222"}]
-            }, "ip" : {"keyword": "/1234567890/", "keywordHash": "1111111111"}
-            },
-            true
-        ]
-
-    },
-    "heurisitc_short" : "abcd1234shortabcd1234"
-
+  "Example": {
+    "evidenceToAdd": [
+      {
+        "timestamp": "undefined",
+        "cookie": false,
+        "extraDetail": "undefined",
+        "index": [250, 261],
+        "parentCompany": "invasive_company",
+        "permission": "location",
+        "requestUrl": "https://requestingWebsite.com/",
+        "rootUrl": "https://invasiveWebsite.com/",
+        "snippit": "\",\\\"germany\\\",\\\"france\\\",\\\"spain\\\",\\\"south-africa\\\",\\\"mexico\\\",\\\"mexico-es\\\",\\\"australia\\\",\\\"japan\\\"]);function Ot(r){return At.has(r)}const Pt=new Set([\\\"alabama\\\",\\\"alaska\\\",\\\"american-samoa\\\",\\\"arizona\\\",\\\"arkansas\\\",\\\"california\\\",\\\"colorado\\\",\\\"connecticut\\\",\\\"delaware\\\",\\\"florida\\\",\\\"georgia\\\",\\\"guam\\\",\\\"hawaii\\\",\\\"idaho\\\",\\\"illinois\\\",\\\"indiana\\\",\\\"iowa\\\",\\\"kansas\\\",\\\"kentucky\\\",\\\"louisiana\\\",\\\"maine\\\",\\\"maryland\\\",\\\"massachusetts\\\",\\\"michigan\\\",\\\"minnesota\\\",\\\"mississippi\\\",\\\"missouri\\\",\\\"montana\\\"",
+        "typ": "region"
+      }
+    ],
+    "parent": "invasive_company",
+    "rootU": "https://invasiveWebsite.com/",
+    "requestU": "https://requestingWebsite.com/",
+    "saveFullSnippet": false
+  },
+  "ml_region_true": "region ___ ive.com/v2.0/geoip?include=geo&include=isp&include=ip_hash&k=9fc95048-71ef-4f85-a2f7-d7e9ca5b8d45{\"geo_info\":{\"continent\":\"North America\",\"country\":\"United States\",\"city\":\"Middletown\",\"province\":\"<TARGET_REGION>\",\"postal_code\":\"06459\"},\"isp_info\":{\"isp\":\"Wesleyan University\",\"organization\":\"Wesleyan University\",\"autonomous_system_number\":167,\"autonomous_system_organization\":\"WESLEYAN-AS\"}}",
+  "ml_region_false": "region ___ ,\"germany\",\"france\",\"spain\",\"south-africa\",\"mexico\",\"mexico-es\",\"australia\",\"japan\"]);function Ot(r){return At.has(r)}const Pt=new Set([\"alabama\",\"alaska\",\"american-samoa\",\"arizona\",\"arkansas\",\"california\",\"colorado\",\"<TARGET_REGION>\",\"delaware\",\"florida\",\"georgia\",\"guam\",\"hawaii\",\"idaho\",\"illinois\",\"indiana\",\"iowa\",\"kansas\",\"kentucky\",\"louisiana\",\"maine\",\"maryland\",\"massachusetts\",\"michigan\",\"minnesota\",\"mississippi\",\"missouri\",\"montana\"",
+  "ml_city_true": "city ___ '\"Europe\",\"continent_code\":\"EU\",\"country\":\"Portugal\",\"country_code\":\"PT\",\"state\":\"city\":,\"postal\":,\"time_zone\":\"Europe/<TARGET_CITY>\",\"region\":\"EMEA\",\"ipAddress\":\"94.46.24.35\",\"latitude\":38.7057,\"longitude\":-9.1359}",
+  "ml_city_false": "city ___ -carda-list-itema-link-normal/-Architecture-<TARGET_CITY>-Model-Skyline-Collection-Collectible-Building-Set/dp/?",
+  "ml_zip_true": "zipCode ___ 5.145\",\"latitude\":41.5557,\"longitude\":-72.6632,\"time_zone\":\"America/New_York\",\"metro_code\":533,\"dma_code\":533,\"continent_code\":\"NA\",\"country_code\":\"US\",\"country_name\":\"United States\",\"city\":\"Middletown\",\"postal_code\":\"<TARGET_ZIP>\",\"region\":\"CT\",\"zone_abbr\":\"ET\",\"fips_state\":\"09\",\"fips_county\":\"007\",\"fips_geoid\":\"09007\"},\"status\":\"ok\"}",
+  "ml_zip_false": "zipCode ___ 7pid\\x27: \\x27339924801\\x27, \\x27rv\\x27: \\x272\\x27, \\x27adv\\x27: \\x279605293\\x27, \\x27exit_suffix\\x27: \\x27dclid\\\\x3d%edclid!\\x27, \\x27geo\\x27: \\x27ct\\\\x3dUS\\\\x26st\\\\x3dCT\\\\x26city\\\\x3d0\\\\x26dma\\\\x3d0\\\\x26zp\\\\x3d<TARGET_ZIP>\\\\x26bw\\\\x3d4\\x27, \\x27p\\x27: \\x27APEucNUJpd1Pj3D6YkgWr-sigDjRnE8NsuoozteD2ZAPVAOjZfpKDqE\\x27, \\x27displayHTML5\\x27: \\x27true\\x27, \\x27CREATIVE_PARAMETER_EXPERIMENTS\\x27: \\x27{ \\\\\\\\\\\\x22add_sodar_interaction_signals\\\\\\\\\\\\x",
+  "ml_lng_true": " lng ___ {\"reqUrl\":\"https://www.nytimes.com/svc/int/functions/geoip\",\"requestBody{\"response\":true,\"data\":{\"ip\":\"129.133.5.145\",\"latitude\":41.5557,\"longitude\":-<TARGET_LNG>,\"time_zone\":\"America/New_York\",\"metro_code\":533,\"dma_code\":533,\"continent_code\":\"NA\",\"country_code\":\"US\",\"country_name\":\"United States\",\"city\":\"Middletown\",\"postal_code\":\"06457\",\"region\":\"CT\",\"zone_abbr\":\"ET\") ",
+  "ml_lng_false": "lng ___ stBodyKrux.ns._default.kxjsonp_userdata({\"status\":\"200\",\"body\":{\"code\":\"no_segments\",\"kuid\":\"kppidff_PXk1Qp7V\",\"kuid_long\":\"kppidff_PXk1Qp7V\",\"geo\":{\"region\":\"ct\",\"latitude\":\"41.55\",\"longitude\":\"-<TARGET_LNG>\",\"domain\":\"wesleyan.edu\",\"country\":\"us\",\"dma\":\"533\",\"zip\":\"06459\"},\"technographics\":{\"browser\":\"Firefox 10\",\"manufacturer\":\"Apple Inc.\",\"device\":\"Computer\",\"os\":\"Mac OS X\"}}});",
+  "cookie": {
+    "cookies": [
+      {
+        "domain": "invasive_company",
+        "firstPartyDomain": "",
+        "hostOnly": false,
+        "httpOnly": false,
+        "name": "cookietest",
+        "partitionkey": null,
+        "path": "/",
+        "sameSite": "no_restriction",
+        "secure": true,
+        "session": true,
+        "storeId": "firefox-default",
+        "value": "testCity|testRegion|12345|US|NA|-500|broadband|12.3|-45.6|"
+      }
+    ],
+    "rootUrl": "https://invasiveWebsite.com/",
+    "reqUrl": "https://requestingWebsite.com/",
+    "userData": [
+      [12.3, -45.6],
+      {
+        "location": {
+          "zipCode": [{ "keyword": "12345", "keywordHash": "222222222" }],
+          "region": [{ "keyword": "testRegion", "keywordHash": "222222222" }],
+          "city": [{ "keyword": "testCity", "keywordHash": "222222222" }],
+          "streetAddress": [
+            { "keyword": "1 Test Road", "keywordHash": "222222222" }
+          ]
+        },
+        "personal": { "keyword": "/1234567890/", "keywordHash": "1111111111" }
+      },
+      {},
+      false,
+      true,
+      {
+        "locationData": {
+          "zipCode": [{ "keyword": "12345", "keywordHash": "222222222" }],
+          "region": [{ "keyword": "testRegion", "keywordHash": "222222222" }],
+          "city": [{ "keyword": "testCity", "keywordHash": "222222222" }],
+          "streetAddress": [
+            { "keyword": "1 Test Road", "keywordHash": "222222222" }
+          ]
+        },
+        "ip": { "keyword": "/1234567890/", "keywordHash": "1111111111" }
+      },
+      true
+    ]
+  },
+  "heurisitc_short": "abcd1234shortabcd1234"
 }

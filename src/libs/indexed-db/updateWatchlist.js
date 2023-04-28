@@ -28,7 +28,7 @@ import { requestNotificationPermission } from "./notifications.js";
 const saveKeyword = async (keyword, type, id) => {
   // Validate
   if (type in keywordTypes && keyword) {
-    const notificationEnabled = Notification.permission == "granted"
+    const notificationEnabled = Notification.permission == "granted";
     let key;
     //id == ip || loc when this is the ipinfo generated ip keyword
     if (id == "ip") {
@@ -82,10 +82,12 @@ const toggleNotifications = async (id) => {
   if (data.notification) {
     data.notification = false;
   } else {
-    const permission = await requestNotificationPermission()
-    if (Notification.permission === 'denied') {
-      alert("Please turn on notifications in order to receives alerts about your watchlist keywords!")
-    } else if (permission || Notification.permission === 'granted') { 
+    const permission = await requestNotificationPermission();
+    if (Notification.permission === "denied") {
+      alert(
+        "Please turn on notifications in order to receives alerts about your watchlist keywords!"
+      );
+    } else if (permission || Notification.permission === "granted") {
       data.notification = true;
     }
   }

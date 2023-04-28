@@ -6,7 +6,13 @@ privacy-tech-lab, https://privacytechlab.org/
 import Filters from "./components/filters";
 import SearchBar from "./components/search-bar";
 import React, { useCallback, useEffect, useState } from "react";
-import { getPermMapping, filter, filterLabels, getPlaceholder, getEmptyCompanyFilter } from "./components/utils/filter-util";
+import {
+  getPermMapping,
+  filter,
+  filterLabels,
+  getPlaceholder,
+  getEmptyCompanyFilter,
+} from "./components/utils/filter-util";
 
 /**
  * Combination of filter section and search section
@@ -21,7 +27,6 @@ const FilterSearch = ({
   setShowEmpty,
   location,
 }) => {
-
   const [placeholder, setPlaceholder] = useState("");
   const [query, setQuery] = useState("");
   const [companyFilter, setCompanyFilter] = useState(getEmptyCompanyFilter());
@@ -40,19 +45,26 @@ const FilterSearch = ({
     setPlaceholder(getPlaceholder(false, companyFilter, permFilter));
   }, []);
 
-  const onChange = useCallback((inputString, permFilterLabels = permFilter) => { 
-    const filteredWebsites = filter(inputString, websites, permFilterLabels);
-    setQuery(inputString);
-    
-    Object.keys(filteredWebsites) == 0
-      ? setShowEmpty(true)
-      : setShowEmpty(false);
-    setFilteredWebsites(filteredWebsites);
+  const onChange = useCallback(
+    (inputString, permFilterLabels = permFilter) => {
+      const filteredWebsites = filter(inputString, websites, permFilterLabels);
+      setQuery(inputString);
 
-  }, [permFilter, websites])
+      Object.keys(filteredWebsites) == 0
+        ? setShowEmpty(true)
+        : setShowEmpty(false);
+      setFilteredWebsites(filteredWebsites);
+    },
+    [permFilter, websites]
+  );
 
-  const onLabelClicked = useCallback(() => { 
-    const filteredLabels = filterLabels(permFilter, companyFilter, labels, setPlaceholder);
+  const onLabelClicked = useCallback(() => {
+    const filteredLabels = filterLabels(
+      permFilter,
+      companyFilter,
+      labels,
+      setPlaceholder
+    );
     setFilteredLabels(filteredLabels);
     onChange(query);
 
@@ -60,14 +72,18 @@ const FilterSearch = ({
       setFilteredWebsites({});
       setShowEmpty(true);
     }
-  }, [labels, permFilter,companyFilter, query, setFilteredWebsites, setShowEmpty ])
-  
+  }, [
+    labels,
+    permFilter,
+    companyFilter,
+    query,
+    setFilteredWebsites,
+    setShowEmpty,
+  ]);
+
   return (
     <>
-      <SearchBar
-        onChange={onChange}
-        placeholder={placeholder}
-      />
+      <SearchBar onChange={onChange} placeholder={placeholder} />
       <Filters
         filterLabels={onLabelClicked}
         permFilter={permFilter}

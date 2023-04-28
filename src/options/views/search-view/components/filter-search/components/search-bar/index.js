@@ -10,11 +10,7 @@ import * as Icons from "../../../../../../../libs/icons";
 /**
  * Filters Viewed Websites based on typed input on Search bar
  */
-const SearchBar = ({
-  onChange,
-  placeholder,
-}) => {
-
+const SearchBar = ({ onChange, placeholder }) => {
   return (
     <SSearchContainer>
       <SInputContainer>
@@ -22,7 +18,7 @@ const SearchBar = ({
         <SInput
           placeholder={placeholder}
           onChange={(e) => {
-            onChange(e.target.value)
+            onChange(e.target.value);
           }}
         />
       </SInputContainer>

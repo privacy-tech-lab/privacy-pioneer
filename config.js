@@ -1,3 +1,3 @@
-globalThis.Notification = ({
-    permission: "granted",
-});
+globalThis.Notification = {
+  permission: "granted",
+};
