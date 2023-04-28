@@ -78,7 +78,10 @@ const WebsiteLabelList = ({ websites, recent, handleTap, allLabels }) => {
       {entries
         .slice(0, recent & (entries.length > 3) ? 3 : entries.length)
         .map(([website, data]) => (
-          <SItem key={website} hasEvidence={ Object.keys(data.labels).length != 0}>
+          <SItem
+            key={website}
+            hasEvidence={Object.keys(data.labels).length != 0}
+          >
             <WebsiteBadge website={website} party={data.party} />
             <SLabelGroup>
               <LabelCards

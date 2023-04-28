@@ -47,14 +47,14 @@ const HomeView = () => {
       setModal,
       setWebsites,
     });
-    settingsKeyval.get("firstHomeVisit").then(
-      firstHomeVisit => {
-        if (firstHomeVisit) { 
-          alert("Privacy Pioneer does not collect any data from you. However, your IP address is shared with ipinfo.io to identify geographical locations in web requests. You can find ipinfo.io's privacy policy here https://ipinfo.io/privacy-policy.")
-          settingsKeyval.set("firstHomeVisit", false)
-        }
+    settingsKeyval.get("firstHomeVisit").then((firstHomeVisit) => {
+      if (firstHomeVisit) {
+        alert(
+          "Privacy Pioneer does not collect any data from you. However, your IP address is shared with ipinfo.io to identify geographical locations in web requests. You can find ipinfo.io's privacy policy here https://ipinfo.io/privacy-policy."
+        );
+        settingsKeyval.set("firstHomeVisit", false);
       }
-      )
+    });
   }, []);
 
   const handleTap = (items) => {

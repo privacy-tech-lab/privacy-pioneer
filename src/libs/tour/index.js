@@ -47,7 +47,7 @@ export const homeSteps = [
         display: "none",
       },
       buttonSkip: {
-        display: "none"
+        display: "none",
       },
     },
   },
@@ -68,7 +68,7 @@ export const homeSteps = [
         display: "none",
       },
       buttonSkip: {
-        display: "none"
+        display: "none",
       },
       options: {
         width: 440,
@@ -91,7 +91,7 @@ export const homeSteps = [
         display: "none",
       },
       buttonSkip: {
-        display: "none"
+        display: "none",
       },
       options: {
         width: 440,
@@ -139,7 +139,7 @@ export const HomeTour = ({ steps }) => {
             color: `var(--primaryBrandColor)`,
           },
           buttonBack: {
-            display: "none"
+            display: "none",
           },
           buttonClose: {
             display: "none",
@@ -174,7 +174,7 @@ export const seeAllSteps = [
         display: "none",
       },
       buttonSkip: {
-        display: "none"
+        display: "none",
       },
       options: {
         width: 400,
@@ -197,11 +197,11 @@ export const seeAllSteps = [
         display: "none",
       },
       buttonSkip: {
-        display: "none"
+        display: "none",
       },
     },
   },
-]
+];
 
 export const SeeAllTour = ({ steps }) => {
   const history = useHistory();

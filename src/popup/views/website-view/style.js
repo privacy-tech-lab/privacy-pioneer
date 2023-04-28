@@ -59,7 +59,8 @@ export const SPowerIconWrapper = styled.div`
 
   path,
   circle {
-    fill: ${(props) => props.active ? 'var(--primaryBrandColor)': 'var(--seperatorColor)' } ;
+    fill: ${(props) =>
+      props.active ? "var(--primaryBrandColor)" : "var(--seperatorColor)"};
   }
 `;
 

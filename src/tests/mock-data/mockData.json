@@ -1,199 +1,161 @@
 {
-    "labelArrayPerSite": {
-        "site1.com": {
-            "labels": [
-                "monetization",
-                "tracking",
-                "location"
-            ],
-            "party": "firstPartyEvidence"
+  "labelArrayPerSite": {
+    "site1.com": {
+      "labels": ["monetization", "tracking", "location"],
+      "party": "firstPartyEvidence"
+    },
+    "site2.com": {
+      "labels": ["monetization", "location"],
+      "party": "firstPartyEvidence"
+    },
+    "site3.com": {
+      "labels": ["tracking", "location"],
+      "party": "firstPartyEvidence"
+    },
+    "site4.com": {
+      "labels": ["monetization", "tracking"],
+      "party": "firstPartyEvidence"
+    },
+    "site5.com": {
+      "labels": ["monetization"],
+      "party": "firstPartyEvidence"
+    },
+    "site6.com": {
+      "labels": ["location"],
+      "party": "firstPartyEvidence"
+    },
+    "site7.com": {
+      "labels": ["tracking", "personal"],
+      "party": "firstPartyEvidence"
+    }
+  },
+  "dataJson": {
+    "monetization": {
+      "site1.com": {
+        "googlesyndication.com": {
+          "advertising": {
+            "timestamp": 1627654159307,
+            "permission": "monetization",
+            "rootUrl": "https://www.site1.com",
+            "snippet": null,
+            "requestUrl": "https://pagead2.googlesyndication.com/pagead/sodar",
+            "typ": "advertising",
+            "index": -1,
+            "firstPartyRoot": true,
+            "parentCompany": "Google"
+          }
         },
         "site2.com": {
-            "labels": [
-                "monetization",
-                "location"
-            ],
-            "party": "firstPartyEvidence"
+          "analytics": {
+            "timestamp": 1627654159307,
+            "permission": "monetization",
+            "rootUrl": "https://www.site2.com",
+            "snippet": null,
+            "requestUrl": "https://other_site.com",
+            "typ": "analytics",
+            "index": -1,
+            "firstPartyRoot": true,
+            "parentCompany": null
+          }
         },
-        "site3.com": {
-            "labels": [
-                "tracking",
-                "location"
-            ],
-            "party": "firstPartyEvidence"
-        },
-        "site4.com": {
-            "labels": [
-                "monetization",
-                "tracking"
-            ],
-            "party": "firstPartyEvidence"
-        },
-        "site5.com": {
-            "labels": [
-                "monetization"
-            ],
-            "party": "firstPartyEvidence"
-        },
-        "site6.com": {
-            "labels": [
-                "location"
-            ],
-            "party": "firstPartyEvidence"
-        },
-        "site7.com": {
-            "labels": [
-                "tracking",
-                "personal"
-            ],
-            "party": "firstPartyEvidence"
+        "addthis.com": {
+          "social": {
+            "timestamp": 1627654159307,
+            "permission": "monetization",
+            "rootUrl": "https://www.site2.com",
+            "snippet": null,
+            "requestUrl": "https://x.dlx.addthis.com/e/live_intent_sync?na_exid=&us_privacy=1---&rd=Y",
+            "typ": "social",
+            "index": -1,
+            "firstPartyRoot": true,
+            "parentCompany": "AddThis"
+          }
         }
+      }
     },
-    "dataJson": {
-        "monetization": {
-            "site1.com": {
-                "googlesyndication.com": {
-                    "advertising": {
-                        "timestamp": 1627654159307,
-                        "permission": "monetization",
-                        "rootUrl": "https://www.site1.com",
-                        "snippet": null,
-                        "requestUrl": "https://pagead2.googlesyndication.com/pagead/sodar",
-                        "typ": "advertising",
-                        "index": -1,
-                        "firstPartyRoot": true,
-                        "parentCompany": "Google"
-                    }
-                },
-                "site2.com": {
-                    "analytics": {
-                        "timestamp": 1627654159307,
-                        "permission": "monetization",
-                        "rootUrl": "https://www.site2.com",
-                        "snippet": null,
-                        "requestUrl": "https://other_site.com",
-                        "typ": "analytics",
-                        "index": -1,
-                        "firstPartyRoot": true,
-                        "parentCompany": null
-                    }
-                },
-                "addthis.com": {
-                    "social": {
-                        "timestamp": 1627654159307,
-                        "permission": "monetization",
-                        "rootUrl": "https://www.site2.com",
-                        "snippet": null,
-                        "requestUrl": "https://x.dlx.addthis.com/e/live_intent_sync?na_exid=&us_privacy=1---&rd=Y",
-                        "typ": "social",
-                        "index": -1,
-                        "firstPartyRoot": true,
-                        "parentCompany": "AddThis"
-                    }
-                }
-            }
+    "tracking": {
+      "invasive_site.com": {
+        "facebook.com": {
+          "trackingPixel": {
+            "timestamp": 1627654152328,
+            "permission": "tracking",
+            "rootUrl": "https://www.invasive_site.com/",
+            "snippet": "refox-Spdy\",\"value\":\"h2\"}],\"responseData\":\"GIF89a\\u0001\\u0000\\u0001\\u0000�\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000!�\\u0004\\u0001\\u0000\\u0000\\u0000\\u0000,\\u0000\\u0000\\u0000\\u0000\\u0001\\u0000\\u0001\\u0000\\u0000\\u0002\\u0002D\\u0001\\u0000;\\n\",\"requestBody\":null,\"details\":{\"requestId\":\"393\",\"url\":\"https://www.facebook.com/tr/?id=716354627384627&ev=PageView&dl=https%3A%2F%2Fwww.invasive_site.com%2F&rl=https%3A%2F%2Fwww.google.com%2F&if=false&ts=71836254637281&sw=8284&sh=1763&v=2.9.16&r=stable&ec=0&o=29&fbp=fb.1.73826573948170.7183526478&it=8174627485926&coo=false&dpo=LQU&dpico=0&dpost=0&rqm=GET\",\"originUrl\":\"https://www.invasive_site.com/\",\"documentUrl\":\"https://www.invasive_site.com/\",\"method\":\"GET\",\"type\":\"image\",\"timeStamp\":1627654152038,\"tabId\":2,\"frameId\":0,\"parentFrameId\":-1,\"incognito\":false,\"thirdParty\":true,\"cookieStoreId\":\"firefox-default\",\"requestBody\":null,\"proxyInfo\":null,\"ip\":null",
+            "requestUrl": "https://www.facebook.com/tr/?id=716354627384627&ev=PageView&dl=https%3A%2F%2Fwww.invasive_site.com%2F&rl=https%3A%2F%2Fwww.google.com%2F&if=false&ts=71836254637281&sw=8284&sh=1763&v=2.9.16&r=stable&ec=0&o=29&fbp=fb.1.73826573948170.7183526478&it=8174627485926&coo=false&dpo=LQU&dpico=0&dpost=0&rqm=GET",
+            "typ": "trackingPixel",
+            "index": [300, 600],
+            "firstPartyRoot": true,
+            "parentCompany": "Facebook"
+          }
         },
-        "tracking": {
-            "invasive_site.com":{
-                "facebook.com": {
-                    "trackingPixel": {
-                        "timestamp": 1627654152328,
-                        "permission": "tracking",
-                        "rootUrl": "https://www.invasive_site.com/",
-                        "snippet": "refox-Spdy\",\"value\":\"h2\"}],\"responseData\":\"GIF89a\\u0001\\u0000\\u0001\\u0000�\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000!�\\u0004\\u0001\\u0000\\u0000\\u0000\\u0000,\\u0000\\u0000\\u0000\\u0000\\u0001\\u0000\\u0001\\u0000\\u0000\\u0002\\u0002D\\u0001\\u0000;\\n\",\"requestBody\":null,\"details\":{\"requestId\":\"393\",\"url\":\"https://www.facebook.com/tr/?id=716354627384627&ev=PageView&dl=https%3A%2F%2Fwww.invasive_site.com%2F&rl=https%3A%2F%2Fwww.google.com%2F&if=false&ts=71836254637281&sw=8284&sh=1763&v=2.9.16&r=stable&ec=0&o=29&fbp=fb.1.73826573948170.7183526478&it=8174627485926&coo=false&dpo=LQU&dpico=0&dpost=0&rqm=GET\",\"originUrl\":\"https://www.invasive_site.com/\",\"documentUrl\":\"https://www.invasive_site.com/\",\"method\":\"GET\",\"type\":\"image\",\"timeStamp\":1627654152038,\"tabId\":2,\"frameId\":0,\"parentFrameId\":-1,\"incognito\":false,\"thirdParty\":true,\"cookieStoreId\":\"firefox-default\",\"requestBody\":null,\"proxyInfo\":null,\"ip\":null",
-                        "requestUrl": "https://www.facebook.com/tr/?id=716354627384627&ev=PageView&dl=https%3A%2F%2Fwww.invasive_site.com%2F&rl=https%3A%2F%2Fwww.google.com%2F&if=false&ts=71836254637281&sw=8284&sh=1763&v=2.9.16&r=stable&ec=0&o=29&fbp=fb.1.73826573948170.7183526478&it=8174627485926&coo=false&dpo=LQU&dpico=0&dpost=0&rqm=GET",
-                        "typ": "trackingPixel",
-                        "index": [
-                            300,
-                            600
-                        ],
-                        "firstPartyRoot": true,
-                        "parentCompany": "Facebook"
-                    }
-                },
-                "media.net": {
-                    "ipAddress": {
-                        "extraDetail": null,
-                        "firstPartyRoot": true,
-                        "index": [
-                            312,
-                            319
-                        ],
-                        "parentCompany": "media",
-                        "permission": "location",
-                        "requestUrl": "https://cdneast2-xch.media.net/AdExchange/rtbsspub?&prvReqId8PRVCXX19&coppa=0&isRefresh=0&encryptionVersion=0.0&switch=1",
-                        "rootUrl": "https://www.invasive_site.com",
-                        "snippet": "aichele8cyf6e72k4839s.&bp=1.6173652648593&cf=283726483&fq=0&td_s=invasive_site.com&rcats=7sp,aeg,vas&mcat=peer39-82743&mste=invasive_site.com&mfld=4&mssi=None&mfsi=jche7u2h36s&uhow=11&agsa=&rgz=10013&svbttd=1&dt=PC&osf=OSX&os=Other&br=Firefox&rlangs=en&mlang=&svpid=9294&did=&rcxt=Other&tmpc=23.16&daid=&vp=0&ip=1.1.1.1&osi=&osv=&bffi=41&mk=Mozilla&mdl=Firefox%20-%20OS%20X&c=LEHCELEGNCGgelkcue728934jncgKWKUHGCEKE.&dur=LKUCGELIAKJGFKEAJBCYFkjblayglcuyegjbfe7289467lkajbKUGFEKJBXYGE83KJCG73FRNkwgce",
-                        "timestamp": 1627850161138,
-                        "typ": "ipAddress",
-                        "watchlistHash": 1
-                    }
-                }
-            }
-        },
-        "location": {
-            "invasive_site.com": {
-                "onetrust.com": {
-                    "fineLocation": {
-                        "timestamp": 1627654148121,
-                        "permission": "location",
-                        "rootUrl": "https://invasive_site.com",
-                        "snippet": "alue\":\"61hc7638492hck71-MLA\"},{\"name\":\"content-encoding\",\"value\":\"gzip\"},{\"name\":\"X-Firefox-Spdy\",\"value\":\"h2\"}],\"responseData\":\"dnsfeed({\\\"country\\\":\\\"US\\\",\\\"region\\\":\\\"NY\\\",\\\"regionName\\\":\\\"New York\\\",\\\"zipcode\\\":\\\"10013\\\",\\\"timezone\\\":\\\"America/New_York\\\",\\\"latitude\\\":\\\"40.72182\\\",\\\"longitude\\\":\\\"-74.00940\\\",\\\"city\\\":\\\"New York\\\",\\\"continent\\\":\\\"NA\\\"})\",\"requestBody\":null,\"details\":{\"requestId\":\"203\",\"url\":\"https://geolocation.onetrust.com/cookieconsentpub/v1/geo/location/dnsfeed\",\"originUrl\":\"https://www.invasive_site.com/\",\"documentUrl\":\"https://www.invasive_site.com/\",\"method\":\"GET\",\"type\":\"script\",\"tim",
-                        "requestUrl": "https://geolocation.onetrust.com/cookieconsentpub/v1/geo/location/dnsfeed",
-                        "typ": "fineLocation",
-                        "index": [
-                            272,
-                            280
-                        ],
-                        "firstPartyRoot": true,
-                        "parentCompany": null
-                    },
-                    "zipCode": {
-                        "timestamp": 1627654148121,
-                        "permission": "location",
-                        "rootUrl": "https://invasive_site.com",
-                        "snippet": "alue\":\"61hc7638492hck71-MLA\"},{\"name\":\"content-encoding\",\"value\":\"gzip\"},{\"name\":\"X-Firefox-Spdy\",\"value\":\"h2\"}],\"responseData\":\"dnsfeed({\\\"country\\\":\\\"US\\\",\\\"region\\\":\\\"NY\\\",\\\"regionName\\\":\\\"New York\\\",\\\"zipcode\\\":\\\"10013\\\",\\\"timezone\\\":\\\"America/New_York\\\",\\\"latitude\\\":\\\"40.72182\\\",\\\"longitude\\\":\\\"-74.00940\\\",\\\"city\\\":\\\"New York\\\",\\\"continent\\\":\\\"NA\\\"})\",\"requestBody\":null,\"details\":{\"requestId\":\"203\",\"url\":\"https://geolocation.onetrust.com/cookieconsentpub/v1/geo/location/dnsfeed\",\"originUrl\":\"https://www.invasive_site.com/\",\"documentUrl\":\"https://www.invasive_site.com/\",\"method\":\"GET\",\"type\":\"script\",\"tim",
-                        "requestUrl": "https://geolocation.onetrust.com/cookieconsentpub/v1/geo/location/dnsfeed",
-                        "typ": "zipCode",
-                        "index": [
-                            215,
-                            220
-                        ],
-                        "firstPartyRoot": true,
-                        "parentCompany": null
-                    },
-                    "region": {
-                        "timestamp": 1627654148121,
-                        "permission": "location",
-                        "rootUrl": "https://invasive_site.com",
-                        "snippet": "alue\":\"61hc7638492hck71-MLA\"},{\"name\":\"content-encoding\",\"value\":\"gzip\"},{\"name\":\"X-Firefox-Spdy\",\"value\":\"h2\"}],\"responseData\":\"dnsfeed({\\\"country\\\":\\\"US\\\",\\\"region\\\":\\\"NY\\\",\\\"regionName\\\":\\\"New York\\\",\\\"zipcode\\\":\\\"10013\\\",\\\"timezone\\\":\\\"America/New_York\\\",\\\"latitude\\\":\\\"40.72182\\\",\\\"longitude\\\":\\\"-74.00940\\\",\\\"city\\\":\\\"New York\\\",\\\"continent\\\":\\\"NA\\\"})\",\"requestBody\":null,\"details\":{\"requestId\":\"203\",\"url\":\"https://geolocation.onetrust.com/cookieconsentpub/v1/geo/location/dnsfeed\",\"originUrl\":\"https://www.invasive_site.com/\",\"documentUrl\":\"https://www.invasive_site.com/\",\"method\":\"GET\",\"type\":\"script\",\"tim",
-                        "requestUrl": "https://geolocation.onetrust.com/cookieconsentpub/v1/geo/location/dnsfeed",
-                        "typ": "region",
-                        "index": [
-                            190,
-                            198
-                        ],
-                        "firstPartyRoot": true,
-                        "parentCompany": null
-                    }
-                },
-                "invasive_site.com": {
-                    "region": {
-                        "timestamp": 1627654148121,
-                        "permission": "location",
-                        "rootUrl": "https://invasive_site.com",
-                        "snippet": "alue\":\"ksue738462hd739f-MLA\"},{\"name\":\"content-encoding\",\"value\":\"gzip\"},{\"name\":\"X-Firefox-Spdy\",\"value\":\"h2\"}],\"responseData\":\"acsfeed({\\\"alkcgek\\\":\\\"12183628463\\\",\\\"acleuxhef\\\":\\\"927d93764yfoc83yr\\\",\\\"country\\\":\\\"US\\\",\\\"region\\\":\\\"NY\\\",\\\"regionName\\\":\\\"New York\\\",\\\"timezone\\\":\\\"America/New_York\\\",\\\"city\\\":\\\"New York\\\",\\\"continent\\\":\\\"NA\\\"})\",\"requestBody\":null,\"details\":{\"requestId\":\"203\",\"url\":\"https://invasive_site.com/achelcuehf/v1/acsfeed\",\"originUrl\":\"https://www.invasive_site.com/\",\"documentUrl\":\"https://www.invasive_site.com/\",\"method\":\"GET\",\"type\":\"script\",\"tim",
-                        "requestUrl": "https://invasive_site.com/achelcuehf/v1/acsfeed",
-                        "typ": "region",
-                        "index": [
-                            254,
-                            262
-                        ],
-                        "firstPartyRoot": true,
-                        "parentCompany": null
-                    }
-                }
-            }
+        "media.net": {
+          "ipAddress": {
+            "extraDetail": null,
+            "firstPartyRoot": true,
+            "index": [312, 319],
+            "parentCompany": "media",
+            "permission": "location",
+            "requestUrl": "https://cdneast2-xch.media.net/AdExchange/rtbsspub?&prvReqId8PRVCXX19&coppa=0&isRefresh=0&encryptionVersion=0.0&switch=1",
+            "rootUrl": "https://www.invasive_site.com",
+            "snippet": "aichele8cyf6e72k4839s.&bp=1.6173652648593&cf=283726483&fq=0&td_s=invasive_site.com&rcats=7sp,aeg,vas&mcat=peer39-82743&mste=invasive_site.com&mfld=4&mssi=None&mfsi=jche7u2h36s&uhow=11&agsa=&rgz=10013&svbttd=1&dt=PC&osf=OSX&os=Other&br=Firefox&rlangs=en&mlang=&svpid=9294&did=&rcxt=Other&tmpc=23.16&daid=&vp=0&ip=1.1.1.1&osi=&osv=&bffi=41&mk=Mozilla&mdl=Firefox%20-%20OS%20X&c=LEHCELEGNCGgelkcue728934jncgKWKUHGCEKE.&dur=LKUCGELIAKJGFKEAJBCYFkjblayglcuyegjbfe7289467lkajbKUGFEKJBXYGE83KJCG73FRNkwgce",
+            "timestamp": 1627850161138,
+            "typ": "ipAddress",
+            "watchlistHash": 1
+          }
         }
+      }
+    },
+    "location": {
+      "invasive_site.com": {
+        "onetrust.com": {
+          "fineLocation": {
+            "timestamp": 1627654148121,
+            "permission": "location",
+            "rootUrl": "https://invasive_site.com",
+            "snippet": "alue\":\"61hc7638492hck71-MLA\"},{\"name\":\"content-encoding\",\"value\":\"gzip\"},{\"name\":\"X-Firefox-Spdy\",\"value\":\"h2\"}],\"responseData\":\"dnsfeed({\\\"country\\\":\\\"US\\\",\\\"region\\\":\\\"NY\\\",\\\"regionName\\\":\\\"New York\\\",\\\"zipcode\\\":\\\"10013\\\",\\\"timezone\\\":\\\"America/New_York\\\",\\\"latitude\\\":\\\"40.72182\\\",\\\"longitude\\\":\\\"-74.00940\\\",\\\"city\\\":\\\"New York\\\",\\\"continent\\\":\\\"NA\\\"})\",\"requestBody\":null,\"details\":{\"requestId\":\"203\",\"url\":\"https://geolocation.onetrust.com/cookieconsentpub/v1/geo/location/dnsfeed\",\"originUrl\":\"https://www.invasive_site.com/\",\"documentUrl\":\"https://www.invasive_site.com/\",\"method\":\"GET\",\"type\":\"script\",\"tim",
+            "requestUrl": "https://geolocation.onetrust.com/cookieconsentpub/v1/geo/location/dnsfeed",
+            "typ": "fineLocation",
+            "index": [272, 280],
+            "firstPartyRoot": true,
+            "parentCompany": null
+          },
+          "zipCode": {
+            "timestamp": 1627654148121,
+            "permission": "location",
+            "rootUrl": "https://invasive_site.com",
+            "snippet": "alue\":\"61hc7638492hck71-MLA\"},{\"name\":\"content-encoding\",\"value\":\"gzip\"},{\"name\":\"X-Firefox-Spdy\",\"value\":\"h2\"}],\"responseData\":\"dnsfeed({\\\"country\\\":\\\"US\\\",\\\"region\\\":\\\"NY\\\",\\\"regionName\\\":\\\"New York\\\",\\\"zipcode\\\":\\\"10013\\\",\\\"timezone\\\":\\\"America/New_York\\\",\\\"latitude\\\":\\\"40.72182\\\",\\\"longitude\\\":\\\"-74.00940\\\",\\\"city\\\":\\\"New York\\\",\\\"continent\\\":\\\"NA\\\"})\",\"requestBody\":null,\"details\":{\"requestId\":\"203\",\"url\":\"https://geolocation.onetrust.com/cookieconsentpub/v1/geo/location/dnsfeed\",\"originUrl\":\"https://www.invasive_site.com/\",\"documentUrl\":\"https://www.invasive_site.com/\",\"method\":\"GET\",\"type\":\"script\",\"tim",
+            "requestUrl": "https://geolocation.onetrust.com/cookieconsentpub/v1/geo/location/dnsfeed",
+            "typ": "zipCode",
+            "index": [215, 220],
+            "firstPartyRoot": true,
+            "parentCompany": null
+          },
+          "region": {
+            "timestamp": 1627654148121,
+            "permission": "location",
+            "rootUrl": "https://invasive_site.com",
+            "snippet": "alue\":\"61hc7638492hck71-MLA\"},{\"name\":\"content-encoding\",\"value\":\"gzip\"},{\"name\":\"X-Firefox-Spdy\",\"value\":\"h2\"}],\"responseData\":\"dnsfeed({\\\"country\\\":\\\"US\\\",\\\"region\\\":\\\"NY\\\",\\\"regionName\\\":\\\"New York\\\",\\\"zipcode\\\":\\\"10013\\\",\\\"timezone\\\":\\\"America/New_York\\\",\\\"latitude\\\":\\\"40.72182\\\",\\\"longitude\\\":\\\"-74.00940\\\",\\\"city\\\":\\\"New York\\\",\\\"continent\\\":\\\"NA\\\"})\",\"requestBody\":null,\"details\":{\"requestId\":\"203\",\"url\":\"https://geolocation.onetrust.com/cookieconsentpub/v1/geo/location/dnsfeed\",\"originUrl\":\"https://www.invasive_site.com/\",\"documentUrl\":\"https://www.invasive_site.com/\",\"method\":\"GET\",\"type\":\"script\",\"tim",
+            "requestUrl": "https://geolocation.onetrust.com/cookieconsentpub/v1/geo/location/dnsfeed",
+            "typ": "region",
+            "index": [190, 198],
+            "firstPartyRoot": true,
+            "parentCompany": null
+          }
+        },
+        "invasive_site.com": {
+          "region": {
+            "timestamp": 1627654148121,
+            "permission": "location",
+            "rootUrl": "https://invasive_site.com",
+            "snippet": "alue\":\"ksue738462hd739f-MLA\"},{\"name\":\"content-encoding\",\"value\":\"gzip\"},{\"name\":\"X-Firefox-Spdy\",\"value\":\"h2\"}],\"responseData\":\"acsfeed({\\\"alkcgek\\\":\\\"12183628463\\\",\\\"acleuxhef\\\":\\\"927d93764yfoc83yr\\\",\\\"country\\\":\\\"US\\\",\\\"region\\\":\\\"NY\\\",\\\"regionName\\\":\\\"New York\\\",\\\"timezone\\\":\\\"America/New_York\\\",\\\"city\\\":\\\"New York\\\",\\\"continent\\\":\\\"NA\\\"})\",\"requestBody\":null,\"details\":{\"requestId\":\"203\",\"url\":\"https://invasive_site.com/achelcuehf/v1/acsfeed\",\"originUrl\":\"https://www.invasive_site.com/\",\"documentUrl\":\"https://www.invasive_site.com/\",\"method\":\"GET\",\"type\":\"script\",\"tim",
+            "requestUrl": "https://invasive_site.com/achelcuehf/v1/acsfeed",
+            "typ": "region",
+            "index": [254, 262],
+            "firstPartyRoot": true,
+            "parentCompany": null
+          }
+        }
+      }
     }
+  }
 }

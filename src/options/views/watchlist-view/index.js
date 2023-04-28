@@ -147,10 +147,10 @@ const WatchlistView = () => {
               </SAddButton>
             </div>
           </SHeader>
-          <SListHeader> 
-            <div style={{flex:2}}>KEYWORD</div> 
-            <div style={{flex:1}}>TYPE</div> 
-            <div style={{flex:1}}>CATEGORY</div>
+          <SListHeader>
+            <div style={{ flex: 2 }}>KEYWORD</div>
+            <div style={{ flex: 1 }}>TYPE</div>
+            <div style={{ flex: 1 }}>CATEGORY</div>
           </SListHeader>
           <SListContent>
             {items.length != 0 ? (

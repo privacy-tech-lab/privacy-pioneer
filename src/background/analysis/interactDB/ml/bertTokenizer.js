@@ -1,4 +1,4 @@
-import * as vocabJson from './vocab.json';
+import * as vocabJson from "./vocab.json";
 
 class TrieNode {
   constructor(key) {
@@ -63,15 +63,15 @@ class Trie {
 
 export default class WordPieceTokenizer {
   constructor() {
-    this.separator = '\u2581';
+    this.separator = "\u2581";
     this.UNK_INDEX = 100;
   }
 
   load() {
     this.vocab = this.loadVocab();
     this.trie = new Trie();
-    this.trie.insert('[CLS]', 1, 101);
-    this.trie.insert('[SEP]', 1, 102);
+    this.trie.insert("[CLS]", 1, 101);
+    this.trie.insert("[SEP]", 1, 102);
 
     // Actual tokens start at 999.
     for (let i = 999; i < this.vocab.length; i++) {
@@ -81,15 +81,15 @@ export default class WordPieceTokenizer {
   }
 
   loadVocab() {
-    let json = vocabJson
+    let json = vocabJson;
     return json;
   }
 
   processInput(text) {
-    const words = text.split(' ');
-    return words.map(word => {
-      if (word !== '[CLS]' && word !== '[SEP]') {
-        return this.separator + word.toLowerCase().normalize('NFKC');
+    const words = text.split(" ");
+    return words.map((word) => {
+      if (word !== "[CLS]" && word !== "[SEP]") {
+        return this.separator + word.toLowerCase().normalize("NFKC");
       }
       return word;
     });
@@ -115,7 +115,7 @@ export default class WordPieceTokenizer {
         let end = charsLength;
         let currIndex;
         while (start < end) {
-          let substr = chars.slice(start, end).join('');
+          let substr = chars.slice(start, end).join("");
           const match = this.trie.find(substr);
           if (match != null && match.end) {
             currIndex = match.getWord()[2];

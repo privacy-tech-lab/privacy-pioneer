@@ -120,9 +120,8 @@ function createEvidenceObj(
     parentCompany: undefined,
     watchlistHash: watchlistHash,
     extraDetail: extraDetail,
-    loc: undefined
-  } )
-
+    loc: undefined,
+  });
 
   return e;
 }

@@ -13,7 +13,10 @@ background.js
 
 import { evidenceKeyval as evidenceIDB } from "./analysis/interactDB/openDB";
 import { onBeforeRequest } from "./analysis/analyze.js";
-import { getExtensionStatus, setDefaultSettings } from "../libs/indexed-db/settings/index.js";
+import {
+  getExtensionStatus,
+  setDefaultSettings,
+} from "../libs/indexed-db/settings/index.js";
 import { importData } from "./analysis/buildUserData/importSearchData.js";
 import runNotifications from "../libs/indexed-db/notifications";
 import Queue from "queue";
@@ -117,7 +120,7 @@ importData().then((data) => {
   // Listener to get response data, request body, and details about request
   browser.webRequest.onBeforeRequest.addListener(
     async function (details) {
-      if (await getExtensionStatus()) { 
+      if (await getExtensionStatus()) {
         onBeforeRequest(details, data);
       }
     },

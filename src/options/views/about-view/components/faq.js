@@ -4,6 +4,7 @@ privacy-tech-lab, https://privacytechlab.org/
 */
 
 import React from "react";
+import { SText } from "../style";
 
 /**
  * File for all of the questions and answers for the FAQ Page
@@ -11,7 +12,7 @@ import React from "react";
  */
 export const FAQ = {
   "Does Privacy Pioneer collect any of my data?": (
-    <text>
+    <SText>
       Absolutely not! Our extension is entirely local to your computer—we do not
       store any data outside of your browser. Feel free to check the source code
       of Privacy Pioneer at{" "}
@@ -22,21 +23,21 @@ export const FAQ = {
         Privacy Pioneer's GitHub
       </a>
       .
-    </text>
+    </SText>
   ),
   "How does Privacy Pioneer process my data?": (
-    <text>
+    <SText>
       Privacy Pioneer stores all of its data in your browser’s storage. That
       means that all data which Privacy Pioneer collects and displays to you
       within its popup or options page stays on your computer and is never seen
       by us or anyone else.
-    </text>
+    </SText>
   ),
   "Do I need an account to use Privacy Pioneer?": (
-    <text>Nope, just go ahead. :).</text>
+    <SText>Nope, just go ahead. :).</SText>
   ),
   "Who are we?": (
-    <text>
+    <SText>
       We are academic researchers at Wesleyan University’s{" "}
       <a href="https://privacytechlab.org/" target="_blank">
         privacy-tech-lab
@@ -44,29 +45,29 @@ export const FAQ = {
       . We believe in privacy as a fundamental right and our motivation is to
       provide new directions in privacy technologies. We do not have any
       commercial interests.
-    </text>
+    </SText>
   ),
   "How does the web actually work?": (
-    <text>
+    <SText>
       The web uses HTTP (HyperText Transfer Protocol) requests for communication
       between websites. HTTP utilizes a client-server model. When you visit a
       website, your computer (the client) sends a request to the website (the
       server) for the content you want to see. The server then processes your
       request and responds with the requested content and related information.
-    </text>
+    </SText>
   ),
   "How can a website track me without my knowledge?": (
-    <text>
+    <SText>
       Every time you load a web page, up to hundreds of requests between your
       computer and the website you loaded take place. These requests can pass
       all kinds of data, including your location, IP address, or an identifier
       to track your activity across browsing sessions. Such requests could be
       initiated by the server you intended, say abc.com, but can also be
       initiated by third parties: abc.com initiates a request from def.com.
-    </text>
+    </SText>
   ),
   "What is Privacy Pioneer actually doing?": (
-    <text>
+    <SText>
       Privacy Pioneer analyzes HTTP requests, responses, and related data, and
       stores tracking information in a textual format in your browser’s secure
       storage. Privacy Pioneer then informs you when privacy-invasive procedures
@@ -93,29 +94,29 @@ export const FAQ = {
         uBlockOrigin
       </a>
       , or a proxy service.
-    </text>
+    </SText>
   ),
   "What are first and third party websites?": (
-    <text>
+    <SText>
       A first party website means the website that you actually navigated to.
       This is the website that appears in the url/search bar and adisplays on
       your browser. First party websites may redirect your browser to also make
       HTTP requests to other sites, called third party sites. While the HTTP
       requests to third party sites are being made, information containing your
       data may be sent without your knowledge.
-    </text>
+    </SText>
   ),
   "Is Privacy Pioneer compatible with Firefox’s built-in blocking technologies?":
     (
-      <text>
+      <SText>
         Yes, Privacy Pioneer is completely compatible with Firefox’s built-in
         blocking technologies. Privacy Pioneer analyzes the HTTP requests that
         are made, no matter what other blocking you have enabled.
-      </text>
+      </SText>
     ),
   "What is the Privacy Pioneer license? Where can I find the Privacy Pioneer source code?":
     (
-      <text>
+      <SText>
         Privacy Pioneer is licensed under the{" "}
         <a
           href="https://creativecommons.org/licenses/by-nc-sa/4.0/"
@@ -133,16 +134,17 @@ export const FAQ = {
           privacy-tech-lab’s Privacy Pioneer GitHub
         </a>
         .
-      </text>
+      </SText>
     ),
   "Where can we be reached?": (
-    <text>
-      Send us an email at sebastian@privacytechlab.org. You can also learn more about our work at{" "}
+    <SText>
+      Send us an email at sebastian@privacytechlab.org. You can also learn more
+      about our work at{" "}
       <a href="https://privacytechlab.org/" target="_blank">
         {" "}
         privacy-tech-lab
       </a>
       .
-    </text>
+    </SText>
   ),
 };

@@ -6,7 +6,10 @@ privacy-tech-lab, https://privacytechlab.org/
 import React, { useState } from "react";
 import { CompanyLogoSVG } from "../../../../../../../libs/icons/company-icons";
 import { SFilterRow, SFilterRowItem, SCompaniesButton } from "./style";
-import { permissionEnum, settingsModelsEnum } from "../../../../../../../background/analysis/classModels";
+import {
+  permissionEnum,
+  settingsModelsEnum,
+} from "../../../../../../../background/analysis/classModels";
 import * as Icons from "../../../../../../../libs/icons";
 import { getAnalyticsStatus } from "../../../../../../../libs/indexed-db/settings";
 import { handleClick } from "../../../../../../../libs/indexed-db/getAnalytics";
