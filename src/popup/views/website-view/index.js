@@ -27,19 +27,13 @@ import {
 } from "./style";
 import floating from "../../../assets/logos/Floating.svg";
 import NavBar from "../../components/nav-bar";
-import { getWebsiteLabels } from "../../../libs/indexed-db/getIdbData.js";
+import { getWebsiteLastVisitedEvidence } from "../../../libs/indexed-db/getIdbData.js";
 import { getHostname } from "../../../background/analysis/utility/util.js";
 import { useHistory } from "react-router";
 import RiseLoader from "react-spinners/RiseLoader";
 import {
-  permissionEnum,
   settingsModelsEnum,
 } from "../../../background/analysis/classModels";
-import { sortByTime } from "../label-view";
-import {
-  IPINFO_IPKEY,
-  IPINFO_ADDRESSKEY,
-} from "../../../background/analysis/buildUserData/importSearchData.js";
 import {
   getAnalyticsStatus,
   getExtensionStatus,
@@ -112,54 +106,14 @@ const WebsiteView = () => {
 
         setIsOurHomePage(browser.runtime.getURL("").includes(host));
 
-        getWebsiteLabels(host).then((labels) => {
-          const currentTime = sortByTime(labels);
-          var result = {};
-          for (const [label, value] of Object.entries(labels)) {
-            if (
-              label != permissionEnum.location &&
-              label != permissionEnum.tracking
-            ) {
-              result[label] = value;
-            } else {
-              for (const [url, typeVal] of Object.entries(value)) {
-                for (const [type, e] of Object.entries(typeVal)) {
-                  //Check if the evidence has been added recently
-                  var timestamp = e["timestamp"] >= value["lastSeen"];
-                  if (
-                    (e["watchlistHash"] == IPINFO_IPKEY || IPINFO_ADDRESSKEY) &&
-                    timestamp
-                  ) {
-                    if (!(label in result)) {
-                      result[label] = { [url]: { [type]: e } };
-                    } else if (!(url in result[label])) {
-                      result[label][url] = { [type]: e };
-                    } else {
-                      result[label][url][type] = e;
-                    }
-                  }
-                  if (!(typeof e["watchlistHash"] === "string") && timestamp) {
-                    // Add label in data to object
-                    if (!(label in result)) {
-                      result[label] = { [url]: { [type]: e } };
-                    } else if (!(url in result[label])) {
-                      result[label][url] = { [type]: e };
-                    } else {
-                      result[label][url][type] = e;
-                    }
-                  }
-                }
-              }
-            }
-          }
-
-          setLabels(result);
-          if (Object.keys(result).length > 0) {
-            setTimeout(() => {
-              setEmpty(false), setLoading(false);
-            }, 800);
-          } else setTimeout(() => setLoading(false), 2000);
-        });
+        getWebsiteLastVisitedEvidence(host).then((result) => {
+            setLabels(result);
+            if (Object.keys(result).length > 0) {
+              setTimeout(() => {
+                setEmpty(false), setLoading(false);
+              }, 800);
+            } else setTimeout(() => setLoading(false), 2000);
+          });
         setWebsite(host);
       }
     };

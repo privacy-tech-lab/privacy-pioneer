@@ -9,6 +9,7 @@ import {
   privacyLabels,
 } from "../../background/analysis/classModels";
 import { getExcludedLabels } from "../indexed-db/settings";
+import { IPINFO_ADDRESSKEY, IPINFO_IPKEY } from "../../background/analysis/buildUserData/importSearchData.js";
 
 /**
  * Get identified labels of website from indexedDB
@@ -41,6 +42,44 @@ export const getWebsiteLabels = async (website, excludedLabels = []) => {
       }
     }
     return result;
+  } catch (error) {
+    return {};
+  }
+};
+
+
+/**
+ * Get identified labels of website from indexedDB from latest browsing session
+ * Restucture to display in UI
+ * result: {..., label: {..., requestURL: {..., labelType: requestObject}}}
+ */
+export const getWebsiteLastVisitedEvidence = async (website) => {
+  try {
+    const labels = await getWebsiteLabels(website);
+    const lastSeen = (await evidenceIDB.get(website)).lastSeen;
+    var result = {};
+    
+    for (const [label, value] of Object.entries(labels)) { 
+        for (const [url, typeVal] of Object.entries(value)) {
+          for (const [type, e] of Object.entries(typeVal)) {
+            //Check if the evidence has been added recently
+            var isCurrentSessionEvidence = e["timestamp"] >= lastSeen - 60000;
+            
+            if ( isCurrentSessionEvidence) {
+              // Add label in data to object
+              if (!(label in result)) {
+                result[label] = { [url]: { [type]: e } };
+              } else if (!(url in result[label])) {
+                result[label][url] = { [type]: e };
+              } else {
+                result[label][url][type] = e;
+              }
+            }
+          }
+        }
+      
+    }
+    return result
   } catch (error) {
     return {};
   }

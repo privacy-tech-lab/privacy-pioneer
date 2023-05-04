@@ -11,7 +11,7 @@ background.js
 - https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/API/webRequest
 */
 
-import { evidenceKeyval as evidenceIDB } from "./analysis/interactDB/openDB";
+import { evidenceKeyval as evidenceIDB, evidenceKeyval } from "./analysis/interactDB/openDB";
 import { onBeforeRequest } from "./analysis/analyze.js";
 import {
   getExtensionStatus,
@@ -127,6 +127,19 @@ importData().then((data) => {
     filter,
     ["requestBody", "blocking"]
   );
+});
+
+browser.webNavigation.onBeforeNavigate.addListener(async (details) => { 
+  if (details.parentFrameId == -1) { 
+    const host = getHostname(details.url)
+    let evidence = await evidenceKeyval.get(host)
+    if (evidence == undefined) { 
+      evidence = {}
+    }
+    evidence.lastSeen = new Date()
+    await evidenceKeyval.set(host, evidence)
+  }
+  
 });
 
 setDefaultSettings();
