@@ -143,7 +143,7 @@ Privacy Pioneer is analyzing the following privacy practices for each first and 
   - Tracking Pixel
   - IP Address
   - Browser Fingerprinting (FingerprintingInvasive from Disconnect, our own list)
-- Watchlist
+- Personal
   - Phone Number
   - Email Address
   - Custom Keywords
