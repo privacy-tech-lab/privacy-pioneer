@@ -34,6 +34,17 @@ Privacy Pioneer is developed and maintained by **Daniel Goldelman (@danielgoldel
 
 Contact us with any questions or comments at sebastian@privacytechlab.org.
 
+[1. Research Publications](#1-research-publications)  
+[2. Development](#2-development)  
+[3. Production](#3-production)  
+[4. Notifications](#4-notifications)  
+[5. Testing](#5-testing)  
+[6. Source Directory Layout](#6-source-directory-layout)  
+[7. Privacy Practice Analysis](#7-privacy-practice-analysis)  
+[8. Extension Architecture](#8-extension-architecture)  
+[9. Third Party Libraries and Resources](#9-third-party-libraries-and-resources)  
+[10. Thank You!](#10-thank-you)
+
 ## 1. Research Publications
 
 - Daniel Goldelman, Logan Brown, Justin Casler, Judeley Jean-Charles, Sebastian Zimmeck, [Privacy Pioneer: Automating the Creation of Privacy Labels for Websites](https://youtu.be/emENqmVxi7k), Talk @ Google, Online, October 2022
@@ -74,25 +85,7 @@ A `dev` folder will be generated in the root directory, housing the generated ex
 
 **NOTE:** If you experience errors regarding missing dependencies (usually due to a newly incorporated node package), delete the `node_modules` folder and then re-run the installation steps above. You may also want to delete `package-lock.json` along with the `node_modules` folder as a second attempt to solve this issue.
 
-## 3. Testing
-
-Privacy Pioneer uses [Jest](https://jestjs.io/) to run unit tests in order to maintain the integrity of the extension. All test files live in ./src/tests. In order to create a new test either add it to an existing test file or add it to a new file that ends with `.test.js`
-
-All tests will be run on GitHub upon creating a pull request.
-
-To run all tests locally:
-
-```bash
-npm run tests
-```
-
-## 4. Notifications
-
-Upon completing the tour of the extensions homepage (which will open automatically on extension download), you will be given the opportunity to turn extension notifications on.
-
-The extension will wait 15 seconds after a page has loaded to display any notifications relating to keywords for that page. If the tab is closed or a new website is visited in the same tab, any keywords found before closing the tab will be displayed immediately.
-
-## 5. Production
+## 3. Production
 
 Build Privacy Pioneer for production to the `dist` folder by running:
 
@@ -104,6 +97,24 @@ npm run build
 - It correctly bundles and optimizes the extension for the best performance
 
 The `web-ext` cli is included in the project. Learn more about packaging and signing for release at the [extension workshop](https://extensionworkshop.com/documentation/develop/getting-started-with-web-ext/).
+
+## 4. Notifications
+
+Upon completing the tour of the extensions homepage (which will open automatically on extension download), you will be given the opportunity to turn extension notifications on.
+
+The extension will wait 15 seconds after a page has loaded to display any notifications relating to keywords for that page. If the tab is closed or a new website is visited in the same tab, any keywords found before closing the tab will be displayed immediately.
+
+## 5. Testing
+
+Privacy Pioneer uses [Jest](https://jestjs.io/) to run unit tests in order to maintain the integrity of the extension. All test files live in ./src/tests. In order to create a new test either add it to an existing test file or add it to a new file that ends with `.test.js`
+
+All tests will be run on GitHub upon creating a pull request.
+
+To run all tests locally:
+
+```bash
+npm run tests
+```
 
 ## 6. Source Directory Layout
 
@@ -179,7 +190,7 @@ We thank the developers.
   </a>
 </p>
 
-<p align="center">Additional financial support provided by the Anil Fernando Endowment and Wesleyan University.</p>
+<p align="center">Additional financial support provided by Wesleyan University and the Anil Fernando Endowment.</p>
 
 <p align="center">
   <a href="https://www.wesleyan.edu/mathcs/cs/index.html">
