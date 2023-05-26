@@ -35,9 +35,9 @@ const LabelDetail = ({ label, website, requests }) => {
   const firstPartyDescription = () => {
     if (collected && urls.length === 1) {
       return `${website} collected the following ${label} data:`;
-    } else if (collected && urls.length > 1) {
+    } else if (collected && urls.length >= 1) {
       return `${website} collected and shared the following ${label} data:`;
-    } else if (!collected && urls.length > 1) {
+    } else if (!collected && urls.length >= 1) {
       return `${website} shared the following ${label} data:`;
     } else {
       return `Did not collect or share ${label} data.`;
