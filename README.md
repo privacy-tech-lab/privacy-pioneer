@@ -61,7 +61,7 @@ In the root directory of the project, start by [installing the dependencies by r
 npm install --production=false
 ```
 
-**Note**: Privacy Pioneer uses an external service, [ipinfo.io](https://ipinfo.io/), to automate the identification of a user's Location in web traffic of visited websites. For this purpose Privacy Pioneer sends a user's IP address to ipinfo.io when the user restarts the browser or makes changes to the Watchlist. According to ipinfo.io's terms, it will keep a user's IP address in its logs for 1 year but will not use it beyond log maintenance or share it with anyone.
+**Note**: Privacy Pioneer uses an external service, [ipinfo.io](https://ipinfo.io/), to automate the identification of a user's Location in web traffic of visited websites. For this purpose Privacy Pioneer sends a user's IP address to ipinfo.io when the user restarts the browser or makes changes to the Watchlist.
 
 Create a file `holdAPI.js` and save it in the `/src/libs/` folder with your ipinfo API token as follows:
 
