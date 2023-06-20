@@ -107,7 +107,7 @@ export const OptimizationToggle = () => {
       <ToggleSwitch
         isActive={optimizationStatus}
         tooltipMessage={
-          "To improve performance, this setting will limit the amount of data we analyze per site."
+          "To improve performance, this setting will limit the amount of data we analyze per site"
         }
         onClick={() => {
           toggleOptimize();
@@ -154,7 +154,7 @@ export const AnalyticsToggle = () => {
     <SSnippetToggle>
       <ToggleSwitch
         tooltipMessage={
-          "This setting enables the tracking of your actions when using the extension (intended only for research purposes)."
+          "This setting enables the tracking of your actions when using the extension (intended only for research purposes)"
         }
         isActive={analyticsStatus}
         onClick={() => {
