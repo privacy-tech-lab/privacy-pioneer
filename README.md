@@ -44,7 +44,7 @@ Contact us with any questions or comments at sebastian@privacytechlab.org.
 [8. Extension Architecture](#8-extension-architecture)  
 [9. Third Party Libraries and Resources](#9-third-party-libraries-and-resources) 
 [10. Known Issues / Things to be Aware Of](#10-known-issues--things-to-be-aware-of) 
-[10. Thank You!](#11-thank-you)
+[11. Thank You!](#11-thank-you)
 
 ## 1. Research Publications
 
