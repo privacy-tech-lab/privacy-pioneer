@@ -166,6 +166,9 @@ Privacy Pioneer makes a distinction between Fine Location and Coarse Location wi
 - The evidence is not flagged due to obfuscation or some other way of protecting against the type of analysis employed by Privacy Pioneer.
 - The evidence is flagged by Privacy Pioneer as being an instance of Coarse Location and not Fine Location. This would mean that the latitude or longitude value is within +-1.0 degrees of the value determined by the Browser Location API.
 The evidence is flagged by Privacy Pioneer as being an instance of both Coarse Location AND Fine Location. This would mean that the latitude or longitude value is within +-0.1 (and thus also +-1.0) degrees of the value determined by the Browser Location API.
+
+ipinfo.io is sent the user's IP address and returns information about their location based on that IP address. We take the user's Zip Code, Street Address, City, and Region from this and store it as an entry in the user's Watchlist to be looked for in new HTTP requests. 
+
 ## 8. Extension Architecture
 
 An overview of the architecture of Privacy Pioneer is [available separately](https://github.com/privacy-tech-lab/privacy-pioneer/blob/main/architecture_overview.md). (The document is up to date as of its most recent commit date. Later architectural changes are not reflected.)
@@ -187,26 +190,7 @@ We thank the developers.
 
 ## 10. Known Issues / Things to be Aware Of
 
-- The following code will appear after running ```npm install --production=false``` as described in the setup instructions. Please be aware that these have no affect on the use or security of our extension.
-```javascript
-npm WARN config production Use `--omit=dev` instead.
-npm WARN deprecated har-validator@5.1.5: this library is no longer supported
-npm WARN deprecated uuid@3.4.0: Please upgrade  to version 7 or higher.  Older versions may use Math.random() in certain circumstances, which is known to be problematic.  See https://v8.dev/blog/math-random for details.
-npm WARN deprecated request@2.88.2: request has been deprecated, see https://github.com/request/request/issues/3142
-npm WARN deprecated popper.js@1.16.1: You can find the new Popper v2 at @popperjs/core, this package is dedicated to the legacy v1
-
-added 1338 packages, and audited 1339 packages in 1m
-
-170 packages are looking for funding
-  run `npm fund` for details
-
-5 vulnerabilities (3 moderate, 2 high)
-
-To address all issues (including breaking changes), run:
-  npm audit fix --force
-
-Run `npm audit` for details.
-```
+- Some warnings may occur when you run `npm install --production=false`, but they will not negatively affect the compilation or execution of Privacy Pioneer.
 
 ## 11. Thank You!
 
