@@ -289,7 +289,7 @@ export const keywordTypes = Object.freeze({
 export const privacyLabels = Object.freeze({
   monetization: {
     displayName: "Monetization",
-    description: "Practices used to monetize web traffic.",
+    description: "Sites monetize their content by using advertising, analytics, or social networking",
     types: {
       advertising: {
         displayName: "Advertising",
@@ -310,7 +310,7 @@ export const privacyLabels = Object.freeze({
   },
   location: {
     displayName: "Location",
-    description: "Location data that was found in your web traffic.",
+    description: "Sites received your location, e.g., your GPS coordinates or ZIP code",
     types: {
       coarseLocation: {
         displayName: "Coarse Location",
@@ -349,7 +349,7 @@ export const privacyLabels = Object.freeze({
   personal: {
     displayName: "Personal",
     description:
-      "Personal data from your custom watchlist that was found in your web traffic.",
+      "Sites received personal data from your watchlist, e.g., your email address",
     types: {
       phoneNumber: {
         displayName: "Phone Number",
@@ -381,7 +381,7 @@ export const privacyLabels = Object.freeze({
   tracking: {
     displayName: "Tracking",
     description:
-      "A data collection practice used to create a unique identity of you and track your browsing activity",
+      "Sites tracked your browsing activity for creating a profile, e.g., of your interests",
     types: {
       trackingPixel: {
         displayName: "Tracking Pixel",
