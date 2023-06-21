@@ -17,6 +17,7 @@ import {
 import { getWebsiteLastVisitedEvidence } from "../../../libs/indexed-db/getIdbData.js";
 import { getAnalyticsStatus } from "../../../libs/indexed-db/settings";
 import { handleClick } from "../../../libs/indexed-db/getAnalytics";
+import { PrivacyPolicyAnalyzer } from "../policy-view";
 
 function sortByTime(labels) {
   var newestTime = 0;
@@ -86,12 +87,18 @@ const LabelView = () => {
             </SLeading>
           }
           middle={privacyLabels[label]["displayName"]}
+          
         />
       }
       body={
-        Object.keys(requests).length ? (
+        <>
+         { Object.keys(requests).length ? (
           <LabelDetail website={website} label={label} requests={requests} />
-        ) : null
+        
+        ) : null }
+        <PrivacyPolicyAnalyzer />
+        </>
+
       }
     />
   );

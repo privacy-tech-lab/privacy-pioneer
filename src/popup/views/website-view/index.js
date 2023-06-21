@@ -40,6 +40,7 @@ import {
   toggleExtension,
 } from "../../../libs/indexed-db/settings";
 import { handleClick } from "../../../libs/indexed-db/getAnalytics";
+import PrivacyPolicyAnalyzer from "../policy-view";
 
 /**
  * Page view containing current website and identified label cards
