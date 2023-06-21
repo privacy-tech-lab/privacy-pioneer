@@ -110,7 +110,7 @@ const HomeView = () => {
                 ReactTooltip.hide();
               }}
               data-place="left"
-              data-tip="See all browsing history, including evidence originating from 3rd parties"
+              data-tip="See all browsing history, including evidence originating from third parties"
               id="seeAllTour"
             >
               See All
