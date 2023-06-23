@@ -36,6 +36,12 @@ export const STitle = styled.div`
   font-weight: bold;
 `;
 
+export const STitleDos = styled.div`
+  display: flex;
+  font-weight: bold;
+  justify-content: center; 
+`;
+
 export const SDescription = styled.div`
   margin-top: 8px;
   color: var(--secondaryTextColor);
