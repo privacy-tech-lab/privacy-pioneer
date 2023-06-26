@@ -15,6 +15,7 @@ import {
   SThirdParty,
   STitle,
   SHeaderBadge,
+  STitleDos,
 } from "./style";
 import WebsiteBadge from "../website-badge";
 import Item from "./components/item";
@@ -44,6 +45,8 @@ const LabelDetail = ({ label, website, requests }) => {
     }
   };
 
+  const isDifferentURL = Object.entries(requests).some(([url]) => url !== website);
+
   return (
     <SBody>
       <SHeader>
@@ -59,17 +62,23 @@ const LabelDetail = ({ label, website, requests }) => {
         </SContent>
       </SHeader>
       <SThirdParty>
-        <STitle>Third Parties</STitle>
-        {Object.entries(requests).map(([url, request]) => {
-          if (url !== website)
-            return (
-              <SItem key={url}>
-                <WebsiteBadge website={url} showParent />
-                <Item url={url} request={request} label={label} />
-                <SSeperator marginTop="16px" />
-              </SItem>
-            );
-        })}
+        {isDifferentURL ? (
+          <>
+            <STitle>Third Parties</STitle>
+            {Object.entries(requests).map(([url, request]) => {
+              if (url !== website)
+                return (
+                  <SItem key={url}>
+                    <WebsiteBadge website={url} showParent />
+                    <Item url={url} request={request} label={label} />
+                    <SSeperator marginTop="16px" />
+                  </SItem>
+                );
+            })}
+          </>
+        ) : (
+          <STitleDos>No Third Parties Found</STitleDos>
+        )}
       </SThirdParty>
     </SBody>
   );
