@@ -42,8 +42,8 @@ Contact us with any questions or comments at sebastian@privacytechlab.org.
 [6. Source Directory Layout](#6-source-directory-layout)  
 [7. Privacy Practice Analysis](#7-privacy-practice-analysis)  
 [8. Extension Architecture](#8-extension-architecture)  
-[9. Third Party Libraries and Resources](#9-third-party-libraries-and-resources) 
-[10. Known Issues / Things to be Aware Of](#10-known-issues--things-to-be-aware-of) 
+[9. Third Party Libraries and Resources](#9-third-party-libraries-and-resources)
+[10. Known Issues / Things to be Aware Of](#10-known-issues--things-to-be-aware-of)
 [11. Thank You!](#11-thank-you)
 
 ## 1. Research Publications
@@ -160,14 +160,15 @@ Privacy Pioneer is analyzing the following privacy practices for each first and 
   - Email Address
   - Custom Keywords
 
-Privacy Pioneer utilizes the Browser Location API, which is built into most modern browsers, to obtain the user's Latitude and Longitude. This information will not be shared with the developers or any third parties. It is used to check if the user's Latitude and Longitude show up in any of the network data being taken by first parties or shared with third parties by the current website. 
+Privacy Pioneer utilizes the Browser Location API, which is built into most modern browsers, to obtain the user's Latitude and Longitude. This information will not be shared with the developers or any third parties. It is used to check if the user's Latitude and Longitude show up in any of the network data being taken by first parties or shared with third parties by the current website.
 
 Privacy Pioneer makes a distinction between Fine Location and Coarse Location within the GPS Location privacy practice listed above. Fine location means that the number calculated by the individual website is within +-0.1 degrees from the Browser Location API value, and Coarse Location means that it is within +-1.0 degrees. Thus, an instance of a user's latitude or longitude being taken or shared can result in one of the following outcomes in the extension:
+
 - The evidence is not flagged due to obfuscation or some other way of protecting against the type of analysis employed by Privacy Pioneer.
 - The evidence is flagged by Privacy Pioneer as being an instance of Coarse Location and not Fine Location. This would mean that the latitude or longitude value is within +-1.0 degrees of the value determined by the Browser Location API.
-The evidence is flagged by Privacy Pioneer as being an instance of both Coarse Location AND Fine Location. This would mean that the latitude or longitude value is within +-0.1 (and thus also +-1.0) degrees of the value determined by the Browser Location API.
+  The evidence is flagged by Privacy Pioneer as being an instance of both Coarse Location AND Fine Location. This would mean that the latitude or longitude value is within +-0.1 (and thus also +-1.0) degrees of the value determined by the Browser Location API.
 
-ipinfo.io is sent the user's IP address and returns information about their location based on that IP address. We take the user's Zip Code, Street Address, City, and Region from this and store it as an entry in the user's Watchlist to be looked for in new HTTP requests. 
+ipinfo.io is sent the user's IP address and returns information about their location based on that IP address. We take the user's Zip Code, Street Address, City, and Region from this and store it as an entry in the user's Watchlist to be looked for in new HTTP requests.
 
 ## 8. Extension Architecture
 
@@ -191,6 +192,9 @@ We thank the developers.
 ## 10. Known Issues / Things to be Aware Of
 
 - Some warnings may occur when you run `npm install --production=false`, but they will not negatively affect the compilation or execution of Privacy Pioneer.
+- When the overview page of Privacy Pioneer is open, data from websites visited after opening it will not be shown until the overview is refreshed.
+
+if users don't close out the tab and reload it, the updated data from any websites they visited after does not show up.
 
 ## 11. Thank You!
 
