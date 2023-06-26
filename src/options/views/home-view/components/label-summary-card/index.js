@@ -63,7 +63,7 @@ const LabelSummaryCard = ({
           {labeltype.charAt(0).toUpperCase() + labeltype.slice(1)}
         </SLabel>
       </SHeader>
-      <SFooter>Companies collected {labeltype} data.</SFooter>
+      <SFooter>Collection/Sharing of {labeltype.charAt(0).toUpperCase() + labeltype.slice(1)} Data.</SFooter>
     </SContainer>
   );
 };
