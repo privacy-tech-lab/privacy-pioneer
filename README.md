@@ -54,15 +54,23 @@ Contact us with any questions or comments at sebastian@privacytechlab.org.
 
 ## 2. Development
 
-Ensure that you have [node and npm](https://www.npmjs.com/get-npm) installed.
+Ensure that you have node and npm installed.
 
-In the root directory of the project, start by [installing the dependencies by running](https://github.com/privacy-tech-lab/privacy-pioneer/issues/249#issuecomment-885723394):
+You can install the latest version of node from the [official site](https://nodejs.org/en/download/current).
+
+You can install the latest version of npm with:
+
+```bash
+npm install -g npm
+```
+
+Clone this repo to a local directory and [install Privacy Pioneer's dependencies](https://github.com/privacy-tech-lab/privacy-pioneer/issues/249#issuecomment-885723394) by running in the root of your directory:
 
 ```bash
 npm install --production=false
 ```
 
-**Note**: Privacy Pioneer uses an external service, [ipinfo.io](https://ipinfo.io/), to automate the identification of a user's Location in web traffic of visited websites. For this purpose Privacy Pioneer sends a user's IP address to ipinfo.io when the user restarts the browser or makes changes to the Watchlist.
+**Note**: Privacy Pioneer uses an external service, [ipinfo.io](https://ipinfo.io/), to automate the identification of a user's Location in web traffic of visited websites. For this purpose Privacy Pioneer sends a user's IP address to ipinfo.io when the user restarts the browser or makes changes to the Watchlist. An ipinfo API token is required for Privacy Pioneer to work.
 
 Create a file `holdAPI.js` and save it in the `/src/libs/` folder with your ipinfo API token as follows:
 
@@ -72,7 +80,7 @@ export const apiIPToken = "<your ipinfo API token>";
 
 Be sure to not add your ipinfo API token to GitHub to avoid misuse.
 
-To start the project, run:
+To start Privacy Pioneer, run:
 
 ```bash
 npm start
@@ -84,7 +92,11 @@ npm start
 
 A `dev` folder will be generated in the root directory, housing the generated extension files. Firefox should automatically open with the extension installed. If not, you can follow the instructions [here](https://github.com/privacy-tech-lab/privacy-pioneer/issues/12#issuecomment-776985944), where `dev` will be the new `src` folder.
 
-**NOTE:** If you experience errors regarding missing dependencies (usually due to a newly incorporated node package), delete the `node_modules` folder and then re-run the installation steps above. You may also want to delete `package-lock.json` along with the `node_modules` folder as a second attempt to solve this issue.
+**NOTE:** If you experience errors regarding missing dependencies (usually due to a newly incorporated node package), delete the `node_modules` folder and then re-run the installation steps above. You may also want to delete `package-lock.json` along with the `node_modules` folder as a second attempt to solve this issue. If needed, you can create a new package-lock.json file with:
+
+```bash
+npm install --package-lock-only
+```
 
 ## 3. Production
 
@@ -193,8 +205,6 @@ We thank the developers.
 
 - Some warnings may occur when you run `npm install --production=false`, but they will not negatively affect the compilation or execution of Privacy Pioneer.
 - When the overview page of Privacy Pioneer is open, data from websites visited after opening it will not be shown until the overview is refreshed.
-
-if users don't close out the tab and reload it, the updated data from any websites they visited after does not show up.
 
 ## 11. Thank You!
 
