@@ -310,7 +310,7 @@ export const privacyLabels = Object.freeze({
   },
   location: {
     displayName: "Location",
-    description: "Sites received your location, e.g., your GPS coordinates or ZIP code",
+    description: "Sites collected or received your location, e.g., your GPS coordinates or ZIP code",
     types: {
       coarseLocation: {
         displayName: "Coarse Location",
@@ -349,7 +349,7 @@ export const privacyLabels = Object.freeze({
   personal: {
     displayName: "Personal",
     description:
-      "Sites received personal data from your watchlist, e.g., your email address",
+      "Sites collected or received personal data from your watchlist, e.g., your email address",
     types: {
       phoneNumber: {
         displayName: "Phone Number",
