@@ -126,7 +126,7 @@ All tests will be run on GitHub upon creating a pull request.
 To run all tests locally:
 
 ```bash
-npm run tests
+npm run test
 ```
 
 ## 6. Source Directory Layout
