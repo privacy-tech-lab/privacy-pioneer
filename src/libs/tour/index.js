@@ -18,7 +18,7 @@ export const homeSteps = [
     target: "#navbarTour",
     content: (
       <div style={textStyles}>
-        Welcome to Privacy Pioneer! Let's get your bearings ...
+        Welcome to Privacy Pioneer!
       </div>
     ),
     placement: "center",
