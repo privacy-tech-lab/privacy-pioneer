@@ -42,8 +42,9 @@ Contact us with any questions or comments at sebastian@privacytechlab.org.
 [6. Source Directory Layout](#6-source-directory-layout)  
 [7. Privacy Practice Analysis](#7-privacy-practice-analysis)  
 [8. Extension Architecture](#8-extension-architecture)  
-[9. Third Party Libraries and Resources](#9-third-party-libraries-and-resources)  
-[10. Thank You!](#10-thank-you)
+[9. Third Party Libraries and Resources](#9-third-party-libraries-and-resources)
+[10. Known Issues / Things to be Aware Of](#10-known-issues--things-to-be-aware-of)
+[11. Thank You!](#11-thank-you)
 
 ## 1. Research Publications
 
@@ -53,15 +54,23 @@ Contact us with any questions or comments at sebastian@privacytechlab.org.
 
 ## 2. Development
 
-Ensure that you have [node and npm](https://www.npmjs.com/get-npm) installed.
+Ensure that you have node and npm installed.
 
-In the root directory of the project, start by [installing the dependencies by running](https://github.com/privacy-tech-lab/privacy-pioneer/issues/249#issuecomment-885723394):
+You can install the latest version of node from the [official site](https://nodejs.org/en/download/current).
+
+You can install the latest version of npm with:
+
+```bash
+npm install -g npm
+```
+
+Clone this repo to a local directory and [install Privacy Pioneer's dependencies](https://github.com/privacy-tech-lab/privacy-pioneer/issues/249#issuecomment-885723394) by running in the root of your directory:
 
 ```bash
 npm install --production=false
 ```
 
-**Note**: Privacy Pioneer uses an external service, [ipinfo.io](https://ipinfo.io/), to automate the identification of a user's Location in web traffic of visited websites. For this purpose Privacy Pioneer sends a user's IP address to ipinfo.io when the user restarts the browser or makes changes to the Watchlist.
+**Note**: Privacy Pioneer uses an external service, [ipinfo.io](https://ipinfo.io/), to automate the identification of a user's Location in web traffic of visited websites. For this purpose Privacy Pioneer sends a user's IP address to ipinfo.io when the user restarts the browser or makes changes to the Watchlist. An ipinfo API token is required for Privacy Pioneer to work.
 
 Create a file `holdAPI.js` and save it in the `/src/libs/` folder with your ipinfo API token as follows:
 
@@ -71,7 +80,7 @@ export const apiIPToken = "<your ipinfo API token>";
 
 Be sure to not add your ipinfo API token to GitHub to avoid misuse.
 
-To start the project, run:
+To start Privacy Pioneer, run:
 
 ```bash
 npm start
@@ -83,7 +92,11 @@ npm start
 
 A `dev` folder will be generated in the root directory, housing the generated extension files. Firefox should automatically open with the extension installed. If not, you can follow the instructions [here](https://github.com/privacy-tech-lab/privacy-pioneer/issues/12#issuecomment-776985944), where `dev` will be the new `src` folder.
 
-**NOTE:** If you experience errors regarding missing dependencies (usually due to a newly incorporated node package), delete the `node_modules` folder and then re-run the installation steps above. You may also want to delete `package-lock.json` along with the `node_modules` folder as a second attempt to solve this issue.
+**Note:** If you experience errors regarding missing dependencies (usually due to a newly incorporated node package), delete the `node_modules` folder and then re-run the installation steps above. You may also want to delete `package-lock.json` along with the `node_modules` folder as a second attempt to solve this issue. If needed, you can create a new package-lock.json file with:
+
+```bash
+npm install --package-lock-only
+```
 
 ## 3. Production
 
@@ -113,7 +126,7 @@ All tests will be run on GitHub upon creating a pull request.
 To run all tests locally:
 
 ```bash
-npm run tests
+npm run test
 ```
 
 ## 6. Source Directory Layout
@@ -159,6 +172,16 @@ Privacy Pioneer is analyzing the following privacy practices for each first and 
   - Email Address
   - Custom Keywords
 
+Privacy Pioneer utilizes the Browser Location API, which is built into most modern browsers, to obtain the user's Latitude and Longitude. This information will not be shared with the developers or any third parties. It is used to check if the user's Latitude and Longitude show up in any of the network data being taken by first parties or shared with third parties by the current website.
+
+Privacy Pioneer makes a distinction between Fine Location and Coarse Location within the GPS Location privacy practice listed above. Fine location means that the number calculated by the individual website is within +-0.1 degrees from the Browser Location API value, and Coarse Location means that it is within +-1.0 degrees. Thus, an instance of a user's latitude or longitude being taken or shared can result in one of the following outcomes in the extension:
+
+- The evidence is not flagged due to obfuscation or some other way of protecting against the type of analysis employed by Privacy Pioneer.
+- The evidence is flagged by Privacy Pioneer as being an instance of Coarse Location and not Fine Location. This would mean that the latitude or longitude value is within +-1.0 degrees of the value determined by the Browser Location API.
+  The evidence is flagged by Privacy Pioneer as being an instance of both Coarse Location AND Fine Location. This would mean that the latitude or longitude value is within +-0.1 (and thus also +-1.0) degrees of the value determined by the Browser Location API.
+
+ipinfo.io is sent the user's IP address and returns information about their location based on that IP address. We take the user's Zip Code, Street Address, City, and Region from this and store it as an entry in the user's Watchlist to be looked for in new HTTP requests.
+
 ## 8. Extension Architecture
 
 An overview of the architecture of Privacy Pioneer is [available separately](https://github.com/privacy-tech-lab/privacy-pioneer/blob/main/architecture_overview.md). (The document is up to date as of its most recent commit date. Later architectural changes are not reflected.)
@@ -178,7 +201,12 @@ It also uses the following resources.
 
 We thank the developers.
 
-## 10. Thank You!
+## 10. Known Issues / Things to be Aware Of
+
+- Some warnings may occur when you run `npm install --production=false`, but they will not negatively affect the compilation or execution of Privacy Pioneer.
+- When the overview page of Privacy Pioneer is open, data from websites visited after opening it will not be shown until the overview is refreshed.
+
+## 11. Thank You!
 
 <p align="center"><strong>We would like to thank our financial supporters!</strong></p><br>
 

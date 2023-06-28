@@ -247,19 +247,19 @@ export const keywordTypes = Object.freeze({
     displayName: "General",
     placeholder: "Keyword",
     toolTip:
-      "We will flag instances where the entered keyword is shared with a third-party.",
+      "We will flag instances where the entered keyword is collected by a first party or shared with a third party",
   },
   phoneNumber: {
     displayName: "Phone Number",
     placeholder: "+1 (860) 685-2000",
     toolTip:
-      "We will flag instances where the entered phone number is shared with a third-party.",
+      "We will flag instances where the entered phone number is collected by a first party or shared with a third party",
   },
   emailAddress: {
     displayName: "Email Address",
     placeholder: "jdoe@wesleyan.edu",
     toolTip:
-      "We will flag instances where the entered email is shared with a third-party, both in the form you write it and in an alternate representation (The Trade Desk's UID)",
+      "We will flag instances where the entered email is collected by a first party or shared with a third party, both in the form you write it and in an alternate representation (The Trade Desk's UID)",
   },
   location: {
     displayName: "Street Address",
@@ -270,13 +270,13 @@ export const keywordTypes = Object.freeze({
       zipCode: "06459",
     },
     toolTip:
-      "We will flag instances where the entered location data is shared with a third-party.",
+      "We will flag instances where the entered location data is collected by a first party or shared with a third party",
   },
   ipAddress: {
     displayName: "IP Address",
     placeholder: "999.99.999.999",
     toolTip:
-      "We will only flag instances where your IP is shared with a third-party.",
+      "We will only flag instances where your IP is shared with a third party",
   },
 });
 
