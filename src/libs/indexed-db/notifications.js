@@ -45,24 +45,26 @@ const getUnnotifiedEvidence = async (allEvidence, host) => {
   const permittedKeywords = await getPermittedNotifications();
   const unnotifiedEvidence = [];
   Object.keys(allEvidence).forEach((perm) =>
-    Object.keys(allEvidence[perm]).forEach((type) =>
-      Object.keys(allEvidence[perm][type]).forEach((evidence) => {
-        if (
-          allEvidence[perm][type][evidence]["watchlistHash"] &&
-          permittedKeywords.includes(
-            allEvidence[perm][type][evidence]["watchlistHash"]
-          )
+  Object.keys(allEvidence[perm]).forEach((type) =>
+  Object.keys(allEvidence[perm][type]).forEach((evidence) => {
+    if (
+      allEvidence[perm][type][evidence]["watchlistHash"] &&
+      permittedKeywords.includes(
+        allEvidence[perm][type][evidence]["watchlistHash"]
+        )
         ) {
           allEvidence[perm][type][evidence]["watchlistHash"];
           if (!hostAlreadyNotified.includes(evidence)) {
             if (
               !unnotifiedEvidence.includes(
                 allEvidence[perm][type][evidence]["watchlistHash"]
-              )
-            ) {
-              unnotifiedEvidence.push(allEvidence[perm][type][evidence]);
+                )
+                ) {
+                  unnotifiedEvidence.push(allEvidence[perm][type][evidence]);
+                }
+            if (allEvidence[perm][type][evidence]["permission"] !== "personal") {
+              hostAlreadyNotified.push(evidence);
             }
-            hostAlreadyNotified.push(evidence);
           }
         }
       })
