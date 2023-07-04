@@ -89,7 +89,6 @@ const notify = async (host) => {
           let evidenceList = "";
 
           for (const evidence of evidenceToNotify) {
-            console.log(evidence);
             const keyword = (await watchlistKeyval.get(evidence.watchlistHash))
               .keyword;
             const displayName =
