@@ -16,6 +16,8 @@ import {
 } from "./searchFunctions.js";
 import { permissionEnum, typeEnum, resourceTypeEnum } from "../classModels.js";
 import { lengthHeuristic } from "../requestAnalysis/earlyTermination/heuristics.js";
+import { notifyUserKeyword } from "../../../libs/indexed-db/notifications.js";
+import { getHostname } from "../utility/util.js";
 
 /**
  * This function runs all of the apporpriate analysis functions for an HTTP request.
@@ -79,8 +81,12 @@ function getAllEvidenceForRequest(request, userData) {
     for (const evList of resArr) {
       evList.cookie = false;
       arr.push(evList); // push the evidence to the arr
+      if (evList.typ === "userKeyword") {
+        notifyUserKeyword(getHostname(evList.rootUrl), evList)
+      }
     }
   }
+  
 
   executeAndPush(urlSearch(rootUrl, reqUrl, request.urlClassification));
 
