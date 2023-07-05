@@ -15,6 +15,12 @@ import {
 } from "./components/utils/filter-util";
 
 /**
+ * This is a global variable
+ */
+let globalUrls = null
+let globalUnmatched = null
+
+/**
  * Combination of filter section and search section
  * Both components need common functions and regions
  * Broken up in order to increase readability
@@ -54,6 +60,8 @@ const FilterSearch = ({
         ? setShowEmpty(true)
         : setShowEmpty(false);
       setFilteredWebsites(filteredWebsites);
+      console.dir(filteredWebsites);
+      globalUrls = filteredWebsites
     },
     [permFilter, websites]
   );
@@ -66,12 +74,43 @@ const FilterSearch = ({
       setPlaceholder
     );
     setFilteredLabels(filteredLabels);
-    onChange(query);
+    console.dir(filteredLabels)
+    console.dir(globalUrls)
 
+    /**
+     * Function to find sites with empty label 
+     * when filters are applied
+     */
+
+    const unmatchedUrls = [];
+
+  
+    for (const url in globalUrls) {
+      let foundMatch = false;
+      
+      //Filter through filter categories (monetization, location,... etc)
+      for (const category in filteredLabels) {
+        if (filteredLabels[category][url]) {
+          foundMatch = true;
+          break;
+        }
+      }
+
+      if (!foundMatch) {
+        unmatchedUrls.push(url) ;
+      }
+    }
+
+    console.log("Unmatched Urls:", unmatchedUrls)
+    globalUnmatched = unmatchedUrls
+
+    onChange(query);
+    console.log(globalUnmatched)
+    
     if (Object.entries(filteredLabels).length == 0) {
       setFilteredWebsites({});
       setShowEmpty(true);
-    }
+    } 
   }, [
     labels,
     permFilter,
