@@ -60,7 +60,6 @@ const FilterSearch = ({
         ? setShowEmpty(true)
         : setShowEmpty(false);
       setFilteredWebsites(filteredWebsites);
-      console.dir(filteredWebsites);
       globalUrls = filteredWebsites
     },
     [permFilter, websites]
@@ -74,8 +73,6 @@ const FilterSearch = ({
       setPlaceholder
     );
     setFilteredLabels(filteredLabels);
-    console.dir(filteredLabels)
-    console.dir(globalUrls)
 
     /**
      * Function to find sites with empty label 
@@ -83,7 +80,6 @@ const FilterSearch = ({
      */
 
     const unmatchedUrls = [];
-
   
     for (const url in globalUrls) {
       let foundMatch = false;
@@ -101,11 +97,21 @@ const FilterSearch = ({
       }
     }
 
-    console.log("Unmatched Urls:", unmatchedUrls)
     globalUnmatched = unmatchedUrls
 
     onChange(query);
-    console.log(globalUnmatched)
+
+    if (globalUnmatched.length != 0) {
+      var newWs = structuredClone(websites)
+      for (const i of globalUnmatched) {
+        delete newWs[i]
+      }
+      setFilteredWebsites(newWs)
+      setShowEmpty(false)
+    } else {
+      setFilteredWebsites(websites)
+      setShowEmpty(false)
+    }
     
     if (Object.entries(filteredLabels).length == 0) {
       setFilteredWebsites({});
