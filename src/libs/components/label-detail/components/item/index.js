@@ -11,11 +11,30 @@ import {
   privacyLabels,
   settingsModelsEnum,
 } from "../../../../../background/analysis/classModels";
-import {
-  getAnalyticsStatus,
-  settingsEnum,
-} from "../../../../indexed-db/settings";
+import { getAnalyticsStatus } from "../../../../indexed-db/settings";
 import { handleClick } from "../../../../indexed-db/getAnalytics";
+
+/**
+ * The function `formatItemUserKeywords` takes a request object and formats the userKeyword property by
+ * converting it into separate properties with unique keys.
+ * @param request - The `request` parameter is an object that contains different types of keywords. One
+ * of the types is "userKeyword", which is an array of user-defined keywords. The function
+ * `formatItemUserKeywords` takes this `request` object and formats it by appending an index number to
+ * each user keyword.
+ * @returns The function `formatItemUserKeywords` returns either the formatted `newReq` object if it is
+ * not empty, or the original `request` object if `newReq` is empty.
+ */
+const formatItemUserKeywords = (request) => {
+  var newReq = {};
+  for (const [type, eList] of Object.entries(request)) {
+    if (type === "userKeyword") {
+      for (var i = 0; i < eList.length; i++) {
+        newReq[type + i.toString()] = eList[i];
+      }
+    }
+  }
+  return Object.keys(newReq).length > 0 ? newReq : request;
+};
 
 /**
  * Display of badges with sub types and collapse containing description and evidence
@@ -24,6 +43,7 @@ import { handleClick } from "../../../../indexed-db/getAnalytics";
  * @param {string} label the associated label of this evidence
  */
 const Item = ({ request, url, label }) => {
+  request = formatItemUserKeywords(request);
   const [evidence, setEvidence] = useState({
     request: null,
     label: null,
@@ -68,35 +88,39 @@ const Item = ({ request, url, label }) => {
   return (
     <>
       <SBadgeGroup ref={containerRef}>
-        {Object.entries(request).map(([type, request]) => (
-          <SBadge
-            key={type}
-            className="badge"
-            onClick={(event) => {
-              inflateCollapse(event, request, type);
-              const getAnalysis = async () => {
-                const status = await getAnalyticsStatus();
-                if (status == true) {
-                  handleClick(
-                    /* Gets Description Button (Tracking Pixel, Fine Location, IP, etc) and Third Party */
-                    "Description Button: " +
-                      type.toString() +
-                      " Third Party: " +
+        {Object.entries(request).map(([type, request]) => {
+          const ktype = type;
+          type = type.startsWith("userKeyword") ? "userKeyword" : type;
+          return (
+            <SBadge
+              key={ktype}
+              className="badge"
+              onClick={(event) => {
+                inflateCollapse(event, request, type);
+                const getAnalysis = async () => {
+                  const status = await getAnalyticsStatus();
+                  if (status == true) {
+                    handleClick(
+                      /* Gets Description Button (Tracking Pixel, Fine Location, IP, etc) and Third Party */
+                      "Description Button: " +
+                        type.toString() +
+                        " Third Party: " +
+                        url.toString(),
+                      "ANY",
+                      settingsModelsEnum.notApplicable,
                       url.toString(),
-                    "ANY",
-                    settingsModelsEnum.notApplicable,
-                    url.toString(),
-                    settingsModelsEnum.notApplicable
-                  );
-                }
-              };
-              getAnalysis();
-            }}
-          >
-            {privacyLabels[label]["types"][type]["displayName"]}
-            {request.cookie ? ` 🍪` : null}
-          </SBadge>
-        ))}
+                      settingsModelsEnum.notApplicable
+                    );
+                  }
+                };
+                getAnalysis();
+              }}
+            >
+              {privacyLabels[label]["types"][type]["displayName"]}
+              {request.cookie ? ` 🍪` : null}
+            </SBadge>
+          );
+        })}
       </SBadgeGroup>
       <Evidence
         request={evidence.request}

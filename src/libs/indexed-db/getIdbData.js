@@ -9,7 +9,6 @@ import {
   privacyLabels,
 } from "../../background/analysis/classModels";
 import { getExcludedLabels } from "../indexed-db/settings";
-import { IPINFO_ADDRESSKEY, IPINFO_IPKEY } from "../../background/analysis/buildUserData/importSearchData.js";
 
 /**
  * Get identified labels of website from indexedDB
@@ -47,7 +46,6 @@ export const getWebsiteLabels = async (website, excludedLabels = []) => {
   }
 };
 
-
 /**
  * Get identified labels of website from indexedDB from latest browsing session
  * Restucture to display in UI
@@ -58,14 +56,31 @@ export const getWebsiteLastVisitedEvidence = async (website) => {
     const labels = await getWebsiteLabels(website);
     const lastSeen = (await evidenceIDB.get(website)).lastSeen;
     var result = {};
-    
-    for (const [label, value] of Object.entries(labels)) { 
-        for (const [url, typeVal] of Object.entries(value)) {
-          for (const [type, e] of Object.entries(typeVal)) {
+
+    for (const [label, value] of Object.entries(labels)) {
+      for (const [url, typeVal] of Object.entries(value)) {
+        for (const [type, e] of Object.entries(typeVal)) {
+          if (type === "userKeyword") {
+            for (const el of e) {
+              //Check if the evidence has been added recently
+              var isCurrentSessionEvidence = el["timestamp"] >= lastSeen - 60000;
+
+              if (isCurrentSessionEvidence) {
+                // Add label in data to object
+                if (!(label in result)) {
+                  result[label] = { [url]: { [type]: Array(el) } };
+                } else if (!(url in result[label])) {
+                  result[label][url] = { [type]: Array(el) };
+                } else {
+                  result[label][url][type].push(el);
+                }
+              }
+            }
+          } else {
             //Check if the evidence has been added recently
             var isCurrentSessionEvidence = e["timestamp"] >= lastSeen - 60000;
-            
-            if ( isCurrentSessionEvidence) {
+
+            if (isCurrentSessionEvidence) {
               // Add label in data to object
               if (!(label in result)) {
                 result[label] = { [url]: { [type]: e } };
@@ -77,9 +92,9 @@ export const getWebsiteLastVisitedEvidence = async (website) => {
             }
           }
         }
-      
+      }
     }
-    return result
+    return result;
   } catch (error) {
     return {};
   }
