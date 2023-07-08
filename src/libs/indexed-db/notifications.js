@@ -33,6 +33,7 @@ const getPermittedNotifications = async () => {
   });
   return permittedKeywords;
 };
+
 /**
  *
  * @param {object} evidence evidence of a given url
@@ -52,7 +53,7 @@ const getUnnotifiedEvidence = async (allEvidence, host) => {
           permittedKeywords.includes(
             allEvidence[perm][type][evidence]["watchlistHash"]
           ) &&
-          allEvidence[perm][type][evidence]["typ"] !== "userKeyword"
+          allEvidence[perm][type][evidence]["permission"] !== "personal"
         ) {
           allEvidence[perm][type][evidence]["watchlistHash"];
           if (!hostAlreadyNotified.includes(evidence)) {
@@ -65,6 +66,12 @@ const getUnnotifiedEvidence = async (allEvidence, host) => {
             }
             hostAlreadyNotified.push(evidence);
           }
+        } else if (allEvidence[perm][type][evidence][0] !== undefined) {
+          allEvidence[perm][type][evidence].forEach((personalEvidence) => {
+            notifyPersonal(host, personalEvidence);
+          });
+        } else if (allEvidence[perm][type][evidence]["permission"] === "personal") {
+          notifyPersonal(host, allEvidence[perm][type][evidence])
         }
       })
     );
@@ -117,9 +124,9 @@ const notify = async (host) => {
  *
  * Notifies user of any evidence containing watchlist data from given url
  */
-
-const notifyUserKeyword = async (host, evidence) => {
+const notifyPersonal = async (host, evidence) => {
   if (Notification.permission == "granted") {
+    console.log(evidence)
     const keyword = (await watchlistKeyval.get(evidence.watchlistHash)).keyword;
     const displayName =
       privacyLabels[evidence.permission]["types"][evidence.typ].displayName;
@@ -177,4 +184,4 @@ const runNotifications = async () => {
   });
 };
 
-export { runNotifications, notifyUserKeyword };
+export { runNotifications };

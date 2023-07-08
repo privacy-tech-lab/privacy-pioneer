@@ -211,10 +211,11 @@ async function importData() {
       normalEmails.push(new RegExp(buildGeneralRegex(email)));
 
       // add encoded emails
-      const digestHex = await digestMessage(setEmail(email));
+      const emailSet = setEmail(email)
+      const digestHex = await digestMessage(emailSet);
       const base64Encoded = hexToBase64(digestHex);
       const urlBase64Encoded = encodeURIComponent(base64Encoded);
-      const origHash = watchlistHashGen(typeEnum.emailAddress, email);
+      const origHash = watchlistHashGen(typeEnum.emailAddress, emailSet);
       const base64EncodedObj = createKeywordObj(
         base64Encoded,
         typeEnum.emailAddress,
