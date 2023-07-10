@@ -68,10 +68,14 @@ const getUnnotifiedEvidence = async (allEvidence, host) => {
           }
         } else if (allEvidence[perm][type][evidence][0] !== undefined) {
           allEvidence[perm][type][evidence].forEach((personalEvidence) => {
-            notifyPersonal(host, personalEvidence);
+            if (personalEvidence.timestamp + 19000 > Date.now()) {
+              notifyPersonal(host, personalEvidence);
+            }
           });
         } else if (allEvidence[perm][type][evidence]["permission"] === "personal") {
-          notifyPersonal(host, allEvidence[perm][type][evidence])
+          if (allEvidence[perm][type][evidence]["timestamp"] + 19000 > Date.now()) {
+            notifyPersonal(host, allEvidence[perm][type][evidence])
+          }
         }
       })
     );
@@ -126,7 +130,6 @@ const notify = async (host) => {
  */
 const notifyPersonal = async (host, evidence) => {
   if (Notification.permission == "granted") {
-    console.log(evidence)
     const keyword = (await watchlistKeyval.get(evidence.watchlistHash)).keyword;
     const displayName =
       privacyLabels[evidence.permission]["types"][evidence.typ].displayName;

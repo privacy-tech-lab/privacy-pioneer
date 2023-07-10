@@ -101,6 +101,7 @@ function createKeywordObj(keyword, typ, hash = null) {
 function hashUserDictValues(networkKeywords) {
   const excludedSet = new Set([
     typeEnum.phoneNumber,
+    typeEnum.emailAddress,
     typeEnum.encodedEmail,
     typeEnum.ipAddress,
     typeEnum.userKeyword,
