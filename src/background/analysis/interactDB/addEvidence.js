@@ -309,12 +309,34 @@ function updateFetchedDict(evidenceDict, e) {
     if (perm in evidence) {
       // if type is in the permission
       if (t in evidence[perm]) {
+        // user keywords only
+        if (t === "userKeyword") {
+          if (evidence[perm][t][reqUrl] === undefined) {
+            evidence[perm][t][reqUrl] = Array(e);
+          } else {
+            // if this exact keyword has been found on this website before, gives index, otherwise -1
+            let haveKeywordEv = evidence[perm][t][reqUrl].findIndex(
+              (el) => el["watchlistHash"] == e["watchlistHash"]
+            );
+            // if this exact keyword has been found on this website before, update timestamp
+            if (haveKeywordEv !== -1) {
+              evidence[perm][t][reqUrl][haveKeywordEv]["timestamp"] =
+                e["timestamp"];
+            } else {
+              // this exact keyword has not been found on this website before, updates evidence
+              evidence[perm][t][reqUrl].push(e);
+            }
+            return evidence;
+          }
+        }
+
+        // all other types
         let hardNo = reqUrl in evidence[perm][t]; //we have exactly this evidence already
         // if we have the evidence update its timestamp
         if (hardNo) {
           evidence[perm][t][reqUrl]["timestamp"] = e["timestamp"];
         }
-        // if we have less than 5 different reqUrl's for this permission and this is a unique reqUrl, we save the evidence
+        // if this is a unique reqUrl, we save the evidence
         if (!hardNo) {
           evidence[perm][t][reqUrl] = e;
         } else {
@@ -323,7 +345,9 @@ function updateFetchedDict(evidenceDict, e) {
       } else {
         // we don't have this type yet, so we initialize it
         evidence[perm][t] = {};
-        evidence[perm][t][reqUrl] = e;
+        t === "userKeyword"
+          ? (evidence[perm][t][reqUrl] = Array(e))
+          : (evidence[perm][t][reqUrl] = e);
       }
     } else {
       // we don't have this permission yet so we initialize
@@ -332,14 +356,18 @@ function updateFetchedDict(evidenceDict, e) {
       // init dict for permission type pair
       evidence[perm][t] = {};
 
-      evidence[perm][t][reqUrl] = e;
+      t === "userKeyword"
+        ? (evidence[perm][t][reqUrl] = Array(e))
+        : (evidence[perm][t][reqUrl] = e);
     }
   }
   // we have don't have this rootUrl yet. So we init evidence at this url
   else {
     evidence[perm] = {};
     evidence[perm][t] = {};
-    evidence[perm][t][reqUrl] = e;
+    t === "userKeyword"
+      ? (evidence[perm][t][reqUrl] = Array(e))
+      : (evidence[perm][t][reqUrl] = e);
   }
   return evidence;
 }

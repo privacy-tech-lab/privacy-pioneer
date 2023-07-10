@@ -81,6 +81,7 @@ function getAllEvidenceForRequest(request, userData) {
       arr.push(evList); // push the evidence to the arr
     }
   }
+  
 
   executeAndPush(urlSearch(rootUrl, reqUrl, request.urlClassification));
 

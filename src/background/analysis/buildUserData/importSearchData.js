@@ -207,14 +207,21 @@ async function importData() {
     var normalEmails = [];
     var encodedEmails = {};
     user_store_dict[typeEnum.emailAddress].forEach(async (email) => {
+      const emailSet = setEmail(email);
+
       // add the normal email as a regex where the non alphanumeric characters are possibly changed or not present
-      normalEmails.push(new RegExp(buildGeneralRegex(email)));
+      const newEmail = createKeywordObj(
+        new RegExp(buildGeneralRegex(email)),
+        typeEnum.emailAddress,
+        watchlistHashGen(typeEnum.emailAddress, emailSet)
+      );
+      normalEmails.push(newEmail);
 
       // add encoded emails
-      const digestHex = await digestMessage(setEmail(email));
+      const digestHex = await digestMessage(emailSet);
       const base64Encoded = hexToBase64(digestHex);
       const urlBase64Encoded = encodeURIComponent(base64Encoded);
-      const origHash = watchlistHashGen(typeEnum.emailAddress, email);
+      const origHash = watchlistHashGen(typeEnum.emailAddress, emailSet);
       const base64EncodedObj = createKeywordObj(
         base64Encoded,
         typeEnum.emailAddress,

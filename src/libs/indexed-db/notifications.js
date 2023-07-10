@@ -33,6 +33,7 @@ const getPermittedNotifications = async () => {
   });
   return permittedKeywords;
 };
+
 /**
  *
  * @param {object} evidence evidence of a given url
@@ -44,14 +45,15 @@ const getUnnotifiedEvidence = async (allEvidence, host) => {
   const hostAlreadyNotified = alreadyNotified[host] ?? [];
   const permittedKeywords = await getPermittedNotifications();
   const unnotifiedEvidence = [];
-  Object.keys(allEvidence).forEach((perm) =>
+  Object.keys(allEvidence).forEach((perm) => {
     Object.keys(allEvidence[perm]).forEach((type) =>
       Object.keys(allEvidence[perm][type]).forEach((evidence) => {
         if (
           allEvidence[perm][type][evidence]["watchlistHash"] &&
           permittedKeywords.includes(
             allEvidence[perm][type][evidence]["watchlistHash"]
-          )
+          ) &&
+          allEvidence[perm][type][evidence]["permission"] !== "personal"
         ) {
           allEvidence[perm][type][evidence]["watchlistHash"];
           if (!hostAlreadyNotified.includes(evidence)) {
@@ -64,15 +66,26 @@ const getUnnotifiedEvidence = async (allEvidence, host) => {
             }
             hostAlreadyNotified.push(evidence);
           }
+        } else if (allEvidence[perm][type][evidence][0] !== undefined) {
+          allEvidence[perm][type][evidence].forEach((personalEvidence) => {
+            if (personalEvidence.timestamp + 19000 > Date.now()) {
+              notifyPersonal(host, personalEvidence);
+            }
+          });
+        } else if (allEvidence[perm][type][evidence]["permission"] === "personal") {
+          if (allEvidence[perm][type][evidence]["timestamp"] + 19000 > Date.now()) {
+            notifyPersonal(host, allEvidence[perm][type][evidence])
+          }
         }
       })
-    )
-  );
+    );
+  });
 
   alreadyNotified[host] = hostAlreadyNotified;
   await settingsKeyval.set("alreadyNotified", alreadyNotified);
   return unnotifiedEvidence;
 };
+
 /**
  *
  * @param {string} url
@@ -89,18 +102,10 @@ const notify = async (host) => {
           let evidenceList = "";
 
           for (const evidence of evidenceToNotify) {
-            console.log(evidence);
-            const keyword = (await watchlistKeyval.get(evidence.watchlistHash))
-              .keyword;
             const displayName =
               privacyLabels[evidence.permission]["types"][evidence.typ]
                 .displayName;
-            if (evidence.typ === "userKeyword") {
-              evidenceList =
-                evidenceList + `\n${displayName} (${keyword.slice(0, 3)}**)`;
-            } else {
-              evidenceList = evidenceList + `\n${displayName}`;
-            }
+            evidenceList = evidenceList + `\n${displayName}`;
           }
 
           const text = `We found the following watchlist keywords in your web request: \n${evidenceList}`;
@@ -115,6 +120,31 @@ const notify = async (host) => {
     });
   }
 };
+
+/**
+ *
+ * @param {string} host
+ * @param {evidence} evidence
+ *
+ * Notifies user of any evidence containing watchlist data from given url
+ */
+const notifyPersonal = async (host, evidence) => {
+  if (Notification.permission == "granted") {
+    const keyword = (await watchlistKeyval.get(evidence.watchlistHash)).keyword;
+    const displayName =
+      privacyLabels[evidence.permission]["types"][evidence.typ].displayName;
+    const evidenceList = `\n${displayName} (${keyword.slice(0, 3)}**)`;
+
+    const text = `We found the following watchlist keywords in your web request: \n${evidenceList}`;
+
+    browser.notifications.create("privacy_pioneer" + host, {
+      type: "basic",
+      message: text,
+      title: "Privacy Pioneer",
+    });
+  }
+};
+
 /**
  * Runs every time the active tab is switched. Checks session storage for host and if
  * not present it will run the notify function.
@@ -157,4 +187,4 @@ const runNotifications = async () => {
   });
 };
 
-export default runNotifications;
+export { runNotifications };

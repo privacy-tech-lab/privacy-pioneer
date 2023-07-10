@@ -182,6 +182,10 @@ Privacy Pioneer makes a distinction between Fine Location and Coarse Location wi
 
 ipinfo.io is sent the user's IP address and returns information about their location based on that IP address. We take the user's Zip Code, Street Address, City, and Region from this and store it as an entry in the user's Watchlist to be looked for in new HTTP requests.
 
+If a user looks up a specific keyword from their watchlist (for example in a search bar or search engine), we will show notifications of this keyword being taken by a first party. For normal lookups (like keywords a user could be interested in), this will appear as strange, but it is important to know when a website is or is not encrypting user data when sending it to their backend APIs, since all web traffic has the potential to be monitored in transit across the internet.
+
+Privacy Pioneer will notify a user when any of their watchlist information has been seen in their network traffic if the user has enabled notifications on the browser and in the watchlist page of the extension. These notifications will occur 15 seconds after a site has loaded to let the page load most of its data. User's Custom Keywords (shown as "Keyword" in the extension) will generate a notification each time they appear in the user's web traffic, while all other keywords being seen will generate a notification once per session per website that collected or shared a user's information. Note that if multiple notifications would have qualified for all categories other than personal (eg. zip, region, and IP would have been notified), only one notification will be shown, with a "..." following the first to signify that this is a joint notification and the user should check the extension to see Privacy Pioneer's findings.
+
 ## 8. Extension Architecture
 
 An overview of the architecture of Privacy Pioneer is [available separately](https://github.com/privacy-tech-lab/privacy-pioneer/blob/main/architecture_overview.md). (The document is up to date as of its most recent commit date. Later architectural changes are not reflected.)
@@ -205,6 +209,9 @@ We thank the developers.
 
 - Some warnings may occur when you run `npm install --production=false`, but they will not negatively affect the compilation or execution of Privacy Pioneer.
 - When the overview page of Privacy Pioneer is open, data from websites visited after opening it will not be shown until the overview is refreshed.
+- Phone numbers do not currently generate notifications. This will be addressed soon.
+- IP addresses sometimes do not generate notifications. This will be addressed soon.
+- We do not look at the main HTML / main_frame type of data request in this extension. Thus, data that was loaded into the main body of the webpage, and not through an external query, will not generate evidence in Privacy Pioneer.
 
 ## 11. Thank You!
 
