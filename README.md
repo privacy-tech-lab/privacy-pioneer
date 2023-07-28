@@ -48,7 +48,7 @@ Contact us with any questions or comments at sebastian@privacytechlab.org.
 
 ## 1. Research Publications
 
-- Judeley Jean-Charles, Daniel Goldelman, Justin Casler, Logan Brown, Owen Kaplan,Hamza Harkous, Sebastian Zimmeck, [Privacy Pioneer: Automating the Creation of Privacy Labels for Websites](https://github.com/privacy-tech-lab/gpc-optmeowt/blob/main/research/tassoneEtAlEnhancingOnlinePrivacy2022Poster.pdf), Summer Research 2023 Presentation, Wesleyan University, July 2023
+- Judeley Jean-Charles, Daniel Goldelman, Justin Casler, Logan Brown, Owen Kaplan,Hamza Harkous, Sebastian Zimmeck, [Privacy Pioneer: Automating the Creation of Privacy Labels for Websites](https://github.com/privacy-tech-lab/privacy-pioneer/blob/main/research/jean-charlesEtAlPrivacyPioneer2023Slides.pdf), Summer Research 2023 Presentation, Wesleyan University, July 2023
 - Daniel Goldelman, Logan Brown, Justin Casler, Judeley Jean-Charles, Sebastian Zimmeck, [Privacy Pioneer: Automating the Creation of Privacy Labels for Websites](https://youtu.be/emENqmVxi7k), Talk @ Google, Online, October 2022
 - Owen Kaplan, [Privacy Pioneer: Creating an Automated Data-Privacy UI for Web Browsers](https://digitalcollections.wesleyan.edu/object/ir%3A3180), Undergraduate Honors Thesis, Wesleyan University, April 2022
 - Owen Kaplan, Logan Brown, Daniel Goldelman, Sebastian Zimmeck [Creating Privacy Labels for the Web](http://summer21.research.wesleyan.edu/2021/07/27/creating-privacy-labels-for-the-web/), Summer Research 2021 Poster Session, Wesleyan University, Online, July 2021
