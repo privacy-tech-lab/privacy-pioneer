@@ -2,7 +2,7 @@
   <a href="https://github.com/privacy-tech-lab/privacy-pioneer/releases"><img alt="GitHub release (latest by date)" src="https://img.shields.io/github/v/release/privacy-tech-lab/privacy-pioneer"></a>
   <a href="https://github.com/privacy-tech-lab/privacy-pioneer/releases"><img alt="GitHub Release Date" src="https://img.shields.io/github/release-date/privacy-tech-lab/privacy-pioneer"></a>
   <a href="https://github.com/privacy-tech-lab/privacy-pioneer/commits/main"><img alt="GitHub last commit" src="https://img.shields.io/github/last-commit/privacy-tech-lab/privacy-pioneer"></a>
-  <a href="https://github.com/privacy-tech-lab/privacy-pioneer/actions/workflows/node.js.yml"><img alt="GitHub forks" src="https://github.com/privacy-tech-lab/privacy-pioneer/actions/workflows/node.js.yml/badge.svg?branch=main"></a>
+  <a href="https://github.com/privacy-tech-lab/privacy-pioneer/actions/workflows/node.js.yml"><img alt="GitHub workflows" src="https://github.com/privacy-tech-lab/privacy-pioneer/actions/workflows/node.js.yml/badge.svg?branch=main"></a>
   <a href="https://github.com/privacy-tech-lab/privacy-pioneer/issues"><img alt="GitHub issues" src="https://img.shields.io/github/issues-raw/privacy-tech-lab/privacy-pioneer"></a>
   <a href="https://github.com/privacy-tech-lab/privacy-pioneer/issues?q=is%3Aissue+is%3Aclosed"><img alt="GitHub closed issues" src="https://img.shields.io/github/issues-closed-raw/privacy-tech-lab/privacy-pioneer"></a>
   <a href="https://github.com/privacy-tech-lab/privacy-pioneer/watchers"><img alt="GitHub watchers" src="https://img.shields.io/github/watchers/privacy-tech-lab/privacy-pioneer?style=social"></a>
