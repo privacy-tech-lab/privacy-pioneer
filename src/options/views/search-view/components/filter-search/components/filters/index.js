@@ -153,6 +153,7 @@ const Filters = ({
                       companyFilter[parent].toString(),
                     "History",
                     settingsModelsEnum.notApplicable,
+                    settingsModelsEnum.notApplicable,
                     Object.values(companyFilter)
                   );
                 }
