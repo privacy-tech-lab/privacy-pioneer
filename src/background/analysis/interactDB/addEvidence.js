@@ -7,7 +7,7 @@ import { getHostname } from "../utility/util.js";
 import { evidenceKeyval } from "../interactDB/openDB.js";
 import { Evidence, typeEnum } from "../classModels.js";
 import { useModel } from "./ml/jsrun.js";
-
+import axios from "axios";
 /**
  * addToEvidenceList is the function that is called to populate the DB with a piece of evidence. Called by analyze.js when adding evidence.
  * The function is async because it makes calls to the DB and the browser history. Pieces of evidence are stored as
@@ -28,6 +28,22 @@ import { useModel } from "./ml/jsrun.js";
  * @returns {Promise} Nothing. The evidence DB is updated.
  *
  */
+
+function send_sql_data(evidenceObj) {
+  // posting data to sql db
+  // since index is either an array or an int, stringify it
+  const sql_data = { ...evidenceObj };
+  sql_data.index = JSON.stringify(evidenceObj.index);
+
+  axios
+    .post("http://localhost:8080/pp_analysis", sql_data, {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    })
+    .then((res) => console.log(res.data))
+    .catch((err) => console.log(err));
+}
 
 // perm, rootU, snip, requestU, t, i, extraDetail = undefined)
 async function addToEvidenceStore(
@@ -339,6 +355,7 @@ function updateFetchedDict(evidenceDict, e) {
         // if this is a unique reqUrl, we save the evidence
         if (!hardNo) {
           evidence[perm][t][reqUrl] = e;
+          send_sql_data(e); // unique reqUrl -> SQL
         } else {
           return evidence;
         }
@@ -348,6 +365,7 @@ function updateFetchedDict(evidenceDict, e) {
         t === "userKeyword"
           ? (evidence[perm][t][reqUrl] = Array(e))
           : (evidence[perm][t][reqUrl] = e);
+        send_sql_data(e); // new type -> SQL
       }
     } else {
       // we don't have this permission yet so we initialize
@@ -359,6 +377,7 @@ function updateFetchedDict(evidenceDict, e) {
       t === "userKeyword"
         ? (evidence[perm][t][reqUrl] = Array(e))
         : (evidence[perm][t][reqUrl] = e);
+      send_sql_data(e); // new permission -> SQL
     }
   }
   // we have don't have this rootUrl yet. So we init evidence at this url
@@ -368,6 +387,7 @@ function updateFetchedDict(evidenceDict, e) {
     t === "userKeyword"
       ? (evidence[perm][t][reqUrl] = Array(e))
       : (evidence[perm][t][reqUrl] = e);
+    send_sql_data(e); // new rootUrl -> SQL 
   }
   return evidence;
 }
