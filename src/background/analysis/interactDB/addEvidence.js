@@ -8,6 +8,27 @@ import { evidenceKeyval } from "../interactDB/openDB.js";
 import { Evidence, typeEnum } from "../classModels.js";
 import { useModel } from "./ml/jsrun.js";
 import axios from "axios";
+
+// for use with gpc-web-crawler, change this to true before packing to xpi
+// by default, no post requests will be sent
+var sql_db = false;
+function send_sql_data(evidenceObj) {
+  // posting data to sql db
+  if (sql_db == true) {
+    // since index is either an array or an int, stringify it
+    const sql_data = { ...evidenceObj };
+    sql_data.index = JSON.stringify(evidenceObj.index);
+    axios
+      .post("http://localhost:8080/pp_analysis", sql_data, {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      })
+      .then((res) => console.log(res.data))
+      .catch((err) => console.log(err));
+  }
+}
+
 /**
  * addToEvidenceList is the function that is called to populate the DB with a piece of evidence. Called by analyze.js when adding evidence.
  * The function is async because it makes calls to the DB and the browser history. Pieces of evidence are stored as
@@ -28,22 +49,6 @@ import axios from "axios";
  * @returns {Promise} Nothing. The evidence DB is updated.
  *
  */
-
-function send_sql_data(evidenceObj) {
-  // posting data to sql db
-  // since index is either an array or an int, stringify it
-  const sql_data = { ...evidenceObj };
-  sql_data.index = JSON.stringify(evidenceObj.index);
-
-  axios
-    .post("http://localhost:8080/pp_analysis", sql_data, {
-      headers: {
-        "Content-Type": "application/json",
-      },
-    })
-    .then((res) => console.log(res.data))
-    .catch((err) => console.log(err));
-}
 
 // perm, rootU, snip, requestU, t, i, extraDetail = undefined)
 async function addToEvidenceStore(
