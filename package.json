@@ -26,13 +26,13 @@
     }
   },
   "dependencies": {
+    "@popperjs/core": "^2.11.8",
     "@tensorflow/tfjs": "^3.20.0",
     "@tensorflow/tfjs-node": "^4.2.0",
     "ansi-html": "^0.0.9",
     "ansi-regex": "^6.0.1",
     "async": "^3.2.4",
     "bootstrap": "^5.0.0",
-    "@popperjs/core": "^2.11.8",
     "framer-motion": "^4.0.3",
     "glob-parent": "^6.0.2",
     "google-libphonenumber": "^3.2.19",
