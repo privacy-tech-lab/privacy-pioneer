@@ -36,9 +36,13 @@ export async function loadModel() {
 /**
  * useModel is the function that takes in a string as input and return the bool of whether this is a true or false positive
  * @param {String} input The input string
+ * @param {tf.GraphModel|undefined} test_model For use in testing
  * @returns {Promise<boolean>} boolean
  */
-export async function useModel(input) {
+export async function useModel(input, test_model) {
+  if (test_model != undefined) {
+    model = test_model;
+  }
   if (model == undefined) {
     model = await tf.loadGraphModel("indexeddb://my-model");
   }
