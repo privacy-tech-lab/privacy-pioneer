@@ -34,11 +34,14 @@ const SThemeIcon = styled(motion.div)`
 `;
 /**
  * Theming section for Settings View
+ * @param {object} obj
+ * @param {function(object):void} obj.changeTheme
  */
 export const ThemeSelection = ({ changeTheme }) => {
   const [selTheme, setSelTheme] = useState("");
   useEffect(
     () =>
+    //@ts-ignore
       getTheme().then((res) => {
         if (res) setSelTheme(res);
       }),

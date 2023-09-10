@@ -31,7 +31,6 @@ const dbPromise = openDB("keyval-store", 1, {
  *
  * Used in backend (classModels.js, addEvidence.js, createBlob.js) and frontend (libs/indexed-db/index.js)
  *
- * @class idbKeyval
  * @method get param(key) returns a promise with the value at a given key. undefined if no such key exists.
  * @method set param(key, val) sets a value at a key
  * @method del param(key) deletes a key value pair
@@ -40,12 +39,22 @@ const dbPromise = openDB("keyval-store", 1, {
  * @method values param() returns all the all vaues in the evidence store
  */
 export const evidenceKeyval = {
+  /**
+   * @param {string} key
+   */
   async get(key) {
     return (await dbPromise).get(storeKey, key);
   },
+  /**
+   * @param {string} key
+   * @param {string} val
+   */
   async set(key, val) {
     return (await dbPromise).put(storeKey, val, key);
   },
+  /**
+   * @param {string} key
+   */
   async del(key) {
     return (await dbPromise).delete(storeKey, key);
   },

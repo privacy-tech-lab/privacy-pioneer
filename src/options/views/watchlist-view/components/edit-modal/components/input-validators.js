@@ -7,10 +7,6 @@ import {
   typeEnum,
   permissionEnum,
 } from "../../../../../../background/analysis/classModels.js";
-import {
-  regionObj,
-  getRegion,
-} from "../../../../../../background/analysis/buildUserData/structuredRoutines.js";
 // allows for input validation of items a user is attempting to add to their watch list
 
 const inputValidator = {

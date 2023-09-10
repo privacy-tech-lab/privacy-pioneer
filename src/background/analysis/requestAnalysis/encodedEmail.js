@@ -3,7 +3,7 @@ Licensed per https://github.com/privacy-tech-lab/privacy-pioneer/blob/main/LICEN
 privacy-tech-lab, https://privacytechlab.org/
 */
 
-/*
+/**
  * Removes ".", "+" and everything after from the email
  *
  * Defined in encodedEmail.js
@@ -13,7 +13,7 @@ privacy-tech-lab, https://privacytechlab.org/
  * @param {string} email Email we want to create codes for based on UID 2.0
  * @returns {string} Email without . in username and removes '+' and everything following in username
  */
-function setEmail(email) {
+export function setEmail(email) {
   const at = email.search("@");
   var start = email.substring(0, at);
   const foot = email.substring(at, email.length);
@@ -32,7 +32,7 @@ function setEmail(email) {
  * @param {string} email Email after setEmail()
  * @returns {Promise<string>} Hex of the email, SHA-256 encoded
  */
-async function digestMessage(email) {
+export async function digestMessage(email) {
   // returns a Uint8 array of the email
   const msgUint8 = new TextEncoder().encode(email);
   // returns a SHA-256 hash of the email
@@ -53,16 +53,15 @@ async function digestMessage(email) {
  * Used in importSearchData.js
  *
  * @param {string} hexStr String of the hexed email from digestMessage()
- * @returns Base 64 SHA-256 email as a string
+ * @returns {string} Base 64 SHA-256 email as a string
  */
-function hexToBase64(hexStr) {
+export function hexToBase64(hexStr) {
   let base64 = "";
   for (let i = 0; i < hexStr.length; i++) {
     base64 += !((i - 1) & 1)
       ? String.fromCharCode(parseInt(hexStr.substring(i - 1, i + 1), 16))
       : "";
   }
+  //@ts-ignore
   return base64.toString("base64");
 }
-
-export { setEmail, digestMessage, hexToBase64 };

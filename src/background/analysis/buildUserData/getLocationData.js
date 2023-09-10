@@ -16,9 +16,9 @@ location info
  *
  * Defined, used in getLocationData.js
  *
- * @returns {object} An object with properties long and lat
+ * @returns {Promise<Object<any,number>>} An object with properties long and lat
  */
-const getCoords = async () => {
+async function getCoords () {
   const pos = await new Promise((resolve, reject) => {
     navigator.geolocation.getCurrentPosition(resolve, reject);
   });
@@ -39,7 +39,7 @@ const getCoords = async () => {
  *
  * Used in importSearch.js
  *
- * @returns {Promise<Array<number>>} The coordinates of the user
+ * @returns {Promise<number[]>} The coordinates of the user
  */
 export async function getLocationData() {
   try {

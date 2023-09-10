@@ -3,8 +3,8 @@ Licensed per https://github.com/privacy-tech-lab/privacy-pioneer/blob/main/LICEN
 privacy-tech-lab, https://privacytechlab.org/
 */
 
-import Filters from "./components/filters";
-import SearchBar from "./components/search-bar";
+import { Filters } from "./components/filters";
+import { SearchBar } from "./components/search-bar";
 import React, { useCallback, useEffect, useState } from "react";
 import {
   getPermMapping,
@@ -18,6 +18,14 @@ import {
  * Combination of filter section and search section
  * Both components need common functions and regions
  * Broken up in order to increase readability
+ * @param {object} obj
+ * @param {object} obj.labels
+ * @param {object} obj.websites
+ * @param {function(object):void} obj.setFilteredLabels
+ * @param {function(object):void} obj.setFilteredWebsites
+ * @param {function(boolean):void} obj.setShowEmpty
+ * @param {object} obj.location
+ * 
  */
 const FilterSearch = ({
   labels,
@@ -50,7 +58,7 @@ const FilterSearch = ({
       const filteredWebsites = filter(inputString, websites, permFilterLabels);
       setQuery(inputString);
 
-      Object.keys(filteredWebsites) == 0
+      Object.keys(filteredWebsites).length == 0
         ? setShowEmpty(true)
         : setShowEmpty(false);
       setFilteredWebsites(filteredWebsites);
@@ -90,6 +98,7 @@ const FilterSearch = ({
         setPermFilter={setPermFilter}
         companyFilter={companyFilter}
         setCompanyFilter={setCompanyFilter}
+        // CHECK
         getEmptyCompanyFilter={getEmptyCompanyFilter}
       />
     </>

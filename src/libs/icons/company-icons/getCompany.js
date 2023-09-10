@@ -10,8 +10,8 @@ import Parents from "../../../assets/parents.json";
  * all parent companies for that
  * label to be displayed in the UI
  *
- * @param {Object} labels
- * @returns {Object} Returns Object of parent companies with icons, without icons and websites with iconed companies
+ * @param {object} labels
+ * @returns {object} Returns Object of parent companies with icons, without icons and websites with iconed companies
  */
 
 export const getParents = (labels) => {
@@ -33,7 +33,7 @@ export const getParents = (labels) => {
     });
     return companies;
   }
-};
+}
 
 // This is the list of companies we have SVGs for. Will be updated as needed
 export const companiesWithSVG = new Set([
@@ -58,7 +58,7 @@ export const companiesWithSVG = new Set([
  * Obtains the parent company from the website name
  *
  * @param {string} website
- * @returns parent company from website name
+ * @returns {string} parent company from website name
  */
 export const getParent = (website) => {
   for (const [parentSite, childrenSites] of Object.entries(
@@ -75,6 +75,6 @@ export const getParent = (website) => {
       return parentSite;
     }
   }
-};
-
-export const getCompanyIconDict = () => {};
+  // no parent company through our descriptions
+  return ""
+}

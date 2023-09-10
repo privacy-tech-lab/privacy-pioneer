@@ -17,15 +17,19 @@ import { handleClick } from "../../../../../../../libs/indexed-db/getAnalytics";
 /**
  * Filters for search view page. This includes Permissions and stored companies. Adjusts
  * listed websites and permissions depending on selected filters
+ * @param {object} obj
+ * @param {Object<string,boolean>} obj.permFilter
+ * @param {function(Object<string,boolean>):void} obj.setPermFilter
+ * @param {object} obj.companyFilter
+ * @param {function(object):void} obj.setCompanyFilter
+ * @param {object} obj.filterLabels
  */
-
-const Filters = ({
+export const Filters = ({
   permFilter,
   setPermFilter,
   companyFilter,
   setCompanyFilter,
   filterLabels,
-  getEmptyCompanyFilter,
 }) => {
   const noCompaniesSelected = () => {
     for (const value of Object.values(companyFilter)) {
@@ -59,7 +63,7 @@ const Filters = ({
                     "History",
                     settingsModelsEnum.notApplicable,
                     settingsModelsEnum.notApplicable,
-                    Object.values(permFilter)
+                    Object.values(permFilter) // CHECK
                   );
                 }
               };
@@ -173,5 +177,3 @@ const Filters = ({
     </>
   );
 };
-
-export default Filters;

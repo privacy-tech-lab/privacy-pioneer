@@ -100,10 +100,14 @@ export const homeSteps = [
   },
 ];
 
+/**
+ * HomeTour runs the tour on the homepage
+ * @param {object} param0 
+ */
 export const HomeTour = ({ steps }) => {
   const history = useHistory();
 
-  const checkEnd = async (data) => {
+  async function checkEnd(data) {
     const { action, index, status, type } = data;
     if (STATUS.FINISHED == status) {
       history.push("/search");
@@ -114,7 +118,7 @@ export const HomeTour = ({ steps }) => {
       await startStopTour();
       location.reload();
     }
-  };
+  }
 
   return (
     <>
@@ -147,11 +151,10 @@ export const HomeTour = ({ steps }) => {
           spotlight: {
             borderRadius: 10,
           },
-        }}
-      />
+        }} />
     </>
   );
-};
+}
 
 export const seeAllSteps = [
   {
@@ -203,6 +206,10 @@ export const seeAllSteps = [
   },
 ];
 
+/**
+ * SeeAllTour runs the tour on the see all page
+ * @param {object} param0 
+ */
 export const SeeAllTour = ({ steps }) => {
   const history = useHistory();
 
@@ -251,8 +258,7 @@ export const SeeAllTour = ({ steps }) => {
           spotlight: {
             borderRadius: 10,
           },
-        }}
-      />
+        }} />
     </>
   );
-};
+}

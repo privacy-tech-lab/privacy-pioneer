@@ -3,11 +3,7 @@ Licensed per https://github.com/privacy-tech-lab/privacy-pioneer/blob/main/LICEN
 privacy-tech-lab, https://privacytechlab.org/
 */
 
-import { Evidence, permissionEnum } from "../classModels.js";
-
-function sleep(ms) {
-  return new Promise((resolve) => setTimeout(resolve, ms));
-}
+import { Evidence } from "../classModels.js";
 
 /**
  * Utility function to create hash for watchlist key based on keyword and type
@@ -17,7 +13,7 @@ function sleep(ms) {
  * @param {string} str
  * @returns {number}
  */
-function hashTypeAndPermission(str) {
+export function hashTypeAndPermission(str) {
   var hash = 0,
     i,
     chr;
@@ -34,7 +30,7 @@ function hashTypeAndPermission(str) {
  * @param {string} url
  * @returns {string} The hostname of the given URL. '' if URL undefined
  */
-function extractHostname(url) {
+export function extractHostname(url) {
   if (typeof url == "undefined") return "";
 
   var hostname;
@@ -60,7 +56,7 @@ function extractHostname(url) {
  * @param {string} url
  * @returns {string} The domain of a the inputted url, '' if input undefined
  */
-function getHostname(url) {
+export function getHostname(url) {
   if (typeof url == "undefined") return "";
   var domain = extractHostname(url),
     splitArr = domain.split("."),
@@ -88,17 +84,15 @@ function getHostname(url) {
  *
  * @param {string} permission
  * @param {string} rootUrl
- * @param {string} snippet
+ * @param {string|null} snippet
  * @param {string} requestUrl
  * @param {string} typ
- * @param {Array|undefined} index
- * @param {number} watchlistHash
+ * @param {number[]|undefined} index
+ * @param {number|undefined} watchlistHash
  * @param {string|undefined} extraDetail
- * @param {boolean} cutDown
- * @param {string|undefined} loc
  * @returns {Evidence}
  */
-function createEvidenceObj(
+export function createEvidenceObj(
   permission,
   rootUrl,
   snippet,
@@ -120,45 +114,36 @@ function createEvidenceObj(
     parentCompany: undefined,
     watchlistHash: watchlistHash,
     extraDetail: extraDetail,
+    cookie: undefined,
     loc: undefined,
   });
 
   return e;
 }
 
-function watchlistHashGen(type, keyword) {
+/**
+ *
+ * @param {string} type
+ * @param {string|RegExp} keyword
+ * @returns {number}
+ */
+export function watchlistHashGen(type, keyword) {
   if (typeof type != "string") {
     type = String(type);
   }
   if (typeof keyword != "string") {
     keyword = String(keyword);
   }
-  return hashTypeAndPermission(type.concat(keyword)).toString();
+  return hashTypeAndPermission(type.concat(keyword));
 }
 
-const getAllPerms = () => {
-  return [
-    permissionEnum.location,
-    permissionEnum.monetization,
-    permissionEnum.tracking,
-    permissionEnum.personal,
-  ];
-};
-
-const removeLeadingWhiteSpace = (str) => {
+/**
+ * @param {string} str
+ */
+export function removeLeadingWhiteSpace(str) {
   var index = 0;
   while (index < str.length && str.charAt(index) == " ") {
     index += 1;
   }
   return str.slice(index);
-};
-
-export {
-  hashTypeAndPermission,
-  extractHostname,
-  getHostname,
-  watchlistHashGen,
-  createEvidenceObj,
-  getAllPerms,
-  removeLeadingWhiteSpace,
-};
+}

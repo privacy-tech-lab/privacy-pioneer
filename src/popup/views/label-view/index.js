@@ -18,6 +18,10 @@ import { getWebsiteLastVisitedEvidence } from "../../../libs/indexed-db/getIdbDa
 import { getAnalyticsStatus } from "../../../libs/indexed-db/settings";
 import { handleClick } from "../../../libs/indexed-db/getAnalytics";
 
+/**
+ * @param {object} labels 
+ * @returns {number}
+ */
 function sortByTime(labels) {
   var newestTime = 0;
   for (const [labelL, value] of Object.entries(labels)) {
@@ -38,6 +42,7 @@ function sortByTime(labels) {
   }
   return newestTime;
 }
+
 /**
  * Page view detailing information collected and shared.
  * Destination after clicking a 'label card'
@@ -52,10 +57,11 @@ const LabelView = () => {
 
   useEffect(
     () =>
+      // @ts-ignore
       getWebsiteLastVisitedEvidence(website).then((result) => {
-          const a = result?.[label] ?? {};
-          setRequests(a);
-        }),
+        const a = result?.[label] ?? {};
+        setRequests(a);
+      }),
     []
   );
 

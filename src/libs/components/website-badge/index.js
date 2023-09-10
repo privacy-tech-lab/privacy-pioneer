@@ -5,7 +5,7 @@ privacy-tech-lab, https://privacytechlab.org/
 
 import React from "react";
 import styled from "styled-components";
-import { getParent, getParents } from "../../icons/company-icons/getCompany.js";
+import { getParent } from "../../icons/company-icons/getCompany.js";
 import WebsiteLogo, { CompanyLogo } from "../../components/website-logo";
 
 /**
@@ -19,22 +19,14 @@ const SBadge = styled.div`
   align-items: center;
   margin-top: 16px;
 `;
-const SParty = styled.div`
-  border-radius: 50%;
-  background-color: #3e92cc;
-  user-select: none;
-  color: white;
-  padding: 5px;
-  font-weight: 600;
-  font-size: 12px;
-`;
 
 /**
  * Displays website logo (which is the first letter of website) and title of website
- * @param {string} website the host website
- * @param {string|null} showParent the parent company of the site
+ * @param {object} obj
+ * @param {string} obj.website the host website
+ * @param {string|boolean|null} obj.showParent the parent company of the site
  */
-const WebsiteBadge = ({ website, showParent, party }) => {
+const WebsiteBadge = ({ website, showParent }) => {
   const parent = getParent(website);
   const logo = parent ? <CompanyLogo parent={parent} /> : null;
   return (
@@ -55,6 +47,6 @@ const WebsiteBadge = ({ website, showParent, party }) => {
       {showParent ? logo : null}
     </SBadge>
   );
-};
+}
 
 export default WebsiteBadge;

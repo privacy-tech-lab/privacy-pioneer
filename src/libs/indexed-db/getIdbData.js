@@ -5,6 +5,7 @@ privacy-tech-lab, https://privacytechlab.org/
 
 import { evidenceKeyval as evidenceIDB } from "../../background/analysis/interactDB/openDB.js";
 import {
+  Evidence,
   permissionEnum,
   privacyLabels,
 } from "../../background/analysis/classModels";
@@ -14,6 +15,8 @@ import { getExcludedLabels } from "../indexed-db/settings";
  * Get identified labels of website from indexedDB
  * Restucture to display in UI
  * result: {..., label: {..., requestURL: {..., labelType: requestObject}}}
+ * @param {string} website
+ * @param {string[]} excludedLabels 
  */
 export const getWebsiteLabels = async (website, excludedLabels = []) => {
   try {
@@ -23,11 +26,9 @@ export const getWebsiteLabels = async (website, excludedLabels = []) => {
       for (const [type, requests] of Object.entries(value)) {
         for (const [url, e] of Object.entries(requests)) {
           // Verify label and type are in privacyLabels
-          if (
-            label in privacyLabels &&
+          if (label in privacyLabels &&
             type in privacyLabels[label]["types"] &&
-            !excludedLabels.includes(label)
-          ) {
+            !excludedLabels.includes(label)) {
             // Add label in data to object
             if (!(label in result)) {
               result[label] = { [url]: { [type]: e } };
@@ -44,12 +45,13 @@ export const getWebsiteLabels = async (website, excludedLabels = []) => {
   } catch (error) {
     return {};
   }
-};
+}
 
 /**
  * Get identified labels of website from indexedDB from latest browsing session
  * Restucture to display in UI
  * result: {..., label: {..., requestURL: {..., labelType: requestObject}}}
+ * @param {string} website
  */
 export const getWebsiteLastVisitedEvidence = async (website) => {
   try {
@@ -98,10 +100,11 @@ export const getWebsiteLastVisitedEvidence = async (website) => {
   } catch (error) {
     return {};
   }
-};
+}
 
 /**
  * Get identified labels of all websites stored in indexedDB
+ * @param {string[]} excludedLabels
  * @returns: {..., website: {...,label: {..., requestURL: {..., labelType: requestObject}}}}
  */
 
@@ -118,19 +121,13 @@ const getAllWebsiteLabels = async (excludedLabels = []) => {
   } catch (error) {
     return weblabels;
   }
-};
-
-/**
- *
- * @param {Dict} labels Labels sorted by websites with excluded labels removed if applicable
- * @returns Object with the key of each label and values of website that collect said label
- */
+}
 
 /**
  * Builds up dictionary of labels
  *
- * @param {String} store Which store from the evidenceKeyval you're drawing from
- * @param {Dict} res Resulting dictionary
+ * @param {object} res Resulting dictionary
+ * @param {string[]} excludedLabels
  * @returns Void
  */
 const buildLabels = async (res, excludedLabels) => {
@@ -152,11 +149,11 @@ const buildLabels = async (res, excludedLabels) => {
   } catch (error) {
     return {};
   }
-};
+}
 
 /**
  * Get all identified websites and thier labels from indexedDB
- * @returns {Object} result: {..., websiteURL: [..., label]}
+ * @returns  result: {..., websiteURL: [..., label]}
  */
 
 export const getWebsites = async () => {
@@ -171,23 +168,28 @@ export const getWebsites = async () => {
   } catch (error) {
     return {};
   }
-};
+}
 
+/**
+ * @param {Evidence} evidence
+ */
 const getTimeStamp = (evidence) => {
   var timestamp = 0;
   Object.keys(evidence).forEach((permission) => {
-    Object.keys(evidence[permission]).forEach((type) =>
-      Object.keys(evidence[permission][type]).forEach((website) => {
-        timestamp =
-          evidence[permission][type][website].timestamp > timestamp
-            ? evidence[permission][type][website].timestamp
-            : timestamp;
-      })
+    Object.keys(evidence[permission]).forEach((type) => Object.keys(evidence[permission][type]).forEach((website) => {
+      timestamp =
+        evidence[permission][type][website].timestamp > timestamp
+          ? evidence[permission][type][website].timestamp
+          : timestamp;
+    })
     );
   });
   return timestamp;
-};
+}
 
+/**
+ * @param {object} websites
+ */
 const sortEvidence = (websites) => {
   let entries = Object.entries(websites);
 
@@ -196,15 +198,14 @@ const sortEvidence = (websites) => {
   });
 
   return Object.fromEntries(entries);
-};
+}
 
 /**
  * Uses above function to iterate through websites
  * Made for UI implementation
- * @param {Array<String>|null} filter Optional parameter to limit labels to specific permissions
+ * @param {string[]|null} filter Optional parameter to limit labels to specific permissions
  * @returns Labels sorted in various ways
  */
-
 export const getLabels = async (filter = null) => {
   let res = {};
   var excludedLabels = await getExcludedLabels();
@@ -227,4 +228,4 @@ export const getLabels = async (filter = null) => {
   });
 
   return res;
-};
+}

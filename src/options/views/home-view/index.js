@@ -6,9 +6,9 @@ privacy-tech-lab, https://privacytechlab.org/
 import React, { useEffect, useState } from "react";
 import { useHistory } from "react-router";
 import Scaffold from "../../components/scaffold";
-import WebsiteLabelList from "../../components/website-label-list";
-import LabelSummaryCardList from "./components/label-summary-card";
-import LabelModal from "../home-view/components/detail-modal";
+import { WebsiteLabelList } from "../../components/website-label-list";
+import { LabelSummaryCardList } from "./components/label-summary-card";
+import { LabelModal } from "../home-view/components/detail-modal";
 import { Modal } from "bootstrap";
 import ReactTooltip from "react-tooltip";
 import {

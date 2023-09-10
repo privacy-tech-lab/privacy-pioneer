@@ -10,12 +10,18 @@ import {
   buildGeneralRegex,
 } from "./structuredRoutines.js";
 
+/**
+ * deleteFromLocation removes all information pertaining to the watchlist item we are trying to edit
+ *
+ * @returns {Promise<void>}
+ */
 async function deleteFromLocation() {
   let evKeys = await evidenceIDB.keys();
 
   /**
    * Deletes evidence if watchlistHash of the evidence is the same as the id we are deleting from the watchlist
-   * @param {Object} evidenceStoreKeys All keys from the related store, taken from the above lines
+   * @param {object} evidenceStoreKeys All keys from the related store, taken from the above lines
+   * @returns {void} Side effects only
    */
   function runRegIPDeletion(evidenceStoreKeys) {
     evidenceStoreKeys.forEach(async (website) => {
@@ -47,7 +53,13 @@ async function deleteFromLocation() {
   runRegIPDeletion(evKeys);
 }
 
-export const getIpInfo = async (retJson) => {
+/**
+ * getIPInfo takes the input retJson, deletes the old evidence, and returns the new data
+ *
+ * @param {Object<string,any>} retJson
+ * @returns {Promise<Object<string,Object<string,any>>>}
+ */
+export async function getIpInfo(retJson) {
   await deleteFromLocation();
   var curr = {
     ip: { keyword: buildIpRegex(retJson.ip), watchlistHash: "" },
@@ -60,4 +72,4 @@ export const getIpInfo = async (retJson) => {
     },
   };
   return curr;
-};
+}

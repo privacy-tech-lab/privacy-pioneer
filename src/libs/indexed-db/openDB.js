@@ -19,13 +19,23 @@ const dbPromise = openDB("UserData-store", 1, {
 /**
  * Wrapper functions for CRUD operations of 'watchlist' indexed-db
  */
-const watchlistKeyval = {
+export const watchlistKeyval = {
+  /**
+   * @param {string} key
+   */
   async get(key) {
     return (await dbPromise).get("watchlist", key);
   },
+  /**
+   * @param {string} key
+   * @param {object} val
+   */
   async set(key, val) {
     return (await dbPromise).put("watchlist", val, key);
   },
+  /**
+   * @param {string} key
+   */
   async delete(key) {
     return (await dbPromise).delete("watchlist", key);
   },
@@ -40,13 +50,23 @@ const watchlistKeyval = {
   },
 };
 
-const settingsKeyval = {
+export const settingsKeyval = {
+  /**
+   * @param {string} key
+   */
   async get(key) {
     return (await dbPromise).get("userSettings", key);
   },
+  /**
+   * @param {string} key
+   * @param {object} val
+   */
   async set(key, val) {
     return (await dbPromise).put("userSettings", val, key);
   },
+  /**
+   * @param {string} key
+   */
   async delete(key) {
     return (await dbPromise).delete("userSettings", key);
   },
@@ -61,13 +81,23 @@ const settingsKeyval = {
   },
 };
 
-const analyticsKeyval = {
+export const analyticsKeyval = {
+  /**
+   * @param {string} key
+   */
   async get(key) {
     return (await dbPromise).get("userAnalytics", key);
   },
+  /**
+   * @param {string} key
+   * @param {object} val
+   */
   async set(key, val) {
     return (await dbPromise).put("userAnalytics", val, key);
   },
+  /**
+   * @param {string} key
+   */
   async delete(key) {
     return (await dbPromise).delete("userAnalytics", key);
   },
@@ -81,5 +111,3 @@ const analyticsKeyval = {
     return (await dbPromise).getAll("userAnalytics");
   },
 };
-
-export { watchlistKeyval, settingsKeyval, analyticsKeyval };

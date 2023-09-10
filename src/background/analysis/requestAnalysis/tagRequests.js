@@ -18,7 +18,7 @@ const parentJson = require("../../../assets/parents.json");
  *
  * @param {string} reqUrl The requestURL
  * @param {object} parents The parents json from src/assets/parents.json
- * @returns {string|null} The parent company of the website making the request
+ * @returns {string|undefined} The parent company of the website making the request
  */
 function tagParent(reqUrl, parents = parentJson) {
   const reqHost = getHostname(reqUrl);
@@ -33,7 +33,7 @@ function tagParent(reqUrl, parents = parentJson) {
       }
     }
   }
-  return null;
+  return undefined;
 }
 
 export { tagParent };

@@ -23,8 +23,13 @@ import { privacyLabels } from "../../../../../background/analysis/classModels";
 /**
  * Modal popup detailing information collected and shared.
  * Destination after clicking a 'label card' used in home view
+ * @param {object} obj
+ * @param {string} obj.label
+ * @param {object} obj.requests
+ * @param {string} obj.website
+ * @param {boolean} obj.show
  */
-const LabelModal = ({ label, requests, website, show }) => {
+export const LabelModal = ({ label, requests, website, show }) => {
   return (
     <>
       <SContainer
@@ -63,5 +68,3 @@ const LabelModal = ({ label, requests, website, show }) => {
     </>
   );
 };
-
-export default LabelModal;

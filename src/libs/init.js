@@ -13,8 +13,11 @@ import {
 } from "../options/views/search-view/components/filter-search/components/utils/filter-util";
 
 /**
- *
  * Sets given regions to example data for tour
+ * @param {object} obj
+ * @param {function(boolean):void} obj.setTouring
+ * @param {function(object):void} obj.setWebsites
+ * @param {function(object):void} obj.setLabels
  */
 export const tourInit = ({ setTouring, setWebsites, setLabels }) => {
   setTouring(true);
@@ -25,14 +28,18 @@ export const tourInit = ({ setTouring, setWebsites, setLabels }) => {
 
 /**
  * Initializes Home-View regions. Makes call to the data base to populate data
+ * @param {object} obj
+ * @param {function(boolean):void} obj.setTouring
+ * @param {function(object):void} obj.setWebsites
+ * @param {function(object):void} obj.setLabels
+ * @param {function(object):void} obj.setModal
  */
-export const homeInit = ({ setWebsites, setLabels, setModal, setTouring }) => {
+export const homeInit = ({ setTouring, setWebsites, setLabels, setModal }) => {
   getTourStatus().then((res) => {
     if (res) {
       tourInit({
         setTouring,
         setLabels,
-        setModal,
         setWebsites,
       });
     } else {
@@ -46,6 +53,7 @@ export const homeInit = ({ setWebsites, setLabels, setModal, setTouring }) => {
       });
     }
   });
+  //@ts-ignore
   document
     .getElementById("detail-modal")
     .addEventListener("hidden.bs.modal", () => {
@@ -56,13 +64,20 @@ export const homeInit = ({ setWebsites, setLabels, setModal, setTouring }) => {
 /**
  * Initializes Search-View regions. If location.region is not undefined, it
  * grabs data from previous page else it calls to the database
+ * @param {object} obj
+ * @param {function(boolean):void} obj.setTouring
+ * @param {function(object):void} obj.setWebsites
+ * @param {function(object):void} obj.setLabels
+ * @param {function(object):void} obj.setFilteredWebsites
+ * @param {function(object):void} obj.setFilteredLabels
+ * @param {object} obj.location
  */
 export const searchInit = ({
   setTouring,
   setWebsites,
+  setLabels,
   setFilteredWebsites,
   setFilteredLabels,
-  setLabels,
   location,
 }) => {
   ReactTooltip.hide();

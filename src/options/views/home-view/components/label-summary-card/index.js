@@ -18,6 +18,11 @@ import { handleClick } from "../../../../../libs/indexed-db/getAnalytics";
 /**
  * Summary card that highlights notable stats from identified label
  * namely it regions how many websites you have visited have used that label
+ * @param {object} obj
+ * @param {string} obj.labeltype
+ * @param {number} obj.websiteTotal
+ * @param {object} obj.passWebsites
+ * @param {object} obj.passLabels
  */
 const LabelSummaryCard = ({
   labeltype,
@@ -70,9 +75,11 @@ const LabelSummaryCard = ({
 
 /**
  * List of Summary cards given label and stat {label:stat}
- * @param {object} labels label and stat {label:stat} object
+ * @param {object} obj
+ * @param {object} obj.labels label and stat {label:stat} object
+ * @param {object} obj.passWebsites
  */
-const LabelSummaryCardList = ({ labels, passWebsites }) => {
+export const LabelSummaryCardList = ({ labels, passWebsites }) => {
   const entries = Object.entries(labels);
   return entries.map(([labeltype, evidence]) => {
     let numOfWebsites = 0;
@@ -90,5 +97,3 @@ const LabelSummaryCardList = ({ labels, passWebsites }) => {
     );
   });
 };
-
-export default LabelSummaryCardList;

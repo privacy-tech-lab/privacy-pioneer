@@ -10,6 +10,10 @@ import { SLeading, SMiddle, SNav, STrailing } from "./style";
  * Toolbar that minimally consists of a component, normally a page title, in the middle of the toolbar.
  * Supports a leading and trailing component before and after the middle component
  *  while keeping the middle component centered
+ * @param {object} obj
+ * @param {object} [obj.leading]
+ * @param {object} [obj.middle]
+ * @param {object} [obj.trailing]
  */
 const NavBar = ({ leading, middle, trailing }) => {
   return (

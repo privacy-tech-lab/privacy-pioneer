@@ -23,6 +23,9 @@ const SScaffold = styled(motion.div)`
  * Implements the basic deisgn visual layout stucture.
  * This is the like the main div for each page (aka each component in view besides AppView).
  * It handles animations from page to page
+ * @param {object} obj
+ * @param {any} obj.navigationBar
+ * @param {any} obj.body
  */
 const Scaffold = ({ navigationBar, body }) => {
   let inital, animate, exit;
@@ -58,6 +61,7 @@ const Scaffold = ({ navigationBar, body }) => {
   }
 
   return (
+    // CHECK
     <SScaffold
       initial={inital}
       animate={animate}

@@ -12,7 +12,7 @@ import {
 /**
  * Enodes a blob into a URL
  * @param {Blob} blob
- * @returns {URL} A URL encoding the blob
+ * @returns {string} A URL encoding the blob
  */
 function blobToURL(blob) {
   // creates a URL with the data from the blob passed
@@ -30,10 +30,10 @@ function blobToURL(blob) {
  *
  * The JSON file dumps everything we have
  * @param {string} exportDataType From exportTypeEnum: The type of data the user wants their data to be formatted. TSV or JSON.
- * @param {number} timeRange From timeRangeEnum. Time range for evidence export
- * @returns {void} Nothing. Initiates the download.
+ * @param {object} timeRange From timeRangeEnum. Time range for evidence export
+ * @returns {Promise<void>} Nothing. Initiates the download.
  */
-async function initiateDownload(
+export async function initiateDownload(
   exportDataType = exportTypeEnum.TSV,
   timeRange = timeRangeEnum.allTime
 ) {
@@ -45,17 +45,23 @@ async function initiateDownload(
   // this URL encodes the data in the blob to be downloaded
   const downloadURL = blobToURL(dataBlob);
 
+  //@ts-ignore
   var downloading = browser.downloads.download({
     url: downloadURL,
     filename: `privacy_pioneer_data.${exportDataType}`,
   });
 }
 
-async function initiateAnalyticsDownload(
+/**
+ * Entry point for downloading the user's analytics data
+ * @param {exportTypeEnum} exportDataType 
+ * @param {object} timeRange
+ */
+export async function initiateAnalyticsDownload(
   exportDataType = exportTypeEnum.JSON,
   timeRange = timeRangeEnum.allTime
 ) {
-  const timeStampLowerBound = Date.now() - timeRange;
+  // const timeStampLowerBound = Date.now() - timeRange;
 
   // create the blob to be converted to a URL
   const dataBlob = await createAnalyticsBlob();
@@ -63,10 +69,9 @@ async function initiateAnalyticsDownload(
   // this URL encodes the data in the blob to be downloaded
   const downloadURL = blobToURL(dataBlob);
 
+  //@ts-ignore
   var downloading = browser.downloads.download({
     url: downloadURL,
     filename: `privacy_pioneer_analytics.${exportDataType}`,
   });
 }
-
-export { initiateDownload, initiateAnalyticsDownload };

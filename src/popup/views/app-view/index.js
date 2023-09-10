@@ -18,10 +18,11 @@ import { getTheme, settingsEnum } from "../../../libs/indexed-db/settings";
  */
 const AppView = () => {
   const location = useLocation();
-  const [theme, setTheme] = useState(settingsEnum.sameAsSystem);
+  const [theme, setTheme] = useState(settingsEnum.dark);
 
   useEffect(
     () =>
+    //@ts-ignore
       getTheme().then((res) => {
         if (res) setTheme(res);
       }),

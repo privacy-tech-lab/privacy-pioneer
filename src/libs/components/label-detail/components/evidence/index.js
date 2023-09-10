@@ -18,37 +18,36 @@ import {
 /**
  * 'Collapse' containing evidence/extra info about identified label type
  *
- * @param collapseId id of label to be collapsed
- * @param request our evidence object for this request
- * @param label Label we have attributed to the http request
- * @param type type of label
+ * @param {object} obj
+ * @param {number} obj.collapseId id of label to be collapsed
+ * @param {object} obj.request our evidence object for this request
+ * @param {string} obj.label Label we have attributed to the http request
+ * @param {string} obj.type type of label
  */
-const Evidence = ({ collapseId, request, label, type }) => {
+export const Evidence = ({ collapseId, request, label, type }) => {
   /**
    * Check if value is int
    */
-  const isInt = (value) => {
+  function isInt(value) {
     var x;
     if (isNaN(value)) {
       return false;
     }
     x = parseFloat(value);
     return (x | 0) === x;
-  };
+  }
 
   /**
    * Get the identified evidence code snippet
    * @param {object} request our evidence object for this request
    * @returns {object} sliced snippet | null
    */
-  const getSnippet = (request) => {
-    if (
-      request != null &&
+  function getSnippet(request) {
+    if (request != null &&
       request.snippet != null &&
       request.index !== -1 &&
       isInt(request.index[0]) &&
-      isInt(request.index[1])
-    ) {
+      isInt(request.index[1])) {
       const data = { leading: "", middle: "", trailing: "" };
       data.leading = request.snippet.slice(0, request.index[0]);
       data.middle = request.snippet.slice(request.index[0], request.index[1]);
@@ -65,7 +64,7 @@ const Evidence = ({ collapseId, request, label, type }) => {
     } else {
       return null;
     }
-  };
+  }
 
   const [handEmoji, setHandEmoji] = useState("");
 
@@ -78,10 +77,10 @@ const Evidence = ({ collapseId, request, label, type }) => {
    * return a random hand from choice of all hands
    * @returns {string}
    */
-  const pickPointRightEmoji = () => {
+  function pickPointRightEmoji() {
     const allHands = [`👉`, `👉🏻`, `👉🏼`, `👉🏽`, `👉🏾`, `👉🏿`];
     return allHands[Math.floor(Math.random() * allHands.length)];
-  };
+  }
 
   /**
    * helps format date string
@@ -98,7 +97,7 @@ const Evidence = ({ collapseId, request, label, type }) => {
    * @param {object} request our evidence object for this request
    * @returns {object} sliced specific description of our reasonings for our labels | ""
    */
-  const getSpecificDescription = (request) => {
+  function getSpecificDescription(request) {
     if (request != null) {
       let specificDescription = {
         leading: "",
@@ -118,10 +117,16 @@ const Evidence = ({ collapseId, request, label, type }) => {
       };
 
       // populate description aspects that are the same regardless of other properties
+      /**
+       * @type {string|undefined}
+       */
       const displayType = privacyLabels[label]["types"][type]["displayName"];
-      const displayLink = privacyLabels[label]["types"][type]["link"];
+      /**
+       * @type {string|undefined}
+       */
+      var displayLink = privacyLabels[label]["types"][type]["link"];
       // make sure we didn't get undefined from the privacyLabels object
-      if (!displayLink) {
+      if (!displayLink || displayLink === undefined) {
         displayLink = "";
       }
       specificDescription.leadingTime = `‣ This request was found at: `;
@@ -131,14 +136,14 @@ const Evidence = ({ collapseId, request, label, type }) => {
       specificDescription.trailingTime = " on ";
       specificDescription.trailTimeStamp = new Date(
         request.timestamp
+        //@ts-ignore
       ).toLocaleDateString("en-US", dateOptions);
 
       specificDescription.link = displayLink;
       // 26 is the length where the text will fit in one line
-      const cutOff =
-        specificDescription.link.length < 26
-          ? specificDescription.link.length
-          : 26;
+      const cutOff = specificDescription.link.length < 26
+        ? specificDescription.link.length
+        : 26;
       specificDescription.linkDesc = specificDescription.link
         .substring(0, cutOff)
         .concat("...");
@@ -175,6 +180,7 @@ const Evidence = ({ collapseId, request, label, type }) => {
             specificDescription.trailing = ` (a ${displayType}) in this web request.`;
           }
         }
+
         // specific encoded email case
         else {
           specificDescription.trailing = ` in this web request, which is the encoded form of `;
@@ -187,7 +193,7 @@ const Evidence = ({ collapseId, request, label, type }) => {
       return specificDescription;
     }
     return "";
-  };
+  }
 
   const specificDescription = getSpecificDescription(request);
   const data = getSnippet(request);
@@ -252,6 +258,4 @@ const Evidence = ({ collapseId, request, label, type }) => {
       </SContainer>
     </SCollapse>
   );
-};
-
-export default Evidence;
+}

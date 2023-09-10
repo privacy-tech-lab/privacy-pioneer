@@ -7,7 +7,6 @@ import React from "react";
 import styled from "styled-components";
 import { CompanyLogoSVG } from "../../icons/company-icons";
 import logo from "../../../assets/logos/Rocket.svg";
-
 /**
  * Generally this would be in a style.js file
  * Since it belongs to such a simple component, it's here.
@@ -49,6 +48,11 @@ const SBrandIcon = styled.img.attrs(() => ({ alt: "Logo", src: logo }))`
 
 /**
  * Displays website logo (which is the first letter of website)
+ * @param {object} obj
+ * @param {string} obj.website
+ * @param {any} obj.large
+ * @param {string} obj.margin
+ * @param {boolean} [obj.isLabel]
  */
 const WebsiteLogo = ({ website, large, margin, isLabel }) => {
   return (
@@ -58,7 +62,7 @@ const WebsiteLogo = ({ website, large, margin, isLabel }) => {
       </SLetterLogo>
     </SWebsiteLogo>
   );
-};
+}
 
 export const PrivacyPioneerLogo = () => {
   return <SBrandIcon />;

@@ -3,7 +3,7 @@ Licensed per https://github.com/privacy-tech-lab/privacy-pioneer/blob/main/LICEN
 privacy-tech-lab, https://privacytechlab.org/
 */
 
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect } from "react";
 import Scaffold from "../../components/scaffold";
 import ReactTooltip from "react-tooltip";
 import {
@@ -29,6 +29,8 @@ import { Tour } from "./components/tour-settings";
 /**
  * Settings page view to adjust various settings. All Settings are broken into seperate
  * components in order to cut down lines from main settings-view
+ * @param {object} obj
+ * @param {function(object):void} obj.changeTheme
  */
 const SettingsView = ({ changeTheme }) => {
   useEffect(() => {

@@ -14,36 +14,33 @@ import {
   encodedEmailSearch,
   dynamicPixelSearch,
 } from "./searchFunctions.js";
-import { permissionEnum, typeEnum, resourceTypeEnum } from "../classModels.js";
+import { permissionEnum, typeEnum, resourceTypeEnum, Evidence } from "../classModels.js";
 import { lengthHeuristic } from "../requestAnalysis/earlyTermination/heuristics.js";
 
 /**
  * This function runs all of the apporpriate analysis functions for an HTTP request.
  * It returns an empty array if no evidence is found. Else an array of arrays containing the
  * information to be added.
- *
+ * 
  * Defined in scanHTTP.js
- *
+ * 
  * Used in analyze.js
- *
- * @param request An HTTP request to be analyzed
- * @param userData
+ * @param {{ rootUrl: any; reqUrl: any; urlClassification: any; type: string; }} request An HTTP request to be analyzed
+ * @param {any[]} userData
+ * @returns {Evidence[]}
  */
-function getAllEvidenceForRequest(request, userData) {
+export function getAllEvidenceForRequest(request, userData) {
   const rootUrl = request.rootUrl;
   const reqUrl = request.reqUrl;
 
   // this 0, 1, 2 comes from the structure of the importData function
   // location we obtained from google maps API
   const loc = userData[0];
+
   // {phone #s, emails, location elements entered by the user, fingerprinting keywords}
   const networkKeywords = userData[1];
-  // websites that have identification objectives
-  const urls = userData[2];
 
-  const optimizePerformance = userData[4];
-
-  const currIpInfo = userData[5];
+  const optimizePerformance = userData[3];
 
   // We only perform our analysis on reqUrl, requestBody, and responseData.
   const strRequest = JSON.stringify(request, [
@@ -52,6 +49,9 @@ function getAllEvidenceForRequest(request, userData) {
     "responseData",
   ]);
 
+  /**
+   * @type {Evidence[]|any[]}
+   */
   var evidenceArr = [];
 
   // we don't surface these evidences, so skip.
@@ -65,9 +65,9 @@ function getAllEvidenceForRequest(request, userData) {
    *
    * Defined, used in scanHTTP.js
    *
-   * @param {Array<Array>} resArr The search function result
-   * @param {Array} arr The array of results we are building for this HTTP request
-   * @returns {Void} Updates the array of evidence, defined outside of this function
+   * @param {Evidence[]} resArr The search function result
+   * @param {Evidence[]} arr The array of results we are building for this HTTP request
+   * @returns {void} Updates the array of evidence, defined outside of this function
    */
   function executeAndPush(resArr, arr = evidenceArr) {
     if (typeof resArr == "undefined") {
@@ -105,7 +105,7 @@ function getAllEvidenceForRequest(request, userData) {
    * @returns {Void} Nothing. Updates evidenceArr as necessary
    */
   function runWatchlistAnalysis() {
-    if (!permissionEnum.personal in networkKeywords) {
+    if (!(permissionEnum.personal in networkKeywords)) {
       return;
     }
 
@@ -153,7 +153,7 @@ function getAllEvidenceForRequest(request, userData) {
 
   /**
    * Function to call generalized search functions
-   * @returns {Void} Nothing. Updates evidenceArr as necessary
+   * @returns {void} Nothing. Updates evidenceArr as necessary
    */
   function runStandardAnalysis() {
     // if the request is an image or subFrame and is coming from a different url than the root, we look for our pixel URLs
@@ -192,5 +192,3 @@ function getAllEvidenceForRequest(request, userData) {
     );
   }
 }
-
-export { getAllEvidenceForRequest };

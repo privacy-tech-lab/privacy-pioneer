@@ -3,7 +3,7 @@ Licensed per https://github.com/privacy-tech-lab/privacy-pioneer/blob/main/LICEN
 privacy-tech-lab, https://privacytechlab.org/
 */
 
-import { exportTypeEnum } from "../../background/analysis/classModels";
+import { Evidence, exportTypeEnum } from "../../background/analysis/classModels";
 import { evidenceKeyval } from "../../background/analysis/interactDB/openDB.js";
 import { analyticsKeyval } from "../indexed-db/openDB";
 import { buildTsvString } from "./createExportString.js";
@@ -11,11 +11,10 @@ import { buildTsvString } from "./createExportString.js";
 /**
  * Gets all evidence and returns an array of Evidence objects. No params.
  * @param {number} timeStampLB no evidence created before this number (date) should be exported
- * @returns {Promise<Array<Evidence>>} An array of all the evidence objects in the IndexedDB
+ * @returns {Promise<Evidence[]>} An array of all the evidence objects in the IndexedDB
  */
 async function buildEvidenceAsArray(timeStampLB) {
   var evidenceArr = [];
-
   // update the arr with evidence
   evidenceArr = await walkStoreAndBuildArr(evidenceArr, timeStampLB);
 
@@ -24,10 +23,9 @@ async function buildEvidenceAsArray(timeStampLB) {
 
 /**
  * Walks a store and builds an Array
- *
- * @param {string} store The store we are walking (first or third party)
- * @param {Array} evidenceObjectArr The array we are building
- * @returns {Promise<Array<Evidence>>}
+ * @param {Evidence[]} evidenceObjectArr The array we are building
+ * @param {number} timeStampLB 
+ * @returns {Promise<Evidence[]>}
  */
 async function walkStoreAndBuildArr(evidenceObjectArr, timeStampLB) {
   const allKeys = await evidenceKeyval.keys();
@@ -52,7 +50,7 @@ async function walkStoreAndBuildArr(evidenceObjectArr, timeStampLB) {
 /**
  * Takes an array of Evidence and returns a JSON blob.
  *
- * @param {Array<Evidence>} arr
+ * @param {Evidence[]} arr
  * @returns {Blob} A mime-type JSON Blob
  */
 function createJsonBlob(arr) {
@@ -64,7 +62,7 @@ function createJsonBlob(arr) {
 /**
  * Takes an array of Evidence and returns a .tsv blob
  *
- * @param {Array<Evidence>} arr
+ * @param {Evidence[]} arr
  * @returns {Blob} A mime-type tsv Blob
  */
 function createTsvBlob(arr) {
@@ -79,7 +77,7 @@ function createTsvBlob(arr) {
  * @param {number} timeStampLB no evidence created before this number (date) should be exported
  * @returns {Promise<Blob>}
  */
-async function createBlob(blobType = exportTypeEnum.TSV, timeStampLB) {
+export async function createBlob(blobType = exportTypeEnum.TSV, timeStampLB) {
   const dataArr = await buildEvidenceAsArray(timeStampLB);
 
   switch (blobType) {
@@ -92,9 +90,8 @@ async function createBlob(blobType = exportTypeEnum.TSV, timeStampLB) {
   }
 }
 
-async function createAnalyticsBlob() {
+export async function createAnalyticsBlob() {
   const dataArr = await analyticsKeyval.values();
   return createJsonBlob(dataArr);
 }
 
-export { createBlob, createAnalyticsBlob };

@@ -25,6 +25,13 @@ import Skeleton, { SkeletonTheme } from "react-loading-skeleton";
 
 /**
  * Card that briefly summarizes label and description for website
+ * @param {object} obj
+ * @param {object} obj.requests 
+ * @param {string} obj.website
+ * @param {string} obj.label
+ * @param {string} obj.margin
+ * @param {Function} obj.onTap
+ * @param {boolean} obj.popup
  */
 const LabelCard = ({ requests, website, label, margin, onTap, popup }) => {
   if (requests === undefined) {

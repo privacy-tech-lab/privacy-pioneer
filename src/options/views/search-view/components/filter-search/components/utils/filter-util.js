@@ -8,11 +8,15 @@ import { CompanyLogoSVG } from "../../../../../../../libs/icons/company-icons";
 
 /**
  * Function to filter labels with company and Permission filters
+ * @param {string} allLabels
+ * @param {object} permFilter
+ * @param {string[]} companyFilter
+ * @param {boolean} runCompanyFilter
  */
 export const filterLabelObject = (
   allLabels,
   permFilter,
-  companyFilter = null,
+  companyFilter = [],
   runCompanyFilter = false
 ) => {
   const updatedLabels = JSON.parse(JSON.stringify(allLabels));
@@ -53,7 +57,7 @@ export const filterLabelObject = (
     }
   }
   for (const perm of Object.keys(updatedLabels)) {
-    if (Object.keys(updatedLabels[perm]) == 0) {
+    if (Object.keys(updatedLabels[perm]).length == 0) {
       delete updatedLabels[perm];
     }
   }
@@ -64,7 +68,7 @@ export const filterLabelObject = (
  * Takes in a type passed from the previous page and returns
  * the appropriate filter mapping
  * @param {string} typ
- * @returns {Dict}
+ * @returns {object}
  */
 
 export const getPermMapping = (typ) => {
@@ -81,8 +85,9 @@ export const getPermMapping = (typ) => {
 /**
  * Filter websites based on user input string from text field
  * @param {string} keyString string the user entered
- * @param {Dict} websites Dictionary of websites
- * @param {Dict} permFilter
+ * @param {object} websites Dictionary of websites
+ * @param {object} permFilter
+ * @returns {object}
  */
 export const filter = (keyString, websites, permFilter) => {
   const perms = Object.keys(permFilter).filter((perm) => permFilter[perm]);
@@ -114,8 +119,10 @@ export const getEmptyCompanyFilter = () => {
 
 /**
  * Looks for filters and applies them as appropriate.
- *
- * @param {string} keyString
+ * @param {object} permFilterLabels
+ * @param {object} companyFilterLabels
+ * @param {string} defaultLabels
+ * @param {(arg0: string) => void} setPlaceholder
  */
 export const filterLabels = (
   permFilterLabels,
@@ -123,6 +130,7 @@ export const filterLabels = (
   defaultLabels,
   setPlaceholder
 ) => {
+  // CHECK
   const runFilter = Object.values(
     permFilterLabels,
     companyFilterLabels,
@@ -151,6 +159,9 @@ export const filterLabels = (
 
 /**
  * Looks at the filter to create a placeholder string
+ * @param {boolean} hasCompanyFilter
+ * @param {object} companyFilter
+ * @param {object} permFilter
  * @returns {string}
  */
 export const getPlaceholder = (
