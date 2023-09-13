@@ -43,8 +43,8 @@ Contact us with any questions or comments at sebastian@privacytechlab.org.
 [6. Source Directory Layout](#6-source-directory-layout)  
 [7. Privacy Practice Analysis](#7-privacy-practice-analysis)  
 [8. Extension Architecture](#8-extension-architecture)  
-[9. Third Party Libraries and Resources](#9-third-party-libraries-and-resources)
-[10. Known Issues / Things to be Aware Of](#10-known-issues--things-to-be-aware-of)
+[9. Third Party Libraries and Resources](#9-third-party-libraries-and-resources)  
+[10. Known Issues / Things to be Aware Of](#10-known-issues--things-to-be-aware-of)  
 [11. Thank You!](#11-thank-you)
 
 ## 1. Research Publications
