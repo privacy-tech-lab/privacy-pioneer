@@ -37,15 +37,18 @@ const filter = {
 export var evidenceQ = Queue({ results: [], concurrency: 1, autostart: true });
 
 // Get url of active tab for popup
+//@ts-ignore
 browser.runtime.onMessage.addListener((request, sender, sendResponse) => {
   if (request.msg == "background.currentTab") {
     // send current, open tab to the runtime (our extension)
     const send = (tabs) =>
+    //@ts-ignore
       browser.runtime.sendMessage({
         msg: "popup.currentTab",
         data: tabs[0].url,
       });
     // get the current open tab (is a promise)
+    //@ts-ignore
     const querying = browser.tabs.query({ active: true, currentWindow: true });
     // once all open visible tabs have been added to querying, send to runtime
     querying.then(
@@ -61,6 +64,7 @@ browser.runtime.onMessage.addListener((request, sender, sendResponse) => {
  * Defined, used in background.js
  */
 async function changeFavicon() {
+  //@ts-ignore
   const currentWindow = await browser.tabs.query({
     active: true,
     currentWindow: true,
@@ -82,6 +86,7 @@ async function changeFavicon() {
     }
     if (numEvidence > EVIDENCE_THRESHOLD) {
       // change the path when we get the right favicon to switch to
+      //@ts-ignore
       browser.browserAction.setIcon({
         tabId: currentWindowId,
         path: "../assets/favicon2.svg",
@@ -89,6 +94,7 @@ async function changeFavicon() {
     } else {
       // Change it back to the original. Sometimes quickly changing a webpage after load
       // keeps the now-incorrect favicon
+      //@ts-ignore
       browser.browserAction.setIcon({
         tabId: currentWindowId,
         path: "../assets/favicon.svg",
@@ -99,6 +105,7 @@ async function changeFavicon() {
   setTimeout(swapFavicon, FIVE_SEC_IN_MILLIS);
 }
 // This opens a listener and calls the above function when the open site's DOM is loaded
+//@ts-ignore
 browser.webNavigation.onDOMContentLoaded.addListener(changeFavicon);
 
 // call function to get all the url and keyword data
@@ -107,6 +114,7 @@ importData().then((data) => {
    * Re-imports data to be passed to analysis on update
    * @listens dataUpdatedMessage
    */
+  //@ts-ignore
   browser.runtime.onMessage.addListener(
     async (request, sender, sendResponse) => {
       if (request.msg == "dataUpdated") {
@@ -118,6 +126,7 @@ importData().then((data) => {
   runNotifications();
 
   // Listener to get response data, request body, and details about request
+  //@ts-ignore
   browser.webRequest.onBeforeRequest.addListener(
     async function (details) {
       if (await getExtensionStatus()) {
@@ -129,6 +138,7 @@ importData().then((data) => {
   );
 });
 
+//@ts-ignore
 browser.webNavigation.onBeforeNavigate.addListener(async (details) => { 
   if (details.parentFrameId == -1) { 
     const host = getHostname(details.url)
@@ -150,11 +160,13 @@ setDefaultSettings();
  * Revokes the object URL after a download has been successfully completed or interrupted.
  * downloadDelta: https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/API/downloads/onChanged#downloaddelta
  */
+//@ts-ignore
 browser.downloads.onChanged.addListener(async function (downloadDelta) {
   const status = downloadDelta.region.current;
   // if the download is finished, we fetch the url for the download and revoke that object URL
   if (status === "complete" || status === "interrupted") {
     const id = downloadDelta.id;
+    //@ts-ignore
     const downloadItemArr = await browser.downloads.search({ id: id });
     const downloadItem = downloadItemArr[0]; // search returns an array. We will get length 1 array because id's are unique
     const url = downloadItem.url;

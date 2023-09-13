@@ -444,6 +444,8 @@ export const Power = ({ size }) => (
 
 /**
  * Mappings of icons to privacy labels
+ * @param {string} label
+ * @param {string} size
  */
 export const getLabelIcon = (label, size = "24px") => {
   switch (label) {

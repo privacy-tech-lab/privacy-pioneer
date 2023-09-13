@@ -33,11 +33,11 @@ const decoder = new TextDecoder("utf-8");
  *
  * Used in background.js
  *
- * @param {Object} details Individual request
- * @param {Array} data Data from importData function [locCoords, networkKeywords, services]
- * @returns {Void} Calls resolveBuffer (in analyze.js)
+ * @param {object} details Individual request
+ * @param {any[]} data Data from importData function [locCoords, networkKeywords, services]
+ * @returns {Promise<void>} Calls resolveBuffer (in analyze.js)
  */
-const onBeforeRequest = async (details, data) => {
+export async function onBeforeRequest(details, data) {
   let request;
 
   if (details.requestId in buffer) {
@@ -48,6 +48,7 @@ const onBeforeRequest = async (details, data) => {
       request.rootUrl = details.originUrl;
     } else {
       try {
+        //@ts-ignore
         const rootUrlObj = await browser.tabs.get(details.tabId);
         request.rootUrl = rootUrlObj.url;
       } catch (err) {
@@ -66,13 +67,13 @@ const onBeforeRequest = async (details, data) => {
       id: details.requestId,
       rootUrl: null,
       reqUrl: details.url !== undefined ? details.url : null,
-      requestBody:
-        details.requestBody !== undefined ? details.requestBody : null,
+      requestBody: details.requestBody !== undefined ? details.requestBody : null,
       type: details.type !== undefined ? details.type : null,
-      urlClassification:
-        details.urlClassification !== undefined
-          ? details.urlClassification
-          : [],
+      urlClassification: details.urlClassification !== undefined
+        ? details.urlClassification
+        : [],
+      responseData: undefined,
+      error: undefined
     });
 
     if (details.tabId == -1) {
@@ -80,6 +81,7 @@ const onBeforeRequest = async (details, data) => {
       buffer[details.requestId] = request;
     } else {
       try {
+        //@ts-ignore
         const rootUrlObj = await browser.tabs.get(details.tabId);
         request.rootUrl = rootUrlObj.url;
         buffer[details.requestId] = request;
@@ -90,11 +92,10 @@ const onBeforeRequest = async (details, data) => {
     }
   }
   // filter = you can now monitor a response before the request is sent
+  //@ts-ignore
   const filter = browser.webRequest.filterResponseData(details.requestId);
 
-  var responseByteLength = 0,
-    abort = false,
-    httpResponseStrArr = [];
+  var responseByteLength = 0, abort = false, httpResponseStrArr = [];
 
   filter.ondata = (event) => {
     if (!abort) {
@@ -121,15 +122,15 @@ const onBeforeRequest = async (details, data) => {
       resolveBuffer(request.id, data);
     }
   };
-};
+}
 
 /**
  * Verifies if we have all the data for a request to be analyzed
  *
  * Defined, used in analyze.js
  *
- * @param {int} id id of the request
- * @param {Array} data Data from importData function [locCoords, networkKeywords, services]
+ * @param {number} id id of the request
+ * @param {any[]} data Data from importData function [locCoords, networkKeywords, services]
  * @returns {void} calls analyze function, below
  */
 function resolveBuffer(id, data) {
@@ -166,8 +167,8 @@ const cookieUrlObject = {};
  * Defined, used in analyze.js
  *
  * @param {Request} request HTTP request.
- * @param {Array} userData data from the watchlist to be searched for.
- * @returns {void} calls a number of functions
+ * @param {any[]} userData data from the watchlist to be searched for.
+ * @returns {Promise<void>} calls a number of functions
  */
 async function analyze(request, userData) {
   const allEvidence = getAllEvidenceForRequest(request, userData);
@@ -181,6 +182,7 @@ async function analyze(request, userData) {
     currentTime - cookieUrlObject[reqUrl] > MINUTE_MILLISECONDS
   ) {
     allCookieEvidence = getAllEvidenceForCookies(
+      //@ts-ignore
       await browser.cookies.getAll({ domain: reqUrl }),
       request.rootUrl,
       reqUrl,
@@ -199,12 +201,13 @@ async function analyze(request, userData) {
     // tag the parent
     const parent = tagParent(reqUrl);
 
-    const saveFullSnippet = userData[3];
+    const saveFullSnippet = userData[2];
 
     // push the job to the Queue (will add the evidence for one HTTP request at a time)
     evidenceQ.push(function (cb) {
+      //@ts-ignore
       cb(
-        null,
+        undefined,
         addToEvidenceStore(
           allEvidence,
           parent,
@@ -216,5 +219,3 @@ async function analyze(request, userData) {
     });
   }
 }
-
-export { onBeforeRequest };

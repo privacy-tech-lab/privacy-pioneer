@@ -22,7 +22,7 @@ the codebase.
  * @property {object} responseData A StreamFilter object used to monitor the response. https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/API/webRequest/StreamFilter
  * @property {string} error After an error event is fired. This property will contain information about the error.  https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/API/webRequest/StreamFilter/onerror
  * @property {string} type We set up a filter for types in background.js. We look at types enumerated in resourceTypeEnum
- * @property {Object} urlClassification The urlClassification flags given by firefox in the onHeadersReceived callback. These come from the disconnect.me list. https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/API/webRequest/onHeadersReceived
+ * @property {object} urlClassification The urlClassification flags given by firefox in the onHeadersReceived callback. These come from the disconnect.me list. https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/API/webRequest/onHeadersReceived
  * @throws Error. Event that fires on error. Usually due to invalid ID to the webRequest.filterResponseData()
  */
 export class Request {
@@ -69,8 +69,8 @@ export const resourceTypeEnum = Object.freeze({
  * @property {string} snippet JSON.stringify of the request (The request as a string)
  * @property {string} requestUrl The request Url as a string
  * @property {enum} typ The type of the evdience
- * @property {Array|undefined} index A length 2 array with the indexes of the evidence or undefined if not applicable
- * @property {string|null} parentCompany If we have identified a parent company for this url, we store it here for the frontend. Else, null.
+ * @property {number[2]|undefined} index A length 2 array with the indexes of the evidence or undefined if not applicable
+ * @property {string|undefined} parentCompany If we have identified a parent company for this url, we store it here for the frontend. Else, null.
  * @property {string|undefined} watchlistHash If the evidence is from our watchlist, this is the id of that item. Used for deletion of evidence on deletion of watchlist item
  * @property {string|undefined} extraDetail Extra details as needed. Currently only used for encoded email's original email
  * @property {boolean} cookie Whether or not the evidence was found in a cookie
@@ -84,10 +84,12 @@ export class Evidence {
     requestUrl,
     typ,
     index,
+    firstPartyRoot,
     parentCompany,
     watchlistHash,
     extraDetail,
     cookie,
+    loc,
   }) {
     this.timestamp = timestamp;
     this.permission = permission;
@@ -96,10 +98,12 @@ export class Evidence {
     this.requestUrl = requestUrl;
     this.typ = typ;
     this.index = index === undefined ? -1 : index;
+    this.firstPartyRoot = firstPartyRoot;
     this.parentCompany = parentCompany;
     this.watchlistHash = watchlistHash;
     this.extraDetail = extraDetail;
-    this.cookie = cookie;
+    this.cookie = cookie === undefined ? false : cookie;
+    this.loc = loc;
   }
 }
 
@@ -289,7 +293,8 @@ export const keywordTypes = Object.freeze({
 export const privacyLabels = Object.freeze({
   monetization: {
     displayName: "Monetization",
-    description: "Sites monetize their content by using advertising, analytics, or social networking",
+    description:
+      "Sites monetize their content by using advertising, analytics, or social networking",
     types: {
       advertising: {
         displayName: "Advertising",
@@ -310,7 +315,8 @@ export const privacyLabels = Object.freeze({
   },
   location: {
     displayName: "Location",
-    description: "Sites collected or received your location, e.g., your GPS coordinates or ZIP code",
+    description:
+      "Sites collected or received your location, e.g., your GPS coordinates or ZIP code",
     types: {
       coarseLocation: {
         displayName: "Coarse Location",

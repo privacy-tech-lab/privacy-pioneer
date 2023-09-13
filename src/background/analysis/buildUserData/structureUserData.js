@@ -9,7 +9,7 @@ import { watchlistHashGen } from "../utility/util.js";
 
 /**
  * Iterates through all elements in the watchlistKeyval and returns a dictionary
- * @returns {Promise<Dict<permissionEnum<typeEnum>>}  A dictionary with first key level permission and second key level type. All values are stored as Arrays
+ * @returns {Promise<Object<permissionEnum,typeEnum>>}  An object with first key level permission and second key level type. All values are stored as Arrays
  */
 async function getWatchlistDict() {
   var user_store_dict = {};
@@ -54,7 +54,7 @@ async function getWatchlistDict() {
  * updates the dictionary being built in the getWatchlistDict() function. It ignores the region entry
  * because we will take this from the zip.
  * @param {object} locObj The object containing the location elements of the user
- * @param {Dict<permissionEnum<typeEnum>>} user_dict The dictionary being built by getWatchlistDict()
+ * @param {Object<permissionEnum,typeEnum>} user_dict The dictionary being built by getWatchlistDict()
  * @returns {void} Nothing. Updates the user_dict paramter
  */
 function parseLocationObject(locObj, user_dict, id) {
@@ -66,6 +66,7 @@ function parseLocationObject(locObj, user_dict, id) {
   ]);
 
   for (let [t, val] of Object.entries(locObj)) {
+    // @ts-ignore
     if (locElems.has(t)) {
       let ktype = t;
       let keyword = val;
@@ -85,8 +86,8 @@ function parseLocationObject(locObj, user_dict, id) {
  * Returns a KeywordObject
  *
  * @param {string|RegExp} keyword
- * @param {number} hash
- * @param {type} typ
+ * @param {string} typ
+ * @param {number|null} hash
  * @returns {KeywordObject}
  */
 function createKeywordObj(keyword, typ, hash = null) {
@@ -110,6 +111,7 @@ function hashUserDictValues(networkKeywords) {
   for (const [t, valArr] of Object.entries(
     networkKeywords[permissionEnum.personal]
   )) {
+    // @ts-ignore
     if (!excludedSet.has(t)) {
       var replacedArr = [];
       for (const keywordItem of valArr) {

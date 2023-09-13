@@ -13,8 +13,14 @@ import { keywordTypes } from "../../../../../../background/analysis/classModels"
 
 /**
  * Form for a user to input their address
+ * @param {object} obj
+ * @param {function(string,string):void} obj.onChange
+ * @param {string} obj.city
+ * @param {string} obj.region
+ * @param {string} obj.zip
+ * @param {string} obj.streetAddress
  */
-const AddressForm = ({ onChange, city, region, zip, streetAddress }) => {
+export const AddressForm = ({ onChange, city, region, zip, streetAddress }) => {
   return (
     <SForm>
       <SKeyword>
@@ -82,8 +88,12 @@ const AddressForm = ({ onChange, city, region, zip, streetAddress }) => {
 
 /**
  * Form for a user to add their own non-location keywords
+ * @param {object} obj
+ * @param {string} obj.keywordType
+ * @param {function(string):void} obj.onChange
+ * @param {string} obj.value
  */
-const KeywordForm = ({ keywordType, onChange, value }) => {
+export const KeywordForm = ({ keywordType, onChange, value }) => {
   return (
     <SKeyword>
       <SHeader>KEYWORD</SHeader>
@@ -99,5 +109,3 @@ const KeywordForm = ({ keywordType, onChange, value }) => {
     </SKeyword>
   );
 };
-
-export { KeywordForm, AddressForm };

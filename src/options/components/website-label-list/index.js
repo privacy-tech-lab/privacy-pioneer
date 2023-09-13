@@ -13,10 +13,11 @@ import { settingsModelsEnum } from "../../../background/analysis/classModels";
 
 /**
  * Makes label cards for a given website
- * @param {string} website the host website
- * @param {function} handleTap function that handles clicking on the cards
- * @param allLabels
- * @param webLabels
+ * @param {object} obj
+ * @param {string} obj.website the host website
+ * @param {function(object):void} obj.handleTap function that handles clicking on the cards
+ * @param {object} obj.allLabels
+ * @param {object} obj.webLabels
  */
 const LabelCards = ({ website, handleTap, allLabels, webLabels }) => {
   return webLabels.map((label, index) => {
@@ -66,20 +67,22 @@ const LabelCards = ({ website, handleTap, allLabels, webLabels }) => {
 
 /**
  * Displays a list of websites and a quick summary of their privacy labels
- * @param {string} websites All websites we have evidence for
- * @param {int} maxLength
- * @param allLabels
- * @param webLabels
+ * @param {object} obj
+ * @param {object} obj.websites All websites we have evidence for
+ * @param {boolean} [obj.recent]
+ * @param {function(object):void} obj.handleTap
+ * @param {object} obj.allLabels
  */
-const WebsiteLabelList = ({ websites, recent, handleTap, allLabels }) => {
+export const WebsiteLabelList = ({ websites, recent, handleTap, allLabels }) => {
   const entries = Object.entries(websites);
   return (
     <SContainer>
       {entries
-        .slice(0, recent & (entries.length > 3) ? 3 : entries.length)
+        .slice(0, recent && (entries.length > 3) ? 3 : entries.length)
         .map(([website, data]) => (
           <SItem
             key={website}
+            // CHECK
             hasEvidence={Object.keys(data.labels).length != 0}
           >
             <WebsiteBadge website={website} party={data.party} />
@@ -97,5 +100,3 @@ const WebsiteLabelList = ({ websites, recent, handleTap, allLabels }) => {
     </SContainer>
   );
 };
-
-export default WebsiteLabelList;

@@ -41,10 +41,16 @@ import { requestNotificationPermission } from "../../../../../libs/indexed-db/no
 
 /**
  * Popup modal to create/edit keyword
+ * @param {object} obj
+ * @param {string} obj.passKeywordType
+ * @param {string} obj.passKeyword
+ * @param {boolean} obj.edit
+ * @param {string} obj.id
+ * @param {function():void} obj.updateList
  */
-const EditModal = ({ passKeywordType, passKeyword, edit, id, updateList }) => {
+export const EditModal = ({ passKeywordType, passKeyword, edit, id, updateList }) => {
   const dropdownRef = useRef();
-  const [showDropdown, setDropdown] = useState(false);
+  const [showDropdown, setDropdown] = useState(false); 
   const [keywordType, setKeywordType] = useState(
     edit ? passKeywordType : "Select Type"
   );
@@ -64,6 +70,7 @@ const EditModal = ({ passKeywordType, passKeyword, edit, id, updateList }) => {
    * Closes dropdown when clicked outside
    */
   const blur = (event) => {
+    //@ts-ignore
     if (!dropdownRef.current.contains(event.target)) {
       setDropdown(false);
     }
@@ -257,5 +264,3 @@ const EditModal = ({ passKeywordType, passKeyword, edit, id, updateList }) => {
     </>
   );
 };
-
-export default EditModal;

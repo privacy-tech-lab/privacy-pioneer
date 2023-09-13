@@ -10,7 +10,6 @@ import {
   SType,
   SDropdownOptions,
   SDropdownItem,
-  SButtonText,
   SSection,
   SCategory,
 } from "./style";
@@ -35,8 +34,16 @@ import {
 /**
  * List item displaying keyword, type, and category
  * User can edit/delete keyword from vertical options button
+ * @param {object} obj
+ * @param {string|RegExp} obj.keyword
+ * @param {string} obj.type
+ * @param {string} obj.id
+ * @param {object} obj.configModal 
+ * @param {function():void} obj.updateList
+ * @param {object} obj.location
+ * @param {boolean} obj.notification
  */
-const ListItem = ({
+export const ListItem = ({
   keyword,
   type,
   id,
@@ -51,6 +58,7 @@ const ListItem = ({
    * Closes dropdown when clicked outside
    */
   const blur = (event) => {
+    //@ts-ignore
     if (!dropdownRef.current.contains(event.target)) {
       setDropdown(false);
     }
@@ -80,6 +88,7 @@ const ListItem = ({
       {id == IPINFO_IPKEY || id == IPINFO_ADDRESSKEY ? (
         <SSection >
           <div data-tip data-for="sButton">
+            {/* CHECK */}
             {keyword}
           </div>
         </SSection>
@@ -161,6 +170,7 @@ const ListItem = ({
                     location: location,
                   }));
                   const modal = new Modal(
+                    //@ts-ignore
                     document.getElementById("edit-modal")
                   );
                   modal.show();
@@ -222,5 +232,3 @@ const ListItem = ({
     </SItem>
   );
 };
-
-export default ListItem;

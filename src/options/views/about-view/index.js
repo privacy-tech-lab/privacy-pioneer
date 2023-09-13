@@ -36,6 +36,7 @@ const AboutView = () => {
     useEffect(() => {
       ReactTooltip.hide();
       var faqCollapse = document.getElementById(question);
+      //@ts-ignore
       var collapse = new Collapse(faqCollapse, { toggle: false });
       open ? collapse.show() : collapse.hide();
     });

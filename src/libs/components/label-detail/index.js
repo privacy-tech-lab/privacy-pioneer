@@ -18,13 +18,14 @@ import {
   STitleDos,
 } from "./style";
 import WebsiteBadge from "../website-badge";
-import Item from "./components/item";
+import {Item} from "./components/item";
 
 /**
  * Detailed view of label and third parties
- * @param {string} label associated label
- * @param {string} website websites we are looking at
- * @param {Array<object>} requests evidence objects we created
+ * @param {object} obj
+ * @param {string} obj.label associated label
+ * @param {string} obj.website websites we are looking at
+ * @param {object} obj.requests evidence objects we created
  */
 const LabelDetail = ({ label, website, requests }) => {
   const urls = Object.keys(requests); // detected request urls containing identified data
@@ -32,6 +33,7 @@ const LabelDetail = ({ label, website, requests }) => {
 
   /**
    * Get first party description based on whether 'website' collected data
+   * @returns {string}
    */
   const firstPartyDescription = () => {
     if (collected && urls.length === 1) {
@@ -43,7 +45,7 @@ const LabelDetail = ({ label, website, requests }) => {
     } else {
       return `Did not collect or share ${label} data.`;
     }
-  };
+  }
 
   const isDifferentURL = Object.entries(requests).some(([url]) => url !== website);
 
@@ -82,6 +84,6 @@ const LabelDetail = ({ label, website, requests }) => {
       </SThirdParty>
     </SBody>
   );
-};
+}
 
 export default LabelDetail;

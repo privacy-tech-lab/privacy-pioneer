@@ -10,31 +10,31 @@ import {
   ipSearch,
   encodedEmailSearch,
 } from "./searchFunctions.js";
-import { permissionEnum, typeEnum } from "../classModels.js";
+import { Evidence, permissionEnum, typeEnum } from "../classModels.js";
 
 /**
  * This function runs all of the apporpriate analysis functions for cookies.
  * It returns an empty array if no evidence is found. Else an array of arrays containing the
  * information to be added.
- *
+ * 
  * Defined in scanCookies.js
- *
+ * 
  * Used in analyze.js
- *
- * @param cookies A list of cookies to be analyzed
- * @param rootUrl Host site
- * @param reqUrl Requesting site
- * @param userData
+ * @param {Object[]} cookies A list of cookies to be analyzed
+ * @param {string} rootUrl Host site
+ * @param {string} reqUrl Requesting site
+ * @param {Object[]} userData
  */
-function getAllEvidenceForCookies(cookies, rootUrl, reqUrl, userData) {
+export function getAllEvidenceForCookies(cookies, rootUrl, reqUrl, userData) {
   // this 0, 1, 2 comes from the structure of the importData function
   // location we obtained from google maps API
   const loc = userData[0];
   // {phone #s, emails, location elements entered by the user, fingerprinting keywords}
   const networkKeywords = userData[1];
 
-  const currIpInfo = userData[5];
-
+  /**
+   * @type {Evidence[]}
+   */
   var evidenceArr = [];
 
   // we don't surface these evidences, so skip.
@@ -48,8 +48,8 @@ function getAllEvidenceForCookies(cookies, rootUrl, reqUrl, userData) {
    *
    * Defined, used in scanHTTP.js
    *
-   * @param {Array<Array>} resArr The search function result
-   * @param {Array} arr The array of results we are building for this HTTP request
+   * @param {Evidence[]} resArr The search function result
+   * @param {Evidence[]} arr The array of results we are building for this HTTP request
    * @returns {Void} Updates the array of evidence, defined outside of this function
    */
   function executeAndPush(resArr, arr = evidenceArr) {
@@ -75,10 +75,11 @@ function getAllEvidenceForCookies(cookies, rootUrl, reqUrl, userData) {
 
   /**
    * Function to call watchlist search functions.
-   * @returns {Void} Nothing. Updates evidenceArr as necessary
+   * @param {string} cookieString
+   * @returns {void} Nothing. Updates evidenceArr as necessary
    */
   function runWatchlistAnalysis(cookieString) {
-    if (!permissionEnum.personal in networkKeywords) {
+    if (!(permissionEnum.personal in networkKeywords)) {
       return;
     }
 
@@ -138,7 +139,8 @@ function getAllEvidenceForCookies(cookies, rootUrl, reqUrl, userData) {
 
   /**
    * Function to call generalized search functions
-   * @returns {Void} Nothing. Updates evidenceArr as necessary
+   * @param {string} cookieString
+   * @returns {void} Nothing. Updates evidenceArr as necessary
    */
   function runStandardAnalysis(cookieString) {
     // if this value is 0 the client likely denied location permission
@@ -159,5 +161,3 @@ function getAllEvidenceForCookies(cookies, rootUrl, reqUrl, userData) {
     }
   }
 }
-
-export { getAllEvidenceForCookies };

@@ -10,13 +10,12 @@ importSearchData.js
 both the URL and the keyword list for words and URLs to look for in the
 network requests
 */
-import { getLocationData, filterGeocodeResponse } from "./getLocationData.js";
+import { getLocationData } from "./getLocationData.js";
 import {
   buildPhone,
   getRegion,
   buildIpRegex,
   buildZipRegex,
-  regionObj,
   buildGeneralRegex,
 } from "./structuredRoutines.js";
 import {
@@ -47,10 +46,9 @@ import { watchlistKeyval } from "../../../libs/indexed-db/openDB.js";
 
 // import keywords, services JSONs
 const keywords = require("../../../assets/keywords.json");
-const services = require("../../../assets/services.json");
 
-var IPINFO_IPKEY = "1111111111";
-var IPINFO_ADDRESSKEY = "2222222222";
+export var IPINFO_IPKEY = "1111111111";
+export var IPINFO_ADDRESSKEY = "2222222222";
 
 /**
  * Used to build all the data we search for in our analysis. This includes data in the watchlist DB and the JSON lists.
@@ -59,15 +57,13 @@ var IPINFO_ADDRESSKEY = "2222222222";
  *
  * Used in background.js
  *
- * @returns {Promise<Array>} [locCoords, networkKeywords, services]
+ * @returns {Promise<any[]>} [locCoords, networkKeywords]
  *
  * locCoords: Length 2 array of [lat, lng]
  *
  * networkKeywods: Dictionary with permissionEnum outer keys and typeEnum inner keys. Values are stored as arrays
- *
- * services: Object with data from the JSON files in assets
  */
-async function importData() {
+export async function importData() {
   var networkKeywords = {};
   // watchlist == data entered by the user in our extension
   // ex phone numbers, emails, etc
@@ -150,7 +146,6 @@ async function importData() {
 
   if (typeEnum.zipCode in user_store_dict) {
     const userZip = user_store_dict[typeEnum.zipCode];
-    var userRegionArr = [];
     var userZipArr = [];
     userZip.forEach((zip) => {
       const locHash = zip[1];
@@ -261,13 +256,17 @@ async function importData() {
   if (typeEnum.ipAddress in user_store_dict) {
     var ipArr = [];
     for (const ip of user_store_dict[typeEnum.ipAddress]) {
-      let origHash;
+      /**
+       * @type {number|string}
+       */
+      let origHash = "";
       if (retJson.ip === ip) {
         origHash = IPINFO_IPKEY;
       } else {
         origHash = watchlistHashGen(typeEnum.ipAddress, ip);
       }
       const ipRegex = buildIpRegex(ip);
+      // @ts-ignore
       const ipObj = createKeywordObj(ipRegex, typeEnum.ipAddress, origHash);
       ipArr.push(ipObj);
     }
@@ -293,8 +292,7 @@ async function importData() {
   const analytic = await analyticsKeyval.get(settingsModelsEnum.analytics);
 
   // returns [location we obtained from google maps API, {phone #s, emails,
-  // location elements entered by the user, fingerprinting keywords}, websites
-  // that have identification objectives as services, the user's choice to or
+  // location elements entered by the user, fingerprinting keywords}, the user's choice to or
   // not to store full HTTP snippets, the user's choice to or not to optimize
   // performance, the user's current location and IP address as provided by
   // ipinfo.io]
@@ -302,12 +300,9 @@ async function importData() {
   return [
     locCoords,
     networkKeywords,
-    services,
     fullSnippet,
     optimizePerformance,
     currIpInfo,
     analytic,
   ];
 }
-
-export { importData, IPINFO_IPKEY, IPINFO_ADDRESSKEY };

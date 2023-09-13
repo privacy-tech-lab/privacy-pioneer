@@ -39,11 +39,12 @@ export const setDefaultSettings = async () => {
     await settingsKeyval.set(settingsModelsEnum.extensionEnabled, true);
     await settingsKeyval.set("firstHomeVisit", true);
     await analyticsKeyval.set(settingsModelsEnum.analytics, true);
+    //@ts-ignore
     browser.tabs.create({ url: browser.runtime.getURL("options.html") });
   }
 
   loadModel();
-};
+}
 
 /**
  * Toggles labels on or off
@@ -51,6 +52,7 @@ export const setDefaultSettings = async () => {
  */
 export const toggleLabel = async (label) => {
   let currentVal = await settingsKeyval.get(label);
+  //@ts-ignore
   if (Object.values(permissionEnum).includes(label)) {
     await settingsKeyval.set(label, !currentVal);
   }
@@ -82,11 +84,11 @@ export const toggleExtension = async () => {
 
 /**
  * Toggles snippets on or off
- * @param {string} label label we generated
  */
 export const toggleSnippet = async () => {
   let currentVal = await settingsKeyval.get(settingsModelsEnum.fullSnippet);
   await settingsKeyval.set(settingsModelsEnum.fullSnippet, !currentVal);
+  //@ts-ignore
   browser.runtime.sendMessage({ msg: "dataUpdated" });
 };
 
@@ -99,13 +101,13 @@ export const getSnippetStatus = async () => {
 
 /**
  * Toggles optimization on or off
- * @param {string} label label we generated
  */
 export const toggleOptimization = async () => {
   let currentVal = await settingsKeyval.get(
     settingsModelsEnum.optimizePerformance
   );
   await settingsKeyval.set(settingsModelsEnum.optimizePerformance, !currentVal);
+  //@ts-ignore
   browser.runtime.sendMessage({ msg: "dataUpdated" });
 };
 
@@ -118,11 +120,11 @@ export const getOptimizationStatus = async () => {
 
 /**
  * Toggles analytics on or off
- * @param {string} label label we generated
  */
 export const toggleAnalytics = async () => {
   let currentVal = await analyticsKeyval.get(settingsModelsEnum.analytics);
   await analyticsKeyval.set(settingsModelsEnum.analytics, !currentVal);
+  //@ts-ignore
   browser.runtime.sendMessage({ msg: "dataUpdated" });
 };
 

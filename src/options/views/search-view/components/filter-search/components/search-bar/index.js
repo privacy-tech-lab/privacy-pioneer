@@ -3,14 +3,17 @@ Licensed per https://github.com/privacy-tech-lab/privacy-pioneer/blob/main/LICEN
 privacy-tech-lab, https://privacytechlab.org/
 */
 
-import React, { useEffect } from "react";
+import React from "react";
 import { SInput, SInputContainer, SSearchContainer } from "./style";
 import * as Icons from "../../../../../../../libs/icons";
 
 /**
  * Filters Viewed Websites based on typed input on Search bar
+ * @param {object} obj
+ * @param {function(object):void} obj.onChange
+ * @param {string} obj.placeholder
  */
-const SearchBar = ({ onChange, placeholder }) => {
+export const SearchBar = ({ onChange, placeholder }) => {
   return (
     <SSearchContainer>
       <SInputContainer>
@@ -25,5 +28,3 @@ const SearchBar = ({ onChange, placeholder }) => {
     </SSearchContainer>
   );
 };
-
-export default SearchBar;

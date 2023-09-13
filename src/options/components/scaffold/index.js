@@ -3,7 +3,7 @@ Licensed per https://github.com/privacy-tech-lab/privacy-pioneer/blob/main/LICEN
 privacy-tech-lab, https://privacytechlab.org/
 */
 
-import React, { useEffect } from "react";
+import React from "react";
 import styled from "styled-components";
 import { motion } from "framer-motion";
 import { useHistory, useLocation } from "react-router-dom";
@@ -27,6 +27,7 @@ const SScaffold = styled(motion.main)`
  * Implements the basic deisgn visual layout stucture.
  * This is the like the main div for each page (aka each component in view besides AppView).
  * It handles animations from page to page
+ * @param {object} props
  */
 const Scaffold = (props) => {
   const history = useHistory();
@@ -37,14 +38,19 @@ const Scaffold = (props) => {
    * I haven't tried to see if the default scroll restoration works with hash router
    * So you could comment out this fuction and see if navigating between scrolling pages correctly restores
    * I don't think it's working perfectly at the moment
+   * @param {object} history
+   * @param {object} location
    */
   const configureScrollPosition = (history, location) => {
     if (
       history.action === "POP" &&
       location.pathname === history.location.pathname
     ) {
+      /**
+       * @type {number}
+       */
       const pageYOffset =
-        window.sessionStorage.getItem(`pageYOffset-${location.pathname}`) ?? 0;
+        parseInt(window.sessionStorage.getItem(`pageYOffset-${location.pathname}`) ?? "0");
       window.sessionStorage.removeItem(
         `pageYOffset-${history.location.pathname}`
       );
@@ -60,7 +66,7 @@ const Scaffold = (props) => {
     ) {
       window.sessionStorage.setItem(
         `pageYOffset-${location.pathname}`,
-        window.pageYOffset
+        window.scrollY.toString()
       );
     }
   };

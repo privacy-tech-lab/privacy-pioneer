@@ -1,6 +1,5 @@
 import {
   filter,
-  filterLabels,
   getEmptyCompanyFilter,
   getPermMapping,
   getPlaceholder,

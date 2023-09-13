@@ -9,15 +9,12 @@ import { useHistory, useLocation } from "react-router";
 import { settingsModelsEnum } from "../../../background/analysis/classModels";
 import * as Icons from "../../../libs/icons";
 import { handleClick } from "../../../libs/indexed-db/getAnalytics";
-import {
-  getAnalyticsStatus,
-  settingsEnum,
-} from "../../../libs/indexed-db/settings";
+import { getAnalyticsStatus } from "../../../libs/indexed-db/settings";
 import { searchInit } from "../../../libs/init";
 import { seeAllSteps, SeeAllTour } from "../../../libs/tour";
 import Scaffold from "../../components/scaffold";
-import WebsiteLabelList from "../../components/website-label-list";
-import LabelModal from "../home-view/components/detail-modal";
+import { WebsiteLabelList } from "../../components/website-label-list";
+import { LabelModal } from "../home-view/components/detail-modal";
 import FilterSearch from "./components/filter-search";
 import {
   SBackButton,
@@ -45,9 +42,15 @@ const SearchView = () => {
   const [filteredLabels, setFilteredLabels] = useState({});
   const [showEmpty, setShowEmpty] = useState(false);
   const [touring, setTouring] = useState(false);
-  const [modal, setModal] = useState({ show: false });
+  const [modal, setModal] = useState({
+    show: false,
+    label: "",
+    requests: {},
+    website: "",
+  });
 
   const handleTap = (items) => {
+    //@ts-ignore
     const modal = new Modal(document.getElementById("detail-modal"));
     setModal(items);
     modal.show();

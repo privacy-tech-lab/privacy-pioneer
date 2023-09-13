@@ -9,11 +9,10 @@ searchFunctions.js
 - searchFunctions.js contains all functions used to search through network
 requests
 */
-import { Request, typeEnum, permissionEnum } from "../classModels.js";
-import { regexSpecialChar, escapeRegExp } from "../utility/regexFunctions.js";
+import { typeEnum, permissionEnum, Evidence } from "../classModels.js";
+import { escapeRegExp } from "../utility/regexFunctions.js";
 import { getHostname } from "../utility/util.js";
-import { watchlistKeyval } from "../../../libs/indexed-db/openDB.js";
-import { watchlistHashGen, createEvidenceObj } from "../utility/util.js";
+import { createEvidenceObj } from "../utility/util.js";
 import {
   COORDINATE_PAIR_DIST,
   FINE_LOCATION_BOUND,
@@ -29,12 +28,12 @@ import {
  * Used in scanHTTP.js
  *
  * @param {string} strReq
- * @param {Dict<typeEnum>} locElems
+ * @param {Object<typeEnum,number>} locElems
  * @param {string} rootUrl
  * @param {string} reqUrl
- * @returns {Array<Array>|Array} An array of arrays with the search results [] if no result
+ * @returns {any[]} An array of arrays with the search results [] if no result
  */
-function locationKeywordSearch(strReq, locElems, rootUrl, reqUrl) {
+export function locationKeywordSearch(strReq, locElems, rootUrl, reqUrl) {
   var output = [];
   for (const [k, v] of Object.entries(locElems)) {
     // every entry is an array, so we iterate through it.
@@ -56,7 +55,7 @@ function locationKeywordSearch(strReq, locElems, rootUrl, reqUrl) {
 }
 
 /**
- * @type {Dict}
+ * @type {Object<string,string[]>}
  * used by the addDisconnectEvidence function to translate the disconnect JSON into our permission type schema.
  * Maps strings to array of length 2.
  */
@@ -76,16 +75,19 @@ const classificationTransformation = {
  * Defined in searchFunctions.js
  *
  * Used in scanHTTP.js
- *
- * @param {Request} request An HTTP request
- * @param {object} urls The disconnect JSON
- * @returns {Array<Array>|Array} An array of arrays with the search results [] if no result
+ * @param {string} rootUrl
+ * @param {string} reqUrl
+ * @param {{ firstParty: string[]; thirdParty: string[]; }} classifications
+ * @returns {Evidence[]|any[]} An array of arrays with the search results [] if no result
  */
-function urlSearch(rootUrl, reqUrl, classifications) {
+export function urlSearch(rootUrl, reqUrl, classifications) {
   var output = [];
   let firstPartyArr = classifications.firstParty;
   let thirdPartyArr = classifications.thirdParty;
 
+  /**
+   * @param {string[]} arr
+   */
   function loopThroughClassificationArray(arr) {
     for (let classification of arr) {
       if (classification in classificationTransformation) {
@@ -111,13 +113,16 @@ function urlSearch(rootUrl, reqUrl, classifications) {
  * Used in scanHTTP.js
  *
  * @param {string} strReq The HTTP request as a string
- * @param {Array<number>} locData The coordinates of the user
+ * @param {number[]} locData The coordinates of the user
  * @param {string} rootUrl The rootUrl as a string
  * @param {string} reqUrl The requestUrl as a string
- * @returns {Array<Array>|Array} An array of arrays with the search results [] if no result
+ * @returns {Evidence[]|any[]} An array of arrays with the search results [] if no result
  *
  */
-function coordinateSearch(strReq, locData, rootUrl, reqUrl) {
+export function coordinateSearch(strReq, locData, rootUrl, reqUrl) {
+  /**
+   * @type {Evidence[]|any[]}
+   */
   var output = [];
   const lat = locData[0];
   const lng = locData[1];
@@ -141,7 +146,7 @@ function coordinateSearch(strReq, locData, rootUrl, reqUrl) {
    * Defined, used in searchFunctions.js
    *
    * @param {string} match
-   * @returns {float} the match as a float
+   * @returns {number} the match as a float
    */
   function cleanMatch(match) {
     var cleaned = [];
@@ -160,11 +165,13 @@ function coordinateSearch(strReq, locData, rootUrl, reqUrl) {
    * If we find latitude, we search for longitude and vice versa
    *
    * Defined, used in searchFunctions.js
-   *
-   * @param {Array<Iterator>} matchArr An array with possible floating point numbers
+   * @param {Iterator[]} matchArr An array with possible floating point numbers
    * @param {number} goal Either a latitude or a longitude.
    * @param {number} arrIndex An index of where in matchArr the previous coordinate was found
    * @param {number} matchIndex The index in the original request string of the first coordinate.
+   * @param {number} deltaBound
+   * @param {string} typ
+   * @param {string} loc
    * @returns {number} The next index to be searched. Or the length of the array if a pair is found (This will terminate the outer while loop).
    */
   function findPair(
@@ -182,6 +189,7 @@ function coordinateSearch(strReq, locData, rootUrl, reqUrl) {
     let j = arrIndex + 1;
     while (j < matchArr.length) {
       let match = matchArr[j];
+      //@ts-ignore
       let startIndex = match.index + 1;
       let endIndex = startIndex + match[0].length - 1;
       const asFloat = cleanMatch(match[0]);
@@ -201,6 +209,12 @@ function coordinateSearch(strReq, locData, rootUrl, reqUrl) {
           typ,
           [startIndex, endIndex]
         );
+        ///////
+
+        /////// WHAT THE HELL IS HAPPENING HERE
+
+        ////////
+        //@ts-ignore
         evi.loc = loc;
         output.push(evi);
 
@@ -225,6 +239,7 @@ function coordinateSearch(strReq, locData, rootUrl, reqUrl) {
     // matchArr is sorted by index, so we only need to look at elements to the right of a potential match
     while (i < matchArr.length) {
       let match = matchArr[i];
+      //@ts-ignore
       let startIndex = match.index + 1;
       const asFloat = cleanMatch(match[0]);
 
@@ -232,8 +247,10 @@ function coordinateSearch(strReq, locData, rootUrl, reqUrl) {
       let deltaLng = Math.abs(asFloat - absLng);
 
       if (deltaLat < deltaBound) {
+        //@ts-ignore
         i = findPair(matchArr, absLng, i, startIndex, deltaBound, typ, "lng");
       } else if (deltaLng < deltaBound) {
+        //@ts-ignore
         i = findPair(matchArr, absLat, i, startIndex, deltaBound, typ, "lat");
       } else {
         i += 1;
@@ -255,15 +272,15 @@ function coordinateSearch(strReq, locData, rootUrl, reqUrl) {
  * Used in scanHTTP.js
  *
  * @param {string} strReq The request as a string
- * @param {string} keyword The keyword as a string
+ * @param {object} keywordObj The keyword as a string
  * @param {string} rootUrl The rootUrl as a string
  * @param {string} reqUrl The requestUrl as a string
  * @param {string} type From typeEnum
  * @param {string} perm From permissionEnum
- * @returns {Array<Array>|Array} An array of arrays with the search results [] if no result
+ * @returns {Evidence[]|any[]} An array of arrays with the search results [] if no result
  *
  */
-function regexSearch(
+export function regexSearch(
   strReq,
   keywordObj,
   rootUrl,
@@ -273,6 +290,9 @@ function regexSearch(
 ) {
   const keywordIDWatch = keywordObj.keywordHash;
   const keyword = keywordObj.keyword;
+  /**
+   * @type {Evidence[]|any[]}
+   */
   var output = [];
   if (typeof keyword == "string") {
     let fixed = escapeRegExp(keyword);
@@ -295,7 +315,7 @@ function regexSearch(
     const res = strReq.match(keyword);
     if (res != null) {
       var len = res[0].length;
-      var startIndex = res.index;
+      var startIndex = res.index ? res.index : 0;
       // update indexes based on how the regex was structured
       if (type == typeEnum.zipCode) {
         startIndex += 1;
@@ -327,13 +347,16 @@ function regexSearch(
  * Used in scanHTTP.js
  *
  * @param {string} strReq The request as a string
- * @param {Dict} networkKeywords A dictionary containing fingerprinting keywords
+ * @param {object} networkKeywords An object containing fingerprinting keywords
  * @param {string} rootUrl The rootUrl as a string
  * @param {string} reqUrl The requestUrl as a string
- * @returns {Array<Array>|Array} An array of arrays with the search results [] if no result
+ * @returns {Evidence[]|any[]} An array of arrays with the search results [] if no result
  *
  */
-function fingerprintSearch(strReq, networkKeywords, rootUrl, reqUrl) {
+export function fingerprintSearch(strReq, networkKeywords, rootUrl, reqUrl) {
+  /**
+   * @type {Evidence[]|any[]}
+   */
   var output = [];
   const fpElems =
     networkKeywords[permissionEnum.tracking][typeEnum.fingerprinting];
@@ -367,12 +390,15 @@ function fingerprintSearch(strReq, networkKeywords, rootUrl, reqUrl) {
  * Used in scanHTTP.js
  *
  * @param {string} strReq The request as a string
- * @param {Dict} networkKeywords A dictionary containing the pixel URLs
+ * @param {object} networkKeywords An object containing the pixel URLs
  * @param {string} rootUrl The rootUrl as a string
  * @param {string} reqUrl The requestUrl as a string
- * @returns {Array<Array>|Array} An array of arrays with the search results [] if no result
+ * @returns {Evidence[]|any[]} An array of arrays with the search results [] if no result
  */
-function pixelSearch(strReq, networkKeywords, rootUrl, reqUrl) {
+export function pixelSearch(strReq, networkKeywords, rootUrl, reqUrl) {
+  /**
+   * @type {Evidence[]|any[]}
+   */
   var output = [];
   const pixelUrls =
     networkKeywords[permissionEnum.tracking][typeEnum.trackingPixel];
@@ -406,11 +432,11 @@ function pixelSearch(strReq, networkKeywords, rootUrl, reqUrl) {
  * @param {string} strReq The request as a string
  * @param {string} reqUrl The requestUrl as a string
  * @param {string} rootUrl The rootUrl as a string
- * @returns {Array<Array>|Array} An array of arrays with the search results [] if no result
+ * @returns {Evidence[]|any[]} An array of arrays with the search results [] if no result
  */
-function dynamicPixelSearch(strReq, reqUrl, rootUrl) {
+export function dynamicPixelSearch(strReq, reqUrl, rootUrl) {
   if (strReq.length > 10000) {
-    return;
+    return [];
   }
 
   const heightWidth = /height\D{1,8}[0,1]\D{1,20}width\D{1,8}[0,1]\D/g;
@@ -422,6 +448,9 @@ function dynamicPixelSearch(strReq, reqUrl, rootUrl) {
   let pix = reqUrl.search(/pixel/);
   let qSearch = reqUrl.search(/\?/);
 
+  /**
+   * @type {Evidence[]|any[]}
+   */
   var output = [];
 
   if (resOne + resTwo != -2 && pix != -1 && qSearch != -1) {
@@ -448,18 +477,18 @@ function dynamicPixelSearch(strReq, reqUrl, rootUrl) {
  * Used in scanHTTP.js
  *
  * @param {string} strReq The request as a string
- * @param {string} ip An ip address as a string
+ * @param {string} ipObj An ip address as a string
  * @param {string} rootUrl Root url as a string
  * @param {string} reqUrl The request url as a string
- * @returns {Array<Array>|Array} An array of arrays with the search results [] if no result
+ * @returns {Evidence[]|any[]} An array of arrays with the search results [] if no result
  */
-function ipSearch(strReq, ipObj, rootUrl, reqUrl) {
+export function ipSearch(strReq, ipObj, rootUrl, reqUrl) {
   if (rootUrl === undefined || reqUrl === undefined) {
-    return;
+    return [];
   }
   // we're only interested in third party requests
   if (getHostname(rootUrl) === getHostname(reqUrl)) {
-    return;
+    return [];
   }
 
   return regexSearch(
@@ -480,12 +509,15 @@ function ipSearch(strReq, ipObj, rootUrl, reqUrl) {
  * Used in scanHTTP.js
  *
  * @param {string} strReq The request as a string
- * @param {Dict} networkKeywords A dictionary containing the encoded email object
+ * @param {object} networkKeywords An object containing the encoded email object
  * @param {string} rootUrl Root url as a string
  * @param {string} reqUrl The request url as a string
- * @returns {Array<Array>|Array} An array of arrays with the search results [] if no result
+ * @returns {Evidence[]|any[]} An array of arrays with the search results [] if no result
  */
-function encodedEmailSearch(strReq, networkKeywords, rootUrl, reqUrl) {
+export function encodedEmailSearch(strReq, networkKeywords, rootUrl, reqUrl) {
+  /**
+   * @type {Evidence[]|any[]}
+   */
   var output = [];
   const encodedObj =
     networkKeywords[permissionEnum.personal][typeEnum.encodedEmail];
@@ -497,8 +529,8 @@ function encodedEmailSearch(strReq, networkKeywords, rootUrl, reqUrl) {
       const hashed = encodedEmail.keywordHash;
       let fixed = escapeRegExp(encoded);
       let re = new RegExp(`${fixed}`, "i");
-      let output = strReq.search(re);
-      if (output != -1) {
+      let searchRes = strReq.search(re);
+      if (searchRes != -1) {
         output.push(
           createEvidenceObj(
             permissionEnum.personal,
@@ -516,15 +548,3 @@ function encodedEmailSearch(strReq, networkKeywords, rootUrl, reqUrl) {
   });
   return output;
 }
-
-export {
-  regexSearch,
-  coordinateSearch,
-  urlSearch,
-  locationKeywordSearch,
-  fingerprintSearch,
-  ipSearch,
-  pixelSearch,
-  encodedEmailSearch,
-  dynamicPixelSearch,
-};

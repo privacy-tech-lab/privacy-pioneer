@@ -15,8 +15,8 @@ import {
 } from "./style";
 import { SContainer, SSubtitle } from "./style";
 import * as Icons from "../../../libs/icons";
-import ListItem from "./components/list-item";
-import EditModal from "./components/edit-modal";
+import { ListItem } from "./components/list-item";
+import { EditModal } from "./components/edit-modal";
 import { watchlistKeyval } from "../../../libs/indexed-db/openDB.js";
 import { Modal } from "bootstrap";
 import {
@@ -41,36 +41,23 @@ const WatchlistView = () => {
    * Inflates view with keywords from watchlist keystore. Sends message to background script to update data.
    */
   const updateList = () => {
+    //@ts-ignore
     watchlistKeyval.values().then((values) => setItems(values));
+    //@ts-ignore
     browser.runtime.sendMessage({
       msg: "dataUpdated",
     });
-  };
-
-  /**
-   * Async function to fetch the user's IP and add it to their watchlist
-   *
-   * @returns Nothing. Updates the watchlist with the fetched IP Address.
-   */
-  const getIP = async () => {
-    await fetch("http://ipinfo.io/json?token" + apiIPToken)
-      .then((data) => data.json())
-      .then(async function (data) {
-        const myIP = data.ip;
-        if (await saveKeyword(myIP, typeEnum.ipAddress, null)) {
-          await updateList();
-        }
-      });
   };
 
   useEffect(() => {
     ReactTooltip.hide();
     updateList();
     // Add listener to modal so we can reset it by taking it off the dom so it doesn't hold references
+    ///@ts-ignore
     document
       .getElementById("edit-modal")
       .addEventListener("hidden.bs.modal", () => {
-        configModal({ show: false });
+        configModal({ show: false, edit: modalConfig.edit });
       });
   }, []);
 
@@ -87,6 +74,7 @@ const WatchlistView = () => {
       >
         <div className="modal-dialog modal-dialog-centered">
           {modalConfig.show ? (
+            // CHECK
             <EditModal
               passKeywordType={modalConfig.keywordType}
               passKeyword={
@@ -122,8 +110,9 @@ const WatchlistView = () => {
             >
               <SAddButton
                 onClick={() => {
-                  configModal({ show: true });
+                  configModal({ show: true, edit: false });
                   const modal = new Modal(
+                    //@ts-ignore
                     document.getElementById("edit-modal")
                   );
                   modal.show();
@@ -155,6 +144,7 @@ const WatchlistView = () => {
           <SListContent>
             {items.length != 0 ? (
               items.map((item) => (
+                // CHECK
                 <ListItem
                   key={item.id}
                   id={item.id}

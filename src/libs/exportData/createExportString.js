@@ -3,25 +3,25 @@ Licensed per https://github.com/privacy-tech-lab/privacy-pioneer/blob/main/LICEN
 privacy-tech-lab, https://privacytechlab.org/
 */
 
-import { evidenceDescription } from "../../background/analysis/classModels.js";
+import { Evidence, evidenceDescription } from "../../background/analysis/classModels.js";
 
 /**
  * Converts an array of Evidence Objects into a csv string.
  * Only adds snippets for Evidence with indexes
  * Uses tabs as a separator, so \t will create a tab in the cell instead of appearing as '\t' in text
  *
- * @param {Array<Evidence>} objArray
+ * @param {Evidence[]} objArray
  * @returns {string} A csv ready string
  */
-function buildTsvString(objArray) {
+export function buildTsvString(objArray) {
   /**
    * Wraps a row in quotes to escape \t if needed.
    * Example: strArray.push(escapeRowAndUpdate('\t \t \t \t \t \t asdfasdfasd \t \t \t', []));
    * This will add a cell that looks like: (start)          asdfasdfasd            (end)
    *
    * @param {string} rowStr
-   * @param {Array} rowArr
-   * @returns {Array} rowArr but updated with rowStr
+   * @param {string[]} rowArr
+   * @returns {string[]} rowArr but updated with rowStr
    */
   function escapeRowAndUpdate(rowStr, rowArr) {
     if (rowStr != "" && rowStr.search(/[\t]/) != -1) {
@@ -87,5 +87,3 @@ function buildTsvString(objArray) {
   // add all rows. separate rows.
   return strArray.join("\r");
 }
-
-export { buildTsvString };

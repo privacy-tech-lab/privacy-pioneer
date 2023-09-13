@@ -20,29 +20,29 @@ import { requestNotificationPermission } from "./notifications.js";
  * Saves/updates keyword from watchlist store
  * Updates keyword when 'id' is not undefined
  *
- * @param {keyword}
- * @param {type}
- * @param {id}
+ * @param {string|object} keyword
+ * @param {string} type
+ * @param {string|number|null} id
  * @returns {Promise<Boolean>} True if successful, false otherwise
  */
-const saveKeyword = async (keyword, type, id) => {
+export const saveKeyword = async (keyword, type, id) => {
   // Validate
   if (type in keywordTypes && keyword) {
     const notificationEnabled = Notification.permission == "granted";
     let key;
     //id == ip || loc when this is the ipinfo generated ip keyword
+    var maxNum = 0;
     if (id == "ip") {
       key = IPINFO_IPKEY;
     } else if (id == "loc") {
       key = IPINFO_ADDRESSKEY;
       let watchlist = await watchlistKeyval.values();
-      var maxNum = 0;
       watchlist.forEach((el) => {
         if (el.type == permissionEnum.location) {
           maxNum = Math.max(maxNum, el.locNum);
         }
       });
-      maxNum = (maxNum + 1).toString();
+      maxNum = maxNum + 1;
     } else if (id != null) {
       key = id;
     } else if (type == permissionEnum.location) {
@@ -53,19 +53,19 @@ const saveKeyword = async (keyword, type, id) => {
           maxNum = Math.max(maxNum, el.locNum);
         }
       });
-      maxNum = (maxNum + 1).toString();
-      key = watchlistHashGen(type, maxNum);
+      maxNum = maxNum + 1;
+      key = watchlistHashGen(type, maxNum.toString());
     } else {
       key = watchlistHashGen(type, keyword);
     }
     type != permissionEnum.location
-      ? await watchlistKeyval.set(key, {
+      ? await watchlistKeyval.set(key.toString(), {
           keyword: keyword,
           type: type,
           id: key,
           notification: notificationEnabled,
         })
-      : await watchlistKeyval.set(key, {
+      : await watchlistKeyval.set(key.toString(), {
           location: keyword,
           type: type,
           id: key,
@@ -77,7 +77,7 @@ const saveKeyword = async (keyword, type, id) => {
   return false;
 };
 
-const toggleNotifications = async (id) => {
+export const toggleNotifications = async (id) => {
   const data = await watchlistKeyval.get(id);
   if (data.notification) {
     data.notification = false;
@@ -99,14 +99,13 @@ const toggleNotifications = async (id) => {
  * Deletes the evidence associated with that keyword from the evidenceDB
  *
  * @param {number} id
- * @param {string} type
- * @returns {void} Nothing. Updates and deletes as described.
+ * @returns {Promise<void>} Nothing. Updates and deletes as described.
  */
-const deleteKeyword = async (id) => {
+export const deleteKeyword = async (id) => {
   let evKeys = await evidenceIDB.keys();
   /**
    * Deletes evidence if watchlistHash of the evidence is the same as the id we are deleting from the watchlist
-   * @param {Object} evidenceStoreKeys All keys from the related store, taken from the above lines
+   * @param {object} evidenceStoreKeys All keys from the related store, taken from the above lines
    */
   function runDeletion(evidenceStoreKeys) {
     evidenceStoreKeys.forEach(async (website) => {
@@ -134,10 +133,9 @@ const deleteKeyword = async (id) => {
   runDeletion(evKeys);
 
   // delete from watchlist
-  await watchlistKeyval.delete(id);
+  await watchlistKeyval.delete(id.toString());
 
   // reset the datastream
+  //@ts-ignore
   browser.runtime.sendMessage({ msg: "dataUpdated" });
 };
-
-export { saveKeyword, deleteKeyword, toggleNotifications };

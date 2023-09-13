@@ -5,7 +5,7 @@ privacy-tech-lab, https://privacytechlab.org/
 
 import React, { useRef, useState } from "react";
 import { SBadgeGroup, SBadge } from "./style";
-import Evidence from "../evidence";
+import { Evidence } from "../evidence";
 import { Collapse } from "bootstrap";
 import {
   privacyLabels,
@@ -17,11 +17,11 @@ import { handleClick } from "../../../../indexed-db/getAnalytics";
 /**
  * The function `formatItemUserKeywords` takes a request object and formats the userKeyword property by
  * converting it into separate properties with unique keys.
- * @param request - The `request` parameter is an object that contains different types of keywords. One
+ * @param {object} request - The `request` parameter is an object that contains different types of keywords. One
  * of the types is "userKeyword", which is an array of user-defined keywords. The function
  * `formatItemUserKeywords` takes this `request` object and formats it by appending an index number to
  * each user keyword.
- * @returns The function `formatItemUserKeywords` returns either the formatted `newReq` object if it is
+ * @returns {object} The function `formatItemUserKeywords` returns either the formatted `newReq` object if it is
  * not empty, or the original `request` object if `newReq` is empty.
  */
 const formatItemUserKeywords = (request) => {
@@ -38,11 +38,12 @@ const formatItemUserKeywords = (request) => {
 
 /**
  * Display of badges with sub types and collapse containing description and evidence
- * @param {object} request our evidence object for this request
- * @param {string} url the request url
- * @param {string} label the associated label of this evidence
+ * @param {object} obj
+ * @param {object} obj.request our evidence object for this request
+ * @param {string} obj.url the request url
+ * @param {string} obj.label the associated label of this evidence
  */
-const Item = ({ request, url, label }) => {
+export const Item = ({ request, url, label }) => {
   request = formatItemUserKeywords(request);
   const [evidence, setEvidence] = useState({
     request: null,
@@ -58,10 +59,11 @@ const Item = ({ request, url, label }) => {
    * @param {object} request our evidence object for this request
    * @param {string} type The type of evidence
    */
-  const inflateCollapse = (event, request, type) => {
+  function inflateCollapse(event, request, type) {
+    // @ts-ignore
     setEvidence({ request: request, label: label, type: type });
 
-    const target = event.target;
+    const target = event?.target;
     const collapse = new Collapse(document.getElementById(collapseId), {
       toggle: false,
     });
@@ -83,7 +85,7 @@ const Item = ({ request, url, label }) => {
       target.classList.add("active");
       collapse.show();
     }
-  };
+  }
 
   return (
     <>
@@ -96,6 +98,7 @@ const Item = ({ request, url, label }) => {
               key={ktype}
               className="badge"
               onClick={(event) => {
+                //@ts-ignore
                 inflateCollapse(event, request, type);
                 const getAnalysis = async () => {
                   const status = await getAnalyticsStatus();
@@ -131,5 +134,3 @@ const Item = ({ request, url, label }) => {
     </>
   );
 };
-
-export default Item;

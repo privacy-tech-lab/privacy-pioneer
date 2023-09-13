@@ -6,12 +6,14 @@ privacy-tech-lab, https://privacytechlab.org/
 /**
  * Used in request filter. Javascript uses 2 bytes per char, so 200k byte cap lines up with
  * 100k char cap
+ * @type {number}
  */
 export const MAX_BYTE_LEN = 200000;
 
 /**
  * Used by heuristic funciton to choose when to analyze
  * Based on an analysis that the most labels come from shorter requests
+ * @type {number}
  */
 export const MAX_CHAR_LEN = 100000;
 
@@ -19,6 +21,7 @@ export const MAX_CHAR_LEN = 100000;
  * Used in setTimeout when changing favicon
  *
  * Used to make a decision about which rocket svg to show as the favicon
+ * @type {number}
  */
 export const FIVE_SEC_IN_MILLIS = 5000;
 
@@ -28,13 +31,14 @@ export const FIVE_SEC_IN_MILLIS = 5000;
  * NOTE: This will change after testing has concluded
  * We would like to only have 1/3 of sites above this threshold and thus
  * highlighted to the user as a site that takes a lot of data
+ * @type {number}
  */
 export const EVIDENCE_THRESHOLD = 45;
 
 /**
  * Used in analyze.js for throttling cookie scan by time
+ * @type {number}
  */
-
 export const MINUTE_MILLISECONDS = 60000;
 
 /**
@@ -63,6 +67,15 @@ export const MINUTE_MILLISECONDS = 60000;
  *      a match, but (7.5, 12.5) and (9.0, 9.0) would be matches.
  */
 
+/**
+ * @type {number}
+ */
 export const COORDINATE_PAIR_DIST = 300;
+/**
+ * @type {number}
+ */
 export const FINE_LOCATION_BOUND = 0.1;
+/**
+ * @type {number}
+ */
 export const COARSE_LOCATION_BOUND = 1.0;

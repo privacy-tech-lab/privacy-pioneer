@@ -57,12 +57,17 @@ const WebsiteView = () => {
    * Navigate to route in options page based on urlHash
    */
   const navigate = ({ urlHash = "" }) => {
+    //@ts-ignore
     const url = browser.runtime.getURL("options.html");
+    //@ts-ignore
     browser.tabs.query({ url: url }, function (tabs) {
       if (tabs.length) {
+        //@ts-ignore
         browser.tabs.update(tabs[0].id, { active: true, url: url + urlHash });
+        //@ts-ignore
         browser.tabs.reload();
       } else {
+        //@ts-ignore
         browser.tabs.create({ url: url + urlHash });
       }
     });
@@ -104,6 +109,7 @@ const WebsiteView = () => {
       if (request.msg === "popup.currentTab") {
         const host = getHostname(request.data);
 
+        //@ts-ignore
         setIsOurHomePage(browser.runtime.getURL("").includes(host));
 
         getWebsiteLastVisitedEvidence(host).then((result) => {
@@ -118,10 +124,13 @@ const WebsiteView = () => {
       }
     };
 
+    //@ts-ignore
     browser.runtime.onMessage.addListener(message);
+    //@ts-ignore
     browser.runtime.sendMessage({ msg: "background.currentTab" });
 
     return () => {
+      //@ts-ignore
       browser.runtime.onMessage.removeListener(message);
     };
   }, []);

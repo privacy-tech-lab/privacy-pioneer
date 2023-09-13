@@ -27,7 +27,7 @@ const regexSpecialChar = [
  * @param {string} text Any string
  * @returns {string} The same string but with escape characters so it can be properly turned into a regular expression
  */
-function escapeRegExp(text) {
+export function escapeRegExp(text) {
   return text.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&");
 }
 
@@ -35,10 +35,10 @@ function escapeRegExp(text) {
  * Looks for off-by-one matches in a string request
  *
  * @param {string} keyword
- * @param {string} request
+ * @param {string} strReq
  * @returns {void} logs to console.
  */
-function offByOneRegexSearch(keyword, strReq) {
+export function offByOneRegexSearch(keyword, strReq) {
   if (keyword.length > 5) {
     for (var i = 0; i < keyword.length; i++) {
       var off_by_one = [];
@@ -48,7 +48,7 @@ function offByOneRegexSearch(keyword, strReq) {
         } else {
           let attempted_char = keyword.charAt(j);
           // add escape characters to special characters
-          if (RegexSpecialChar.includes(attempted_char)) {
+          if (regexSpecialChar.includes(attempted_char)) {
             off_by_one.push("\\" + attempted_char);
           } else {
             off_by_one.push(attempted_char);
@@ -64,5 +64,3 @@ function offByOneRegexSearch(keyword, strReq) {
     }
   }
 }
-
-export { regexSpecialChar, escapeRegExp, offByOneRegexSearch };

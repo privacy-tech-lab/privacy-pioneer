@@ -23,7 +23,7 @@ import ReactTooltip from "react-tooltip";
  */
 const AppView = () => {
   const location = useLocation();
-  const [theme, setTheme] = useState(settingsEnum.sameAsSystem);
+  const [theme, setTheme] = useState(settingsEnum.dark);
 
   useEffect(() => {
     getTheme().then((res) => {

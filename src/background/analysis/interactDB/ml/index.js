@@ -1,3 +1,4 @@
+//@ts-nocheck
 import WordPieceTokenizer from "./bertTokenizer";
 
 function isPunctuation(cp) {
