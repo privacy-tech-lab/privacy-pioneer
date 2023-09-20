@@ -28,20 +28,20 @@ Privacy Pioneer's privacy practice analysis leverages rule-based and machine lea
 Privacy Pioneer is implemented as a browser extension for Firefox (currently the only browser we support).
 
 <p align="center">
-  <a href="https://addons.mozilla.org/en-US/firefox/addon/privacy-pioneer/"><img src="https://github.com/privacy-tech-lab/privacy-pioneer/blob/main/firefox-add-ons-badge.png" alt="Firefox Add Ons badge" width = "187" height = "67"></a>
+  <a href="https://addons.mozilla.org/en-US/firefox/addon/privacy-pioneer/"><img src="./firefox-add-ons-badge.png" alt="Firefox Add Ons badge" width = "187" height = "67"></a>
 <p/>
 
-Privacy Pioneer is developed and maintained by **Daniel Goldelman (@danielgoldelman)**, **Logan Brown (@Lr-Brown)**, **Justin Casler (@JustinCasler)**, **Judeley Jean-Charles (@jjeancharles)**, **Joe Champeau (@JoeChampeau)**, and **Sebastian Zimmeck (@SebastianZimmeck)** of the [privacy-tech-lab](https://privacytechlab.org/). **Hamza Harkous (@harkous)** is also collaborating with the team on the research. **Wesley Tan (@wesley-tan)**, **Owen Kaplan (@notowen333)**, **Rafael Goldstein (@rgoldstein01)**, and **David Baraka (@davebaraka)** contributed earlier.
+Privacy Pioneer is developed and maintained by **Daniel Goldelman (@danielgoldelman)**, **Judeley Jean-Charles (@jjeancharles)**, **Joe Champeau (@JoeChampeau)**, and **Sebastian Zimmeck (@SebastianZimmeck)** of the [privacy-tech-lab](https://privacytechlab.org/). **Hamza Harkous (@harkous)** is also collaborating with the team on the research. **Wesley Tan (@wesley-tan)**, **Justin Casler (@JustinCasler)**, **Logan Brown (@Lr-Brown)**, **Owen Kaplan (@notowen333)**, **Rafael Goldstein (@rgoldstein01)**, and **David Baraka (@davebaraka)** contributed earlier.
 
-Contact us with any questions or comments at sebastian@privacytechlab.org.
+Contact us with any questions or comments at <sebastian@privacytechlab.org>.
 
 [1. Research Publications](#1-research-publications)  
 [2. Development](#2-development)  
 [3. Production](#3-production)  
-[4. Notifications](#4-notifications)  
-[5. Testing](#5-testing)  
-[6. Source Directory Layout](#6-source-directory-layout)  
-[7. Privacy Practice Analysis](#7-privacy-practice-analysis)  
+[4. Testing](#4-testing)  
+[5. Source Directory Layout](#5-source-directory-layout)  
+[6. Privacy Practice Analysis](#6-privacy-practice-analysis)  
+[7. Notifications](#7-notifications)  
 [8. Extension Architecture](#8-extension-architecture)  
 [9. Third Party Libraries and Resources](#9-third-party-libraries-and-resources)  
 [10. Known Issues / Things to be Aware Of](#10-known-issues--things-to-be-aware-of)  
@@ -113,13 +113,7 @@ npm run build
 
 The `web-ext` cli is included in the project. Learn more about packaging and signing for release at the [extension workshop](https://extensionworkshop.com/documentation/develop/getting-started-with-web-ext/).
 
-## 4. Notifications
-
-Upon completing the tour of the extensions homepage (which will open automatically on extension download), you will be given the opportunity to turn extension notifications on.
-
-The extension will wait 15 seconds after a page has loaded to display any notifications relating to keywords for that page. If the tab is closed or a new website is visited in the same tab, any keywords found before closing the tab will be displayed immediately.
-
-## 5. Testing
+## 4. Testing
 
 Privacy Pioneer uses [Jest](https://jestjs.io/) to run unit tests in order to maintain the integrity of the extension. All test files live in ./src/tests. In order to create a new test either add it to an existing test file or add it to a new file that ends with `.test.js`
 
@@ -131,7 +125,7 @@ To run all tests locally:
 npm run test
 ```
 
-## 6. Source Directory Layout
+## 5. Source Directory Layout
 
 ```bash
 .
@@ -141,17 +135,18 @@ npm run test
 |   |── libs            # Reusable utility functions and components used in frontend
 |   |── options         # Options page frontend SPA
 |   |── popup           # Popup dialog view frontend SPA
+|   |── tests           # Testing capabilities
 |   └── manifest.json   # Extension metadata
 └── ...
 ```
 
-The options and popup directories are similarly structured. Like many react projects they have an `index.html` file and `index.js` file which serve as the entry points. These directories also have a `components` directory, which contains reusable components to be used within it's parent directory, and a `views` directory, which contains page views (which are just more react components). Each component has an `index.js` file as an entry point to that component, and they may also contain a `style.js` file for scoped styling. For styling, we use a popular technique called CSS in JS to apply styles using the third party library, [styled components](https://styled-components.com). Styled components are prefixed with a `S`, e.g. `SContainer`. For more complex components or views, there may be an additional `components` directory. For transitions and animations, we use the third party library [framer motion](https://www.framer.com/motion/).
+The options and popup directories are similarly structured. Like many react projects they have an `index.html` file and `index.js` file which serve as the entry points. These directories also have a `components` directory, which contains reusable components to be used within it's parent directory, and a `views` directory, which contains page views (which are just more react components). Each component has an `index.js` file as an entry point to that component, and they may also contain a `style.js` file for scoped styling. For styling, we use a popular technique called CSS in JS to apply styles using the third party library [styled components](https://styled-components.com). Styled components are prefixed with a `S`, e.g. `SContainer`. For more complex components or views, there may be an additional `components` directory. For transitions and animations, we use the third party library [framer motion](https://www.framer.com/motion/).
 
-The `src/libs/indexed-db` directory, contains functions that communicate to the database.
+The `src/libs/indexed-db` directory, contains functions that instantiate and communicate with the indexeddb in the Firefox browser.
 
-Some logos and other assets are [here](https://docs.google.com/spreadsheets/d/1pmWIdsZv_lEIl9b3XRVXY2qe4mA-wedEM9K9kzkHnY0/edit#gid=0).
+Some logos and other assets are in a Figma [here](https://www.figma.com/team_invite/redeem/rVKfai7IOrG1D90QriS5DJ).
 
-## 7. Privacy Practice Analysis
+## 6. Privacy Practice Analysis
 
 Privacy Pioneer is analyzing the following privacy practices for each first and third party website.
 
@@ -174,15 +169,17 @@ Privacy Pioneer is analyzing the following privacy practices for each first and 
   - Email Address
   - Custom Keywords
 
-Privacy Pioneer utilizes the Browser Location API, which is built into most modern browsers, to obtain the user's Latitude and Longitude. This information will not be shared with the developers or any third parties. It is used to check if the user's Latitude and Longitude show up in any of the network data being taken by first parties or shared with third parties by the current website.
+Privacy Pioneer utilizes the [Geolocation API](https://developer.mozilla.org/en-US/docs/Web/API/Geolocation_API), which is built into most modern browsers, to obtain the user's Latitude and Longitude. This information will not be shared with the developers or any third parties. It is used to check if the user's Latitude and Longitude show up in any of the network data being taken by first parties or shared with third parties by the current website.
 
-Privacy Pioneer makes a distinction between Fine Location and Coarse Location within the GPS Location privacy practice listed above. Fine location means that the number calculated by the individual website is within +-0.1 degrees from the Browser Location API value, and Coarse Location means that it is within +-1.0 degrees. Thus, an instance of a user's latitude or longitude being taken or shared can result in one of the following outcomes in the extension:
+Privacy Pioneer makes a distinction between Fine Location and Coarse Location within the GPS Location privacy practice listed above. Fine location means that the number calculated by the individual website is within +-0.1 degrees from the Geolocation API value, and Coarse Location means that it is within +-1.0 degrees. Thus, an instance of a user's latitude or longitude being taken or shared can result in one of the following outcomes in the extension:
 
 - The evidence is not flagged due to obfuscation or some other way of protecting against the type of analysis employed by Privacy Pioneer.
-- The evidence is flagged by Privacy Pioneer as being an instance of Coarse Location and not Fine Location. This would mean that the latitude or longitude value is within +-1.0 degrees of the value determined by the Browser Location API.
-  The evidence is flagged by Privacy Pioneer as being an instance of both Coarse Location AND Fine Location. This would mean that the latitude or longitude value is within +-0.1 (and thus also +-1.0) degrees of the value determined by the Browser Location API.
+- The evidence is flagged by Privacy Pioneer as being an instance of Coarse Location and not Fine Location. This would mean that the latitude or longitude value is within +-1.0 degrees of the value determined by the Geolocation API.
+  The evidence is flagged by Privacy Pioneer as being an instance of both Coarse Location AND Fine Location. This would mean that the latitude or longitude value is within +-0.1 (and thus also +-1.0) degrees of the value determined by the Geolocation API.
 
 ipinfo.io is sent the user's IP address and returns information about their location based on that IP address. We take the user's Zip Code, Street Address, City, and Region from this and store it as an entry in the user's Watchlist to be looked for in new HTTP requests.
+
+## 7. Notifications
 
 If a user looks up a specific keyword from their watchlist (for example in a search bar or search engine), we will show notifications of this keyword being taken by a first party. For normal lookups (like keywords a user could be interested in), this will appear as strange, but it is important to know when a website is or is not encrypting user data when sending it to their backend APIs, since all web traffic has the potential to be monitored in transit across the internet.
 
@@ -215,7 +212,7 @@ We thank the developers.
 - IP addresses sometimes do not generate notifications. This will be addressed soon.
 - We do not look at the main HTML / main_frame type of data request in this extension. Thus, data that was loaded into the main body of the webpage, and not through an external query, will not generate evidence in Privacy Pioneer.
 
-## 11. Thank You!
+## 11. Thank You
 
 <p align="center"><strong>We would like to thank our financial supporters!</strong></p><br>
 
