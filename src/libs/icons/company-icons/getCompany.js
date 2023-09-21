@@ -49,7 +49,7 @@ export const companiesWithSVG = new Set([
   "Google",
   "Microsoft",
   "Salesforce",
-  "Twitter",
+  "X",
   "Verizon",
   "Yandex",
 ]);

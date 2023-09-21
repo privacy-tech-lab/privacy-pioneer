@@ -161,7 +161,7 @@ export const Salesforce = ({ size }) => (
   </svg>
 );
 
-export const Twitter = ({ size }) => (
+export const X = ({ size }) => (
   <svg
     role="img"
     viewBox="0 0 24 24"
@@ -206,7 +206,7 @@ export const CompanyLogoSVG = Object.freeze({
   Facebook: Facebook,
   Amazon: Amazon,
   Microsoft: Microsoft,
-  Twitter: Twitter,
+  X: X,
   Adobe: Adobe,
   Salesforce: Salesforce,
   "AT&T": Atat,
