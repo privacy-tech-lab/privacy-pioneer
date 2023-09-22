@@ -126,16 +126,25 @@ export async function importData() {
     let phone_arr = user_store_dict[typeEnum.phoneNumber];
     phone_arr.forEach((phone) => {
       const origHash = watchlistHashGen(typeEnum.phoneNumber, phone);
-      // creates an array of possible re-configurations for each number
-      let format_arr = buildPhone(phone);
-      format_arr.forEach((format) => {
-        userPhone.push(
-          createKeywordObj(format, typeEnum.phoneNumber, origHash)
-        );
-      });
-    });
-  }
-
+      const phoneRegex = buildGeneralRegex(phone)
+      const phoneObj = createKeywordObj(
+        phoneRegex,
+        typeEnum.phoneNumber,
+        origHash
+      );
+      userPhone.push(phoneObj);
+    })
+    //   // creates an array of possible re-configurations for each number
+    //   let format_arr = buildPhone(phone);
+    //   format_arr.forEach((format) => {
+    //     userPhone.push(
+    //       createKeywordObj(format, typeEnum.phoneNumber, origHash)
+    //     );
+    //   });
+    // });
+    
+    console.log(userPhone)
+  };
   // if we have a phone we put it in the network keywords dict
   if (typeof userPhone !== "undefined") {
     networkKeywords[permissionEnum.personal][typeEnum.phoneNumber] = userPhone;
