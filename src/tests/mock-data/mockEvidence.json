@@ -16,8 +16,7 @@
     ],
     "parent": "invasive_company",
     "rootU": "https://invasiveWebsite.com/",
-    "requestU": "https://requestingWebsite.com/",
-    "saveFullSnippet": false
+    "requestU": "https://requestingWebsite.com/"
   },
   "ml_region_true": "region ___ ive.com/v2.0/geoip?include=geo&include=isp&include=ip_hash&k=9fc95048-71ef-4f85-a2f7-d7e9ca5b8d45{\"geo_info\":{\"continent\":\"North America\",\"country\":\"United States\",\"city\":\"Middletown\",\"province\":\"<TARGET_REGION>\",\"postal_code\":\"06459\"},\"isp_info\":{\"isp\":\"Wesleyan University\",\"organization\":\"Wesleyan University\",\"autonomous_system_number\":167,\"autonomous_system_organization\":\"WESLEYAN-AS\"}}",
   "ml_region_false": "region ___ ,\"germany\",\"france\",\"spain\",\"south-africa\",\"mexico\",\"mexico-es\",\"australia\",\"japan\"]);function Ot(r){return At.has(r)}const Pt=new Set([\"alabama\",\"alaska\",\"american-samoa\",\"arizona\",\"arkansas\",\"california\",\"colorado\",\"<TARGET_REGION>\",\"delaware\",\"florida\",\"georgia\",\"guam\",\"hawaii\",\"idaho\",\"illinois\",\"indiana\",\"iowa\",\"kansas\",\"kentucky\",\"louisiana\",\"maine\",\"maryland\",\"massachusetts\",\"michigan\",\"minnesota\",\"mississippi\",\"missouri\",\"montana\"",

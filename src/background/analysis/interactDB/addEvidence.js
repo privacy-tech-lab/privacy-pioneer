@@ -107,7 +107,6 @@ function updateFetchedDict(evidenceDict, e) {
  * @param {string|undefined} parent Parent company of the request Url, if possible
  * @param {string} rootU The rootUrl of the request
  * @param {string} requestU The requestUrl of the request
- * @param {boolean} saveFullSnippet Option to save full snippet
  * @returns {Promise<string|void>} Side effects only
  *
  */
@@ -118,7 +117,6 @@ export async function addToEvidenceStore(
   parent,
   rootU,
   requestU,
-  saveFullSnippet
 ) {
   /**
    * This is a known bug where certain websites intiate requests where the rootURL
@@ -320,13 +318,8 @@ export async function addToEvidenceStore(
         return false;
       }
 
-      if (!saveFullSnippet && !evidenceObject.cookie) {
-        cutDownSnippet(evidenceObject);
-      } else if (saveFullSnippet) {
-        userData = getUserData();
-      }
+      cutDownSnippet(evidenceObject);
 
-      //what if they want full snippit
       if (evidenceObject.snippet != null) {
         if (
           [

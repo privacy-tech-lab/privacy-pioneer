@@ -201,8 +201,6 @@ async function analyze(request, userData) {
     // tag the parent
     const parent = tagParent(reqUrl);
 
-    const saveFullSnippet = userData[2];
-
     // push the job to the Queue (will add the evidence for one HTTP request at a time)
     evidenceQ.push(function (cb) {
       //@ts-ignore
@@ -213,7 +211,6 @@ async function analyze(request, userData) {
           parent,
           rootUrl,
           reqUrl,
-          saveFullSnippet
         )
       );
     });

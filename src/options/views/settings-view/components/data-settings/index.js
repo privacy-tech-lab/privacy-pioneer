@@ -13,11 +13,7 @@ import * as Icons from "../../../../../libs/icons";
 import { ToggleSwitch } from "../toggle-switch";
 import {
   getLabelStatus,
-  getSnippetStatus,
-  getOptimizationStatus,
   toggleLabel,
-  toggleSnippet,
-  toggleOptimization,
   getAnalyticsStatus,
   toggleAnalytics,
 } from "../../../../../libs/indexed-db/settings";
@@ -37,101 +33,6 @@ import {
 } from "../../../../../libs/exportData/initiateDownload";
 import { exportTypeEnum } from "../../../../../background/analysis/classModels.js";
 import { handleClick } from "../../../../../libs/indexed-db/getAnalytics";
-
-/**
- * Toggles whether the user views the full snippet of evidence
- */
-export const FullSnippetToggle = () => {
-  const [snippetStatus, setSnippetStatus] = useState(false);
-
-  useEffect(() => {
-    getSnippetStatus().then((res) => {
-      setSnippetStatus(res);
-    });
-  });
-
-  const toggle = () => {
-    toggleSnippet();
-    setSnippetStatus(!snippetStatus);
-  };
-
-  return (
-    <SSnippetToggle>
-      <ToggleSwitch
-        isActive={snippetStatus}
-        tooltipMessage={
-          "This setting will determine whether the full web request is saved when we detect your data in a requests"
-        }
-        onClick={() => {
-          toggle();
-          const getAnalysis = async () => {
-            const status = await getAnalyticsStatus();
-            if (status == true) {
-              handleClick(
-                "Save Full HTTP Request Off: " + snippetStatus.toString(),
-                "Settings",
-                settingsModelsEnum.notApplicable,
-                settingsModelsEnum.notApplicable,
-                settingsModelsEnum.notApplicable
-              );
-            }
-          };
-          getAnalysis();
-        }}
-        label={"Save Full HTTP Requests"}
-        spaceBetween
-      />
-    </SSnippetToggle>
-  );
-};
-
-/**
- * Toggles Optimization
- */
-export const OptimizationToggle = () => {
-  const [optimizationStatus, setOptimizationStatus] = useState(true);
-
-  useEffect(() => {
-    getOptimizationStatus().then((res) => {
-      setOptimizationStatus(res);
-    });
-  });
-
-  const toggleOptimize = () => {
-    toggleOptimization();
-    setOptimizationStatus(!optimizationStatus);
-  };
-
-  return (
-    <SSnippetToggle>
-      <ToggleSwitch
-        isActive={optimizationStatus}
-        tooltipMessage={
-          "To improve performance, this setting will limit the amount of data we analyze per site"
-        }
-        onClick={() => {
-          toggleOptimize();
-          const getAnalysis = async () => {
-            const status = await getAnalyticsStatus();
-            if (status == true) {
-              handleClick(
-                "Optimize Performance Toggle Off: " +
-                  optimizationStatus.toString(),
-                "Settings",
-                settingsModelsEnum.notApplicable,
-                settingsModelsEnum.notApplicable,
-                settingsModelsEnum.notApplicable
-              );
-            }
-          };
-          getAnalysis();
-        }}
-        label={"Optimize Performance"}
-        spaceBetween
-      />
-    </SSnippetToggle>
-  );
-};
 
 /**
  * Toggles Analytics
