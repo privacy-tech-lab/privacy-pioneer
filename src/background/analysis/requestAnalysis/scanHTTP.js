@@ -83,8 +83,8 @@ export function getAllEvidenceForRequest(request, userData) {
 
   executeAndPush(urlSearch(rootUrl, reqUrl, request.urlClassification));
 
-  function earlyTermination() {
-    return lengthHeuristic(strRequest);
+  if (lengthHeuristic(strRequest)) {
+    return evidenceArr;
   }
 
   runWatchlistAnalysis();
