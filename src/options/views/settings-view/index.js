@@ -16,8 +16,6 @@ import {
   SSeperator,
 } from "./style";
 import {
-  FullSnippetToggle,
-  OptimizationToggle,
   ExportData,
   LabelToggle,
   AnalyticsToggle,
@@ -62,8 +60,6 @@ const SettingsView = ({ changeTheme }) => {
               <ExportData />
             </div>
             <DangerZone />
-            <FullSnippetToggle />
-            <OptimizationToggle />
             <AnalyticsToggle />
             <Tour />
           </SSection>

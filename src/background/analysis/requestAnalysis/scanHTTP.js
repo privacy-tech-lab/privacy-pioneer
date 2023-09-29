@@ -40,8 +40,6 @@ export function getAllEvidenceForRequest(request, userData) {
   // {phone #s, emails, location elements entered by the user, fingerprinting keywords}
   const networkKeywords = userData[1];
 
-  const optimizePerformance = userData[3];
-
   // We only perform our analysis on reqUrl, requestBody, and responseData.
   const strRequest = JSON.stringify(request, [
     "reqUrl",
@@ -85,14 +83,8 @@ export function getAllEvidenceForRequest(request, userData) {
 
   executeAndPush(urlSearch(rootUrl, reqUrl, request.urlClassification));
 
-  function earlyTermination() {
-    return lengthHeuristic(strRequest);
-  }
-
-  if (optimizePerformance) {
-    if (earlyTermination()) {
-      return evidenceArr;
-    }
+  if (lengthHeuristic(strRequest)) {
+    return evidenceArr;
   }
 
   runWatchlistAnalysis();

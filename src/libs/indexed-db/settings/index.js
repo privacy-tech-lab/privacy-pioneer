@@ -32,10 +32,8 @@ export const setDefaultSettings = async () => {
       "theme",
       darkTheme.matches ? settingsEnum.dark : settingsEnum.light
     );
-    await settingsKeyval.set(settingsModelsEnum.fullSnippet, false);
     await settingsKeyval.set(settingsModelsEnum.tour, true);
     await settingsKeyval.set("alreadyNotified", {});
-    await settingsKeyval.set(settingsModelsEnum.optimizePerformance, true);
     await settingsKeyval.set(settingsModelsEnum.extensionEnabled, true);
     await settingsKeyval.set("firstHomeVisit", true);
     await analyticsKeyval.set(settingsModelsEnum.analytics, true);
@@ -80,42 +78,6 @@ export const toggleExtension = async () => {
     !extensionEnabled
   );
   return !extensionEnabled;
-};
-
-/**
- * Toggles snippets on or off
- */
-export const toggleSnippet = async () => {
-  let currentVal = await settingsKeyval.get(settingsModelsEnum.fullSnippet);
-  await settingsKeyval.set(settingsModelsEnum.fullSnippet, !currentVal);
-  //@ts-ignore
-  browser.runtime.sendMessage({ msg: "dataUpdated" });
-};
-
-/**
- * Tells whether the labels are on or off based on settings
- */
-export const getSnippetStatus = async () => {
-  return await settingsKeyval.get(settingsModelsEnum.fullSnippet);
-};
-
-/**
- * Toggles optimization on or off
- */
-export const toggleOptimization = async () => {
-  let currentVal = await settingsKeyval.get(
-    settingsModelsEnum.optimizePerformance
-  );
-  await settingsKeyval.set(settingsModelsEnum.optimizePerformance, !currentVal);
-  //@ts-ignore
-  browser.runtime.sendMessage({ msg: "dataUpdated" });
-};
-
-/**
- * Tells whether optimization is on or off based on settings
- */
-export const getOptimizationStatus = async () => {
-  return await settingsKeyval.get(settingsModelsEnum.optimizePerformance);
 };
 
 /**

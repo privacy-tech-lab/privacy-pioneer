@@ -285,23 +285,16 @@ export async function importData() {
 
   networkKeywords = hashUserDictValues(networkKeywords);
 
-  const fullSnippet = await settingsKeyval.get(settingsModelsEnum.fullSnippet);
-  const optimizePerformance = await settingsKeyval.get(
-    settingsModelsEnum.optimizePerformance
-  );
   const analytic = await analyticsKeyval.get(settingsModelsEnum.analytics);
 
   // returns [location we obtained from google maps API, {phone #s, emails,
   // location elements entered by the user, fingerprinting keywords}, the user's choice to or
-  // not to store full HTTP snippets, the user's choice to or not to optimize
   // performance, the user's current location and IP address as provided by
   // ipinfo.io]
 
   return [
     locCoords,
     networkKeywords,
-    fullSnippet,
-    optimizePerformance,
     currIpInfo,
     analytic,
   ];

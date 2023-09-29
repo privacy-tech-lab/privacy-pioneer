@@ -14,17 +14,13 @@
 
 ### 3
 
-- We format this user data as a list `[locCoords, networkKeywords, services, fullSnippet, optimizePerformance, currIpInfo]` returned by the `importData()` function in `importSearchData.js`. 
+- We format this user data as a list `[locCoords, networkKeywords, services, currIpInfo]` returned by the `importData()` function in `importSearchData.js`. 
 
 - `locCoords` use the getLocationData.js file which uses the navigator api to ask for the user's location. So, the location popup should come up here.
 
 - `networkKeywords` grabs all the user data in the watchlistKeyval, runs the appropriate structured routines in structuredRoutines.js (reformats phone numbers with google's api for example), and then returns everything as a dictionary.
 
 - `services` is the json from `src/assets/services.json`. This contains important websites that regularly perform invasive procedures, and we alert users to instances of their use.
-
-- `fullSnippet` is the user's choice to or not to store full HTTP snippets
-
-- `optimizePerformance` is the user's choice to or not to optimize performance
 
 - `currIpInfo` isthe user's current location and IP address as provided by ipinfo.io]
 
