@@ -134,16 +134,6 @@ export async function importData() {
       );
       userPhone.push(phoneObj);
     })
-    //   // creates an array of possible re-configurations for each number
-    //   let format_arr = buildPhone(phone);
-    //   format_arr.forEach((format) => {
-    //     userPhone.push(
-    //       createKeywordObj(format, typeEnum.phoneNumber, origHash)
-    //     );
-    //   });
-    // });
-    
-    console.log(userPhone)
   };
   // if we have a phone we put it in the network keywords dict
   if (typeof userPhone !== "undefined") {
