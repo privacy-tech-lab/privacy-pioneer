@@ -11,7 +11,10 @@ background.js
 - https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/API/webRequest
 */
 
-import { evidenceKeyval as evidenceIDB, evidenceKeyval } from "./analysis/interactDB/openDB";
+import {
+  evidenceKeyval as evidenceIDB,
+  evidenceKeyval,
+} from "./analysis/interactDB/openDB";
 import { onBeforeRequest } from "./analysis/analyze.js";
 import {
   getExtensionStatus,
@@ -22,6 +25,56 @@ import { runNotifications } from "../libs/indexed-db/notifications";
 import Queue from "queue";
 import { getHostname } from "./analysis/utility/util.js";
 import { EVIDENCE_THRESHOLD, FIVE_SEC_IN_MILLIS } from "./analysis/constants";
+import axios from "axios";
+
+/**
+ * @var {string[]} hostnameHold
+ */
+var hostnameHold = [];
+
+async function apiSend() {
+  //@ts-ignore
+  const currentWindow = await browser.tabs.query({
+    active: true,
+    currentWindow: true,
+  });
+  const currentUrl = currentWindow[0].url;
+  const currentHostName = getHostname(currentUrl);
+  async function sender() {
+    // posting data to sql db
+    // since index is either an array or an int, stringify it
+    const evidence = await evidenceKeyval.get(currentHostName);
+    console.log(evidence, currentHostName)
+    for (const [label, value] of Object.entries(evidence)) {
+      if (label != "lastSeen") {
+        for (const [type, requests] of Object.entries(value)) {
+          for (const [url, e] of Object.entries(requests)) {
+            e.index = JSON.stringify(e.index);
+          }
+        }
+      }
+    }
+    const allSend = {
+      "host":currentHostName,
+      "evidence":evidence
+    }
+    axios
+      .post("http://localhost:8080/entries", allSend, {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      })
+      .then((res) => console.log(res.data))
+      .catch((err) => console.log(err));
+  }
+
+  if (!hostnameHold.includes(currentHostName)) {
+    hostnameHold.push(currentHostName);
+    setTimeout(sender, 18000);
+  }
+}
+//@ts-ignore
+browser.webNavigation.onDOMContentLoaded.addListener(apiSend);
 
 // A filter that restricts the events that will be sent to a listener.
 // You can play around with the urls and types.
@@ -42,7 +95,7 @@ browser.runtime.onMessage.addListener((request, sender, sendResponse) => {
   if (request.msg == "background.currentTab") {
     // send current, open tab to the runtime (our extension)
     const send = (tabs) =>
-    //@ts-ignore
+      //@ts-ignore
       browser.runtime.sendMessage({
         msg: "popup.currentTab",
         data: tabs[0].url,
@@ -139,17 +192,16 @@ importData().then((data) => {
 });
 
 //@ts-ignore
-browser.webNavigation.onBeforeNavigate.addListener(async (details) => { 
-  if (details.parentFrameId == -1) { 
-    const host = getHostname(details.url)
-    let evidence = await evidenceKeyval.get(host)
-    if (evidence == undefined) { 
-      evidence = {}
+browser.webNavigation.onBeforeNavigate.addListener(async (details) => {
+  if (details.parentFrameId == -1) {
+    const host = getHostname(details.url);
+    let evidence = await evidenceKeyval.get(host);
+    if (evidence == undefined) {
+      evidence = {};
     }
-    evidence.lastSeen = new Date()
-    await evidenceKeyval.set(host, evidence)
+    evidence.lastSeen = new Date();
+    await evidenceKeyval.set(host, evidence);
   }
-  
 });
 
 setDefaultSettings();
