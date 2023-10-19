@@ -26,6 +26,7 @@
     }
   },
   "dependencies": {
+    "@babel/traverse": "^7.23.2",
     "@popperjs/core": "^2.11.8",
     "@tensorflow/tfjs": "^3.20.0",
     "@tensorflow/tfjs-node": "^4.2.0",
