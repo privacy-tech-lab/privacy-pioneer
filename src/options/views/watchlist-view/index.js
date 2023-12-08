@@ -162,8 +162,7 @@ const WatchlistView = () => {
               ))
             ) : (
               <SEmpty>
-                You currently have no keywords or IP. Press "Add Keyword" or
-                "Add IP"!
+                You currently have no keywords. Press "Add Keyword" to add one!
               </SEmpty>
             )}
           </SListContent>

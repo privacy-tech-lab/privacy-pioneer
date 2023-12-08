@@ -23,12 +23,13 @@ import { requestNotificationPermission } from "./notifications.js";
  * @param {string|object} keyword
  * @param {string} type
  * @param {string|number|null} id
+ * @param {boolean} edited
  * @returns {Promise<Boolean>} True if successful, false otherwise
  */
-export const saveKeyword = async (keyword, type, id) => {
+export const saveKeyword = async (keyword, type, id, edited) => {
   // Validate
   if (type in keywordTypes && keyword) {
-    const notificationEnabled = Notification.permission == "granted";
+    var notificationEnabled = Notification.permission == "granted";
     let key;
     //id == ip || loc when this is the ipinfo generated ip keyword
     var maxNum = 0;
@@ -58,6 +59,8 @@ export const saveKeyword = async (keyword, type, id) => {
     } else {
       key = watchlistHashGen(type, keyword);
     }
+    const previousSettings = await watchlistKeyval.get(key.toString());
+    if(edited && previousSettings != null) {notificationEnabled = previousSettings.notification;}
     type != permissionEnum.location
       ? await watchlistKeyval.set(key.toString(), {
           keyword: keyword,
@@ -78,7 +81,7 @@ export const saveKeyword = async (keyword, type, id) => {
 };
 
 export const toggleNotifications = async (id) => {
-  const data = await watchlistKeyval.get(id);
+  const data = await watchlistKeyval.get(id.toString());
   if (data.notification) {
     data.notification = false;
   } else {
@@ -91,7 +94,7 @@ export const toggleNotifications = async (id) => {
       data.notification = true;
     }
   }
-  watchlistKeyval.set(id, data);
+  watchlistKeyval.set(id.toString(), data);
 };
 
 /**
