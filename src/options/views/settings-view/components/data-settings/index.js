@@ -15,7 +15,9 @@ import {
   getLabelStatus,
   toggleLabel,
   getAnalyticsStatus,
+  getWatchlistManual,
   toggleAnalytics,
+  toggleWatchlistManual,
 } from "../../../../../libs/indexed-db/settings";
 import {
   SExportButton,
@@ -80,6 +82,54 @@ export const AnalyticsToggle = () => {
     </SSnippetToggle>
   );
 };
+
+/**
+ * Toggles manual ip and location editing for the watchlist
+ */
+
+export const WatchlistToggle = () => {
+  const [watchlistManual, setWatchlistManual] = useState(false);
+
+  useEffect(() => {
+    getWatchlistManual().then((res) => {
+      setWatchlistManual(res);
+    });
+  });
+
+  const toggleWatchlistMan = () => {
+    toggleWatchlistManual();
+    setWatchlistManual(!watchlistManual);
+  };
+
+  return (
+    <SSnippetToggle>
+      <ToggleSwitch
+        tooltipMessage={
+          "This setting enables manual editing of the automatically generated IP and location fields in the watchlist."
+        }
+        isActive={watchlistManual}
+        onClick={() => {
+          toggleWatchlistMan();
+          const getWLM= async () => {
+            const status = await getAnalyticsStatus();
+            if (status == true) {
+              handleClick(
+                "Watchlist Manual Toggle On: " + watchlistManual.toString(),
+                "Settings",
+                settingsModelsEnum.notApplicable,
+                settingsModelsEnum.notApplicable,
+                settingsModelsEnum.notApplicable
+              );
+            }
+          };
+          getWLM();
+        }}
+        label={"Manual Editing"}
+        spaceBetween
+      />
+    </SSnippetToggle>
+  );
+}
 
 /**
  * Toggles each label from user view
