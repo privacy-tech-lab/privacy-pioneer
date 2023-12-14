@@ -104,10 +104,11 @@ export const Back = ({ size }) => (
   </svg>
 );
 
-export const MoreVertical = ({ size }) => (
+export const MoreVertical = ({ size, opacity=1 }) => (
   <svg
     height={size}
     width={size}
+    opacity={opacity}
     xmlns="http://www.w3.org/2000/svg"
     viewBox="0 0 24 24"
   >

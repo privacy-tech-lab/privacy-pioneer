@@ -10,6 +10,7 @@ import {
 } from "../../../background/analysis/classModels";
 import { evidenceKeyval } from "../../../background/analysis/interactDB/openDB";
 import { loadModel } from "../../../background/analysis/interactDB/ml/jsrun.js";
+import { importData } from "../../../background/analysis/buildUserData/importSearchData.js";
 
 export const settingsEnum = Object.freeze({
   dark: "dark",

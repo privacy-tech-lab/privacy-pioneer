@@ -12,6 +12,7 @@ import {
   SDropdownItem,
   SSection,
   SCategory,
+  SSeperator,
 } from "./style";
 import * as Icons from "../../../../../libs/icons";
 import {
@@ -30,6 +31,7 @@ import {
   IPINFO_IPKEY,
   IPINFO_ADDRESSKEY,
 } from "../../../../../background/analysis/buildUserData/importSearchData";
+import { div } from "@tensorflow/tfjs";
 
 /**
  * List item displaying keyword, type, and category
@@ -51,6 +53,7 @@ export const ListItem = ({
   updateList,
   location,
   notification,
+  edits,
 }) => {
   const dropdownRef = useRef();
   const [showDropdown, setDropdown] = useState(false);
@@ -114,6 +117,7 @@ export const ListItem = ({
       <SCategory>{categorySwitch(type)}</SCategory>
       <div>
         <div>
+          {(id == IPINFO_IPKEY || id == IPINFO_ADDRESSKEY ) && !edits ? <Icons.MoreVertical size="24px" opacity={0.25} /> : 
           <SAction
             ref={dropdownRef}
             onClick={() => {
@@ -132,7 +136,7 @@ export const ListItem = ({
               };
               getAnalysis();
             }}
-          >
+          > 
             <SDropdownOptions show={showDropdown}>
               <SDropdownItem
                 onClick={async () => {
@@ -196,7 +200,7 @@ export const ListItem = ({
               </SDropdownItem>
             </SDropdownOptions>
             <Icons.MoreVertical size="24px" />
-          </SAction>
+          </SAction>}
           <SAction
             data-tip
             data-for="sNotification"
