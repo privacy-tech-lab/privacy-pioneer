@@ -89,7 +89,7 @@ export async function importData() {
   if(!man_edits) {
     let keywordObject = await watchlistKeyval.get(IPINFO_IPKEY);
     let locObject = await watchlistKeyval.get(IPINFO_ADDRESSKEY);
-    if (keywordObject == null || locObject == null) {
+    if (keywordObject == undefined || locObject == undefined) {
       await saveKeyword(retJson.ip, typeEnum.ipAddress, "ip", false);
       await saveKeyword(locKey, permissionEnum.location, "loc", false);
     }
