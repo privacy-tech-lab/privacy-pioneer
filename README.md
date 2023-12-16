@@ -23,7 +23,7 @@ The idea of Privacy Pioneer is to help people understand the data collection and
 
 If such a string is sent to a site via an HTTP POST request, it can be concluded that it is collecting or sharing location data. Privacy Pioneer automatically detects such behaviors and displays them in privacy labels.
 
-Privacy Pioneer's privacy practice analysis leverages rule-based and machine learning technologies. The machine learning technologies are [available separately](https://github.com/privacy-tech-lab/privacy-pioneer-machine-learning).
+Privacy Pioneer's privacy practice analysis is based on rule-based heuristics as well as a machine learning model. When you install Privacy Pioneer, the model is served from our [machine learning repo](https://github.com/privacy-tech-lab/privacy-pioneer-machine-learning).
 
 Privacy Pioneer is implemented as a browser extension for Firefox (currently the only browser we support).
 
