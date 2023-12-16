@@ -142,7 +142,7 @@ npm run test
 
 The options and popup directories are similarly structured. Like many react projects they have an `index.html` file and `index.js` file which serve as the entry points. These directories also have a `components` directory, which contains reusable components to be used within it's parent directory, and a `views` directory, which contains page views (which are just more react components). Each component has an `index.js` file as an entry point to that component, and they may also contain a `style.js` file for scoped styling. For styling, we use a popular technique called CSS in JS to apply styles using the third party library [styled components](https://styled-components.com). Styled components are prefixed with a `S`, e.g. `SContainer`. For more complex components or views, there may be an additional `components` directory. For transitions and animations, we use the third party library [framer motion](https://www.framer.com/motion/).
 
-The `src/libs/indexed-db` directory, contains functions that instantiate and communicate with the indexeddb in the Firefox browser.
+The `src/libs/indexed-db` directory, contains functions that instantiate and communicate with the IndexedDB in the Firefox browser.
 
 Some logos and other assets are in a Figma [here](https://www.figma.com/team_invite/redeem/rVKfai7IOrG1D90QriS5DJ).
 
