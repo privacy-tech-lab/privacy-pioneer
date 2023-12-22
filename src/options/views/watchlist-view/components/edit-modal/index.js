@@ -226,7 +226,7 @@ export const EditModal = ({ passKeywordType, passKeyword, edit, id, updateList }
                   })
                 ) {
                   await requestNotificationPermission();
-                  if (await saveKeyword(key, keywordType, id)) {
+                  if (await saveKeyword(key, keywordType, id, edit)) {
                     await updateList();
                     const modal = Modal.getInstance(
                       document.getElementById("edit-modal")

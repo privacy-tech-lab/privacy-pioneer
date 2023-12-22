@@ -10,6 +10,7 @@ import {
 } from "../../../background/analysis/classModels";
 import { evidenceKeyval } from "../../../background/analysis/interactDB/openDB";
 import { loadModel } from "../../../background/analysis/interactDB/ml/jsrun.js";
+import { importData } from "../../../background/analysis/buildUserData/importSearchData.js";
 
 export const settingsEnum = Object.freeze({
   dark: "dark",
@@ -27,6 +28,7 @@ export const setDefaultSettings = async () => {
     await settingsKeyval.set(permissionEnum.monetization, true);
     await settingsKeyval.set(permissionEnum.tracking, true);
     await settingsKeyval.set(permissionEnum.personal, true);
+    await settingsKeyval.set("watchlistmanual", false);
     const darkTheme = window.matchMedia("(prefers-color-scheme: dark)");
     await settingsKeyval.set(
       "theme",
@@ -54,6 +56,18 @@ export const toggleLabel = async (label) => {
   if (Object.values(permissionEnum).includes(label)) {
     await settingsKeyval.set(label, !currentVal);
   }
+};
+
+/**
+ * Toggle watchlist IP and location editing (for the automatically generated entries)
+ */
+export const toggleWatchlistManual = async () => {
+  let currentVal = await settingsKeyval.get("watchlistmanual")
+  await settingsKeyval.set("watchlistmanual", !currentVal)
+};
+
+export const getWatchlistManual = async () => {
+  return await settingsKeyval.get("watchlistmanual");
 };
 
 /**

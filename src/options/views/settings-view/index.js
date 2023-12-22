@@ -19,6 +19,7 @@ import {
   ExportData,
   LabelToggle,
   AnalyticsToggle,
+  WatchlistToggle,
 } from "./components/data-settings";
 import { ThemeSelection } from "./components/theme-settings";
 import { DangerZone } from "./components/danger-settings";
@@ -46,6 +47,9 @@ const SettingsView = ({ changeTheme }) => {
             <SSettingHeader>Labels</SSettingHeader>
             <SSubtitle>Toggle which labels you want to track</SSubtitle>
             <LabelToggle />
+            <SSettingHeader>Watchlist</SSettingHeader>
+            <SSubtitle>Toggle manual editing of automatically generated entries in the watchlist</SSubtitle>
+            <WatchlistToggle />
             <SSettingHeader>Theme</SSettingHeader>
             <SSubtitle>Choose the theme of the extension</SSubtitle>
             <ThemeSelection changeTheme={changeTheme} />

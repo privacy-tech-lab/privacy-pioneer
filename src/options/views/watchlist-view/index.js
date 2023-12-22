@@ -17,7 +17,7 @@ import { SContainer, SSubtitle } from "./style";
 import * as Icons from "../../../libs/icons";
 import { ListItem } from "./components/list-item";
 import { EditModal } from "./components/edit-modal";
-import { watchlistKeyval } from "../../../libs/indexed-db/openDB.js";
+import { settingsKeyval, watchlistKeyval } from "../../../libs/indexed-db/openDB.js";
 import { Modal } from "bootstrap";
 import {
   permissionEnum,
@@ -36,12 +36,14 @@ import { handleClick } from "../../../libs/indexed-db/getAnalytics";
 const WatchlistView = () => {
   const [modalConfig, configModal] = useState({ show: false, edit: false });
   const [items, setItems] = useState([]);
+  const [watchManual, setWatchManual] = useState(false);
 
   /**
    * Inflates view with keywords from watchlist keystore. Sends message to background script to update data.
    */
   const updateList = () => {
     //@ts-ignore
+    settingsKeyval.get("watchlistmanual").then((res) => setWatchManual(res));
     watchlistKeyval.values().then((values) => setItems(values));
     //@ts-ignore
     browser.runtime.sendMessage({
@@ -158,12 +160,12 @@ const WatchlistView = () => {
                   configModal={configModal}
                   updateList={updateList}
                   notification={item.notification}
+                  edits={watchManual}
                 />
               ))
             ) : (
               <SEmpty>
-                You currently have no keywords or IP. Press "Add Keyword" or
-                "Add IP"!
+                You currently have no keywords. Press "Add Keyword" to add one!
               </SEmpty>
             )}
           </SListContent>
