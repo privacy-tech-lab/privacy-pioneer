@@ -93,21 +93,21 @@ export async function importData() {
       await saveKeyword(retJson.ip, typeEnum.ipAddress, "ip", false);
       await saveKeyword(locKey, permissionEnum.location, "loc", false);
     }
-  
-    //This checks to see if the ipinfo generated keywords are up to date with users current location
-    for (let [t, val] of Object.entries(keywordObject)) {
-      if (t == "keyword") {
-        //If the useres watchlist is not current, then update it
-        if (val != retJson.ip) {
-          await saveKeyword(retJson.ip, typeEnum.ipAddress, "ip", true);
-          await saveKeyword(locKey, permissionEnum.location, "loc", true);
+    else {
+      for (let [t, val] of Object.entries(keywordObject)) {
+        if (t == "keyword") {
+          //If the useres watchlist is not current, then update it
+          if (val != retJson.ip) {
+            await saveKeyword(retJson.ip, typeEnum.ipAddress, "ip", true);
+            await saveKeyword(locKey, permissionEnum.location, "loc", true);
+          }
         }
       }
-    }
-
-    if (locObject != locKey) {
+      
+      if (locObject != locKey) {
         await saveKeyword(retJson.ip, typeEnum.ipAddress, "ip", true);
         await saveKeyword(locKey, permissionEnum.location, "loc", true);
+      }
     }
   }
   let user_store_dict = await getWatchlistDict();
