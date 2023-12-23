@@ -44,7 +44,7 @@ Contact us with any questions or comments at <sebastian@privacytechlab.org>.
 [7. Notifications](#7-notifications)  
 [8. Extension Architecture](#8-extension-architecture)  
 [9. Third Party Libraries and Resources](#9-third-party-libraries-and-resources)  
-[10. Known Issues / Things to be Aware Of](#10-known-issues--things-to-be-aware-of)  
+[10. Known Issues](#10-known-issues)  
 [11. Thank You!](#11-thank-you)
 
 ## 1. Research Publications
@@ -205,7 +205,7 @@ It also uses the following resources.
 
 We thank the developers.
 
-## 10. Known Issues / Things to be Aware Of
+## 10. Known Issues
 
 - Some warnings may occur when you run `npm install --production=false`, but they will not negatively affect the compilation or execution of Privacy Pioneer.
 - When the overview page of Privacy Pioneer is open, data from websites visited after opening it will not be shown until the overview is refreshed.
