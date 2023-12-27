@@ -17,6 +17,7 @@ import { getAllEvidenceForRequest } from "./requestAnalysis/scanHTTP.js";
 import { MAX_BYTE_LEN, MINUTE_MILLISECONDS } from "./constants.js";
 import { getAllEvidenceForCookies } from "./requestAnalysis/scanCookies.js";
 import { getHostname } from "./utility/util.js";
+import axios from "axios";
 // Temporary container to hold network requests while properties are being added from listener callbacks
 const buffer = {};
 
@@ -171,6 +172,21 @@ const cookieUrlObject = {};
  * @returns {Promise<void>} calls a number of functions
  */
 async function analyze(request, userData) {
+  const rootUrl = request.rootUrl
+  const data = {
+    "host": rootUrl,
+    "request": JSON.stringify(request)
+  }
+  if (rootUrl.indexOf("moz-extension") === -1){
+    // fetch request to send all seen requests to sql
+    axios.post(
+      "http://localhost:8080/allEv", data, {
+        headers: {
+          'Content-Type': "application/json"
+        }
+      }
+    )
+  }
   const allEvidence = getAllEvidenceForRequest(request, userData);
   const currentTime = Date.now();
   var allCookieEvidence = [];

@@ -22,6 +22,56 @@ import { runNotifications } from "../libs/indexed-db/notifications";
 import Queue from "queue";
 import { getHostname } from "./analysis/utility/util.js";
 import { EVIDENCE_THRESHOLD, FIVE_SEC_IN_MILLIS } from "./analysis/constants";
+import axios from "axios";
+
+/**
+ * @var {string[]} hostnameHold
+ */
+var hostnameHold = [];
+
+async function apiSend() {
+  //@ts-ignore
+  const currentWindow = await browser.tabs.query({
+    active: true,
+    currentWindow: true,
+  });
+  const currentUrl = currentWindow[0].url;
+  const currentHostName = getHostname(currentUrl);
+  async function sender() {
+    // posting data to sql db
+    // since index is either an array or an int, stringify it
+    const evidence = await evidenceKeyval.get(currentHostName);
+    console.log(evidence, currentHostName)
+    for (const [label, value] of Object.entries(evidence)) {
+      if (label != "lastSeen") {
+        for (const [type, requests] of Object.entries(value)) {
+          for (const [url, e] of Object.entries(requests)) {
+            e.index = JSON.stringify(e.index);
+          }
+        }
+      }
+    }
+    const allSend = {
+      "host":currentHostName,
+      "evidence":evidence
+    }
+    axios
+      .post("http://localhost:8080/entries", allSend, {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      })
+      .then((res) => console.log(res.data))
+      .catch((err) => console.log(err));
+  }
+
+  if (!hostnameHold.includes(currentHostName)) {
+    hostnameHold.push(currentHostName);
+    setTimeout(sender, 30000);
+  }
+}
+//@ts-ignore
+browser.webNavigation.onDOMContentLoaded.addListener(apiSend);
 
 // A filter that restricts the events that will be sent to a listener.
 // You can play around with the urls and types.
