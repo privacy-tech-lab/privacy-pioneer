@@ -67,9 +67,11 @@ export function getHostname(url) {
   if (arrLen > 2) {
     // domain = second to last and last domain. could be (xyz.me.uk) or (xyz.uk)
     domain = splitArr[arrLen - 2] + "." + splitArr[arrLen - 1];
+    console.log("before")
     //check to see if it's using a Country Code Top Level Domain (ccTLD) (i.e. ".me.uk")
-    if (splitArr[arrLen - 2].length == 2 && splitArr[arrLen - 1].length == 2) {
+    if (splitArr[arrLen - 2].length < 4 && splitArr[arrLen - 1].length == 2) {
       //this is using a ccTLD. set domain to include the actual host name
+      console.log("here")
       domain = splitArr[arrLen - 3] + "." + domain;
     }
   }
