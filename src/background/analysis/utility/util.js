@@ -68,7 +68,7 @@ export function getHostname(url) {
     // domain = second to last and last domain. could be (xyz.me.uk) or (xyz.uk)
     domain = splitArr[arrLen - 2] + "." + splitArr[arrLen - 1];
     //check to see if it's using a Country Code Top Level Domain (ccTLD) (i.e. ".me.uk")
-    if (splitArr[arrLen - 2].length < 4 && splitArr[arrLen - 1].length == 2) {
+    if ((splitArr[arrLen - 2].length < 4 && splitArr[arrLen - 1].length == 2) || splitArr[arrLen - 2] == "govt") {
       //this is using a ccTLD. set domain to include the actual host name
       domain = splitArr[arrLen - 3] + "." + domain;
     }
