@@ -117,7 +117,7 @@ const notify = async (host) => {
  */
 const notifyPersonal = async (host, evidence) => {
   if (Notification.permission == "granted") {
-    const keyword = (await watchlistKeyval.get(evidence.watchlistHash)).keyword;
+    const keyword = (await watchlistKeyval.get(evidence.watchlistHash.toString())).keyword;
     const displayName = privacyLabels[evidence.permission]["types"][evidence.typ].displayName;
     const evidenceList = `\n${displayName} (${keyword.slice(0, 3)}**)`;
 
