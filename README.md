@@ -75,6 +75,8 @@ npm install --production=false
 
 **Note**: Privacy Pioneer uses an external service, [ipinfo.io](https://ipinfo.io/), to automate the identification of a user's Location in web traffic of visited websites. For this purpose Privacy Pioneer sends a user's IP address to ipinfo.io when the user restarts the browser or makes changes to the Watchlist. An ipinfo API token is required for Privacy Pioneer to work.
 
+In order to get your ipinfo API token, you must sign up for a free account with ipinfo via https://ipinfo.io. Then once you're signed in, you must go to the token tab and copy the token that is displayed to clipboard. Once this is done you must then:
+
 Create a file `holdAPI.js` and save it in the `/src/libs/` folder with your ipinfo API token as follows:
 
 ```javascript
