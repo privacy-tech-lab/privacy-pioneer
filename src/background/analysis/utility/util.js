@@ -4,6 +4,7 @@ privacy-tech-lab, https://privacytechlab.org/
 */
 
 import { Evidence } from "../classModels.js";
+import psl from "psl";
 
 /**
  * Utility function to create hash for watchlist key based on keyword and type
@@ -58,22 +59,7 @@ export function extractHostname(url) {
  */
 export function getHostname(url) {
   if (typeof url == "undefined") return "";
-  var domain = extractHostname(url),
-    splitArr = domain.split("."),
-    arrLen = splitArr.length;
-
-  //extracting the root domain here
-  //if there is a subdomain
-  if (arrLen > 2) {
-    // domain = second to last and last domain. could be (xyz.me.uk) or (xyz.uk)
-    domain = splitArr[arrLen - 2] + "." + splitArr[arrLen - 1];
-    //check to see if it's using a Country Code Top Level Domain (ccTLD) (i.e. ".me.uk")
-    if ((splitArr[arrLen - 2].length < 4 && splitArr[arrLen - 1].length == 2) || splitArr[arrLen - 2] == "govt") {
-      //this is using a ccTLD. set domain to include the actual host name
-      domain = splitArr[arrLen - 3] + "." + domain;
-    }
-  }
-  return domain;
+  return psl.parse(extractHostname(url)).domain;
 }
 
 /**
