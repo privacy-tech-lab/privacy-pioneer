@@ -110,7 +110,7 @@ const WebsiteView = () => {
         const host = getHostname(request.data);
 
         //@ts-ignore
-        setIsOurHomePage(browser.runtime.getURL("").includes(host));
+        setIsOurHomePage(request.data.includes(browser.runtime.getURL("")));
 
         getWebsiteLastVisitedEvidence(host).then((result) => {
             setLabels(result);

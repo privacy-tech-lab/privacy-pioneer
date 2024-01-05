@@ -59,7 +59,7 @@ export function extractHostname(url) {
  */
 export function getHostname(url) {
   if (typeof url == "undefined") return "";
-  return psl.parse(extractHostname(url)).domain;
+  return psl.parse(extractHostname(url)).domain ?? "";
 }
 
 /**
