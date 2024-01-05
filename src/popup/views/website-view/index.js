@@ -52,6 +52,7 @@ const WebsiteView = () => {
   const [empty, setEmpty] = useState(true);
   const [isOurHomePage, setIsOurHomePage] = useState(false);
   const [extensionEnabled, setExtensionEnabled] = useState(false);
+  const [invalidSite, setInvalidSite] = useState(false);
 
   /**
    * Navigate to route in options page based on urlHash
@@ -110,7 +111,8 @@ const WebsiteView = () => {
         const host = getHostname(request.data);
 
         //@ts-ignore
-        setIsOurHomePage(browser.runtime.getURL("").includes(host));
+        setIsOurHomePage(request.data.includes(browser.runtime.getURL("")));
+        setInvalidSite(host == "");
 
         getWebsiteLastVisitedEvidence(host).then((result) => {
             setLabels(result);
@@ -220,7 +222,7 @@ const WebsiteView = () => {
           <SBody>
             {extensionEnabled && (
               <SHeader>
-                {isOurHomePage ? (
+                {(isOurHomePage || invalidSite) ? (
                   <PrivacyPioneerLogo />
                 ) : (
                   <WebsiteLogo
@@ -230,7 +232,7 @@ const WebsiteView = () => {
                   />
                 )}
                 <STitle>{isOurHomePage ? "Privacy Pioneer" : website}</STitle>
-                <SSubtitle>{!isOurHomePage && getCount()}</SSubtitle>
+                <SSubtitle>{!(isOurHomePage || invalidSite) && getCount()}</SSubtitle>
               </SHeader>
             )}
             {empty ? (
@@ -239,7 +241,7 @@ const WebsiteView = () => {
                   {extensionEnabled
                     ? isOurHomePage
                       ? "This is our homepage! You won't find anything here. Keep browsing and check back later."
-                      : "Nothing yet...Keep browsing and check back later!"
+                      : invalidSite ? "Privacy Pioneer is unable to analyze this page." : "Nothing yet...Keep browsing and check back later!"
                     : "The extension is currently disabled! Press the power button to re-enable analysis!"}
                 </SEmptyText>
                 <img src={floating} />
