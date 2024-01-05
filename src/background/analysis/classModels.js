@@ -270,7 +270,7 @@ export const keywordTypes = Object.freeze({
     placeholder: {
       streetAddress: "45 Wyllys Ave",
       city: "Middletown",
-      region: "Conneticut",
+      region: "Connecticut",
       zipCode: "06459",
     },
     toolTip:

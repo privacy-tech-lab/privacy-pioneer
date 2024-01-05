@@ -56,7 +56,7 @@ export const EditModal = ({ passKeywordType, passKeyword, edit, id, updateList }
   );
   const [keyword, setKeyword] = useState(edit ? passKeyword : "");
   const [address, setAddress] = useState(
-    edit ? keyword[typeEnum.streetAddress] ?? null : ""
+    edit ? keyword[typeEnum.streetAddress] ?? "" : ""
   );
   const [city, setCity] = useState(edit ? keyword[typeEnum.city] ?? null : "");
   const [region, setRegionloc] = useState(
@@ -203,11 +203,11 @@ export const EditModal = ({ passKeywordType, passKeyword, edit, id, updateList }
                 let key;
                 if (keywordType == permissionEnum.location) {
                   key = {
-                    [typeEnum.streetAddress]: address,
+                    [typeEnum.streetAddress]: (address == "" ? null : address),
                     [typeEnum.zipCode]: zip,
                     [typeEnum.region]: region,
                     [typeEnum.city]: city,
-                    display: `${address}, ${city}, ${region} ${zip}`,
+                    display: (address != "") ? `${address}, ${city}, ${region} ${zip}` : ` ${city}, ${region} ${zip}`,
                   };
                 } else {
                   key = keyword;

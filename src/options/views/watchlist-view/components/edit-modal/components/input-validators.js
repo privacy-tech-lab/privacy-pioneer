@@ -97,7 +97,7 @@ const validate = ({
       badInput("city");
       return false;
     }
-    if (!inputValidator.city_address.test(address)) {
+    if (!inputValidator.city_address.test(address) && (address.length != 0)) {
       badInput("address");
       return false;
     }
