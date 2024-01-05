@@ -21,7 +21,6 @@ import { keywordTypes } from "../../../../../../background/analysis/classModels"
  * @param {string} obj.streetAddress
  */
 export const AddressForm = ({ onChange, city, region, zip, streetAddress }) => {
-  console.log(streetAddress);
   return (
     <SForm>
       <SKeyword>
