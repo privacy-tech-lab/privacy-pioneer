@@ -58,6 +58,8 @@ Contact us with any questions or comments at <sebastian@privacytechlab.org>.
 
 ## 2. Promo Video
 
+Unmute or turn up the volume if you do not hear anything.
+
 <https://github.com/privacy-tech-lab/privacy-pioneer/assets/78764811/600a95f4-4d41-4c7e-ba08-eab8e1779ba4>
 
 ## 3. Development
