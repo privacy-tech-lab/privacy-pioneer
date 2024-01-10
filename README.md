@@ -36,16 +36,17 @@ Privacy Pioneer is developed and maintained by **Daniel Goldelman (@danielgoldel
 Contact us with any questions or comments at <sebastian@privacytechlab.org>.
 
 [1. Research Publications](#1-research-publications)  
-[2. Development](#2-development)  
-[3. Production](#3-production)  
-[4. Testing](#4-testing)  
-[5. Source Directory Layout](#5-source-directory-layout)  
-[6. Privacy Practice Analysis](#6-privacy-practice-analysis)  
-[7. Notifications](#7-notifications)  
-[8. Extension Architecture](#8-extension-architecture)  
-[9. Third Party Libraries and Resources](#9-third-party-libraries-and-resources)  
-[10. Known Issues](#10-known-issues)  
-[11. Thank You!](#11-thank-you)
+[2. Promo Video](#2-promo-video)  
+[3. Development](#3-development)  
+[4. Production](#4-production)  
+[5. Testing](#5-testing)  
+[6. Source Directory Layout](#6-source-directory-layout)  
+[7. Privacy Practice Analysis](#7-privacy-practice-analysis)  
+[8. Notifications](#8-notifications)  
+[9. Extension Architecture](#9-extension-architecture)  
+[10. Third Party Libraries and Resources](#10-third-party-libraries-and-resources)  
+[11. Known Issues](#11-known-issues)  
+[12. Thank You!](#12-thank-you)
 
 ## 1. Research Publications
 
@@ -55,7 +56,11 @@ Contact us with any questions or comments at <sebastian@privacytechlab.org>.
 - Owen Kaplan, [Privacy Pioneer: Creating an Automated Data-Privacy UI for Web Browsers](https://digitalcollections.wesleyan.edu/object/ir%3A3180), Undergraduate Honors Thesis, Wesleyan University, April 2022
 - Owen Kaplan, Logan Brown, Daniel Goldelman, Sebastian Zimmeck [Creating Privacy Labels for the Web](http://summer21.research.wesleyan.edu/2021/07/27/creating-privacy-labels-for-the-web/), Summer Research 2021 Poster Session, Wesleyan University, Online, July 2021
 
-## 2. Development
+## 2. Promo Video
+
+<https://github.com/privacy-tech-lab/privacy-pioneer/assets/78764811/600a95f4-4d41-4c7e-ba08-eab8e1779ba4>
+
+## 3. Development
 
 Ensure that you have node and npm installed.
 
@@ -103,7 +108,7 @@ A `dev` folder will be generated in the root directory, housing the generated ex
 npm install --package-lock-only
 ```
 
-## 3. Production
+## 4. Production
 
 Build Privacy Pioneer for production to the `dist` folder by running:
 
@@ -116,7 +121,7 @@ npm run build
 
 The `web-ext` cli is included in the project. Learn more about packaging and signing for release at the [extension workshop](https://extensionworkshop.com/documentation/develop/getting-started-with-web-ext/).
 
-## 4. Testing
+## 5. Testing
 
 Privacy Pioneer uses [Jest](https://jestjs.io/) to run unit tests in order to maintain the integrity of the extension. All test files live in ./src/tests. In order to create a new test either add it to an existing test file or add it to a new file that ends with `.test.js`
 
@@ -128,7 +133,7 @@ To run all tests locally:
 npm run test
 ```
 
-## 5. Source Directory Layout
+## 6. Source Directory Layout
 
 ```bash
 .
@@ -149,7 +154,7 @@ The `src/libs/indexed-db` directory, contains functions that instantiate and com
 
 Some logos and other assets are in a Figma [here](https://www.figma.com/team_invite/redeem/rVKfai7IOrG1D90QriS5DJ).
 
-## 6. Privacy Practice Analysis
+## 7. Privacy Practice Analysis
 
 Privacy Pioneer is analyzing the following privacy practices for each first and third party website.
 
@@ -182,17 +187,17 @@ Privacy Pioneer makes a distinction between Fine Location and Coarse Location wi
 
 ipinfo.io is sent the user's IP address and returns information about their location based on that IP address. We take the user's Zip Code, Street Address, City, and Region from this and store it as an entry in the user's Watchlist to be looked for in new HTTP requests.
 
-## 7. Notifications
+## 8. Notifications
 
 If a user looks up a specific keyword from their watchlist (for example in a search bar or search engine), we will show notifications of this keyword being taken by a first party. For normal lookups (like keywords a user could be interested in), this will appear as strange, but it is important to know when a website is or is not encrypting user data when sending it to their backend APIs, since all web traffic has the potential to be monitored in transit across the internet.
 
 Privacy Pioneer will notify a user when any of their watchlist information has been seen in their network traffic if the user has enabled notifications on the browser and in the watchlist page of the extension. These notifications will occur 15 seconds after a site has loaded to let the page load most of its data. User's Custom Keywords (shown as "Keyword" in the extension) will generate a notification each time they appear in the user's web traffic, while all other keywords being seen will generate a notification once per session per website that collected or shared a user's information. Note that if multiple notifications would have qualified for all categories other than personal (eg. zip, region, and IP would have been notified), only one notification will be shown, with a "..." following the first to signify that this is a joint notification and the user should check the extension to see Privacy Pioneer's findings.
 
-## 8. Extension Architecture
+## 9. Extension Architecture
 
 An overview of the architecture of Privacy Pioneer is [available separately](https://github.com/privacy-tech-lab/privacy-pioneer/blob/main/architecture_overview.md). (The document is up to date as of its most recent commit date. Later architectural changes are not reflected.)
 
-## 9. Third Party Libraries and Resources
+## 10. Third Party Libraries and Resources
 
 Privacy Pioneer uses various [third party libraries](https://github.com/privacy-tech-lab/privacy-pioneer/blob/main/package.json).
 
@@ -207,7 +212,7 @@ It also uses the following resources.
 
 We thank the developers.
 
-## 10. Known Issues
+## 11. Known Issues
 
 - Some warnings may occur when you run `npm install --production=false`, but they will not negatively affect the compilation or execution of Privacy Pioneer.
 - When the overview page of Privacy Pioneer is open, data from websites visited after opening it will not be shown until the overview is refreshed.
@@ -215,7 +220,7 @@ We thank the developers.
 - IP addresses sometimes do not generate notifications. This will be addressed soon.
 - We do not look at the main HTML / main_frame type of data request in this extension. Thus, data that was loaded into the main body of the webpage, and not through an external query, will not generate evidence in Privacy Pioneer.
 
-## 11. Thank You
+## 12. Thank You
 
 <p align="center"><strong>We would like to thank our financial supporters!</strong></p><br>
 
