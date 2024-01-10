@@ -60,7 +60,7 @@ Contact us with any questions or comments at <sebastian@privacytechlab.org>.
 
 Unmute or turn up the volume if you do not hear any sound.
 
-<https://github.com/privacy-tech-lab/privacy-pioneer/assets/78764811/600a95f4-4d41-4c7e-ba08-eab8e1779ba4>
+<https://github.com/privacy-tech-lab/privacy-pioneer/assets/78764811/45fb8cae-0cd3-426b-921c-3b48ce7daf4a>
 
 ## 3. Development
 
