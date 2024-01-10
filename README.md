@@ -218,8 +218,6 @@ We thank the developers.
 
 - Some warnings may occur when you run `npm install --production=false`, but they will not negatively affect the compilation or execution of Privacy Pioneer.
 - When the overview page of Privacy Pioneer is open, data from websites visited after opening it will not be shown until the overview is refreshed.
-- Phone numbers do not currently generate notifications. This will be addressed soon.
-- IP addresses sometimes do not generate notifications. This will be addressed soon.
 - We do not look at the main HTML / main_frame type of data request in this extension. Thus, data that was loaded into the main body of the webpage, and not through an external query, will not generate evidence in Privacy Pioneer.
 
 ## 12. Thank You
