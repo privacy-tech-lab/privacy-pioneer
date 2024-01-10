@@ -187,7 +187,7 @@ Privacy Pioneer makes a distinction between Fine Location and Coarse Location wi
 - The evidence is flagged by Privacy Pioneer as being an instance of Coarse Location and not Fine Location. This would mean that the latitude or longitude value is within +-1.0 degrees of the value determined by the Geolocation API.
   The evidence is flagged by Privacy Pioneer as being an instance of both Coarse Location AND Fine Location. This would mean that the latitude or longitude value is within +-0.1 (and thus also +-1.0) degrees of the value determined by the Geolocation API.
 
-ipinfo.io is sent the user's IP address and returns information about their location based on that IP address. We take the user's Zip Code, Street Address, City, and Region from this and store it as an entry in the user's Watchlist to be looked for in new HTTP requests.
+ipinfo.io is sent the user's IP address and returns information about their location based on that IP address. We take the user's ZIP Code, City, and Region from this and store it as an entry in the user's Watchlist to be looked for in new HTTP requests. By default, this entry cannot be edited unless "Manual Editing" is enabled in the settings page.
 
 ## 8. Notifications
 
