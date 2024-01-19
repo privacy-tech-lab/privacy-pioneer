@@ -41,10 +41,14 @@ export function getAllEvidenceForRequest(request, userData) {
   const networkKeywords = userData[1];
 
   // We only perform our analysis on reqUrl, requestBody, and responseData.
+  const strRequest = JSON.stringify(request, [
+    "reqUrl",
+    "requestBody",
+    "responseData",
+  ]);
   request.reqUrl = decodeURI(request.reqUrl);
   request.rootUrl = decodeURI(request.rootUrl);
-  request.requestBody = decodeURI(request.requestBody);
-  const strRequest = JSON.stringify(request, [
+  const decodedStrReq = JSON.stringify(request, [
     "reqUrl",
     "requestBody",
     "responseData",
@@ -130,7 +134,7 @@ export function getAllEvidenceForRequest(request, userData) {
       watchlistDict[typeEnum.userKeyword].forEach((keyword) => {
         executeAndPush(
           regexSearch(
-            strRequest,
+            decodedStrReq,
             keyword,
             rootUrl,
             reqUrl,
