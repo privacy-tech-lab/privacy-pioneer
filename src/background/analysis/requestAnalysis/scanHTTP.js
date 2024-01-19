@@ -41,11 +41,15 @@ export function getAllEvidenceForRequest(request, userData) {
   const networkKeywords = userData[1];
 
   // We only perform our analysis on reqUrl, requestBody, and responseData.
+  request.reqUrl = decodeURI(request.reqUrl);
+  request.rootUrl = decodeURI(request.rootUrl);
+  request.requestBody = decodeURI(request.requestBody);
   const strRequest = JSON.stringify(request, [
     "reqUrl",
     "requestBody",
     "responseData",
   ]);
+  //console.log(strRequest);
 
   /**
    * @type {Evidence[]|any[]}
