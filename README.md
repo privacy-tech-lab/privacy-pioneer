@@ -80,7 +80,9 @@ Clone this repo to a local directory and [install Privacy Pioneer's dependencies
 npm install --production=false
 ```
 
-If you encounter install errors with the TensorFlow libraries, for Windows try running the steps described in [this comment](https://github.com/tensorflow/tfjs/issues/7939#issuecomment-1697183143). For Mac, try running `xcode-select --install`.
+If you encounter install errors with the TensorFlow libraries, for Windows try running the steps described in [this comment](https://github.com/tensorflow/tfjs/issues/7939#issuecomment-1697183143). For Mac, try running `xcode-select --install`. 
+
+For any issues with incorrect dependencies versions, copy the package-lock.json file from the repository into your local directory and run the command `npm ci`.
 
 **Note**: Privacy Pioneer uses an external service, [ipinfo.io](https://ipinfo.io/), to automate the identification of a user's Location in web traffic of visited websites. For this purpose Privacy Pioneer sends a user's IP address to ipinfo.io when the user restarts the browser or makes changes to the Watchlist. An ipinfo API token is required for Privacy Pioneer to work.
 
