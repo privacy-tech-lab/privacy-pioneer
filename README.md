@@ -31,7 +31,7 @@ Privacy Pioneer is implemented as a browser extension for Firefox (currently the
   <a href="https://addons.mozilla.org/en-US/firefox/addon/privacy-pioneer/"><img src="./firefox-add-ons-badge.png" alt="Firefox Add Ons badge" width = "187" height = "67"></a>
 <p/>
 
-Privacy Pioneer is developed and maintained by **Daniel Goldelman (@danielgoldelman)**, **Judeley Jean-Charles (@jjeancharles)**, **Joe Champeau (@JoeChampeau)**, and **Sebastian Zimmeck (@SebastianZimmeck)** of the [privacy-tech-lab](https://privacytechlab.org/). **Hamza Harkous (@harkous)** is also collaborating with the team on the research. **Wesley Tan (@wesley-tan)**, **Justin Casler (@JustinCasler)**, **Logan Brown (@Lr-Brown)**, **Owen Kaplan (@notowen333)**, **Rafael Goldstein (@rgoldstein01)**, and **David Baraka (@davebaraka)** contributed earlier.
+Privacy Pioneer is developed and maintained by **Daniel Goldelman (@danielgoldelman)**, **Joe Champeau (@JoeChampeau)**, **Dominik Dadak (@dadak-dom)**, **Nate Levinson (@natelevinson10)**, and **Sebastian Zimmeck (@SebastianZimmeck)** of the [privacy-tech-lab](https://privacytechlab.org/). **Hamza Harkous (@harkous)** is also collaborating with the team on the research. **Judeley Jean-Charles (@jjeancharles)**, **Wesley Tan (@wesley-tan)**, **Justin Casler (@JustinCasler)**, **Logan Brown (@Lr-Brown)**, **Owen Kaplan (@notowen333)**, **Rafael Goldstein (@rgoldstein01)**, and **David Baraka (@davebaraka)** contributed earlier.
 
 Contact us with any questions or comments at <sebastian@privacytechlab.org>.
 
@@ -80,7 +80,7 @@ Clone this repo to a local directory and [install Privacy Pioneer's dependencies
 npm install --production=false
 ```
 
-If you encounter install errors with the TensorFlow libraries, for Windows try running the steps described in [this comment](https://github.com/tensorflow/tfjs/issues/7939#issuecomment-1697183143). For Mac, try running `xcode-select --install`. 
+If you encounter install errors with the TensorFlow libraries, for Windows try running the steps described in [this comment](https://github.com/tensorflow/tfjs/issues/7939#issuecomment-1697183143). For Mac, try running `xcode-select --install`.
 
 For any issues with incorrect dependencies versions, copy the package-lock.json file from the repository into your local directory and run the command `npm ci`.
 
