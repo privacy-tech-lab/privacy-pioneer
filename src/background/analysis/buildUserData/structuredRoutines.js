@@ -135,7 +135,7 @@ export function buildGeneralRegex(genString) {
   for (let i = 0; i < genString.length; i++) {
     const c = genString.charAt(i);
     // add digits regularly
-    if (new RegExp(/\p{L}/, "u").test(c)){
+    if (new RegExp(/[\p{L}\p{N}]/, "u").test(c)){
       regexString.push(c);
     }
     // optional non-digit otherwise
