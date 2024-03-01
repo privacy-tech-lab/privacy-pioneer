@@ -10,7 +10,7 @@ analyze.js
 */
 
 import { Request } from "./classModels.js";
-import { evidenceQ } from "../background.js";
+import { everyInHost, evidenceQ } from "../background.js";
 import { tagParent } from "./requestAnalysis/tagRequests.js";
 import { addToEvidenceStore } from "./interactDB/addEvidence.js";
 import { getAllEvidenceForRequest } from "./requestAnalysis/scanHTTP.js";
@@ -178,14 +178,12 @@ async function analyze(request, userData) {
     "request": JSON.stringify(request)
   }
   if (rootUrl.indexOf("moz-extension") === -1){
-    // fetch request to send all seen requests to sql
-    axios.post(
-      "http://localhost:8080/allEv", data, {
-        headers: {
-          'Content-Type': "application/json"
-        }
-      }
-    )
+    axios
+    .post("http://localhost:8080/allEv", data, {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    })
   }
   const allEvidence = getAllEvidenceForRequest(request, userData);
   const currentTime = Date.now();
@@ -218,15 +216,15 @@ async function analyze(request, userData) {
     const parent = tagParent(reqUrl);
 
     // push the job to the Queue (will add the evidence for one HTTP request at a time)
-    evidenceQ.push(function (cb) {
+    evidenceQ.push(async function (cb) {
       //@ts-ignore
       cb(
         undefined,
-        addToEvidenceStore(
+        await addToEvidenceStore(
           allEvidence,
           parent,
           rootUrl,
-          reqUrl,
+          reqUrl
         )
       );
     });

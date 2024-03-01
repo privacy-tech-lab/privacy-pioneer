@@ -107,7 +107,7 @@ function updateFetchedDict(evidenceDict, e) {
  * @param {string|undefined} parent Parent company of the request Url, if possible
  * @param {string} rootU The rootUrl of the request
  * @param {string} requestU The requestUrl of the request
- * @returns {Promise<string|void>} Side effects only
+ * @returns {Promise<string>} Side effects only
  *
  */
 

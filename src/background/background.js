@@ -41,7 +41,7 @@ async function apiSend() {
     // posting data to sql db
     // since index is either an array or an int, stringify it
     const evidence = await evidenceKeyval.get(currentHostName);
-    console.log(evidence, currentHostName)
+    // console.log(evidence, currentHostName)
     for (const [label, value] of Object.entries(evidence)) {
       if (label != "lastSeen") {
         for (const [type, requests] of Object.entries(value)) {
