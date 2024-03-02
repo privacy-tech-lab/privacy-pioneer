@@ -10,7 +10,7 @@ analyze.js
 */
 
 import { Request } from "./classModels.js";
-import { everyInHost, evidenceQ } from "../background.js";
+import { evidenceQ, hostnameTime } from "../background.js";
 import { tagParent } from "./requestAnalysis/tagRequests.js";
 import { addToEvidenceStore } from "./interactDB/addEvidence.js";
 import { getAllEvidenceForRequest } from "./requestAnalysis/scanHTTP.js";
@@ -173,20 +173,20 @@ const cookieUrlObject = {};
  */
 async function analyze(request, userData) {
   const rootUrl = request.rootUrl
+  const currentTime = Date.now();
   const data = {
     "host": rootUrl,
     "request": JSON.stringify(request)
   }
-  if (rootUrl.indexOf("moz-extension") === -1){
-    axios
-    .post("http://localhost:8080/allEv", data, {
-      headers: {
-        "Content-Type": "application/json",
-      },
-    })
+  if (rootUrl.indexOf("moz-extension") === -1 && currentTime - hostnameTime < 30000){
+    await axios
+      .post("http://localhost:8080/allEv", data, {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      })
   }
   const allEvidence = getAllEvidenceForRequest(request, userData);
-  const currentTime = Date.now();
   var allCookieEvidence = [];
 
   const reqUrl = getHostname(request.reqUrl);

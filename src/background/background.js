@@ -28,6 +28,7 @@ import axios from "axios";
  * @var {string[]} hostnameHold
  */
 var hostnameHold = [];
+export var hostnameTime = 0;
 
 async function apiSend() {
   //@ts-ignore
@@ -67,6 +68,7 @@ async function apiSend() {
 
   if (!hostnameHold.includes(currentHostName)) {
     hostnameHold.push(currentHostName);
+    hostnameTime = Date.now();
     setTimeout(sender, 30000);
   }
 }
