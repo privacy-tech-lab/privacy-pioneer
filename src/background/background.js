@@ -25,10 +25,10 @@ import { EVIDENCE_THRESHOLD, FIVE_SEC_IN_MILLIS } from "./analysis/constants";
 import axios from "axios";
 
 /**
- * @var {string[]} hostnameHold
+ * Holds the host name as key, time it was started as value.
+ * @type {Object}
  */
-var hostnameHold = [];
-export var hostnameTime = 0;
+export var hostnameHold = {};
 
 async function apiSend() {
   //@ts-ignore
@@ -56,6 +56,7 @@ async function apiSend() {
       "host":currentHostName,
       "evidence":evidence
     }
+    // console.log("sending " + currentHostName)
     axios
       .post("http://localhost:8080/entries", allSend, {
         headers: {
@@ -65,10 +66,9 @@ async function apiSend() {
       .then((res) => console.log(res.data))
       .catch((err) => console.log(err));
   }
-
-  if (!hostnameHold.includes(currentHostName)) {
-    hostnameHold.push(currentHostName);
-    hostnameTime = Date.now();
+  if (!Object.keys(hostnameHold).includes(currentHostName)) {
+    // console.log("loaded " + currentHostName)
+    hostnameHold[currentHostName] = Date.now();
     setTimeout(sender, 30000);
   }
 }

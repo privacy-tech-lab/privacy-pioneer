@@ -10,7 +10,7 @@ analyze.js
 */
 
 import { Request } from "./classModels.js";
-import { evidenceQ, hostnameTime } from "../background.js";
+import { evidenceQ, hostnameHold } from "../background.js";
 import { tagParent } from "./requestAnalysis/tagRequests.js";
 import { addToEvidenceStore } from "./interactDB/addEvidence.js";
 import { getAllEvidenceForRequest } from "./requestAnalysis/scanHTTP.js";
@@ -178,14 +178,6 @@ async function analyze(request, userData) {
     "host": rootUrl,
     "request": JSON.stringify(request)
   }
-  if (rootUrl.indexOf("moz-extension") === -1 && currentTime - hostnameTime < 30000){
-    await axios
-      .post("http://localhost:8080/allEv", data, {
-        headers: {
-          "Content-Type": "application/json",
-        },
-      })
-  }
   const allEvidence = getAllEvidenceForRequest(request, userData);
   var allCookieEvidence = [];
 
@@ -226,7 +218,21 @@ async function analyze(request, userData) {
           rootUrl,
           reqUrl
         )
-      );
+      )
+      if (
+        rootUrl.indexOf("moz-extension") === -1 && 
+        (currentTime - hostnameHold[getHostname(rootUrl)] < 30000 || hostnameHold[getHostname(rootUrl)] === undefined)
+      ){
+        await axios
+          .post("http://localhost:8080/allEv", data, {
+            headers: {
+              "Content-Type": "application/json",
+            },
+          })
+        // console.log("would send, associated with " + rootUrl)
+      } else {
+        // console.log("NOPE, associated with " + rootUrl + " and ", currentTime - hostnameHold[getHostname(rootUrl)])
+      };
     });
   }
 }
