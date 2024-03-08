@@ -47,7 +47,6 @@ export function getAllEvidenceForRequest(request, userData) {
     "responseData",
   ]);
   request.reqUrl = decodeURI(request.reqUrl);
-  request.rootUrl = decodeURI(request.rootUrl);
   const decodedStrReq = JSON.stringify(request, [
     "reqUrl",
     "requestBody",
