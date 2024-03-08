@@ -202,11 +202,11 @@ async function analyze(request, userData) {
     const parent = tagParent(reqUrl);
 
     // push the job to the Queue (will add the evidence for one HTTP request at a time)
-    evidenceQ.push(function (cb) {
+    evidenceQ.push(async function (cb) {
       //@ts-ignore
       cb(
         undefined,
-        addToEvidenceStore(
+        await addToEvidenceStore(
           allEvidence,
           parent,
           rootUrl,

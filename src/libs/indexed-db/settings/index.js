@@ -43,7 +43,7 @@ export const setDefaultSettings = async () => {
     browser.tabs.create({ url: browser.runtime.getURL("options.html") });
   }
 
-  loadModel();
+  await loadModel();
 }
 
 /**
