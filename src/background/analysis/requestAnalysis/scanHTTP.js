@@ -46,6 +46,13 @@ export function getAllEvidenceForRequest(request, userData) {
     "requestBody",
     "responseData",
   ]);
+  request.reqUrl = decodeURI(request.reqUrl);
+  const decodedStrReq = JSON.stringify(request, [
+    "reqUrl",
+    "requestBody",
+    "responseData",
+  ]);
+  //console.log(strRequest);
 
   /**
    * @type {Evidence[]|any[]}
@@ -126,7 +133,7 @@ export function getAllEvidenceForRequest(request, userData) {
       watchlistDict[typeEnum.userKeyword].forEach((keyword) => {
         executeAndPush(
           regexSearch(
-            strRequest,
+            decodedStrReq,
             keyword,
             rootUrl,
             reqUrl,
