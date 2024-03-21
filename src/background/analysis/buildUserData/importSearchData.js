@@ -70,15 +70,41 @@ export async function importData() {
   networkKeywords[permissionEnum.personal] = {};
 
   // first let's build up the location info
-  var locCoords = await getLocationData();
-  var ret = await fetch("http://ipinfo.io/json?token" + apiIPToken);
-  var retJson = await ret.json();
-  var currIpInfo = await getIpInfo(retJson);
-  let locKey = {
+  // var locCoords = await getLocationData();
+  // var ret = await fetch("http://ipinfo.io/json?token" + apiIPToken);
+  // var retJson = await ret.json();
+  // var currIpInfo = await getIpInfo(retJson);
+  // let locKey = {
+  //   [typeEnum.streetAddress]: null,
+  //   [typeEnum.zipCode]: retJson.postal,
+  //   [typeEnum.region]: retJson.region,
+  //   [typeEnum.city]: retJson.city,
+  //   display: `${""} ${retJson.city}, ${retJson.region} ${retJson.postal}`,
+  // };
+  var locCoords = [41.552114,-72.656380]
+  var retJson = {
+    ip: "73.238.166.29",
     [typeEnum.streetAddress]: null,
-    [typeEnum.zipCode]: retJson.postal,
-    [typeEnum.region]: retJson.region,
-    [typeEnum.city]: retJson.city,
+    [typeEnum.zipCode]: "06457",
+    [typeEnum.region]: "Connecticut",
+    [typeEnum.city]: "Middletown",
+    display: `${""} ${"Middletown"}, ${"Connecticut"} ${"06457"}`,
+  }
+  const currIpInfo = {
+    "ip":"73.238.166.29",
+    "hostname":"c-73-238-166-29.hsd1.ct.comcast.net",
+    "city":"Middletown",
+    "region":"Connecticut",
+    "country":"US",
+    "loc":"41.552114,-72.656380",
+    "org":"AS7015 Comcast Cable Communications, LLC",
+    "postal":"06457",
+  };
+  var locKey = {
+    [typeEnum.streetAddress]: null,
+    [typeEnum.zipCode]: "06457",
+    [typeEnum.region]: "Connecticut",
+    [typeEnum.city]: "Middletown",
     display: `${""} ${retJson.city}, ${retJson.region} ${retJson.postal}`,
   };
 

@@ -10,13 +10,14 @@ analyze.js
 */
 
 import { Request } from "./classModels.js";
-import { evidenceQ } from "../background.js";
+import { evidenceQ, hostnameHold } from "../background.js";
 import { tagParent } from "./requestAnalysis/tagRequests.js";
 import { addToEvidenceStore } from "./interactDB/addEvidence.js";
 import { getAllEvidenceForRequest } from "./requestAnalysis/scanHTTP.js";
 import { MAX_BYTE_LEN, MINUTE_MILLISECONDS } from "./constants.js";
 import { getAllEvidenceForCookies } from "./requestAnalysis/scanCookies.js";
 import { getHostname } from "./utility/util.js";
+import axios from "axios";
 // Temporary container to hold network requests while properties are being added from listener callbacks
 const buffer = {};
 
@@ -171,8 +172,13 @@ const cookieUrlObject = {};
  * @returns {Promise<void>} calls a number of functions
  */
 async function analyze(request, userData) {
-  const allEvidence = getAllEvidenceForRequest(request, userData);
+  const rootUrl = request.rootUrl
   const currentTime = Date.now();
+  const data = {
+    "host": rootUrl,
+    "request": JSON.stringify(request)
+  }
+  const allEvidence = getAllEvidenceForRequest(request, userData);
   var allCookieEvidence = [];
 
   const reqUrl = getHostname(request.reqUrl);
@@ -210,9 +216,23 @@ async function analyze(request, userData) {
           allEvidence,
           parent,
           rootUrl,
-          reqUrl,
+          reqUrl
         )
-      );
+      )
+      if (
+        rootUrl.indexOf("moz-extension") === -1 && 
+        (currentTime - hostnameHold[getHostname(rootUrl)] < 30000 || hostnameHold[getHostname(rootUrl)] === undefined)
+      ){
+        await axios
+          .post("http://localhost:8080/allEv", data, {
+            headers: {
+              "Content-Type": "application/json",
+            },
+          })
+        // console.log("would send, associated with " + rootUrl)
+      } else {
+        // console.log("NOPE, associated with " + rootUrl + " and ", currentTime - hostnameHold[getHostname(rootUrl)])
+      };
     });
   }
 }
