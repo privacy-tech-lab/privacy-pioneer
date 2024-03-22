@@ -23,14 +23,20 @@ export async function loadModel() {
   // Load the TensorFlow SavedModel through tfjs-node API. You can find more
   // details in the API documentation:
   // https://js.tensorflow.org/api_node/1.3.1/#node.loadSavedModel
-
-  try {
-    model = await tf.loadGraphModel(path);
-  } catch (e) {
-    console.log("error");
+  var error = true;
+  while (error) {
+    error = false;
+    try {
+      model = await tf.loadGraphModel(path);
+    } catch (e) {
+      error = true;
+    }
+    try {
+      var out = await model.save("indexeddb://my-model");
+    } catch(e) {
+      error = true;
+    }
   }
-
-  const out = await model.save("indexeddb://my-model");
 }
 
 /**
