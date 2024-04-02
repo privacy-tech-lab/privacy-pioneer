@@ -35,12 +35,12 @@ import axios from "axios";
 export var hostnameHold = {};
 
 // Set the extension into crawl mode.
-export const IS_CRAWLING = true;
+export const IS_CRAWLING = false;
 
 // Set the extension in crawl mode, with the additional option of capturing all HTTP requests that could be analyzed.
 // Ideal when testing the functionality of the crawler.
 // If you want to crawl AND test, make sure BOTH values are set to true.
-export const IS_CRAWLING_TESTING = true;
+export const IS_CRAWLING_TESTING = false;
 
 async function apiSend() {
   //@ts-ignore
