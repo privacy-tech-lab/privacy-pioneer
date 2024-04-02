@@ -18,6 +18,7 @@ import { MAX_BYTE_LEN, MINUTE_MILLISECONDS } from "./constants.js";
 import { getAllEvidenceForCookies } from "./requestAnalysis/scanCookies.js";
 import { getHostname } from "./utility/util.js";
 import axios from "axios";
+import { IS_CRAWLING, IS_CRAWLING_TESTING } from "../background.js";
 // Temporary container to hold network requests while properties are being added from listener callbacks
 const buffer = {};
 
@@ -68,13 +69,15 @@ export async function onBeforeRequest(details, data) {
       id: details.requestId,
       rootUrl: null,
       reqUrl: details.url !== undefined ? details.url : null,
-      requestBody: details.requestBody !== undefined ? details.requestBody : null,
+      requestBody:
+        details.requestBody !== undefined ? details.requestBody : null,
       type: details.type !== undefined ? details.type : null,
-      urlClassification: details.urlClassification !== undefined
-        ? details.urlClassification
-        : [],
+      urlClassification:
+        details.urlClassification !== undefined
+          ? details.urlClassification
+          : [],
       responseData: undefined,
-      error: undefined
+      error: undefined,
     });
 
     if (details.tabId == -1) {
@@ -96,7 +99,9 @@ export async function onBeforeRequest(details, data) {
   //@ts-ignore
   const filter = browser.webRequest.filterResponseData(details.requestId);
 
-  var responseByteLength = 0, abort = false, httpResponseStrArr = [];
+  var responseByteLength = 0,
+    abort = false,
+    httpResponseStrArr = [];
 
   filter.ondata = (event) => {
     if (!abort) {
@@ -172,12 +177,12 @@ const cookieUrlObject = {};
  * @returns {Promise<void>} calls a number of functions
  */
 async function analyze(request, userData) {
-  const rootUrl = request.rootUrl
+  const rootUrl = request.rootUrl;
   const currentTime = Date.now();
   const data = {
-    "host": rootUrl,
-    "request": JSON.stringify(request)
-  }
+    host: rootUrl,
+    request: JSON.stringify(request),
+  };
   const allEvidence = getAllEvidenceForRequest(request, userData);
   var allCookieEvidence = [];
 
@@ -212,27 +217,23 @@ async function analyze(request, userData) {
       //@ts-ignore
       cb(
         undefined,
-        await addToEvidenceStore(
-          allEvidence,
-          parent,
-          rootUrl,
-          reqUrl
-        )
-      )
+        await addToEvidenceStore(allEvidence, parent, rootUrl, reqUrl)
+      );
       if (
-        rootUrl.indexOf("moz-extension") === -1 && 
-        (currentTime - hostnameHold[getHostname(rootUrl)] < 30000 || hostnameHold[getHostname(rootUrl)] === undefined)
-      ){
-        await axios
-          .post("http://localhost:8080/allEv", data, {
-            headers: {
-              "Content-Type": "application/json",
-            },
-          })
+        rootUrl.indexOf("moz-extension") === -1 &&
+        (currentTime - hostnameHold[getHostname(rootUrl)] < 30000 ||
+          hostnameHold[getHostname(rootUrl)] === undefined) &&
+        IS_CRAWLING_TESTING
+      ) {
+        await axios.post("http://localhost:8080/allEv", data, {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        });
         // console.log("would send, associated with " + rootUrl)
       } else {
         // console.log("NOPE, associated with " + rootUrl + " and ", currentTime - hostnameHold[getHostname(rootUrl)])
-      };
+      }
     });
   }
 }

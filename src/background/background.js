@@ -11,7 +11,11 @@ background.js
 - https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/API/webRequest
 */
 
-import { evidenceKeyval as evidenceIDB, evidenceKeyval } from "./analysis/interactDB/openDB";
+import {
+  evidenceKeyval as evidenceIDB,
+  evidenceKeyval,
+} from "./analysis/interactDB/openDB";
+import { settingsKeyval } from "../libs/indexed-db/openDB.js";
 import { onBeforeRequest } from "./analysis/analyze.js";
 import {
   getExtensionStatus,
@@ -29,6 +33,16 @@ import axios from "axios";
  * @type {Object}
  */
 export var hostnameHold = {};
+
+export const IS_CRAWLING = true;
+export const IS_CRAWLING_TESTING = true;
+// Set the extension into crawl mode.
+//settingsKeyval.set("IS_CRAWLING", false);
+
+// Set the extension in crawl mode, with the additional option of capturing all HTTP requests that could be analyzed.
+// Ideal when testing the functionality of the crawler.
+// If you want to crawl AND test, make sure BOTH values are set to true.
+//settingsKeyval.set("IS_CRAWLING_TESTING", false);
 
 async function apiSend() {
   //@ts-ignore
@@ -53,9 +67,9 @@ async function apiSend() {
       }
     }
     const allSend = {
-      "host":currentHostName,
-      "evidence":evidence
-    }
+      host: currentHostName,
+      evidence: evidence,
+    };
     // console.log("sending " + currentHostName)
     axios
       .post("http://localhost:8080/entries", allSend, {
@@ -73,7 +87,9 @@ async function apiSend() {
   }
 }
 //@ts-ignore
-browser.webNavigation.onDOMContentLoaded.addListener(apiSend);
+if (IS_CRAWLING && IS_CRAWLING_TESTING) {
+  browser.webNavigation.onDOMContentLoaded.addListener(apiSend);
+}
 
 // A filter that restricts the events that will be sent to a listener.
 // You can play around with the urls and types.
@@ -94,7 +110,7 @@ browser.runtime.onMessage.addListener((request, sender, sendResponse) => {
   if (request.msg == "background.currentTab") {
     // send current, open tab to the runtime (our extension)
     const send = (tabs) =>
-    //@ts-ignore
+      //@ts-ignore
       browser.runtime.sendMessage({
         msg: "popup.currentTab",
         data: tabs[0].url,
@@ -191,17 +207,16 @@ importData().then((data) => {
 });
 
 //@ts-ignore
-browser.webNavigation.onBeforeNavigate.addListener(async (details) => { 
-  if (details.parentFrameId == -1) { 
-    const host = getHostname(details.url)
-    let evidence = await evidenceKeyval.get(host)
-    if (evidence == undefined) { 
-      evidence = {}
+browser.webNavigation.onBeforeNavigate.addListener(async (details) => {
+  if (details.parentFrameId == -1) {
+    const host = getHostname(details.url);
+    let evidence = await evidenceKeyval.get(host);
+    if (evidence == undefined) {
+      evidence = {};
     }
-    evidence.lastSeen = new Date()
-    await evidenceKeyval.set(host, evidence)
+    evidence.lastSeen = new Date();
+    await evidenceKeyval.set(host, evidence);
   }
-  
 });
 
 setDefaultSettings();
