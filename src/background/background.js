@@ -15,7 +15,6 @@ import {
   evidenceKeyval as evidenceIDB,
   evidenceKeyval,
 } from "./analysis/interactDB/openDB";
-import { settingsKeyval } from "../libs/indexed-db/openDB.js";
 import { onBeforeRequest } from "./analysis/analyze.js";
 import {
   getExtensionStatus,
@@ -85,7 +84,7 @@ async function apiSend() {
   }
 }
 //@ts-ignore
-if (IS_CRAWLING && IS_CRAWLING_TESTING) {
+if (IS_CRAWLING) {
   browser.webNavigation.onDOMContentLoaded.addListener(apiSend);
 }
 
