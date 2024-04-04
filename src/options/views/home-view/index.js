@@ -25,6 +25,10 @@ import { getAnalyticsStatus } from "../../../libs/indexed-db/settings";
 import { handleClick } from "../../../libs/indexed-db/getAnalytics";
 import { settingsModelsEnum } from "../../../background/analysis/classModels";
 import { settingsKeyval } from "../../../libs/indexed-db/openDB";
+import {
+  IS_CRAWLING,
+  IS_CRAWLING_TESTING,
+} from "../../../background/background.js";
 
 /**
  * Home page view containing overview and recently identified labels
@@ -52,6 +56,15 @@ const HomeView = () => {
         alert(
           "Privacy Pioneer does not collect any data from you. However, your IP address is shared with ipinfo.io to identify geographical locations in web requests. You can find ipinfo.io's privacy policy here https://ipinfo.io/privacy-policy."
         );
+        if (IS_CRAWLING) {
+          const lat = prompt("Enter target lat", "");
+          const long = prompt("Enter target long", "");
+          const zip = prompt("Enter target zip", "");
+          settingsKeyval.set("TARGET_LAT", parseFloat(lat));
+          settingsKeyval.set("TARGET_LONG", parseFloat(long));
+          settingsKeyval.set("TARGET_ZIP", zip);
+          browser.runtime.sendMessage({ msg: "dataUpdated" }); // force the extension to reset the target values with the ones specified
+        }
         settingsKeyval.set("firstHomeVisit", false);
       }
     });
