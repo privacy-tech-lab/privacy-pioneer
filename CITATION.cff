@@ -70,7 +70,8 @@ version: v1.2.2
 date-released: '2023-11-19'
 booktitle: 24th Privacy Enhancing Technologies Symposium (PETS 2024)
 issue: '2'
-pages: '211--234'
+start: '211'
+end: '234'
 year: '2024'
 month: July
 address: Bristol, UK
