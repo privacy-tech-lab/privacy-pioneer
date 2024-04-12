@@ -1,0 +1,70 @@
+cff-version: 1.2.0
+title: Privacy Pioneer
+message: >-
+  If you use this software, please cite it using the
+  metadata from this file.
+type: software
+authors:
+  - given-names: Sebastian
+    family-names: Zimmeck
+    affiliation: Wesleyan University
+  - given-names: Daniel
+    family-names: Goldelman
+    affiliation: Wesleyan University
+  - given-names: Owen
+    family-names: Kaplan
+    affiliation: Wesleyan University
+  - given-names: Logan
+    family-names: Brown
+    affiliation: Wesleyan University
+  - given-names: Justin
+    family-names: Casler
+    affiliation: Wesleyan University
+  - given-names: Judely
+    family-names: Jean-Charles
+    affiliation: Wesleyan University
+  - given-names: Joe
+    family-names: Champeau
+    affiliation: Wesleyan University
+  - given-names: Hamza
+    family-names: Harkous
+    affiliation: Google
+identifiers:
+  - type: url
+    value: >-
+      https://petsymposium.org/popets/2024/popets-2024-0048.php
+    description: PETS Publication
+repository-code: 'https://github.com/privacy-tech-lab/privacy-pioneer'
+abstract: >-
+  Data collection by websites and their integrated third
+  parties is often not transparent. We design privacy
+  interfaces for the browser to help people understand who
+  is collecting which data from them. In a proof of concept
+  browser extension, Privacy Pioneer , we implement a
+  privacy popup, a privacy history interface, and a
+  watchlist to notify people when their data is collected.
+  For detecting location data collection, we develop a
+  machine learning model based on TinyBERT, which reaches an
+  average F1 score of 0.94. We supplement our model with
+  deterministic methods to detect trackers, collection of
+  personal data, and other monetization techniques. In a
+  usability study with 100 participants 82% found Privacy
+  Pioneer easy to understand and 90% found it useful
+  indicating the value of privacy interfaces directly
+  integrated in the browser
+keywords:
+  - Web Privacy
+  - Data Transparency
+  - Privacy Dashboards
+  - Notice and Choice
+  - Consent
+  - Privacy Labels
+  - Usability
+  - Privacy Enhancing Technologies
+  - Web Traffic Analysis
+  - BERT
+  - Machine Learning
+license: CC-BY-NC-SA-4.0
+commit: 7c1ab1c
+version: v1.2.2
+date-released: '2023-11-19'
