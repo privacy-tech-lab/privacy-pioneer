@@ -33,7 +33,7 @@ identifiers:
   - type: url
     value: >-
       https://petsymposium.org/popets/2024/popets-2024-0048.php
-    description: PETS Publication
+    description: 24th Privacy Enhancing Technologies Symposium (PETS)
 repository-code: 'https://github.com/privacy-tech-lab/privacy-pioneer'
 abstract: >-
   Data collection by websites and their integrated third
@@ -51,7 +51,7 @@ abstract: >-
   usability study with 100 participants 82% found Privacy
   Pioneer easy to understand and 90% found it useful
   indicating the value of privacy interfaces directly
-  integrated in the browser
+  integrated in the browser.
 keywords:
   - Web Privacy
   - Data Transparency
@@ -64,10 +64,10 @@ keywords:
   - Web Traffic Analysis
   - BERT
   - Machine Learning
-license: CC-BY-NC-SA-4.0
+license: CC-BY-4.0-Deed
 commit: 7c1ab1c
-version: v1.2.2
-date-released: '2023-11-19'
+version: v1.2.1
+date-released: '2023-07-11'
 booktitle: 24th Privacy Enhancing Technologies Symposium (PETS 2024)
 issue: '2'
 start: '211'
