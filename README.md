@@ -31,7 +31,9 @@ Privacy Pioneer is implemented as a browser extension for Firefox (currently the
   <a href="https://addons.mozilla.org/en-US/firefox/addon/privacy-pioneer/"><img src="./firefox-add-ons-badge.png" alt="Firefox Add Ons badge" width = "187" height = "67"></a>
 <p/>
 
-Privacy Pioneer is developed and maintained by **Dominik Dadak (@dadak-dom)**, **Nate Levinson (@natelevinson10)**, **Harry Yu (@atlasharry)**, and **Sebastian Zimmeck (@SebastianZimmeck)** of the [privacy-tech-lab](https://privacytechlab.org/). **Hamza Harkous (@harkous)** is also collaborating with the team on the research. **Daniel Goldelman (@danielgoldelman)**, **Joe Champeau (@JoeChampeau)**, **Judeley Jean-Charles (@jjeancharles)**, **Wesley Tan (@wesley-tan)**, **Justin Casler (@JustinCasler)**, **Logan Brown (@Lr-Brown)**, **Owen Kaplan (@notowen333)**, **Rafael Goldstein (@rgoldstein01)**, and **David Baraka (@davebaraka)** contributed earlier.
+Privacy Pioneer is developed and maintained by **Dominik Dadak (@dadak-dom)**, **Nate Levinson (@natelevinson10)**, **Harry Yu (@atlasharry)**, and **Sebastian Zimmeck (@SebastianZimmeck)** of the [privacy-tech-lab](https://privacytechlab.org/). **Hamza Harkous (@harkous)** is also collaborating with the team on the research.
+
+**Daniel Goldelman (@danielgoldelman)**, **Joe Champeau (@JoeChampeau)**, **Judeley Jean-Charles (@jjeancharles)**, **Wesley Tan (@wesley-tan)**, **Justin Casler (@JustinCasler)**, **Logan Brown (@Lr-Brown)**, **Owen Kaplan (@notowen333)**, **Rafael Goldstein (@rgoldstein01)**, and **David Baraka (@davebaraka)** contributed earlier.
 
 Contact us with any questions or comments at <sebastian@privacytechlab.org>.
 
