@@ -121,7 +121,7 @@ export async function importData() {
     } else {
       for (let [t, val] of Object.entries(keywordObject)) {
         if (t == "keyword") {
-          //If the useres watchlist is not current, then update it
+          //If the user's watchlist is not current, then update it
           if (val != retJson.ip) {
             await saveKeyword(retJson.ip, typeEnum.ipAddress, "ip", true);
             await saveKeyword(locKey, permissionEnum.location, "loc", true);
@@ -173,7 +173,9 @@ export async function importData() {
         keyword: zipRegex,
         keywordHash: locHash,
       });
-      userZipArr.push(zipObj);
+      if (zip[0] != "") {
+        userZipArr.push(zipObj);
+      }
     });
 
     locElems[typeEnum.zipCode] = userZipArr;
@@ -184,7 +186,7 @@ export async function importData() {
     locElems[typeEnum.region] = [];
     const userRegion = user_store_dict[typeEnum.region];
     userRegion.forEach((region) => {
-      if (!locElems[typeEnum.region].includes(region[0])) {
+      if (!locElems[typeEnum.region].includes(region[0]) && region[0] != "") {
         var regex = getRegion(region[0]);
         locElems[typeEnum.region].push(
           new KeywordObject({ keyword: regex, keywordHash: region[1] })
@@ -192,6 +194,8 @@ export async function importData() {
       }
     });
   }
+
+  // NOTE: not inputting a zip code seems to create a similar problem (many unintended false positives)
 
   if (typeEnum.city in user_store_dict) {
     var cityArr = [];
