@@ -195,8 +195,6 @@ export async function importData() {
     });
   }
 
-  // NOTE: not inputting a zip code seems to create a similar problem (many unintended false positives)
-
   if (typeEnum.city in user_store_dict) {
     var cityArr = [];
     const userCity = user_store_dict[typeEnum.city];
