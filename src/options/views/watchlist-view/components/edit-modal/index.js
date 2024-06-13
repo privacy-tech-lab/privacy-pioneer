@@ -48,9 +48,15 @@ import { requestNotificationPermission } from "../../../../../libs/indexed-db/no
  * @param {string} obj.id
  * @param {function():void} obj.updateList
  */
-export const EditModal = ({ passKeywordType, passKeyword, edit, id, updateList }) => {
+export const EditModal = ({
+  passKeywordType,
+  passKeyword,
+  edit,
+  id,
+  updateList,
+}) => {
   const dropdownRef = useRef();
-  const [showDropdown, setDropdown] = useState(false); 
+  const [showDropdown, setDropdown] = useState(false);
   const [keywordType, setKeywordType] = useState(
     edit ? passKeywordType : "Select Type"
   );
@@ -201,13 +207,28 @@ export const EditModal = ({ passKeywordType, passKeyword, edit, id, updateList }
             <SAction
               onClick={async () => {
                 let key;
+                let displayValue;
+                // Some cases to fix the formatting if the user decides to only input certain parts of a street address to the watchlist
+                if (address == "") {
+                  if (region == "") {
+                    if (zip == "") {
+                      displayValue = `${city}`;
+                    } else {
+                      displayValue = `${city}, ${zip}`;
+                    }
+                  } else {
+                    displayValue = `${region}, ${city} ${zip}`;
+                  }
+                } else {
+                  displayValue = `${address}, ${city}, ${region} ${zip}`;
+                }
                 if (keywordType == permissionEnum.location) {
                   key = {
-                    [typeEnum.streetAddress]: (address == "" ? null : address),
+                    [typeEnum.streetAddress]: address == "" ? null : address,
                     [typeEnum.zipCode]: zip,
                     [typeEnum.region]: region,
                     [typeEnum.city]: city,
-                    display: (address != "") ? `${address}, ${city}, ${region} ${zip}` : ` ${city}, ${region} ${zip}`,
+                    display: displayValue,
                   };
                 } else {
                   key = keyword;
