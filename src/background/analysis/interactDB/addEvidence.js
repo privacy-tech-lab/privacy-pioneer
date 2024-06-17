@@ -348,7 +348,9 @@ export async function addToEvidenceStore(
             console.log(
               "using model on: ",
               formattedString,
-              " the result was: ",
+              "\n with URL: ",
+              evidenceObject.requestUrl,
+              "\n the result was: ",
               await useModel(formattedString)
             );
             if ((await useModel(formattedString)) === false) {
