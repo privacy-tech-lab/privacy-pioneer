@@ -225,7 +225,7 @@ We thank the developers.
 - Some warnings may occur when you run `npm install --production=false`, but they will not negatively affect the compilation or execution of Privacy Pioneer.
 - When the overview page of Privacy Pioneer is open, data from websites visited after opening it will not be shown until the overview is refreshed.
 - We do not look at the main HTML / main_frame type of data request in this extension. Thus, data that was loaded into the main body of the webpage, and not through an external query, will not generate evidence in Privacy Pioneer.
-- The Privacy Pioneer will turn off in Firefox's private window, even if you have enabled the "Run in Private Windows" option in the extension settings.
+- Privacy Pioneer will turn off in Firefox's Private Window even if you have enabled the "Run in Private Windows" option in the extension settings.
 
 ## 12. Thank You
 
