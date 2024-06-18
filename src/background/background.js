@@ -173,6 +173,14 @@ async function changeFavicon() {
 //@ts-ignore
 browser.webNavigation.onDOMContentLoaded.addListener(changeFavicon);
 
+browser.webRequest.onBeforeRequest.addListener(
+  async function (details) {
+    console.log("OUTSIDE CALLBACK: ", details);
+  },
+  filter,
+  ["requestBody", "blocking"]
+);
+
 // call function to get all the url and keyword data
 importData().then((data) => {
   /**
@@ -183,6 +191,7 @@ importData().then((data) => {
   browser.runtime.onMessage.addListener(
     async (request, sender, sendResponse) => {
       if (request.msg == "dataUpdated") {
+        console.log("DATA HAS BEEN UPDATED!");
         data = await importData();
       }
     }
