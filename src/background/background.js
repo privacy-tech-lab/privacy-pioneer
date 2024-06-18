@@ -194,8 +194,9 @@ importData().then((data) => {
   //@ts-ignore
   browser.webRequest.onBeforeRequest.addListener(
     async function (details) {
+      console.log("details (OUTSIDE IF STATEMENT): ", details);
       if (await getExtensionStatus()) {
-        console.log("details: ", details);
+        console.log("details (WITHIN IF STATEMENT): ", details);
         onBeforeRequest(details, data);
       }
     },
