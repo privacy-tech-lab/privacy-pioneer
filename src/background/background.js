@@ -195,6 +195,7 @@ importData().then((data) => {
   browser.webRequest.onBeforeRequest.addListener(
     async function (details) {
       if (await getExtensionStatus()) {
+        console.log("details: ", details);
         onBeforeRequest(details, data);
       }
     },
