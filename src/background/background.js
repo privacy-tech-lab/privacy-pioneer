@@ -95,7 +95,7 @@ if (IS_CRAWLING) {
 // https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/API/webRequest/ResourceType
 const filter = {
   urls: ["<all_urls>"],
-  types: ["script", "xmlhttprequest", "sub_frame", "image"],
+  types: ["script", "xmlhttprequest", "sub_frame", "image", "beacon"],
 };
 
 // initialize the evidenceQ that will add evidence to the DB as we get it.
@@ -173,14 +173,6 @@ async function changeFavicon() {
 //@ts-ignore
 browser.webNavigation.onDOMContentLoaded.addListener(changeFavicon);
 
-browser.webRequest.onBeforeRequest.addListener(
-  async function (details) {
-    console.log("OUTSIDE CALLBACK: ", details);
-  },
-  filter,
-  ["requestBody", "blocking"]
-);
-
 // call function to get all the url and keyword data
 importData().then((data) => {
   /**
@@ -191,7 +183,6 @@ importData().then((data) => {
   browser.runtime.onMessage.addListener(
     async (request, sender, sendResponse) => {
       if (request.msg == "dataUpdated") {
-        console.log("DATA HAS BEEN UPDATED!");
         data = await importData();
       }
     }
@@ -203,9 +194,7 @@ importData().then((data) => {
   //@ts-ignore
   browser.webRequest.onBeforeRequest.addListener(
     async function (details) {
-      console.log("details (OUTSIDE IF STATEMENT): ", details);
       if (await getExtensionStatus()) {
-        console.log("details (WITHIN IF STATEMENT): ", details);
         onBeforeRequest(details, data);
       }
     },
