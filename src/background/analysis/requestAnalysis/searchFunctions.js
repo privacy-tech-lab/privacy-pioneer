@@ -51,6 +51,7 @@ export function locationKeywordSearch(strReq, locElems, rootUrl, reqUrl) {
       }
     }
   }
+  console.log("Result of location keyword search: ", output);
   return output;
 }
 
@@ -138,6 +139,13 @@ export function coordinateSearch(strReq, locData, rootUrl, reqUrl) {
   if (matchArr.length < 2) {
     return output;
   }
+
+  console.log(
+    "Number of regex matches for ",
+    reqUrl,
+    " in the coordinateSearch function: ",
+    matchArr.length
+  );
 
   /**
    * Takes in a match from the regular expression and keeps only the parts which can be parsed
@@ -261,6 +269,7 @@ export function coordinateSearch(strReq, locData, rootUrl, reqUrl) {
   iterateMatchArray(FINE_LOCATION_BOUND, typeEnum.fineLocation); // we define tight location as within .1 degree lng/lat. See constants.js for exp
   iterateMatchArray(COARSE_LOCATION_BOUND, typeEnum.coarseLocation); // we define coarse location as within 1 degree lng/lat. See constants.js for exp
 
+  console.log("Output from coordinate search for ", reqUrl, output);
   return output;
 }
 
