@@ -184,7 +184,7 @@ async function analyze(request, userData) {
     request: JSON.stringify(request),
   };
   const allEvidence = getAllEvidenceForRequest(request, userData);
-  console.log("Analyzing: ", request.reqUrl, allEvidence);
+  console.log("Finished analyzing: ", request.reqUrl, allEvidence);
   var allCookieEvidence = [];
 
   const reqUrl = getHostname(request.reqUrl);

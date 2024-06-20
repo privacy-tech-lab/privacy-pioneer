@@ -14,16 +14,21 @@ import {
   encodedEmailSearch,
   dynamicPixelSearch,
 } from "./searchFunctions.js";
-import { permissionEnum, typeEnum, resourceTypeEnum, Evidence } from "../classModels.js";
+import {
+  permissionEnum,
+  typeEnum,
+  resourceTypeEnum,
+  Evidence,
+} from "../classModels.js";
 import { lengthHeuristic } from "../requestAnalysis/earlyTermination/heuristics.js";
 
 /**
  * This function runs all of the apporpriate analysis functions for an HTTP request.
  * It returns an empty array if no evidence is found. Else an array of arrays containing the
  * information to be added.
- * 
+ *
  * Defined in scanHTTP.js
- * 
+ *
  * Used in analyze.js
  * @param {{ rootUrl: any; reqUrl: any; urlClassification: any; type: string; }} request An HTTP request to be analyzed
  * @param {any[]} userData
@@ -33,12 +38,16 @@ export function getAllEvidenceForRequest(request, userData) {
   const rootUrl = request.rootUrl;
   const reqUrl = request.reqUrl;
 
+  console.log("Currently analyzing: ", reqUrl, " with root: ", rootUrl);
+
   // this 0, 1, 2 comes from the structure of the importData function
   // location we obtained from google maps API
   const loc = userData[0];
+  console.log("Checking coordinate data: ", loc);
 
   // {phone #s, emails, location elements entered by the user, fingerprinting keywords}
   const networkKeywords = userData[1];
+  console.log("Checking location keywords: ", networkKeywords);
 
   // We only perform our analysis on reqUrl, requestBody, and responseData.
   const strRequest = JSON.stringify(request, [
@@ -86,7 +95,6 @@ export function getAllEvidenceForRequest(request, userData) {
       arr.push(evList); // push the evidence to the arr
     }
   }
-  
 
   executeAndPush(urlSearch(rootUrl, reqUrl, request.urlClassification));
 
@@ -172,10 +180,22 @@ export function getAllEvidenceForRequest(request, userData) {
     // if this value is 0 the client likely denied location permission
     // or they could be on Null Island in the middle of the Gulf of Guinea
     if (loc[0] != 0 && loc[1] != 0) {
+      console.log(
+        "Executing coordinate search on ",
+        reqUrl,
+        " with root ",
+        rootUrl
+      );
       executeAndPush(coordinateSearch(strRequest, loc, rootUrl, reqUrl));
     }
     // search for location data if we have it
     if (permissionEnum.location in networkKeywords) {
+      console.log(
+        "Running location keyword search on ",
+        reqUrl,
+        " with root ",
+        rootUrl
+      );
       executeAndPush(
         locationKeywordSearch(
           strRequest,

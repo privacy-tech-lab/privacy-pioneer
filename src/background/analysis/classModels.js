@@ -58,6 +58,7 @@ export const resourceTypeEnum = Object.freeze({
   subFrame: "sub_frame",
   WebSocket: "websocket",
   mainFrame: "main_frame",
+  beacon: "beacon",
 });
 
 /**
