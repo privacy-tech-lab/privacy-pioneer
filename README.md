@@ -133,6 +133,37 @@ Here is how you install Privacy Pioneer for development purposes:
    npm install --package-lock-only
    ```
 
+4. Due to the nature of extension development, maintaining the extension version on the [web crawler](https://github.com/privacy-tech-lab/privacy-pioneer-web-crawler) requires that the extension is manually recompiled and replaces the old extension file, i.e. `privacy-pioneer-web-crawler/selenium-crawler/ext.xpi`. If you make any changes to the extension code that you would like to see reflected in the crawler, then you should follow the steps outlined below. Alternatively, you can look [here](https://github.com/privacy-tech-lab/privacy-pioneer-web-crawler#6-changing-the-extension-for-a-crawl) for additional assistance. It is also assumed that you have already cloned into the crawler repository, as you will need to push any changes to the extension manually.
+
+   - After you have made any relevant changes to the extension code, be sure to switch the appropriate boolean flag for the desired crawl mode. These flags can be located in `/src/background/background.js`
+
+     - If you only want to record all evidence data, then set `IS_CRAWLING` to true.
+     - If you also want to record all requests that Privacy Pioneer looked at, set `IS_CRAWLING_TESTING` to true as well.
+
+   - Next, run the following from within the `privacy-pioneer` folder:
+
+   ```bash
+   npm run build
+   ```
+
+   - Navigate to the newly made `dev` directory. Within this directory, there should be a new `manifest.json` file. Open this file and paste the following code (within the JSON). Firefox will not allow you to add an extension to the crawler without this ID.
+
+   ```json
+   "browser_specific_settings": {
+    "gecko": {
+      "id": "{daf44bf7-a45e-4450-979c-91cf07434c3d}"
+    }
+   }
+   ```
+
+   - Take all of the files within the `dev` directory and add them to a zip file. You can either do this through a GUI or through the command line. If done through a GUI, make sure that you change the file format from `.zip` to `.xpi`. Functionally, these formats behave the same, except Firefox only accepts the xpi format. Here's the relevant code:
+
+   ```bash
+   zip -r ext.xpi ./
+   ```
+
+   - Now, to update the extension file in the crawler repo, place your new `ext.xpi` file into the `privacy-pioneer-web-crawler/selenium-crawler/` directory and create a pull request as necessary.
+
 ## 4. Production
 
 Once you have the development version of Privacy Pioneer working, you can build Privacy Pioneer for production to the `dist` folder by running:
