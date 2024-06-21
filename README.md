@@ -240,6 +240,7 @@ We thank the developers.
 - Some warnings may occur when you run `npm install --production=false`, but they will not negatively affect the compilation or run of Privacy Pioneer.
 - When the Overview page of Privacy Pioneer is open, data from websites visited after opening it will not be shown until the Overview is refreshed.
 - For performance reasons Privacy Pioneer only analyzes HTTP messages up to 100,000 characters, only certain `webRequest.ResourceTypes`, and only request body, response body, and selected headers. See section 3.5 of our paper [Website Data Transparency in the Browser](https://sebastianzimmeck.de/zimmeckEtAlPrivacyPioneer2024.pdf) for details.
+  - Note: Testing the [privacy-pioneer-web-crawler](https://github.com/privacy-tech-lab/privacy-pioneer-web-crawler) revealed that the version of the extension used in this paper filtered out too many resource types. The general idea is that some requests alternate between the [Fetch and Beacon API](https://github.com/privacy-tech-lab/privacy-pioneer/issues/582), causing the extension to miss certain requests.
 - Privacy Pioneer will turn off in Firefox's Private Window even if you have enabled the "Run in Private Windows" option in the extension settings.
 
 ## 12. Thank You!
