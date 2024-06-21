@@ -133,7 +133,7 @@ Here is how you install Privacy Pioneer for development purposes:
    npm install --package-lock-only
    ```
 
-4. **Note to lab members:** Changes affecting the privacy analysis may need to be manually ported to the [Privacy Pioneer Web Crawler](https://github.com/privacy-tech-lab/privacy-pioneer-web-crawler) as well. Check the instructions for doing so and contact the crawler team with any questions.
+4. **Note to lab members:** Changes affecting the privacy analysis may need to be manually ported to the [Privacy Pioneer Web Crawler](https://github.com/privacy-tech-lab/privacy-pioneer-web-crawler) as well. Check the [instructions for doing so](https://github.com/privacy-tech-lab/privacy-pioneer-web-crawler?tab=readme-ov-file#7-porting-changes-from-privacy-pioneer-to-the-privacy-pioneer-web-crawler) and contact the crawler team with any questions.
 
 ## 4. Production
 
