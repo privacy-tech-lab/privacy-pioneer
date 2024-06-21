@@ -138,7 +138,6 @@ export async function addToEvidenceStore(
     //@ts-ignore
     browser.runtime.getURL("").includes(rootU)
   ) {
-    console.log("IP INFO WHITELISTED");
     return new Promise(function (resolve, reject) {
       resolve("whitelist ipinfo");
     });
@@ -344,15 +343,6 @@ export async function addToEvidenceStore(
               userData,
               evidenceObject.loc
             );
-            // for some reason I can't get the model to load... not sure if this is a bug or just my internet/computer acting up...
-            console.log(
-              "using model on: ",
-              formattedString,
-              "\n with URL: ",
-              evidenceObject.requestUrl,
-              "\n the result was: ",
-              await useModel(formattedString)
-            );
             if ((await useModel(formattedString)) === false) {
               return new Promise(function (res, rej) {
                 res(evidence);
@@ -390,7 +380,6 @@ export async function addToEvidenceStore(
 
   //@ts-ignore
   if (browser.runtime.getURL("").includes(rootUrl)) {
-    // hmmm
     return new Promise(function (resolve, reject) {
       resolve("whitelist ipinfo");
     });

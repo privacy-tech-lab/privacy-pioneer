@@ -38,16 +38,12 @@ export function getAllEvidenceForRequest(request, userData) {
   const rootUrl = request.rootUrl;
   const reqUrl = request.reqUrl;
 
-  console.log("Currently analyzing: ", reqUrl, " with root: ", rootUrl);
-
   // this 0, 1, 2 comes from the structure of the importData function
   // location we obtained from google maps API
   const loc = userData[0];
-  console.log("Checking coordinate data: ", loc);
 
   // {phone #s, emails, location elements entered by the user, fingerprinting keywords}
   const networkKeywords = userData[1];
-  console.log("Checking location keywords: ", networkKeywords);
 
   // We only perform our analysis on reqUrl, requestBody, and responseData.
   const strRequest = JSON.stringify(request, [
@@ -180,22 +176,10 @@ export function getAllEvidenceForRequest(request, userData) {
     // if this value is 0 the client likely denied location permission
     // or they could be on Null Island in the middle of the Gulf of Guinea
     if (loc[0] != 0 && loc[1] != 0) {
-      console.log(
-        "Executing coordinate search on ",
-        reqUrl,
-        " with root ",
-        rootUrl
-      );
       executeAndPush(coordinateSearch(strRequest, loc, rootUrl, reqUrl));
     }
     // search for location data if we have it
     if (permissionEnum.location in networkKeywords) {
-      console.log(
-        "Running location keyword search on ",
-        reqUrl,
-        " with root ",
-        rootUrl
-      );
       executeAndPush(
         locationKeywordSearch(
           strRequest,
