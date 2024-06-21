@@ -21,9 +21,9 @@ The idea of Privacy Pioneer is to help people understand the data collection and
 
 > https%3A%2F%2Fwww.example.com%2Flocation%3Flat%3D32.715736%26lon%3D%20-117.161087
 
-If such a string is sent to a site via an HTTP POST request, it can be concluded that it is collecting or sharing location data. Privacy Pioneer automatically detects such behaviors and displays them to the user.
+If such a string is sent to a website, it can be concluded that it is collecting or sharing location data. Privacy Pioneer automatically detects such behaviors and shows them to the user.
 
-Privacy Pioneer's privacy practice analysis is based on rule-based heuristics as well as a machine learning model. When you install Privacy Pioneer, the model is served from our [machine learning repo](https://github.com/privacy-tech-lab/privacy-pioneer-machine-learning).
+Privacy Pioneer's privacy practice analysis is based on a machine learning model as well as rule-based heuristics. When you install Privacy Pioneer, the model is served from our [machine learning repo](https://github.com/privacy-tech-lab/privacy-pioneer-machine-learning).
 
 Privacy Pioneer is implemented as a browser extension for Firefox (currently, the only browser we support).
 
@@ -44,7 +44,7 @@ Contact us with any questions or comments at <sebastian@privacytechlab.org>.
 [5. Testing](#5-testing)  
 [6. Source Directory Layout](#6-source-directory-layout)  
 [7. Privacy Practice Analysis](#7-privacy-practice-analysis)  
-[8. Notifications](#8-notifications)  
+[8. Watchlist Notifications](#8-watchlist-notifications)  
 [9. Extension Architecture](#9-extension-architecture)  
 [10. Third Party Libraries and Resources](#10-third-party-libraries-and-resources)  
 [11. Known Issues](#11-known-issues)  
@@ -133,36 +133,7 @@ Here is how you install Privacy Pioneer for development purposes:
    npm install --package-lock-only
    ```
 
-4. Due to the nature of extension development, maintaining the extension version on the [web crawler](https://github.com/privacy-tech-lab/privacy-pioneer-web-crawler) requires that the extension is manually recompiled and replaces the old extension file, i.e. `privacy-pioneer-web-crawler/selenium-crawler/ext.xpi`. If you make any changes to the extension code that you would like to see reflected in the crawler, then you should follow the steps outlined below. Alternatively, you can look [here](https://github.com/privacy-tech-lab/privacy-pioneer-web-crawler#6-changing-the-extension-for-a-crawl) for additional assistance. It is also assumed that you have already cloned into the crawler repository, as you will need to push any changes to the extension manually.
-
-   - After you have made any relevant changes to the extension code, be sure to switch the appropriate boolean flag for the desired crawl mode. These flags can be located in `/src/background/background.js`
-
-     - If you only want to record all evidence data, then set `IS_CRAWLING` to true.
-     - If you also want to record all requests that Privacy Pioneer looked at, set `IS_CRAWLING_TESTING` to true as well.
-
-   - Next, run the following from within the `privacy-pioneer` folder:
-
-   ```bash
-   npm run build
-   ```
-
-   - Navigate to the newly made `dev` directory. Within this directory, there should be a new `manifest.json` file. Open this file and paste the following code (within the JSON). Firefox will not allow you to add an extension to the crawler without this ID.
-
-   ```json
-   "browser_specific_settings": {
-    "gecko": {
-      "id": "{daf44bf7-a45e-4450-979c-91cf07434c3d}"
-    }
-   }
-   ```
-
-   - Take all of the files within the `dev` directory and add them to a zip file. You can either do this through a GUI or through the command line. If done through a GUI, make sure that you change the file format from `.zip` to `.xpi`. Functionally, these formats behave the same, except Firefox only accepts the xpi format. Here's the relevant code:
-
-   ```bash
-   zip -r ext.xpi ./
-   ```
-
-   - Now, to update the extension file in the crawler repo, place your new `ext.xpi` file into the `privacy-pioneer-web-crawler/selenium-crawler/` directory and create a pull request as necessary.
+4. **Note to lab members:** Changes affecting the privacy analysis may need to be manually ported to the [Privacy Pioneer Web Crawler](https://github.com/privacy-tech-lab/privacy-pioneer-web-crawler) as well. Check the instructions for doing so and contact the crawler team with any questions.
 
 ## 4. Production
 
@@ -270,8 +241,7 @@ We thank the developers.
 
 - Some warnings may occur when you run `npm install --production=false`, but they will not negatively affect the compilation or run of Privacy Pioneer.
 - When the Overview page of Privacy Pioneer is open, data from websites visited after opening it will not be shown until the Overview is refreshed.
-- For performance reasons Privacy Pioneer only analyzes HTTP messages up to 100,000 characters, only certain `webRequest.ResourceTypes`, and only request body, response body, and selected headers. See section 3.5 of our paper [Website Data Transparency in the Browser](https://sebastianzimmeck.de/zimmeckEtAlPrivacyPioneer2024.pdf) for details.
-  - Note: Testing the [privacy-pioneer-web-crawler](https://github.com/privacy-tech-lab/privacy-pioneer-web-crawler) revealed that the version of the extension used in this paper filtered out too many resource types. The general idea is that some requests alternate between the [Fetch and Beacon API](https://github.com/privacy-tech-lab/privacy-pioneer/issues/582), causing the extension to miss certain requests.
+- For performance reasons Privacy Pioneer only analyzes HTTP messages up to 100,000 characters, only certain `webRequest.ResourceTypes`, and only request body, response body, and selected headers. See section 3.5 of our paper, [Website Data Transparency in the Browser](https://sebastianzimmeck.de/zimmeckEtAlPrivacyPioneer2024.pdf), for details. In addition to what is described in the paper, we [broadened the analysis scope slightly allowing requests from both the Fetch and Beacon API](https://github.com/privacy-tech-lab/privacy-pioneer/issues/582), which otherwise could cause the extension to miss relevant requests.
 - Privacy Pioneer will turn off in Firefox's Private Window even if you have enabled the "Run in Private Windows" option in the extension settings.
 
 ## 12. Thank You!
