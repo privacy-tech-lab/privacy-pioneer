@@ -14,16 +14,21 @@ import {
   encodedEmailSearch,
   dynamicPixelSearch,
 } from "./searchFunctions.js";
-import { permissionEnum, typeEnum, resourceTypeEnum, Evidence } from "../classModels.js";
+import {
+  permissionEnum,
+  typeEnum,
+  resourceTypeEnum,
+  Evidence,
+} from "../classModels.js";
 import { lengthHeuristic } from "../requestAnalysis/earlyTermination/heuristics.js";
 
 /**
  * This function runs all of the apporpriate analysis functions for an HTTP request.
  * It returns an empty array if no evidence is found. Else an array of arrays containing the
  * information to be added.
- * 
+ *
  * Defined in scanHTTP.js
- * 
+ *
  * Used in analyze.js
  * @param {{ rootUrl: any; reqUrl: any; urlClassification: any; type: string; }} request An HTTP request to be analyzed
  * @param {any[]} userData
@@ -86,7 +91,6 @@ export function getAllEvidenceForRequest(request, userData) {
       arr.push(evList); // push the evidence to the arr
     }
   }
-  
 
   executeAndPush(urlSearch(rootUrl, reqUrl, request.urlClassification));
 

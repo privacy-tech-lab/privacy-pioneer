@@ -116,7 +116,7 @@ export async function addToEvidenceStore(
   evidenceToAdd,
   parent,
   rootU,
-  requestU,
+  requestU
 ) {
   /**
    * This is a known bug where certain websites intiate requests where the rootURL
@@ -235,7 +235,6 @@ export async function addToEvidenceStore(
         return replaceCoors(str, loc, userData);
       }
 
-
       /**
        * @param {string} str str we're operating on
        * @param {string} latLng either "lat" or "lng"
@@ -286,7 +285,6 @@ export async function addToEvidenceStore(
         // Will never happen
         return "";
       }
-
 
       /**
        * @param {string} strReq

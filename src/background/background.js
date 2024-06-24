@@ -95,7 +95,7 @@ if (IS_CRAWLING) {
 // https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/API/webRequest/ResourceType
 const filter = {
   urls: ["<all_urls>"],
-  types: ["script", "xmlhttprequest", "sub_frame", "image"],
+  types: ["script", "xmlhttprequest", "sub_frame", "image", "beacon"],
 };
 
 // initialize the evidenceQ that will add evidence to the DB as we get it.
