@@ -37,6 +37,7 @@ import { lengthHeuristic } from "../requestAnalysis/earlyTermination/heuristics.
 export function getAllEvidenceForRequest(request, userData) {
   const rootUrl = request.rootUrl;
   const reqUrl = request.reqUrl;
+  console.log("Getting all evidence for: ", reqUrl, " on site ", rootUrl);
 
   // this 0, 1, 2 comes from the structure of the importData function
   // location we obtained from google maps API
@@ -101,6 +102,7 @@ export function getAllEvidenceForRequest(request, userData) {
   runWatchlistAnalysis();
   runStandardAnalysis();
 
+  console.log("Evidence array for ", reqUrl, evidenceArr);
   return evidenceArr;
 
   /**
