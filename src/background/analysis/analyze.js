@@ -140,6 +140,8 @@ export async function onBeforeRequest(details, data) {
  * @returns {void} calls analyze function, below
  */
 function resolveBuffer(id, data) {
+  console.log("Calling resolveBuffer on request ID: ", id);
+  console.log("Buffer: ", buffer);
   if (id in buffer) {
     const request = buffer[id];
     if (
@@ -148,6 +150,7 @@ function resolveBuffer(id, data) {
       request.type !== undefined &&
       request.requestBody !== undefined
     ) {
+      console.log("Calling analyze onto: ", request);
       // if our request is completely valid and we have everything we need to analyze
       // the request, continue. No else statement
       // delete the request from our buffer (we have it stored for this function as request)
@@ -183,6 +186,7 @@ async function analyze(request, userData) {
     host: rootUrl,
     request: JSON.stringify(request),
   };
+  console.log("Calling all evidence for ", request, " @ ", rootUrl);
   const allEvidence = getAllEvidenceForRequest(request, userData);
   var allCookieEvidence = [];
 
