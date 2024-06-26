@@ -22,6 +22,9 @@ import { IS_CRAWLING, IS_CRAWLING_TESTING } from "../background.js";
 // Temporary container to hold network requests while properties are being added from listener callbacks
 const buffer = {};
 
+// idea of what is happening: it seems like there are requests that are being added to the buffer, but not having any analysis done to them.
+// maybe there is something causing the program to skip their ID?
+
 // Used to decode HTTP responses
 const decoder = new TextDecoder("utf-8");
 
@@ -40,10 +43,17 @@ const decoder = new TextDecoder("utf-8");
  * @returns {Promise<void>} Calls resolveBuffer (in analyze.js)
  */
 export async function onBeforeRequest(details, data) {
+  console.log(
+    "Buffer looks like this in onBeforeRequest callback, called with: ",
+    details.requestId,
+    buffer
+  );
   let request;
 
   if (details.requestId in buffer) {
+    console.log("Request ID already in buffer", details.requestId);
     request = buffer[details.requestId];
+    console.log("Request before update: ", request, " id: ", details.requestId);
 
     // if the requestID has already been added, update details, request body as needed
     if (details.tabId == -1) {
@@ -63,8 +73,15 @@ export async function onBeforeRequest(details, data) {
     request.type = details.type !== undefined ? details.type : null;
     request.urlClassification =
       details.urlClassification !== undefined ? details.urlClassification : [];
+
+    console.log("Request after update: ", request, " id : ", details.requestId);
   } else {
     // requestID not seen, create new request, add details and request body as needed
+    console.log(
+      "Request ID ",
+      details.requestId,
+      " has not been seen yet, adding details"
+    );
     request = new Request({
       id: details.requestId,
       rootUrl: null,
@@ -104,6 +121,7 @@ export async function onBeforeRequest(details, data) {
     httpResponseStrArr = [];
 
   filter.ondata = (event) => {
+    console.log("Within the ondata function for requent id: ", request.id);
     if (!abort) {
       filter.write(event.data);
       responseByteLength += event.data.byteLength;
@@ -122,9 +140,21 @@ export async function onBeforeRequest(details, data) {
   // when the filter stops, close filter, add data from httpResponseStrArr to
   // our Request created earlier. Sends to resolveBuffer (below)
   filter.onstop = async (event) => {
+    console.log(
+      "filter.onstop called for request: ",
+      request,
+      " id: ",
+      request.id
+    );
     if (!abort) {
       filter.close();
       request.responseData = httpResponseStrArr.toString();
+      console.log(
+        "Calling resolveBuffer onto request ",
+        request,
+        " id : ",
+        request.id
+      );
       resolveBuffer(request.id, data);
     }
   };
@@ -140,8 +170,11 @@ export async function onBeforeRequest(details, data) {
  * @returns {void} calls analyze function, below
  */
 function resolveBuffer(id, data) {
-  console.log("Calling resolveBuffer on request ID: ", id);
-  console.log("Buffer: ", buffer);
+  console.log(
+    "Top of resolveBuffer: Calling resolveBuffer on request ID: ",
+    id
+  );
+  console.log("Buffer call when looking at id: ", id, buffer); // I'm printing the buffer, but another thing is probably changing the buffer
   if (id in buffer) {
     const request = buffer[id];
     if (
@@ -150,7 +183,7 @@ function resolveBuffer(id, data) {
       request.type !== undefined &&
       request.requestBody !== undefined
     ) {
-      console.log("Calling analyze onto: ", request);
+      console.log("Calling analyze onto: ", request, " id: ", request.id);
       // if our request is completely valid and we have everything we need to analyze
       // the request, continue. No else statement
       // delete the request from our buffer (we have it stored for this function as request)
@@ -186,7 +219,14 @@ async function analyze(request, userData) {
     host: rootUrl,
     request: JSON.stringify(request),
   };
-  console.log("Calling all evidence for ", request, " @ ", rootUrl);
+  console.log(
+    "Calling all evidence for ",
+    request,
+    " @ ",
+    rootUrl,
+    " id ",
+    request.id
+  );
   const allEvidence = getAllEvidenceForRequest(request, userData);
   var allCookieEvidence = [];
 
