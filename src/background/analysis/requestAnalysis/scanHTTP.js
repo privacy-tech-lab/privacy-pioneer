@@ -109,7 +109,7 @@ export function getAllEvidenceForRequest(request, userData) {
   runWatchlistAnalysis();
   runStandardAnalysis();
 
-  console.log("Evidence array for ", reqUrl, evidenceArr);
+  console.log("Evidence array for ", reqUrl, evidenceArr, "id: ", request.id);
   return evidenceArr;
 
   /**
