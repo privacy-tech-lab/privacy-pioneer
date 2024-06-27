@@ -135,7 +135,17 @@ export async function onBeforeRequest(details, data) {
     }
   };
 
-  filter.onerror = (event) => (request.error = filter.error);
+  console.log("The ondata function for id: ", request.id, filter.ondata);
+
+  filter.onerror = (event) => {
+    console.log(
+      "There was an error for request id",
+      request.id,
+      ": ",
+      filter.error
+    );
+    request.error = filter.error;
+  };
 
   // when the filter stops, close filter, add data from httpResponseStrArr to
   // our Request created earlier. Sends to resolveBuffer (below)
