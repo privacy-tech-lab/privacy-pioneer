@@ -121,7 +121,12 @@ export async function onBeforeRequest(details, data) {
     httpResponseStrArr = [];
 
   filter.ondata = (event) => {
-    console.log("Within the ondata function for requent id: ", request.id);
+    console.log(
+      "Within the ondata function for requent id: ",
+      request.id,
+      "Event",
+      event
+    );
     if (!abort) {
       filter.write(event.data);
       responseByteLength += event.data.byteLength;
