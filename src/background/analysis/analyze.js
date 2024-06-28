@@ -131,6 +131,7 @@ export async function onBeforeRequest(details, data) {
       filter.write(event.data);
       responseByteLength += event.data.byteLength;
       if (responseByteLength > MAX_BYTE_LEN) {
+        console.log("Aborting: length heuristic, id: ", request.id);
         filter.disconnect();
         abort = true;
       } else {
@@ -152,7 +153,6 @@ export async function onBeforeRequest(details, data) {
       request
     );
     request.error = filter.error;
-    resolveBuffer(request.id, data);
   };
 
   // when the filter stops, close filter, add data from httpResponseStrArr to
