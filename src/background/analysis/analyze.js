@@ -152,6 +152,7 @@ export async function onBeforeRequest(details, data) {
       request
     );
     request.error = filter.error;
+    resolveBuffer(request.id, data);
   };
 
   // when the filter stops, close filter, add data from httpResponseStrArr to
