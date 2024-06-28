@@ -80,7 +80,7 @@ async function apiSend() {
   if (!Object.keys(hostnameHold).includes(currentHostName)) {
     // console.log("loaded " + currentHostName)
     hostnameHold[currentHostName] = Date.now();
-    setTimeout(sender, 30000);
+    setTimeout(sender, 60000);
   }
 }
 //@ts-ignore
