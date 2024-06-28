@@ -147,7 +147,9 @@ export async function onBeforeRequest(details, data) {
       "There was an error for request id",
       request.id,
       ": ",
-      filter.error
+      filter.error,
+      " Request: ",
+      request
     );
     request.error = filter.error;
   };
