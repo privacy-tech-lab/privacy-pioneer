@@ -97,6 +97,8 @@ Here is how you install Privacy Pioneer for development purposes:
    xcode-select --install
    ```
 
+   After you build the Privacy Pioneer App using the `npm install -production=false` or `xcode-select --install`, you might find that your package-lock.json file has been updated with dependencies that are different from the ones in the repository. This is because the package-lock.json file is generated based on the versions of the dependencies that are newer available at the time of installation. If you could successfully build the Privacy Pioneer App and run this extension in the brower, you can ignore this issue.
+
    For any issues with incorrect dependency versions, copy the package-lock.json file from the repository into your local directory and run:
 
    ```bash
