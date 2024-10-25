@@ -46,6 +46,10 @@ export async function loadModel() {
  * @returns {Promise<boolean>} boolean
  */
 export async function useModel(input, test_model) {
+  // Replace multiple backslashes followed by a double quote with
+  // a single escaped backslash and double quote to normalize the input
+  const input_cleaned = input.replace(/\\+\"/g, '\\"');
+  
   if (test_model != undefined) {
     model = test_model;
   }
@@ -55,7 +59,7 @@ export async function useModel(input, test_model) {
   if (!tokenizer) {
     tokenizer = new BertTokenizer(true);
   }
-  var tokens = await tokenizer.tokenize(input);
+  var tokens = await tokenizer.tokenize(input_cleaned);
   const tLen = tokens.length;
   var attArr = [];
   if (tLen < 384) {
