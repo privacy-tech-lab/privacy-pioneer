@@ -194,11 +194,13 @@ export function getAllEvidenceForRequest(request, userData) {
       if (lengthHeuristic(requestStrings[i])) {
         requestStrings[i] = requestStrings[i].substring(0, MAX_CHAR_LEN);
       }
-    
+
       if (loc[0] != 0 && loc[1] != 0) {
-        executeAndPush(coordinateSearch(requestStrings[i], loc, rootUrl, reqUrl));
+        executeAndPush(
+          coordinateSearch(requestStrings[i], loc, rootUrl, reqUrl)
+        );
       }
-    
+
       if (permissionEnum.location in networkKeywords) {
         executeAndPush(
           locationKeywordSearch(

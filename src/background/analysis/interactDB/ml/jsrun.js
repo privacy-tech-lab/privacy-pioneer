@@ -2,10 +2,10 @@ import * as tf from "@tensorflow/tfjs";
 import { BertTokenizer } from "./index";
 
 const path =
-  "https://raw.githubusercontent.com/privacy-tech-lab/privacy-pioneer-machine-learning/main/convertMultiModel/multitaskModelForJSWeb/model.json";
+  "https://raw.githubusercontent.com/privacy-tech-lab/privacy-pioneer-machine-learning/17-add-and-update-model-documentation/convertMultiModel/multitaskModelForJSWeb2024/model.json";
 
 /**
- * @type {tf.GraphModel} 
+ * @type {tf.GraphModel}
  */
 let model;
 /**
@@ -15,8 +15,8 @@ let tokenizer;
 
 /**
  * loadModel is called once to load the model from the internet, and saves the model to the indexeddb
- * 
- * @returns {Promise<void>} side effects only 
+ *
+ * @returns {Promise<void>} side effects only
  */
 export async function loadModel() {
   // Warm up the model
@@ -33,7 +33,7 @@ export async function loadModel() {
     }
     try {
       var out = await model.save("indexeddb://my-model");
-    } catch(e) {
+    } catch (e) {
       error = true;
     }
   }
@@ -49,7 +49,7 @@ export async function useModel(input, test_model) {
   // Replace multiple backslashes followed by a double quote with
   // a single escaped backslash and double quote to normalize the input
   const input_cleaned = input.replace(/\\+\"/g, '\\"');
-  
+
   if (test_model != undefined) {
     model = test_model;
   }
