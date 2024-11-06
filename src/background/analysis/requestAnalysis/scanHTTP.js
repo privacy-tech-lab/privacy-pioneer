@@ -57,7 +57,7 @@ export function getAllEvidenceForRequest(request, userData) {
     JSON.stringify(request, ["reqUrl"]),
     JSON.stringify(request, ["requestBody"]),
     JSON.stringify(request, ["responseData"]),
-    // JSON.stringify(request, ["reqUrl", "requestBody", "responseData"]),
+    JSON.stringify(request, ["reqUrl", "requestBody", "responseData"]),
   ];
 
   request.reqUrl = decodeURI(request.reqUrl);
