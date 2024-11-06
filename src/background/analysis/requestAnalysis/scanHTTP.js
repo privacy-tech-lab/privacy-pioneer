@@ -20,6 +20,7 @@ import {
   resourceTypeEnum,
   Evidence,
 } from "../classModels.js";
+import { MAX_CHAR_LEN } from "../constants.js";
 import { lengthHeuristic } from "../requestAnalysis/earlyTermination/heuristics.js";
 
 /**
@@ -46,11 +47,19 @@ export function getAllEvidenceForRequest(request, userData) {
   const networkKeywords = userData[1];
 
   // We only perform our analysis on reqUrl, requestBody, and responseData.
-  const strRequest = JSON.stringify(request, [
+  var strRequest = JSON.stringify(request, [
     "reqUrl",
     "requestBody",
     "responseData",
   ]);
+
+  let requestStrings = [
+    JSON.stringify(request, ["reqUrl"]),
+    JSON.stringify(request, ["requestBody"]),
+    JSON.stringify(request, ["responseData"]),
+    // JSON.stringify(request, ["reqUrl", "requestBody", "responseData"]),
+  ];
+
   request.reqUrl = decodeURI(request.reqUrl);
   const decodedStrReq = JSON.stringify(request, [
     "reqUrl",
@@ -95,7 +104,8 @@ export function getAllEvidenceForRequest(request, userData) {
   executeAndPush(urlSearch(rootUrl, reqUrl, request.urlClassification));
 
   if (lengthHeuristic(strRequest)) {
-    return evidenceArr;
+    strRequest = strRequest.substring(0, MAX_CHAR_LEN);
+    // return evidenceArr;
   }
 
   runWatchlistAnalysis();
@@ -173,21 +183,32 @@ export function getAllEvidenceForRequest(request, userData) {
       }
     }
 
+    // if (strRequest_noUrl.includes(keyword_to_check)) {
+    //   console.log("runStandardAnalysis has ", keyword_to_check, "!!!");
+    // } else {
+    //   console.log("no ", keyword_to_check);
+    // }
     // if this value is 0 the client likely denied location permission
     // or they could be on Null Island in the middle of the Gulf of Guinea
-    if (loc[0] != 0 && loc[1] != 0) {
-      executeAndPush(coordinateSearch(strRequest, loc, rootUrl, reqUrl));
-    }
-    // search for location data if we have it
-    if (permissionEnum.location in networkKeywords) {
-      executeAndPush(
-        locationKeywordSearch(
-          strRequest,
-          networkKeywords[permissionEnum.location],
-          rootUrl,
-          reqUrl
-        )
-      );
+    for (let i = 0; i < requestStrings.length; i++) {
+      if (lengthHeuristic(requestStrings[i])) {
+        requestStrings[i] = requestStrings[i].substring(0, MAX_CHAR_LEN);
+      }
+    
+      if (loc[0] != 0 && loc[1] != 0) {
+        executeAndPush(coordinateSearch(requestStrings[i], loc, rootUrl, reqUrl));
+      }
+    
+      if (permissionEnum.location in networkKeywords) {
+        executeAndPush(
+          locationKeywordSearch(
+            requestStrings[i],
+            networkKeywords[permissionEnum.location],
+            rootUrl,
+            reqUrl
+          )
+        );
+      }
     }
     // search to see if any fingerprint data
     executeAndPush(
