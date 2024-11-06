@@ -31,9 +31,9 @@ Privacy Pioneer is implemented as a browser extension for Firefox (currently, th
   <a href="https://addons.mozilla.org/en-US/firefox/addon/privacy-pioneer/"><img src="./firefox-add-ons-badge.png" alt="Firefox Add Ons badge" width = "187" height = "67"></a>
 <p/>
 
-Privacy Pioneer is developed and maintained by **Dominik Dadak (@dadak-dom)**, **Nate Levinson (@natelevinson10)**, **Harry Yu (@atlasharry)**, and **Sebastian Zimmeck (@SebastianZimmeck)** of the [privacy-tech-lab](https://privacytechlab.org/). **Hamza Harkous (@harkous)** is also collaborating with the team on the research.
+Privacy Pioneer is developed and maintained by **Harry Yu (@atlasharry)**, **Patton Yin (@PattonYin)**, **Anan Afrida (@ananafrida)** and **Sebastian Zimmeck (@SebastianZimmeck)** of the [privacy-tech-lab](https://privacytechlab.org/). **Hamza Harkous (@harkous)** is also collaborating with the team on the research.
 
-Former contributors are **Daniel Goldelman (@danielgoldelman)**, **Joe Champeau (@JoeChampeau)**, **Judeley Jean-Charles (@jjeancharles)**, **Wesley Tan (@wesley-tan)**, **Justin Casler (@JustinCasler)**, **Logan Brown (@Lr-Brown)**, **Owen Kaplan (@notowen333)**, **Rafael Goldstein (@rgoldstein01)**, and **David Baraka (@davebaraka)**.
+Former contributors are **Dominik Dadak (@dadak-dom)**, **Nate Levinson (@natelevinson10)**, **Daniel Goldelman (@danielgoldelman)**, **Joe Champeau (@JoeChampeau)**, **Judeley Jean-Charles (@jjeancharles)**, **Wesley Tan (@wesley-tan)**, **Justin Casler (@JustinCasler)**, **Logan Brown (@Lr-Brown)**, **Owen Kaplan (@notowen333)**, **Rafael Goldstein (@rgoldstein01)**, and **David Baraka (@davebaraka)**.
 
 Contact us with any questions or comments at <sebastian@privacytechlab.org>.
 
@@ -53,11 +53,12 @@ Contact us with any questions or comments at <sebastian@privacytechlab.org>.
 ## 1. Research Publications
 
 - Sebastian Zimmeck, Daniel Goldelman, Owen Kaplan, Logan Brown, Justin Casler, Judeley Jean-Charles, Joe Champeau and Hamza Harkous, [Website Data Transparency in the Browser](https://sebastianzimmeck.de/zimmeckEtAlPrivacyPioneer2024.pdf), 24th Privacy Enhancing Technologies Symposium (PETS), Bristol, UK and Online Event, July 2024, [BibTeX](https://sebastianzimmeck.de/citations.html#zimmeckEtAlPrivacyPioneer2024Bibtex). If you are using code or interfaces from Privacy Pioneer, please cite this paper.
-- Daniel Goldelman, Global Adaptation of Privacy Pioneer: Recommendations for Conducting Cross-Regional Web Privacy Studies, Master's Thesis, Wesleyan University, May 2024
-- Judeley Jean-Charles, Daniel Goldelman, Justin Casler, Logan Brown, Owen Kaplan, Hamza Harkous, Sebastian Zimmeck, [Privacy Pioneer: Automating the Creation of Privacy Labels for Websites](https://github.com/privacy-tech-lab/privacy-pioneer/blob/main/research/jean-charlesEtAlPrivacyPioneer2023Slides.pdf), Summer Research 2023 Presentation, Wesleyan University, July 2023
-- Daniel Goldelman, Logan Brown, Justin Casler, Judeley Jean-Charles, Sebastian Zimmeck, [Privacy Pioneer: Automating the Creation of Privacy Labels for Websites](https://youtu.be/emENqmVxi7k), Talk @ Google, Online, October 2022
+- Dominik Dadak, Harry Yu, Daniel Goldelman, Joe Champeau, Nate Levinson, Judeley Jean-Charles, Hamza Harkous and Sebastian Zimmeck, [Privacy Pioneer Goes Abroad: Impact of User Location on Internet Privacy](https://github.com/privacy-tech-lab/privacy-pioneer/blob/main/research/dadakEtAl2024Poster.pdf), Summer Research 2024 Poster Session, Wesleyan University, July 2024
+- Daniel Goldelman, [Global Adaptation of Privacy Pioneer: Recommendations for Conducting Cross-Regional Web Privacy Studies](https://doi.org/10.14418/wes01.2.442), Master's Thesis, Wesleyan University, April 2024
+- Judeley Jean-Charles, Daniel Goldelman, Justin Casler, Logan Brown, Owen Kaplan, Hamza Harkous and Sebastian Zimmeck, [Privacy Pioneer: Automating the Creation of Privacy Labels for Websites](https://github.com/privacy-tech-lab/privacy-pioneer/blob/main/research/jean-charlesEtAlPrivacyPioneer2023Slides.pdf), Summer Research 2023 Presentation, Wesleyan University, July 2023
+- Daniel Goldelman, Logan Brown, Justin Casler, Judeley Jean-Charles and Sebastian Zimmeck, [Privacy Pioneer: Automating the Creation of Privacy Labels for Websites](https://youtu.be/emENqmVxi7k), Talk @ Google, Online, October 2022
 - Owen Kaplan, [Privacy Pioneer: Creating an Automated Data-Privacy UI for Web Browsers](https://digitalcollections.wesleyan.edu/object/ir%3A3180), Undergraduate Honors Thesis, Wesleyan University, April 2022
-- Owen Kaplan, Logan Brown, Daniel Goldelman, Sebastian Zimmeck [Creating Privacy Labels for the Web](http://summer21.research.wesleyan.edu/2021/07/27/creating-privacy-labels-for-the-web/), Summer Research 2021 Poster Session, Wesleyan University, Online, July 2021
+- Owen Kaplan, Logan Brown, Daniel Goldelman and Sebastian Zimmeck [Creating Privacy Labels for the Web](http://summer21.research.wesleyan.edu/2021/07/27/creating-privacy-labels-for-the-web/), Summer Research 2021 Poster Session, Wesleyan University, Online, July 2021
 
 ## 2. Promo Video
 
