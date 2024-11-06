@@ -108,8 +108,9 @@ export async function onBeforeRequest(details, data) {
       filter.write(event.data);
       responseByteLength += event.data.byteLength;
       if (responseByteLength > MAX_BYTE_LEN) {
-        filter.disconnect();
-        abort = true;
+        // filter.disconnect();
+        // abort = true;
+        // console.log("aborting");
       } else {
         const str = decoder.decode(event.data, { stream: true });
         httpResponseStrArr.push(str);
