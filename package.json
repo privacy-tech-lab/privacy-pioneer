@@ -66,7 +66,7 @@
     "@babel/preset-env": "^7.23.3",
     "@babel/preset-react": "^7.12.13",
     "@babel/register": "^7.13.8",
-    "@babel/runtime": "^7.13.10",
+    "@babel/runtime": "^7.26.10",
     "@emotion/babel-plugin": "^11.3.0",
     "babel-loader": "^8.2.2",
     "babel-plugin-polyfill-corejs2": "^0.4.6",
@@ -84,7 +84,7 @@
     "style-loader": "^2.0.0",
     "terser-webpack-plugin": "^5.1.1",
     "wait-on": "^7.2.0",
-    "web-ext": "^8.4.0",
+    "web-ext": "^8.5.0",
     "webpack": "^5.94.0",
     "webpack-cli": "^4.5.0",
     "webpack-dev-server": "^4.11.1"
