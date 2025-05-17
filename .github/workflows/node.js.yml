@@ -5,7 +5,7 @@ name: Tests
 
 on:
   push:
-    branches: ["main"]
+    branches: ["main", 'issue-592']
   pull_request:
     branches: ["main"]
 
