@@ -4,7 +4,7 @@ privacy-tech-lab, https://privacytechlab.org/
 */
 
 import React, { useState, useEffect } from "react";
-import { Route, Switch, useLocation } from "react-router-dom";
+import { Route, Routes, useLocation } from "react-router-dom";
 import { AnimatePresence } from "framer-motion";
 import WebsiteView from "../website-view";
 import { LabelView } from "../label-view";
@@ -32,10 +32,10 @@ const AppView = () => {
     <React.Fragment>
       <GlobalStyle theme={theme} popup />
       <AnimatePresence initial={false}>
-        <Switch location={location} key={location.pathname}>
+        <Routes location={location} key={location.pathname}>
           <Route path="/" exact component={WebsiteView} />
           <Route path="/website/:website/label/:label" component={LabelView} />
-        </Switch>
+        </Routes>
       </AnimatePresence>
     </React.Fragment>
   );

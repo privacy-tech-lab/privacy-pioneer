@@ -6,7 +6,7 @@ privacy-tech-lab, https://privacytechlab.org/
 import React from "react";
 
 import { startStopTour } from "../../../../libs/indexed-db/settings";
-import { useHistory } from "react-router";
+import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 
 const STourButton = styled.div`
@@ -32,11 +32,11 @@ const STourButton = styled.div`
  * Settings for restarting the tour
  */
 export const Tour = () => {
-  const history = useHistory();
+  const navigate = useNavigate();
 
   const startTour = () => {
     startStopTour();
-    history.push("/");
+    navigate("/");
   };
 
   return <STourButton onClick={startTour}>Tour</STourButton>;

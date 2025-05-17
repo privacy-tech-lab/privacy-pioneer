@@ -4,7 +4,7 @@ privacy-tech-lab, https://privacytechlab.org/
 */
 
 import React, { useEffect, useState } from "react";
-import { useHistory } from "react-router";
+import { useNavigate } from "react-router-dom";
 import Scaffold from "../../components/scaffold";
 import { WebsiteLabelList } from "../../components/website-label-list";
 import { LabelSummaryCardList } from "./components/label-summary-card";
@@ -35,7 +35,7 @@ import {
  * grabs from the DB to populate the page
  */
 const HomeView = () => {
-  const history = useHistory();
+  const navigate = useNavigate();
   const [websites, setWebsites] = useState({});
   const [labels, setLabels] = useState({});
   const [modal, setModal] = useState({ show: false });
@@ -103,9 +103,8 @@ const HomeView = () => {
             </div>
             <SButtonText
               onClick={() => {
-                history.push({
-                  pathname: "/search",
-                  region: { websites: websites, labels: labels },
+                navigate("/search", {
+                  state: { region: { websites, labels } }
                 });
                 const getAnalysis = async () => {
                   const status = await getAnalyticsStatus();

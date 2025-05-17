@@ -6,8 +6,7 @@ privacy-tech-lab, https://privacytechlab.org/
 import React from "react";
 import styled from "styled-components";
 import { motion } from "framer-motion";
-import { useHistory } from "react-router-dom";
-
+const navigationType = useNavigationType();
 /**
  * Generally this would be in a style.js file
  * Since it belongs to such a simple component, it's here.
@@ -28,9 +27,10 @@ const SScaffold = styled(motion.div)`
  * @param {any} obj.body
  */
 const Scaffold = ({ navigationBar, body }) => {
+  const navigationType = useNavigationType();
   let inital, animate, exit;
 
-  if (useHistory().action === "PUSH") {
+  if (navigationType === "PUSH") {
     inital = {
       position: "fixed",
       opacity: 0,

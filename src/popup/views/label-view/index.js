@@ -6,7 +6,7 @@ privacy-tech-lab, https://privacytechlab.org/
 import React, { useEffect, useState } from "react";
 import Scaffold from "../../components/scaffold";
 import * as Icons from "../../../libs/icons";
-import { useHistory, useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { SLeading } from "./style";
 import LabelDetail from "../../../libs/components/label-detail";
 import NavBar from "../../components/nav-bar";
@@ -50,7 +50,7 @@ function sortByTime(labels) {
 const LabelView = () => {
   const [requests, setRequests] = useState({});
 
-  const history = useHistory();
+  const navigate = useNavigate();
   const params = useParams();
   const website = params.website; // Get website passed from route
   const label = params.label; // Get label passed from route
@@ -72,7 +72,7 @@ const LabelView = () => {
           leading={
             <SLeading
               onClick={() => {
-                history.replace({ pathname: `/` });
+                navigate("/", { replace: true });
                 const getAnalysis = async () => {
                   const status = await getAnalyticsStatus();
                   if (status == true) {

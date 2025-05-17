@@ -5,7 +5,7 @@ privacy-tech-lab, https://privacytechlab.org/
 
 import JoyRide, { ACTIONS, STATUS } from "react-joyride";
 import React from "react";
-import { useHistory } from "react-router";
+import { useNavigate } from 'react-router-dom'
 import { startStopTour } from "../indexed-db/settings";
 
 const textStyles = {
@@ -105,12 +105,12 @@ export const homeSteps = [
  * @param {object} param0 
  */
 export const HomeTour = ({ steps }) => {
-  const history = useHistory();
+  const navigate = useNavigate();
 
   async function checkEnd(data) {
     const { action, index, status, type } = data;
     if (STATUS.FINISHED == status) {
-      history.push("/search");
+      navigate("/search");
     } else if (STATUS.SKIPPED == status) {
       await startStopTour();
       location.reload();
@@ -211,13 +211,13 @@ export const seeAllSteps = [
  * @param {object} param0 
  */
 export const SeeAllTour = ({ steps }) => {
-  const history = useHistory();
+  const navigate = useNavigate();
 
   const checkEnd = async (data) => {
     const { action, index, status, type } = data;
     if (STATUS.FINISHED == status) {
       await startStopTour();
-      history.push("/");
+      navigate("/");
     } else if (STATUS.SKIPPED == status) {
       await startStopTour();
       location.reload();

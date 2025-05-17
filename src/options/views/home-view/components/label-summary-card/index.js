@@ -10,7 +10,7 @@ import {
 } from "../../../../../background/analysis/classModels";
 import * as Icons from "../../../../../libs/icons";
 import { SContainer, SFooter, SHeader, SLabel, STotal } from "./style";
-import { useHistory } from "react-router";
+import { useNavigate } from 'react-router-dom'
 import ReactTooltip from "react-tooltip";
 import { getAnalyticsStatus } from "../../../../../libs/indexed-db/settings";
 import { handleClick } from "../../../../../libs/indexed-db/getAnalytics";
@@ -30,19 +30,20 @@ const LabelSummaryCard = ({
   passWebsites,
   passLabels,
 }) => {
-  const history = useHistory();
+  const navigate = useNavigate();
   return (
     <SContainer
       labeltype={labeltype}
       data-place="bottom"
       data-tip={privacyLabels[labeltype]["description"]}
       onClick={() => {
-        history.push({
-          pathname: "/search",
-          region: {
-            labeltype: labeltype,
-            websites: passWebsites,
-            labels: passLabels,
+        navigate("/search", {
+          state: {
+            region: {
+              labeltype: labeltype,
+              websites: passWebsites,
+              labels: passLabels,
+            },
           },
         });
         const getAnalysis = async () => {

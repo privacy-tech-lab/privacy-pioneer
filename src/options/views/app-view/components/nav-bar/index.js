@@ -4,7 +4,7 @@ privacy-tech-lab, https://privacytechlab.org/
 */
 
 import React, { useEffect, useState } from "react";
-import { useHistory, useLocation } from "react-router";
+import { useNavigate, useLocation } from "react-router-dom";
 import logo from "../../../../../assets/logos/Rocket.svg";
 import { settingsModelsEnum } from "../../../../../background/analysis/classModels";
 import * as Icons from "../../../../../libs/icons";
@@ -25,7 +25,7 @@ import {
  * Displays logo and title
  */
 const NavBar = () => {
-  const history = useHistory();
+  const navigate = useNavigate();
   const location = useLocation();
   const [tab, setTab] = useState(0);
 
@@ -34,22 +34,23 @@ const NavBar = () => {
    * Nothing happens if we are on the root page of the tabbed navigation
    */
   const configureRoute = (path) => {
-    if (history.location.pathname !== path) {
-      history.push({ pathname: path });
+    if (location.pathname !== path) {
+      navigate(path);
     }
   };
 
   useEffect(() => {
-    if (history.location.pathname.includes("/watchlist")) {
+    const p = location.pathname;
+    if (p.includes("/watchlist")) {
       setTab(1);
-    } else if (history.location.pathname.includes("/settings")) {
+    } else if (p.includes("/settings")) {
       setTab(2);
-    } else if (history.location.pathname.includes("/about")) {
+    } else if (p.includes("/about")) {
       setTab(3);
     } else {
       setTab(0);
     }
-  }, [location]);
+  }, [location.pathname]);
 
   return (
     <SNavBar>

@@ -4,7 +4,7 @@ privacy-tech-lab, https://privacytechlab.org/
 */
 
 import React, { useEffect, useState } from "react";
-import { Route, Switch, useLocation } from "react-router-dom";
+import { Route, Routes, useLocation } from "react-router-dom";
 import { AnimatePresence } from "framer-motion";
 import NavBar from "./components/nav-bar";
 import HomeView from "../home-view";
@@ -44,7 +44,7 @@ const AppView = () => {
       />
       <NavBar />
       <AnimatePresence exitBeforeEnter>
-        <Switch location={location} key={location.pathname}>
+        <Routes location={location} key={location.pathname}>
           <Route path="/" exact component={HomeView} />
           <Route path="/watchlist" component={WatchlistView} />
           <Route
@@ -53,7 +53,7 @@ const AppView = () => {
           />
           <Route path="/about" component={AboutView} />
           <Route path="/search" component={SearchView} />
-        </Switch>
+        </Routes>
       </AnimatePresence>
     </React.Fragment>
   );

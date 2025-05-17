@@ -29,7 +29,7 @@ import floating from "../../../assets/logos/Floating.svg";
 import NavBar from "../../components/nav-bar";
 import { getWebsiteLastVisitedEvidence } from "../../../libs/indexed-db/getIdbData.js";
 import { getHostname } from "../../../background/analysis/utility/util.js";
-import { useHistory } from "react-router";
+import { useNavigate } from "react-router-dom";
 import RiseLoader from "react-spinners/RiseLoader";
 import {
   settingsModelsEnum,
@@ -45,7 +45,7 @@ import { handleClick } from "../../../libs/indexed-db/getAnalytics";
  * Page view containing current website and identified label cards
  */
 const WebsiteView = () => {
-  const history = useHistory();
+  const navigate = useNavigate();
   const [website, setWebsite] = useState("...");
   const [labels, setLabels] = useState({});
   const [loading, setLoading] = useState(true);
@@ -57,7 +57,7 @@ const WebsiteView = () => {
   /**
    * Navigate to route in options page based on urlHash
    */
-  const navigate = ({ urlHash = "" }) => {
+  const navigate_customized = ({ urlHash = "" }) => {
     //@ts-ignore
     const url = browser.runtime.getURL("options.html");
     //@ts-ignore
@@ -150,7 +150,7 @@ const WebsiteView = () => {
             <STrailing>
               <SIconWrapper
                 onClick={() => {
-                  navigate({ urlHash: "#" }); //Go to Extension Home Page
+                  navigate_customized({ urlHash: "#" }); //Go to Extension Home Page
                   const getAnalysis = async () => {
                     const status = await getAnalyticsStatus();
                     if (status == true) {
@@ -170,7 +170,7 @@ const WebsiteView = () => {
               </SIconWrapper>
               <SIconWrapper
                 onClick={() => {
-                  navigate({ urlHash: "#watchlist" }); //Go to Extension Watchlist
+                  navigate_customized({ urlHash: "#watchlist" }); //Go to Extension Watchlist
                   const getAnalysis = async () => {
                     const status = await getAnalyticsStatus();
                     if (status == true) {
@@ -252,9 +252,7 @@ const WebsiteView = () => {
                   popup
                   key={label}
                   onTap={() => {
-                    history.push({
-                      pathname: `/website/${website}/label/${label}`,
-                    });
+                    navigate(`/website/${website}/label/${label}`);
                     const getAnalysis = async () => {
                       const status = await getAnalyticsStatus();
                       if (status == true) {

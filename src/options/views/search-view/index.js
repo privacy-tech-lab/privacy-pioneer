@@ -5,7 +5,7 @@ privacy-tech-lab, https://privacytechlab.org/
 
 import { Modal } from "bootstrap";
 import React, { useEffect, useState } from "react";
-import { useHistory, useLocation } from "react-router";
+import { useNavigate, useLocation } from "react-router-dom";
 import { settingsModelsEnum } from "../../../background/analysis/classModels";
 import * as Icons from "../../../libs/icons";
 import { handleClick } from "../../../libs/indexed-db/getAnalytics";
@@ -33,7 +33,7 @@ import {
  * Search view allowing user to search from identified labels
  */
 const SearchView = () => {
-  const history = useHistory();
+  const navigate = useNavigate();
   const location = useLocation();
 
   const [websites, setWebsites] = useState({});
@@ -80,7 +80,7 @@ const SearchView = () => {
           <STop>
             <SBackButton
               onClick={() => {
-                history.goBack();
+                navigate(-1);
                 const getAnalysis = async () => {
                   const status = await getAnalyticsStatus();
                   if (status == true) {
