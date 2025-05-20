@@ -43,16 +43,13 @@ const AppView = () => {
         multiline
       />
       <NavBar />
-      <AnimatePresence exitBeforeEnter>
+      <AnimatePresence initial={false} mode="wait">
         <Routes location={location} key={location.pathname}>
-          <Route path="/" exact component={HomeView} />
-          <Route path="/watchlist" component={WatchlistView} />
-          <Route
-            path="/settings"
-            render={() => <SettingsView changeTheme={setTheme} />}
-          />
-          <Route path="/about" component={AboutView} />
-          <Route path="/search" component={SearchView} />
+          <Route path="/" element={<HomeView />} />
+          <Route path="/watchlist" element={<WatchlistView />} />
+          <Route path="/settings" element={<SettingsView changeTheme={setTheme} />} />
+          <Route path="/about" element={<AboutView />} />
+          <Route path="/search" element={<SearchView />} />
         </Routes>
       </AnimatePresence>
     </React.Fragment>

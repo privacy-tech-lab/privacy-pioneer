@@ -45,7 +45,7 @@ import { handleClick } from "../../../libs/indexed-db/getAnalytics";
  * Page view containing current website and identified label cards
  */
 const WebsiteView = () => {
-  const navigate = useNavigate();
+  const routerNavigate = useNavigate();
   const [website, setWebsite] = useState("...");
   const [labels, setLabels] = useState({});
   const [loading, setLoading] = useState(true);
@@ -57,7 +57,7 @@ const WebsiteView = () => {
   /**
    * Navigate to route in options page based on urlHash
    */
-  const navigate_customized = ({ urlHash = "" }) => {
+  const navigate = ({ urlHash = "" }) => {
     //@ts-ignore
     const url = browser.runtime.getURL("options.html");
     //@ts-ignore
@@ -150,7 +150,7 @@ const WebsiteView = () => {
             <STrailing>
               <SIconWrapper
                 onClick={() => {
-                  navigate_customized({ urlHash: "#" }); //Go to Extension Home Page
+                  navigate({ urlHash: "#" }); //Go to Extension Home Page
                   const getAnalysis = async () => {
                     const status = await getAnalyticsStatus();
                     if (status == true) {
@@ -170,7 +170,7 @@ const WebsiteView = () => {
               </SIconWrapper>
               <SIconWrapper
                 onClick={() => {
-                  navigate_customized({ urlHash: "#watchlist" }); //Go to Extension Watchlist
+                  navigate({ urlHash: "#watchlist" }); //Go to Extension Watchlist
                   const getAnalysis = async () => {
                     const status = await getAnalyticsStatus();
                     if (status == true) {
@@ -252,7 +252,7 @@ const WebsiteView = () => {
                   popup
                   key={label}
                   onTap={() => {
-                    navigate(`/website/${website}/label/${label}`);
+                    routerNavigate(`/website/${website}/label/${label}`);
                     const getAnalysis = async () => {
                       const status = await getAnalyticsStatus();
                       if (status == true) {
@@ -283,5 +283,6 @@ const WebsiteView = () => {
     />
   );
 };
+
 
 export default WebsiteView;

@@ -38,7 +38,6 @@ const NavBar = () => {
       navigate(path);
     }
   };
-
   useEffect(() => {
     const p = location.pathname;
     if (p.includes("/watchlist")) {

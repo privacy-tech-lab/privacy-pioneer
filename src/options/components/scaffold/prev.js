@@ -6,7 +6,7 @@ privacy-tech-lab, https://privacytechlab.org/
 import React from "react";
 import styled from "styled-components";
 import { motion } from "framer-motion";
-import { useLocation, useNavigationType } from "react-router-dom";
+import { useHistory, useLocation } from "react-router-dom";
 
 /**
  * Generally this would be in a style.js file
@@ -30,7 +30,7 @@ const SScaffold = styled(motion.main)`
  * @param {object} props
  */
 const Scaffold = (props) => {
-  const navigationType = useNavigationType();
+  const history = useHistory();
   const location = useLocation();
 
   /**
@@ -41,18 +41,33 @@ const Scaffold = (props) => {
    * @param {object} history
    * @param {object} location
    */
-  const configureScrollPosition = () => {
-    if (navigationType === "POP") {
-      // restore scroll
-      const y =
-        parseInt(
-          window.sessionStorage.getItem(`pageYOffset-${location.pathname}`)
-        ) || 0;
-      window.sessionStorage.removeItem(`pageYOffset-${location.pathname}`);
-      window.scrollTo(0, y);
-    } else if (navigationType === "PUSH") {
-      // on new pushes, scroll to top
+  const configureScrollPosition = (history, location) => {
+    if (
+      history.action === "POP" &&
+      location.pathname === history.location.pathname
+    ) {
+      /**
+       * @type {number}
+       */
+      const pageYOffset =
+        parseInt(window.sessionStorage.getItem(`pageYOffset-${location.pathname}`) ?? "0");
+      window.sessionStorage.removeItem(
+        `pageYOffset-${history.location.pathname}`
+      );
+      window.scrollTo(0, pageYOffset);
+    } else if (
+      history.action === "PUSH" &&
+      location.pathname === history.location.pathname
+    ) {
       window.scrollTo(0, 0);
+    } else if (
+      history.action === "PUSH" &&
+      location.pathname !== history.location.pathname
+    ) {
+      window.sessionStorage.setItem(
+        `pageYOffset-${location.pathname}`,
+        window.scrollY.toString()
+      );
     }
   };
 
@@ -62,7 +77,7 @@ const Scaffold = (props) => {
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
       transition={{ duration: 0.25, type: "tween", ease: "easeOut" }}
-      onAnimationStart={configureScrollPosition}
+      onAnimationStart={() => configureScrollPosition(history, location)}
     >
       {props.children}
     </SScaffold>
