@@ -6,12 +6,12 @@ privacy-tech-lab, https://privacytechlab.org/
 import React from "react";
 import styled from "styled-components";
 import { motion } from "framer-motion";
-const navigationType = useNavigationType();
+import { useNavigationType } from "react-router-dom";
 /**
  * Generally this would be in a style.js file
  * Since it belongs to such a simple component, it's here.
  */
-const SScaffold = styled(motion.div)`
+const SScaffold = styled.div` // ⬅ no motion.div
   display: flex;
   flex-direction: column;
   width: 100%;
@@ -73,5 +73,6 @@ const Scaffold = ({ navigationBar, body }) => {
     </SScaffold>
   );
 };
+
 
 export default Scaffold;

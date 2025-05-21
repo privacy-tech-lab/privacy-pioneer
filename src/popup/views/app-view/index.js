@@ -33,10 +33,13 @@ const AppView = () => {
       <GlobalStyle theme={theme} popup />
       <AnimatePresence initial={false}>
         <Routes location={location} key={location.pathname}>
-          <Route path="/" exact component={WebsiteView} />
-          <Route path="/website/:website/label/:label" component={LabelView} />
+          <Route path="/" element={<WebsiteView />} />
+          <Route path="/website/:website/label/:label" element={<LabelView />} />
         </Routes>
       </AnimatePresence>
+
+      
+
     </React.Fragment>
   );
 };
