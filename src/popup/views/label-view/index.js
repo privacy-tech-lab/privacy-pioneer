@@ -55,15 +55,19 @@ const LabelView = () => {
   const website = params.website; // Get website passed from route
   const label = params.label; // Get label passed from route
 
-  useEffect(
-    () =>
-      // @ts-ignore
-      getWebsiteLastVisitedEvidence(website).then((result) => {
+  useEffect(() => {
+    // Define an async function inside the effect
+    async function fetchData() {
+      try {
+        const result = await getWebsiteLastVisitedEvidence(website);
         const a = result?.[label] ?? {};
         setRequests(a);
-      }),
-    []
-  );
+      } catch (err) {
+        console.error("Failed to load website evidence:", err);
+      }
+    }  
+    fetchData();
+  }, []);
 
   return (
     <Scaffold
@@ -72,6 +76,7 @@ const LabelView = () => {
           leading={
             <SLeading
               onClick={() => {
+                console.log("clicked");
                 navigate("/", { replace: true });
                 const getAnalysis = async () => {
                   const status = await getAnalyticsStatus();
@@ -85,7 +90,9 @@ const LabelView = () => {
                     );
                   }
                 };
+                console.log("clicked3");
                 getAnalysis();
+                console.log("clicked4");
               }}
             >
               <Icons.Back size="24px" />

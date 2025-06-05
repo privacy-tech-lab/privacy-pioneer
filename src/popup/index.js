@@ -7,7 +7,7 @@ import React from "react";
 import ReactDOM from "react-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap/dist/js/bootstrap.bundle.min";
-import { HashRouter as Router } from "react-router-dom";
+import { MemoryRouter as Router } from "react-router-dom";
 import AppView from "./views/app-view";
 
 /**
