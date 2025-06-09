@@ -39,14 +39,23 @@ const SThemeIcon = styled(motion.div)`
  */
 export const ThemeSelection = ({ changeTheme }) => {
   const [selTheme, setSelTheme] = useState("");
-  useEffect(
-    () =>
-    //@ts-ignore
-      getTheme().then((res) => {
-        if (res) setSelTheme(res);
-      }),
-    [selTheme]
-  );
+
+  useEffect(() => {
+    let isMounted = true;
+  
+    async function loadTheme() {
+      const res = await getTheme();
+      if (isMounted && res) {
+        setSelTheme(res);
+      }
+    }
+  
+    loadTheme();
+  
+    return () => {
+      isMounted = false;
+    };
+  }, []);
 
   const setETheme = async (theme) => {
     await setTheme(theme);
