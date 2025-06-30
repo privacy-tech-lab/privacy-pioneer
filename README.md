@@ -246,6 +246,7 @@ We thank the developers.
 - When the Overview page of Privacy Pioneer is open, data from websites visited after opening it will not be shown until the Overview is refreshed.
 - For performance reasons Privacy Pioneer only analyzes HTTP messages up to 100,000 characters, only certain `webRequest.ResourceTypes`, and only request body, response body, and selected headers. See section 3.5 of our paper, [Website Data Transparency in the Browser](https://sebastianzimmeck.de/zimmeckEtAlPrivacyPioneer2024.pdf), for details. In addition to what is described in the paper, we [broadened the analysis scope slightly allowing requests from both the Fetch and Beacon API](https://github.com/privacy-tech-lab/privacy-pioneer/issues/582), which otherwise could cause the extension to miss relevant requests.
 - Privacy Pioneer will turn off in Firefox's Private Window even if you have enabled the "Run in Private Windows" option in the extension settings.
+- For error ```Invalid options object. Dev Server has been initialized using an options object that does not match the API schema.``` when running ```npm start```, run this command ```npm install --save-dev webpack-cli@latest```.
 
 ## 12. Thank You!
 
