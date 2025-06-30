@@ -83,12 +83,16 @@ export const searchInit = ({
   ReactTooltip.hide();
   getTourStatus().then((res) => {
     if (res) {
-      setTouring(true);
       setWebsites(exData.labelArrayPerSite);
       setFilteredWebsites(exData.labelArrayPerSite);
       setFilteredLabels(exData.dataJson);
       setLabels(exData.dataJson);
       ReactTooltip.rebuild();
+      // Delay tour start to ensure DOM is ready and positioned correctly
+      setTimeout(() => {
+        console.log("Starting tour after DOM is ready");
+        setTouring(true);
+      }, 100);
     } else {
       setTouring(false);
       // if we're not passed the getWebsites call from previous:

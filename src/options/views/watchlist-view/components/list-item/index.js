@@ -62,7 +62,7 @@ export const ListItem = ({
    */
   const blur = (event) => {
     //@ts-ignore
-    if (!dropdownRef.current.contains(event.target)) {
+    if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
       setDropdown(false);
     }
   };

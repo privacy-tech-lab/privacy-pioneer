@@ -162,5 +162,7 @@ export const getTourStatus = async () => {
 
 export const startStopTour = async () => {
   const touring = await settingsKeyval.get(settingsModelsEnum.tour);
-  await settingsKeyval.set(settingsModelsEnum.tour, !touring);
+  const newTouringValue = !touring;
+  await settingsKeyval.set(settingsModelsEnum.tour, newTouringValue);
+  console.log("touring", newTouringValue);
 };

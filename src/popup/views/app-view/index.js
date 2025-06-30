@@ -20,14 +20,12 @@ const AppView = () => {
   const location = useLocation();
   const [theme, setTheme] = useState(settingsEnum.dark);
 
-  useEffect(
-    () =>
+  useEffect(() => {
     //@ts-ignore
-      getTheme().then((res) => {
-        if (res) setTheme(res);
-      }),
-    [theme]
-  );
+    getTheme().then((res) => {
+      if (res) setTheme(res);
+    });
+  }, []); // Remove theme dependency to prevent infinite re-renders
   return (
     <React.Fragment>
       <GlobalStyle theme={theme} popup />

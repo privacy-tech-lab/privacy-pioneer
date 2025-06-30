@@ -34,8 +34,10 @@ const STourButton = styled.div`
 export const Tour = () => {
   const navigate = useNavigate();
 
-  const startTour = () => {
-    startStopTour();
+  const startTour = async () => {
+    await startStopTour();
+    // Add a small delay to ensure the database write completes
+    await new Promise(resolve => setTimeout(resolve, 100));
     navigate("/");
   };
 

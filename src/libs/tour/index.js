@@ -4,7 +4,7 @@ privacy-tech-lab, https://privacytechlab.org/
 */
 
 import JoyRide, { ACTIONS, STATUS } from "react-joyride";
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from 'react-router-dom'
 import { startStopTour } from "../indexed-db/settings";
 
@@ -106,15 +106,20 @@ export const homeSteps = [
  */
 export const HomeTour = ({ steps }) => {
   const navigate = useNavigate();
+  console.log("HomeTour component rendered with steps:", steps.length);
 
   async function checkEnd(data) {
     const { action, index, status, type } = data;
+    console.log("Tour callback triggered:", { action, index, status, type });
     if (STATUS.FINISHED == status) {
+      console.log("Transitioning from step 3 to step 4 - navigating to search page");
       navigate("/search");
     } else if (STATUS.SKIPPED == status) {
+      console.log("Tour was skipped");
       await startStopTour();
       location.reload();
     } else if (ACTIONS.CLOSE == action) {
+      console.log("Tour was closed");
       await startStopTour();
       location.reload();
     }
@@ -170,7 +175,7 @@ export const seeAllSteps = [
     disableScrolling: true,
     disableScrollParentFix: true,
     placement: "bottom-start",
-    placementBeacon: "top",
+    placementBeacon: "top-start",
     disableBeacon: true,
     styles: {
       buttonBack: {
@@ -212,6 +217,16 @@ export const seeAllSteps = [
  */
 export const SeeAllTour = ({ steps }) => {
   const navigate = useNavigate();
+  const [run, setRun] = useState(false);
+
+  // Delay tour start to ensure proper positioning
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      console.log("Starting SeeAllTour after layout stabilization");
+      setRun(true);
+    }, 150);
+    return () => clearTimeout(timer);
+  }, []);
 
   const checkEnd = async (data) => {
     const { action, index, status, type } = data;
@@ -230,12 +245,22 @@ export const SeeAllTour = ({ steps }) => {
   return (
     <>
       <JoyRide
+        run={run}
         callback={checkEnd}
         steps={steps}
         scrollToFirstStep={false}
         continuous={true}
         showSkipButton={true}
         disableCloseOnEsc={true}
+        disableScrollParentFix={false}
+        floaterProps={{
+          disableAnimation: false,
+          styles: {
+            floater: {
+              filter: 'drop-shadow(0 0 3px rgba(0, 0, 0, 0.5))'
+            }
+          }
+        }}
         locale={{
           last: "End Tour",
           skip: "Exit tour",

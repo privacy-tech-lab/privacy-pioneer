@@ -87,10 +87,10 @@
     "style-loader": "^2.0.0",
     "terser-webpack-plugin": "^5.1.1",
     "wait-on": "^7.2.0",
-    "web-ext": "^8.7.1",
+    "web-ext": "^8.5.0",
     "webpack": "^5.94.0",
     "webpack-cli": "^4.5.0",
-    "webpack-dev-server": "^5.2.1"
+    "webpack-dev-server": "^4.11.1"
   },
   "resolutions": {
     "ws": "^8.17.1"
