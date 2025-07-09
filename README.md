@@ -52,12 +52,14 @@ Contact us with any questions or comments at <sebastian@privacytechlab.org>.
 
 ## 1. Research Publications
 
+- Harry Yu, [Privacy Regulations in Practice: A Cross-Country Analysis of Website Data Collection and Consent Banner Compliance](https://digitalcollections.wesleyan.edu/islandora/privacy-regulations-practice-cross-country-analysis-website-data-collection-and-consent), Undergraduate Honors Thesis, Wesleyan University, April 2025
+- Patton Yin, [Consent in Theory and Practice: Disparities in Privacy Implementation Across Europe and Global Websites](https://digitalcollections.wesleyan.edu/islandora/consent-theory-and-practice-disparities-privacy-implementation-across-europe-and-global), Undergraduate Honors Thesis, Wesleyan University, April 2025
 - Sebastian Zimmeck, Daniel Goldelman, Owen Kaplan, Logan Brown, Justin Casler, Judeley Jean-Charles, Joe Champeau and Hamza Harkous, [Website Data Transparency in the Browser](https://sebastianzimmeck.de/zimmeckEtAlPrivacyPioneer2024.pdf), 24th Privacy Enhancing Technologies Symposium (PETS), Bristol, UK and Online Event, July 2024, [BibTeX](https://sebastianzimmeck.de/citations.html#zimmeckEtAlPrivacyPioneer2024Bibtex). If you are using code or interfaces from Privacy Pioneer, please cite this paper.
 - Dominik Dadak, Harry Yu, Daniel Goldelman, Joe Champeau, Nate Levinson, Judeley Jean-Charles, Hamza Harkous and Sebastian Zimmeck, [Privacy Pioneer Goes Abroad: Impact of User Location on Internet Privacy](https://github.com/privacy-tech-lab/privacy-pioneer/blob/main/research/dadakEtAl2024Poster.pdf), Summer Research 2024 Poster Session, Wesleyan University, July 2024
 - Daniel Goldelman, [Global Adaptation of Privacy Pioneer: Recommendations for Conducting Cross-Regional Web Privacy Studies](https://doi.org/10.14418/wes01.2.442), Master's Thesis, Wesleyan University, April 2024
 - Judeley Jean-Charles, Daniel Goldelman, Justin Casler, Logan Brown, Owen Kaplan, Hamza Harkous and Sebastian Zimmeck, [Privacy Pioneer: Automating the Creation of Privacy Labels for Websites](https://github.com/privacy-tech-lab/privacy-pioneer/blob/main/research/jean-charlesEtAlPrivacyPioneer2023Slides.pdf), Summer Research 2023 Presentation, Wesleyan University, July 2023
 - Daniel Goldelman, Logan Brown, Justin Casler, Judeley Jean-Charles and Sebastian Zimmeck, [Privacy Pioneer: Automating the Creation of Privacy Labels for Websites](https://youtu.be/emENqmVxi7k), Talk @ Google, Online, October 2022
-- Owen Kaplan, [Privacy Pioneer: Creating an Automated Data-Privacy UI for Web Browsers](https://digitalcollections.wesleyan.edu/object/ir%3A3180), Undergraduate Honors Thesis, Wesleyan University, April 2022
+- Owen Kaplan, [Privacy Pioneer: Creating an Automated Data-Privacy UI for Web Browsers](https://doi.org/10.14418/wes01.1.2616), Undergraduate Honors Thesis, Wesleyan University, April 2022
 - Owen Kaplan, Logan Brown, Daniel Goldelman and Sebastian Zimmeck [Creating Privacy Labels for the Web](http://summer21.research.wesleyan.edu/2021/07/27/creating-privacy-labels-for-the-web/), Summer Research 2021 Poster Session, Wesleyan University, Online, July 2021
 
 ## 2. Promo Video
@@ -246,6 +248,7 @@ We thank the developers.
 - When the Overview page of Privacy Pioneer is open, data from websites visited after opening it will not be shown until the Overview is refreshed.
 - For performance reasons Privacy Pioneer only analyzes HTTP messages up to 100,000 characters, only certain `webRequest.ResourceTypes`, and only request body, response body, and selected headers. See section 3.5 of our paper, [Website Data Transparency in the Browser](https://sebastianzimmeck.de/zimmeckEtAlPrivacyPioneer2024.pdf), for details. In addition to what is described in the paper, we [broadened the analysis scope slightly allowing requests from both the Fetch and Beacon API](https://github.com/privacy-tech-lab/privacy-pioneer/issues/582), which otherwise could cause the extension to miss relevant requests.
 - Privacy Pioneer will turn off in Firefox's Private Window even if you have enabled the "Run in Private Windows" option in the extension settings.
+- For error `Invalid options object. Dev Server has been initialized using an options object that does not match the API schema.` when running `npm start`, run this command `npm install --save-dev webpack-cli@latest`.
 
 ## 12. Thank You!
 
