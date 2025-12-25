@@ -29,11 +29,13 @@ Privacy Pioneer is implemented as a browser extension for Firefox (currently, th
 
 <p align="center">
   <a href="https://addons.mozilla.org/en-US/firefox/addon/privacy-pioneer/"><img src="./firefox-add-ons-badge.png" alt="Firefox Add Ons badge" width = "187" height = "67"></a>
-<p/>
+</p>
 
-Privacy Pioneer is developed and maintained by **Harry Yu (@atlasharry)**, **Patton Yin (@PattonYin)**, and **Sebastian Zimmeck (@SebastianZimmeck)** of the [privacy-tech-lab](https://privacytechlab.org/). **Hamza Harkous (@harkous)** is also collaborating with the team on the research.
+Privacy Pioneer is maintained by **Sebastian Zimmeck (@SebastianZimmeck)** of the [privacy-tech-lab](https://privacytechlab.org/).
 
-Former contributors are **Anan Afrida (@ananafrida)**, **Dominik Dadak (@dadak-dom)**, **Nate Levinson (@natelevinson10)**, **Daniel Goldelman (@danielgoldelman)**, **Joe Champeau (@JoeChampeau)**, **Judeley Jean-Charles (@jjeancharles)**, **Wesley Tan (@wesley-tan)**, **Justin Casler (@JustinCasler)**, **Logan Brown (@Lr-Brown)**, **Owen Kaplan (@notowen333)**, **Rafael Goldstein (@rgoldstein01)**, and **David Baraka (@davebaraka)**.
+Former contributors are **Harry Yu (@atlasharry)**, **Patton Yin (@PattonYin)**, **Anan Afrida (@ananafrida)**, **Dominik Dadak (@dadak-dom)**, **Nate Levinson (@natelevinson10)**, **Daniel Goldelman (@danielgoldelman)**, **Joe Champeau (@JoeChampeau)**, **Judeley Jean-Charles (@jjeancharles)**, **Wesley Tan (@wesley-tan)**, **Justin Casler (@JustinCasler)**, **Logan Brown (@Lr-Brown)**, **Owen Kaplan (@notowen333)**, **Rafael Goldstein (@rgoldstein01)**, and **David Baraka (@davebaraka)**.
+
+**Hamza Harkous (@harkous)** also collaborated with the team on the research.
 
 Contact us with any questions or comments at <sebastian@privacytechlab.org>.
 
@@ -100,7 +102,7 @@ Here is how you install Privacy Pioneer for development purposes:
    xcode-select --install
    ```
 
-   After you build the Privacy Pioneer App using the `npm install -production=false` or `xcode-select --install`, you might find that your package-lock.json file has been updated with dependencies that are different from the ones in the repository. This is because the package-lock.json file is generated based on the versions of the dependencies that are newer available at the time of installation. If you could successfully build the Privacy Pioneer App and run this extension in the brower, you can ignore this issue.
+   After you build the Privacy Pioneer App using the `npm install -production=false` or `xcode-select --install`, you might find that your package-lock.json file has been updated with dependencies that are different from the ones in the repository. This is because the package-lock.json file is generated based on the versions of the dependencies that are newer available at the time of installation. If you could successfully build the Privacy Pioneer App and run this extension in the browser, you can ignore this issue.
 
    For any issues with incorrect dependency versions, copy the package-lock.json file from the repository into your local directory and run:
 
@@ -130,7 +132,7 @@ Here is how you install Privacy Pioneer for development purposes:
    - The popup, options, and background page will reload if you make edits
    - You will also see any lint errors in the console
 
-   A `dev` folder will be generated in the root directory, housing the generated extension files. Firefox should automatically open with the extension installed. If not, you can follow the instructions [here](https://github.com/privacy-tech-lab/privacy-pioneer/issues/12#issuecomment-776985944), where `dev` will be the new `src` folder.
+   A `dev` folder will be generated in the root directory, housing the generated extension files. Firefox should automatically open with the extension installed. If not, you can follow the [instructions](https://github.com/privacy-tech-lab/privacy-pioneer/issues/12#issuecomment-776985944), where `dev` will be the new `src` folder.
 
    **Note:** If you experience errors regarding missing dependencies (usually due to a newly incorporated node package), delete the `node_modules` folder and then re-run the installation steps above. You may also want to delete `package-lock.json` along with the `node_modules` folder as a second attempt to solve this issue. If needed, you can create a new package-lock.json file with:
 
@@ -184,7 +186,7 @@ The `options` and `popup` directories are similarly structured. Like many React 
 
 The `src/libs/indexed-db` directory, contains functions that instantiate and communicate with the IndexedDB in the Firefox browser.
 
-Some logos and other assets are in a Figma [here](https://www.figma.com/team_invite/redeem/rVKfai7IOrG1D90QriS5DJ).
+Some logos and other assets are on [Figma](https://www.figma.com/team_invite/redeem/rVKfai7IOrG1D90QriS5DJ).
 
 ## 7. Privacy Practice Analysis
 
