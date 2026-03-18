@@ -92,6 +92,9 @@
     "webpack-cli": "^6.0.1",
     "webpack-dev-server": "^5.2.1"
   },
+  "overrides": {
+    "tar": "^6.2.1"
+  },
   "resolutions": {
     "ws": "^8.17.1"
   },
