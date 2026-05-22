@@ -54,6 +54,7 @@ Contact us with any questions or comments at <sebastian@privacytechlab.org>.
 
 ## 1. Research Publications
 
+- Harry Yu, Patton Yin and Sebastian Zimmeck, [Global Web, Local Privacy? An International Review of Web Tracking](https://doi.org/10.53941/pc.2026.100005), Pragmatic Cybersecurity Vol. 1, 1, March 2026, [BibTeX](https://sebastianzimmeck.de/citations.html#yuEtAlGlobalWebLocalPrivacy2026Bibtex)
 - Harry Yu, [Privacy Regulations in Practice: A Cross-Country Analysis of Website Data Collection and Consent Banner Compliance](https://digitalcollections.wesleyan.edu/islandora/privacy-regulations-practice-cross-country-analysis-website-data-collection-and-consent), Undergraduate Honors Thesis, Wesleyan University, April 2025
 - Patton Yin, [Consent in Theory and Practice: Disparities in Privacy Implementation Across Europe and Global Websites](https://digitalcollections.wesleyan.edu/islandora/consent-theory-and-practice-disparities-privacy-implementation-across-europe-and-global), Undergraduate Honors Thesis, Wesleyan University, April 2025
 - Sebastian Zimmeck, Daniel Goldelman, Owen Kaplan, Logan Brown, Justin Casler, Judeley Jean-Charles, Joe Champeau and Hamza Harkous, [Website Data Transparency in the Browser](https://sebastianzimmeck.de/zimmeckEtAlPrivacyPioneer2024.pdf), 24th Privacy Enhancing Technologies Symposium (PETS), Bristol, UK and Online Event, July 2024, [BibTeX](https://sebastianzimmeck.de/citations.html#zimmeckEtAlPrivacyPioneer2024Bibtex). If you are using code or interfaces from Privacy Pioneer, please cite this paper.
