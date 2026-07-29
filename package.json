@@ -97,7 +97,8 @@
     "tar": "^7.5.9",
     "@mapbox/node-pre-gyp": "^2.0.0",
     "adm-zip": "^0.6.0",
-    "shell-quote": "^1.9.0"
+    "shell-quote": "^1.9.0",
+    "brace-expansion": "^5.0.8"
   },
   "resolutions": {
     "ws": "^8.17.1"
