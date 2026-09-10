@@ -82,7 +82,7 @@ export async function importData() {
     .then((value) => value);
 
   var locCoords = await getLocationData();
-  var ret = await fetch("http://ipinfo.io/json?token" + apiIPToken);
+  var ret = await fetch("https://ipinfo.io/json?token" + apiIPToken);
   var retJson = await ret.json();
   var currIpInfo = await getIpInfo(retJson);
 
@@ -227,7 +227,7 @@ export async function importData() {
 
       // add the normal email as a regex where the non alphanumeric characters are possibly changed or not present
       const newEmail = createKeywordObj(
-        new RegExp(buildGeneralRegex(email)),
+        buildGeneralRegex(email),
         typeEnum.emailAddress,
         watchlistHashGen(typeEnum.emailAddress, emailSet)
       );
